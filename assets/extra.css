@@ -105,3 +105,33 @@ table {
 .toggle-theme:hover {
     background-color: #4dd0e1;
 }
+
+/* Uniformité des styles et accessibilité */
+body,
+.md-typeset {
+    font-family: 'Open Sans', sans-serif;
+    color: #eceff1;
+}
+
+code,
+pre {
+    font-family: 'Fira Code', monospace;
+    background-color: #263238;
+    color: #cfd8dc;
+}
+
+/* Amélioration du contraste pour l'accessibilité */
+.md-header,
+.md-footer {
+    background-color: #1e272e;
+    color: #eceff1;
+}
+
+.md-nav__link {
+    color: #5c8edc;
+}
+
+.md-nav__link:hover {
+    background-color: rgba(150, 200, 255, 0.1);
+    color: #7ca6dc;
+}
