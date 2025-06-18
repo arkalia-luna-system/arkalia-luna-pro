@@ -1,16 +1,16 @@
 /* === Arkalia-LUNA — Thème Bleu Coton Nuit ✨ === */
 
 :root {
-    --md-primary-fg-color: #3e4c59;
-    /* Bleu coton doux */
+    --md-primary-fg-color: #b0bec5;
+    /* bleu-gris doux */
     --md-primary-fg-color--dark: #27323f;
     /* Profond en clair */
-    --md-accent-fg-color: #64b5f6;
-    /* Accent lumineux */
+    --md-accent-fg-color: #cfd8dc;
+    /* argenté */
     --md-default-bg-color: #f4f7fa;
     /* Fond léger coton */
-    --md-typeset-color: #37474f;
-    /* Texte sobre lisible */
+    --md-typeset-color: #eceff1;
+    /* texte clair */
 }
 
 [data-md-color-scheme="slate"] {
@@ -34,6 +34,11 @@ body,
     color: var(--md-typeset-color);
 }
 
+body {
+    background-color: #1c1f26;
+    /* fond lunaire */
+}
+
 /* En-tête translucide avec halo */
 .md-header {
     background: linear-gradient(90deg, #0f1b2a, #1a2636);
@@ -45,11 +50,12 @@ body,
 .md-nav__link {
     border-radius: 6px;
     padding: 0.45rem 0.8rem;
-    transition: background 0.2s ease;
+    transition: color 0.3s ease;
+    color: #90a4ae;
 }
 
 .md-nav__link:hover {
-    background: rgba(255, 255, 255, 0.05);
+    color: #cfd8dc;
 }
 
 /* Code & blocs de code type Mac */
@@ -112,4 +118,30 @@ pre {
         background-color: var(--md-primary-fg-color);
         color: #fff;
     }
+}
+
+.md-content__inner {
+    animation: slideFadeIn 0.6s ease-out;
+}
+
+@keyframes slideFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* 🧠 Bloc Arkalia IA */
+.arkalia-box {
+    background: linear-gradient(135deg, #64b5f6, #b0bec5);
+    border: 1px solid #cfd8dc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border-radius: 12px;
 }
