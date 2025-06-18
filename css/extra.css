@@ -1,122 +1,115 @@
-/* 🌙 Thème Arkalia — Bleu Coton Doux Nuit */
+/* === Arkalia-LUNA — Thème Bleu Coton Nuit ✨ === */
 
 :root {
-    --md-primary-fg-color: #90a4ae;
-    /* blue-grey light */
-    --md-accent-fg-color: #607d8b;
-    /* blue-grey darker */
-    --md-typeset-color: #dfe6e9;
-    /* texte très doux */
-    --md-typeset-a-color: #80cbc4;
-    /* liens vert doux */
-    --md-code-bg-color: #1e272e;
-    /* fond code sombre */
-    --md-code-fg-color: #cddc39;
-    /* texte code */
+    --md-primary-fg-color: #3e4c59;
+    /* Bleu coton doux */
+    --md-primary-fg-color--dark: #27323f;
+    /* Profond en clair */
+    --md-accent-fg-color: #64b5f6;
+    /* Accent lumineux */
+    --md-default-bg-color: #f4f7fa;
+    /* Fond léger coton */
+    --md-typeset-color: #37474f;
+    /* Texte sobre lisible */
 }
 
-.md-typeset code {
-    background-color: #1e272e;
-    color: #cddc39;
-    padding: 0.2em 0.4em;
-    border-radius: 4px;
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: #1c2833;
+    /* Nuit coton */
+    --md-primary-fg-color--dark: #131a21;
+    --md-accent-fg-color: #81d4fa;
+    /* Accent doux clair */
+    --md-default-bg-color: #0f1b2a;
+    /* Fond ultra nuit */
+    --md-typeset-color: #e3f2fd;
+    /* Texte clair coton */
 }
 
-.md-header,
-.md-footer {
-    background-color: #263238;
-    color: #eceff1;
+/* Typographie fluide et douce */
+body,
+.md-typeset {
+    font-family: "Quicksand", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+    color: var(--md-typeset-color);
 }
 
-.md-nav__link--active {
-    color: #ffffff !important;
-    font-weight: bold;
+/* En-tête translucide avec halo */
+.md-header {
+    background: linear-gradient(90deg, #0f1b2a, #1a2636);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* 🌌 Arkalia-LUNA — Style Bleu Coton Doux Nuit */
-
-:root {
-    --md-primary-fg-color: #90a4ae;
-    /* bleu-gris doux */
-    --md-accent-fg-color: #80cbc4;
-    /* vert lagon pastel */
-    --md-typeset-color: #eceff1;
-    /* texte général clair */
-    --md-typeset-a-color: #4dd0e1;
-    /* liens turquoise clair */
-    --md-code-bg-color: #263238;
-    /* fond blocs de code */
-    --md-code-fg-color: #cfd8dc;
-    /* texte dans les blocs de code */
-}
-
-.md-header,
-.md-footer {
-    background-color: #1e272e;
-    color: #eceff1;
-}
-
-.md-nav__title,
-.md-nav__link--active {
-    color: #ffffff !important;
-    font-weight: bold;
-    text-shadow: 0 0 4px #607d8b;
-}
-
-.md-typeset code {
-    background-color: #263238;
-    color: #cfd8dc;
-    padding: 0.25em 0.5em;
-    border-radius: 4px;
-}
-
-.md-typeset blockquote {
-    background: #37474f;
-    border-left: 4px solid #80cbc4;
-    padding: 0.5em 1em;
-    color: #cfd8dc;
-}
-
-.md-button {
-    background-color: #80cbc4;
-    color: #263238;
+/* Navigation latérale arrondie */
+.md-nav__link {
     border-radius: 6px;
-    transition: background-color 0.3s ease;
+    padding: 0.45rem 0.8rem;
+    transition: background 0.2s ease;
+}
+
+.md-nav__link:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Code & blocs de code type Mac */
+code,
+pre {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 6px;
+    padding: 0.2em 0.4em;
+}
+
+[data-md-color-scheme="slate"] code,
+[data-md-color-scheme="slate"] pre {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Boutons flottants "macOS-like" */
+.md-button {
+    border-radius: 24px;
+    padding: 0.5em 1.3em;
+    font-weight: 500;
+    background-color: var(--md-accent-fg-color);
+    color: #fff;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 .md-button:hover {
-    background-color: #4dd0e1;
-    color: #000;
+    opacity: 0.9;
+    transform: translateY(-1px);
 }
 
-/* 🔤 Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Open+Sans&display=swap');
-
-/* 📚 Typographie personnalisée */
-body,
-.md-typeset {
-    font-family: 'Open Sans', sans-serif;
+/* Pied de page élégant */
+.md-footer {
+    background-color: var(--md-primary-fg-color--dark);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    text-align: center;
 }
 
-code,
-pre {
-    font-family: 'Fira Code', monospace;
-}
-
-/* 🎞 Apparition douce des blocs */
-.md-content__inner,
-.md-typeset {
-    animation: fadeIn 0.4s ease-in;
-}
-
+/* Transitions douces */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(5px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+    }
+}
+
+.md-content {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Responsive tweak : barre gauche */
+@media screen and (max-width: 76.25em) {
+    .md-nav--primary .md-nav__title {
+        background-color: var(--md-primary-fg-color);
+        color: #fff;
     }
 }
