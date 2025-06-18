@@ -1,0 +1,52 @@
+/* === Arkalia Luna Theme — Bleu Coton Doux Nuit === */
+
+:root {
+    --md-primary-fg-color: #607d8b;
+    /* Blue Grey 500 */
+    --md-primary-fg-color--dark: #37474f;
+    /* Bleu nuit doux */
+    --md-accent-fg-color: #90a4ae;
+    /* Accent clair */
+    --md-default-bg-color: #f5f7fa;
+    /* Fond clair doux */
+    --md-typeset-color: #202124;
+    /* Texte principal */
+}
+
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: #37474f;
+    /* Bleu coton nuit profond */
+    --md-accent-fg-color: #b0bec5;
+    /* Accent froid clair */
+    --md-default-bg-color: #1e1f26;
+    /* Fond sombre coton */
+    --md-typeset-color: #e0e0e0;
+    /* Texte clair doux */
+}
+
+/* Titres personnalisés */
+h1,
+h2,
+h3 {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 600;
+}
+
+/* Liens + boutons */
+.md-button,
+a {
+    border-radius: 8px;
+}
+
+/* Boîte code */
+code,
+pre {
+    border-radius: 8px;
+    font-size: 0.9em;
+}
+
+/* Espacement harmonieux */
+.md-typeset {
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
