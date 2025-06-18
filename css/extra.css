@@ -32,3 +32,59 @@
     color: #ffffff !important;
     font-weight: bold;
 }
+
+/* 🌌 Arkalia-LUNA — Style Bleu Coton Doux Nuit */
+
+:root {
+    --md-primary-fg-color: #90a4ae;
+    /* bleu-gris doux */
+    --md-accent-fg-color: #80cbc4;
+    /* vert lagon pastel */
+    --md-typeset-color: #eceff1;
+    /* texte général clair */
+    --md-typeset-a-color: #4dd0e1;
+    /* liens turquoise clair */
+    --md-code-bg-color: #263238;
+    /* fond blocs de code */
+    --md-code-fg-color: #cfd8dc;
+    /* texte dans les blocs de code */
+}
+
+.md-header,
+.md-footer {
+    background-color: #1e272e;
+    color: #eceff1;
+}
+
+.md-nav__title,
+.md-nav__link--active {
+    color: #ffffff !important;
+    font-weight: bold;
+    text-shadow: 0 0 4px #607d8b;
+}
+
+.md-typeset code {
+    background-color: #263238;
+    color: #cfd8dc;
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+}
+
+.md-typeset blockquote {
+    background: #37474f;
+    border-left: 4px solid #80cbc4;
+    padding: 0.5em 1em;
+    color: #cfd8dc;
+}
+
+.md-button {
+    background-color: #80cbc4;
+    color: #263238;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.md-button:hover {
+    background-color: #4dd0e1;
+    color: #000;
+}
