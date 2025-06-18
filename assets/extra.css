@@ -50,3 +50,58 @@ pre {
     line-height: 1.7;
     font-size: 0.95rem;
 }
+
+/* Transitions douces sur la navigation */
+.md-header,
+.md-footer,
+.md-nav__title,
+.md-nav__link {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Apparence douce au survol */
+.md-nav__link:hover {
+    background-color: rgba(150, 200, 255, 0.1);
+    color: #7ca6dc;
+}
+
+/* Encadrés personnalisés */
+.admonition {
+    border-left: 4px solid #7ca6dc;
+    background-color: #f0f4ff;
+}
+
+/* Liens en bleu coton doux */
+a {
+    color: #5c8edc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Tableaux plus élégants */
+table {
+    border: 1px solid #dce3f0;
+    border-radius: 6px;
+    background-color: #f9fbff;
+}
+
+/* Styles pour les boutons de mode clair/sombre */
+.toggle-theme {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #80cbc4;
+    color: #263238;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-theme:hover {
+    background-color: #4dd0e1;
+}
