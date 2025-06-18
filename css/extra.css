@@ -1,0 +1,34 @@
+/* 🌙 Thème Arkalia — Bleu Coton Doux Nuit */
+
+:root {
+    --md-primary-fg-color: #90a4ae;
+    /* blue-grey light */
+    --md-accent-fg-color: #607d8b;
+    /* blue-grey darker */
+    --md-typeset-color: #dfe6e9;
+    /* texte très doux */
+    --md-typeset-a-color: #80cbc4;
+    /* liens vert doux */
+    --md-code-bg-color: #1e272e;
+    /* fond code sombre */
+    --md-code-fg-color: #cddc39;
+    /* texte code */
+}
+
+.md-typeset code {
+    background-color: #1e272e;
+    color: #cddc39;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+}
+
+.md-header,
+.md-footer {
+    background-color: #263238;
+    color: #eceff1;
+}
+
+.md-nav__link--active {
+    color: #ffffff !important;
+    font-weight: bold;
+}
