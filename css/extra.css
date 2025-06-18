@@ -88,3 +88,35 @@
     background-color: #4dd0e1;
     color: #000;
 }
+
+/* 🔤 Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Open+Sans&display=swap');
+
+/* 📚 Typographie personnalisée */
+body,
+.md-typeset {
+    font-family: 'Open Sans', sans-serif;
+}
+
+code,
+pre {
+    font-family: 'Fira Code', monospace;
+}
+
+/* 🎞 Apparition douce des blocs */
+.md-content__inner,
+.md-typeset {
+    animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
