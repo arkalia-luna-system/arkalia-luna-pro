@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block footer %}
+{{ super() }}
+<footer class="arkalia-footer">
+    <div class="arkalia-signature">
+        🌙 Conçu avec soin par <strong>Athalia</strong><br />
+        <span>Arkalia-LUNA System © 2025 — Tous droits réservés</span>
+    </div>
+</footer>
+{% endblock %}
+
+{% block extrahead %}
+{{ super() }}
+<style>
+    .arkalia-footer {
+        background-color: #263238;
+        /* Blue Grey Material */
+        color: #CFD8DC;
+        /* Text Soft */
+        text-align: center;
+        padding: 1.2rem 0;
+        font-size: 0.85rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .arkalia-signature {
+        font-family: 'JetBrains Mono', monospace;
+        font-style: italic;
+        opacity: 0.92;
+        line-height: 1.5;
+    }
+
+    .arkalia-signature strong {
+        color: #90CAF9;
+        /* Accent Blue */
+        font-weight: 600;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .arkalia-footer {
+            font-size: 0.75rem;
+            padding: 1rem 0;
+        }
+    }
+</style>
+{% endblock %}
