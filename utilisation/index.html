@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://arkalia-luna-system.github.io/arkalia-luna-pro/kernel/">
+        <link rel="canonical" href="https://arkalia-luna-system.github.io/arkalia-luna-pro/utilisation/">
       
       
-        <link rel="prev" href="../roadmap/">
+        <link rel="prev" href="..">
       
       
-        <link rel="next" href="../automation/">
+        <link rel="next" href="../modules/">
       
       
       <link rel="icon" href="../assets/favicon.ico">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Noyau - Arkalia-LUNA Documentation</title>
+        <title>Utilisation rapide - Arkalia-LUNA Documentation</title>
       
     
     
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Noyau
+              Utilisation rapide
             
           </span>
         </div>
@@ -232,9 +232,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../utilisation/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -346,11 +348,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../kernel/" class="md-tabs__link">
         
   
   
@@ -490,10 +490,17 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../utilisation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -504,6 +511,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -622,17 +630,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../kernel/" class="md-nav__link">
         
   
   
@@ -643,7 +644,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -746,7 +746,7 @@
 
 
   
-    <a href="https://github.com/arkalia-luna-system/arkalia-luna-pro/edit/master/docs/kernel.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/arkalia-luna-system/arkalia-luna-pro/edit/master/docs/utilisation.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -754,46 +754,9 @@
   
 
 
-  <h1>Noyau</h1>
+  <h1>Utilisation rapide</h1>
 
-<p>🧬 Structure du Noyau — Arkalia</p>
-<p>Le noyau Arkalia est conçu comme une architecture IA industrielle modulaire, avec une séparation stricte entre le kernel pur et la Devstation de développement IA.</p>
-<p>⸻</p>
-<p>⚙️ 1️⃣ /arkalia-luna-core/ — Kernel IA Pur</p>
-<p>Partie stable, figée, sans logique métier. C’est le socle d’exécution sécurisé.</p>
-<div class="highlight"><pre><span></span><code>•   📁 Contenu : uniquement des fichiers de configuration système (.toml, scripts init)
-•   🔒 Aucune dette technique autorisée
-•   🚀 Script de démarrage : arkalia_devstation_bootstrap.sh
-•   🧱 Rôle : préparer, sécuriser, isoler la Devstation IA du reste du système
-</code></pre></div>
-<p>⸻</p>
-<p>🧠 2️⃣ /arkalia-luna-pro/ — Devstation IA Modulaire</p>
-<p>Environnement de développement local modulaire, dockerisé, testé, avec CI/CD active.</p>
-<div class="highlight"><pre><span></span><code>•   🧩 Modules IA : reflexia, nyxalia, helloria, etc.
-•   🧪 Tests unitaires avec pytest
-•   🐳 Docker + Docker Compose
-•   🚦 GitHub Actions (CI/CD, lint, couverture)
-•   🌍 API FastAPI disponible localement
-•   🔖 Version actuelle : v1.0.6
-</code></pre></div>
-<p>⸻</p>
-<p>📁 Structure Type — Devstation Pro</p>
-<p>arkalia-luna-pro/
-├── modules/               # Modules IA isolés
-├── core/                  # Logique transversale
-├── config/                # Fichiers .toml / .json
-├── logs/                  # Journaux du système
-├── state/                 # États persistants
-├── scripts/               # Scripts utilitaires (build, docker, test)
-├── docs/                  # Documentation MkDocs
-├── tests/                 # Tests unitaires (pytest)
-├── .github/workflows/     # Pipelines CI GitHub Actions</p>
-<p>🧩 Philosophie de conception
-    •   🔒 Stabilité garantie par séparation Kernel / Métier
-    •   ♻️ Modules IA interchangeables
-    •   🧪 Tests et couverture obligatoires
-    •   🛰 Déploiement local maîtrisé
-    •   📚 Documentation publique automatisée</p>
+
 
 
 
