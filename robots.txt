@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /docs/
+Disallow: /releases/
+Disallow: /overrides/
+Disallow: /css/
+Disallow: /assets/
+Disallow: /diagrams/
+Disallow: /img/ 

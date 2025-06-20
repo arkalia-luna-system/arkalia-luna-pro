@@ -37,6 +37,7 @@ body,
 body {
     background-color: #1c1f26;
     /* fond lunaire */
+    scroll-behavior: smooth;
 }
 
 /* En-tête translucide avec halo */
@@ -148,4 +149,22 @@ pre {
     padding: 1rem;
     margin: 1.5rem 0;
     border-radius: 12px;
+}
+
+/* Style de la barre de défilement */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
