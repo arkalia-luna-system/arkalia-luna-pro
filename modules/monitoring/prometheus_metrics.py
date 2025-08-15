@@ -9,9 +9,17 @@ from typing import Optional
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse, PlainTextResponse
-from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, Counter, Gauge, Histogram, generate_latest
+from prometheus_client import (
+    CONTENT_TYPE_LATEST,
+    CollectorRegistry,
+    Counter,
+    Gauge,
+    Histogram,
+    generate_latest,
+)
 
 logger = logging.getLogger(__name__)
+
 
 class ArkaliaMetrics:
     """Classe de gestion des métriques Prometheus"""
@@ -26,34 +34,31 @@ class ArkaliaMetrics:
             "Temps d'activité du système en secondes",
             registry=self._registry,
         )
-        
+
         # Métriques communes par module (standard Prometheus)
         self.arkalia_module_name = Gauge(
-            "arkalia_module_name",
-            "Nom du module Arkalia",
-            ["module"],
-            registry=self._registry
+            "arkalia_module_name", "Nom du module Arkalia", ["module"], registry=self._registry
         )
-        
+
         self.arkalia_uptime_seconds = Gauge(
             "arkalia_uptime_seconds",
             "Temps de fonctionnement du module en secondes",
             ["module"],
-            registry=self._registry
+            registry=self._registry,
         )
-        
+
         self.arkalia_last_successful_interaction_timestamp = Gauge(
             "arkalia_last_successful_interaction_timestamp",
             "Timestamp de la dernière interaction réussie",
             ["module"],
-            registry=self._registry
+            registry=self._registry,
         )
-        
+
         self.arkalia_cognitive_score = Gauge(
             "arkalia_cognitive_score",
             "Score cognitif du module (0.0-1.0)",
             ["module"],
-            registry=self._registry
+            registry=self._registry,
         )
 
         self.arkalia_cpu_usage = Gauge(
@@ -111,14 +116,14 @@ class ArkaliaMetrics:
         try:
             # Uptime (simulation - en production utiliser psutil)
             self.arkalia_system_uptime.set(time.time())
-            
+
             # CPU et RAM (simulation - en production utiliser psutil)
             self.arkalia_cpu_usage.set(45.0)  # Valeur simulée
             self.arkalia_memory_usage.set(1024 * 1024 * 512)  # 512MB simulé
-            
+
             # Performance score
             self.arkalia_performance_score.set(85.0)  # Score simulé
-            
+
         except Exception as e:
             logger.error(f"Erreur mise à jour métriques système: {e}")
 
@@ -132,7 +137,9 @@ class ArkaliaMetrics:
     def record_request(self, method: str, endpoint: str, status: int, duration: float) -> None:
         """Enregistre une requête"""
         try:
-            self.arkalia_requests_total.labels(method=method, endpoint=endpoint, status=str(status)).inc()
+            self.arkalia_requests_total.labels(
+                method=method, endpoint=endpoint, status=str(status)
+            ).inc()
             self.arkalia_request_duration.labels(method=method, endpoint=endpoint).observe(duration)
         except Exception as e:
             logger.error(f"Erreur enregistrement requête: {e}")
@@ -153,12 +160,12 @@ class ArkaliaMetrics:
         try:
             # Mettre à jour les métriques système
             self._update_system_metrics()
-            
+
             # Mettre à jour les statuts des modules
             self._update_module_statuses()
-            
+
             # Générer le format Prometheus
-            return generate_latest(self._registry).decode('utf-8')
+            return generate_latest(self._registry).decode("utf-8")
         except Exception as e:
             logger.error(f"Erreur génération métriques: {e}")
             return ""
@@ -167,27 +174,29 @@ class ArkaliaMetrics:
         """Met à jour les statuts de tous les modules"""
         modules = {
             "zeroia": "modules/zeroia/state/zeroia_state.toml",
-            "reflexia": "state/reflexia_state.toml", 
+            "reflexia": "state/reflexia_state.toml",
             "assistantia": "modules/assistantia/core.py",
             "sandozia": "state/sandozia",
             "cognitive_reactor": "modules/cognitive_reactor/state/cognitive_reactor_state.toml",
             "security": "modules/security/core.py",
-            "monitoring": "modules/monitoring/prometheus_metrics.py"
+            "monitoring": "modules/monitoring/prometheus_metrics.py",
         }
-        
+
         current_time = time.time()
-        
+
         for module_name, module_path in modules.items():
             try:
                 path = Path(module_path)
                 is_active = path.exists()
                 self.update_module_status(module_name, is_active)
-                
+
                 # Mettre à jour les métriques standardisées
                 self.arkalia_module_name.labels(module=module_name).set(1)
                 self.arkalia_uptime_seconds.labels(module=module_name).set(current_time)
-                self.arkalia_last_successful_interaction_timestamp.labels(module=module_name).set(current_time)
-                
+                self.arkalia_last_successful_interaction_timestamp.labels(module=module_name).set(
+                    current_time
+                )
+
                 # Score cognitif simulé (en production, récupérer depuis le module)
                 cognitive_scores = {
                     "zeroia": 0.85,
@@ -196,11 +205,11 @@ class ArkaliaMetrics:
                     "sandozia": 0.75,
                     "cognitive_reactor": 0.88,
                     "security": 0.90,
-                    "monitoring": 0.70
+                    "monitoring": 0.70,
                 }
                 score = cognitive_scores.get(module_name, 0.5)
                 self.arkalia_cognitive_score.labels(module=module_name).set(score)
-                
+
             except Exception as e:
                 logger.warning(f"Erreur vérification module {module_name}: {e}")
                 self.update_module_status(module_name, False)
@@ -211,6 +220,7 @@ metrics = ArkaliaMetrics()
 
 # Router pour l'endpoint /metrics
 router = APIRouter(tags=["Monitoring"])
+
 
 @router.get("/metrics")
 async def get_metrics():
@@ -227,6 +237,7 @@ async def get_metrics():
             content={"error": f"Erreur métriques : {str(e)}"},
         )
 
+
 @router.get("/health")
 async def health_check():
     """
@@ -237,11 +248,8 @@ async def health_check():
             "status": "healthy",
             "timestamp": datetime.now().isoformat(),
             "metrics_collected": True,
-            "modules_monitored": 7
+            "modules_monitored": 7,
         }
     except Exception as e:
         logger.error(f"Erreur health check: {e}")
-        return JSONResponse(
-            status_code=500,
-            content={"status": "unhealthy", "error": str(e)}
-        )
+        return JSONResponse(status_code=500, content={"status": "unhealthy", "error": str(e)})

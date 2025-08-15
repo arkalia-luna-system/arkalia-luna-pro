@@ -12,6 +12,7 @@ import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional
+
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
@@ -21,12 +22,14 @@ logger.setLevel(logging.INFO)
 
 app = FastAPI()
 
+
 @app.get("/health")
 async def health():
     try:
         return {"status": "ok", "service": "security_guardian"}
     except Exception as e:
         return {"status": "unhealthy", "error": str(e)}
+
 
 @dataclass
 class UsecurityConfig:

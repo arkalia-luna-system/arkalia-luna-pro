@@ -28,12 +28,12 @@ def update_zeroia_metrics(
     operation: str,
     status: str,
     duration: float,
-    cognitive_score: Optional[float] = None,
-    decision_type: Optional[str] = None,
+    cognitive_score: float | None = None,
+    decision_type: str | None = None,
 ) -> None:
     """
     Met à jour les métriques ZeroIA
-    
+
     Args:
         operation: Nom de l'opération
         status: Statut (success/error)
@@ -47,27 +47,29 @@ def update_zeroia_metrics(
             _zeroia_metrics["decision_count"] += 1
         else:
             _zeroia_metrics["error_count"] += 1
-        
+
         # Mettre à jour le temps de dernière décision
         _zeroia_metrics["last_decision_time"] = datetime.now().isoformat()
-        
+
         # Mettre à jour le score cognitif
         if cognitive_score is not None:
             _zeroia_metrics["cognitive_score"] = cognitive_score
-        
+
         # Ajouter le temps de traitement
         _zeroia_metrics["processing_times"].append(duration)
-        
+
         # Garder seulement les 100 derniers temps
         if len(_zeroia_metrics["processing_times"]) > 100:
             _zeroia_metrics["processing_times"] = _zeroia_metrics["processing_times"][-100:]
-        
+
         # Compter les types de décisions
         if decision_type:
-            _zeroia_metrics["decision_types"][decision_type] = _zeroia_metrics["decision_types"].get(decision_type, 0) + 1
-        
+            _zeroia_metrics["decision_types"][decision_type] = (
+                _zeroia_metrics["decision_types"].get(decision_type, 0) + 1
+            )
+
         logger.debug(f"📊 Métriques mises à jour: {operation} ({status})")
-        
+
     except Exception as e:
         logger.error(f"Erreur mise à jour métriques: {e}")
 
@@ -76,13 +78,15 @@ def get_zeroia_metrics() -> dict:
     """Récupère toutes les métriques ZeroIA"""
     try:
         uptime = time.time() - _zeroia_metrics["uptime_start"]
-        
+
         # Calculer les statistiques de temps de traitement
         processing_times = _zeroia_metrics["processing_times"]
-        avg_processing_time = sum(processing_times) / len(processing_times) if processing_times else 0.0
+        avg_processing_time = (
+            sum(processing_times) / len(processing_times) if processing_times else 0.0
+        )
         max_processing_time = max(processing_times) if processing_times else 0.0
         min_processing_time = min(processing_times) if processing_times else 0.0
-        
+
         return {
             "arkalia_module_name": "zeroia",
             "uptime_seconds": uptime,
@@ -90,7 +94,8 @@ def get_zeroia_metrics() -> dict:
             "cognitive_score": _zeroia_metrics["cognitive_score"],
             "decision_count": _zeroia_metrics["decision_count"],
             "error_count": _zeroia_metrics["error_count"],
-            "success_rate": _zeroia_metrics["decision_count"] / max(_zeroia_metrics["decision_count"] + _zeroia_metrics["error_count"], 1),
+            "success_rate": _zeroia_metrics["decision_count"]
+            / max(_zeroia_metrics["decision_count"] + _zeroia_metrics["error_count"], 1),
             "processing_time": {
                 "average_seconds": avg_processing_time,
                 "max_seconds": max_processing_time,
@@ -100,7 +105,7 @@ def get_zeroia_metrics() -> dict:
             "decision_types": _zeroia_metrics["decision_types"],
             "status": "operational" if _zeroia_metrics["error_count"] < 10 else "degraded",
         }
-        
+
     except Exception as e:
         logger.error(f"Erreur récupération métriques: {e}")
         return {
@@ -116,7 +121,7 @@ def generate_prometheus_metrics() -> str:
     """Génère les métriques au format Prometheus"""
     try:
         metrics = get_zeroia_metrics()
-        
+
         prometheus_lines = [
             "# HELP zeroia_uptime_seconds Uptime de ZeroIA en secondes",
             "# TYPE zeroia_uptime_seconds gauge",
@@ -147,18 +152,20 @@ def generate_prometheus_metrics() -> str:
             f"zeroia_max_processing_time {metrics['processing_time']['max_seconds']:.3f}",
             "",
         ]
-        
+
         # Ajouter les métriques par type de décision
         for decision_type, count in metrics["decision_types"].items():
-            prometheus_lines.extend([
-                f"# HELP zeroia_decision_type_{decision_type} Décisions de type {decision_type}",
-                f"# TYPE zeroia_decision_type_{decision_type} counter",
-                f"zeroia_decision_type_{decision_type} {count}",
-                "",
-            ])
-        
+            prometheus_lines.extend(
+                [
+                    f"# HELP zeroia_decision_type_{decision_type} Décisions de type {decision_type}",
+                    f"# TYPE zeroia_decision_type_{decision_type} counter",
+                    f"zeroia_decision_type_{decision_type} {count}",
+                    "",
+                ]
+            )
+
         return "\n".join(prometheus_lines)
-        
+
     except Exception as e:
         logger.error(f"Erreur génération métriques Prometheus: {e}")
         return "# Erreur génération métriques"
@@ -167,7 +174,7 @@ def generate_prometheus_metrics() -> str:
 def reset_metrics() -> None:
     """Remet à zéro toutes les métriques"""
     global _zeroia_metrics
-    
+
     _zeroia_metrics = {
         "decision_count": 0,
         "error_count": 0,
@@ -177,7 +184,7 @@ def reset_metrics() -> None:
         "processing_times": [],
         "decision_types": {},
     }
-    
+
     logger.info("🔄 Métriques remises à zéro")
 
 
@@ -185,7 +192,7 @@ def get_metrics_summary() -> dict:
     """Récupère un résumé des métriques pour l'API"""
     try:
         metrics = get_zeroia_metrics()
-        
+
         return {
             "module": "zeroia",
             "status": metrics["status"],
@@ -196,11 +203,11 @@ def get_metrics_summary() -> dict:
             "avg_processing_time_ms": metrics["processing_time"]["average_seconds"] * 1000,
             "last_decision": metrics["last_successful_interaction_timestamp"],
         }
-        
+
     except Exception as e:
         logger.error(f"Erreur résumé métriques: {e}")
         return {
             "module": "zeroia",
             "status": "error",
             "error": str(e),
-        } 
+        }

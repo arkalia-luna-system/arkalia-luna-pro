@@ -25,13 +25,15 @@ app = FastAPI(
 # Inclure les routes du Cognitive Reactor
 app.mount("/cognitive", cognitive_app)
 
+
 @app.get("/health")
 async def health_check() -> dict:
     """Endpoint de santé pour le healthcheck Docker"""
     return {"status": "healthy", "service": "cognitive_reactor"}
 
+
 if __name__ == "__main__":
     # Démarrer le serveur FastAPI
     uvicorn.run(
         app, host="0.0.0.0", port=8003
-    )  # Interface accessible depuis l'extérieur du conteneur 
+    )  # Interface accessible depuis l'extérieur du conteneur

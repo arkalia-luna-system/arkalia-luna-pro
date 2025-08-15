@@ -12,14 +12,14 @@ __author__ = "Arkalia-LUNA Team"
 __description__ = "Système de raisonnement intelligent avec coordinateur avancé"
 
 # Imports des modules actifs
+from .confidence_score import ConfidenceScorer  # noqa: F401
 from .coordinator import ZeroIACoordinator, get_coordinator  # noqa: F401
 from .decision_engine import DecisionEngine  # noqa: F401
-from .state_manager import StateManager  # noqa: F401
-from .metrics import get_zeroia_metrics, update_zeroia_metrics  # noqa: F401
-from .confidence_score import ConfidenceScorer  # noqa: F401
-from .graceful_degradation import DegradationLevel, GracefulDegradationSystem  # noqa: F401
 from .error_recovery_system import ErrorRecoverySystem, ErrorType  # noqa: F401
+from .graceful_degradation import DegradationLevel, GracefulDegradationSystem  # noqa: F401
+from .metrics import get_zeroia_metrics, update_zeroia_metrics  # noqa: F401
 from .orchestrator_enhanced import ZeroIAOrchestrator  # noqa: F401
+from .state_manager import StateManager  # noqa: F401
 
 # Configuration par défaut
 DEFAULT_CONFIG = {
@@ -58,8 +58,9 @@ def get_zeroia_status():
     try:
         # Test imports critiques
         from .coordinator import get_coordinator
+
         coordinator = get_coordinator()
-        
+
         return {
             "status": "✅ HEALTHY",
             "version": "v2.8.0",
@@ -104,6 +105,7 @@ def health_check() -> dict:
     try:
         # Test imports critiques
         from .coordinator import get_coordinator
+
         coordinator = get_coordinator()
 
         return {
