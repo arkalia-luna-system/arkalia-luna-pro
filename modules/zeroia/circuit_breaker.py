@@ -24,7 +24,7 @@ from typing import Any, Optional
 
 import toml
 
-from modules.zeroia.event_store import EventStore, EventType
+from .event_store import EventStore, EventType
 
 logger = logging.getLogger(__name__)
 

@@ -99,45 +99,7 @@ services:
           cpus: "0.4"
 
   # 🧠 ZEROIA - Décisionneur autonome (dépend de reflexia et security)
-  zeroia:
-    <<: *arkalia-defaults
-    container_name: zeroia
-    build:
-      context: .
-      dockerfile: Dockerfile.zeroia
-    image: arkalia-luna-zeroia:optimized
-    command: python -m modules.zeroia.orchestrator_enhanced --mode daemon
-    environment:
-      - ZEROIA_ENV=production
-      - ZEROIA_HOLD_LOOP=false
-      - ZEROIA_ENHANCED_MODE=true
-      - ZEROIA_LOG_LEVEL=INFO
-      - ZEROIA_SECURITY_INTEGRATION=true
-      - ZEROIA_REFLEXIA_INTEGRATION=true
-    depends_on:
-      reflexia:
-        condition: service_healthy
-      security-guardian:
-        condition: service_healthy
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "python",
-          "-c",
-          "from modules.zeroia.core import ZeroiaCore; print('OK')",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
-    restart: unless-stopped
-    volumes:
-      - ./modules/zeroia/state:/app/modules/zeroia/state
-      - ./logs:/app/logs
-      - ./state:/app/state
-    networks:
-      - arkalia_network
+  # (SUPPRIMÉ : tout le bloc zeroia)
 
   # 🧬 SANDOZIA - Intelligence Croisée (dépend de zeroia et reflexia)
   sandozia:
@@ -155,9 +117,9 @@ services:
       - SANDOZIA_ENHANCED_MODE=true
       - SANDOZIA_SECURITY_INTEGRATION=true
     depends_on:
-      zeroia:
-        condition: service_healthy
       reflexia:
+        condition: service_healthy
+      security-guardian:
         condition: service_healthy
     healthcheck:
       test:
@@ -202,8 +164,6 @@ services:
       security-guardian:
         condition: service_healthy
       reflexia:
-        condition: service_healthy
-      zeroia:
         condition: service_healthy
       sandozia:
         condition: service_healthy

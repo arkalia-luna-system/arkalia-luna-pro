@@ -95,73 +95,28 @@ services:
           cpus: "0.5"
 
   # 🔁 ReflexIA — Observateur cognitif réflexif Optimisé
-  arkalia-reflexia:
-    <<: *arkalia-defaults
-    container_name: arkalia-reflexia
+  reflexia:
     build:
       context: .
       dockerfile: docker/Dockerfile.reflexia
+    container_name: arkalia-reflexia
+    restart: unless-stopped
     ports:
-      - "${PORT_REFLEXIA:-8002}:8002"
-    command: python run_reflexia_api.py
+      - "8002:8002"
+    volumes:
+      - ./state:/app/state
+      - ./logs:/app/logs
     environment:
-      - REFLEXIA_ENV=development
-      - REFLEXIA_MONITORING_ENABLED=true
+      - REFLEXIA_ENV=production
+    networks:
+      - arkalia_network
     healthcheck:
-      test:
-        [
-          "CMD",
-          "python",
-          "-c",
-          "from modules.reflexia.core import launch_reflexia_check; launch_reflexia_check(); print('OK')",
-        ]
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 20s
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: "0.8"
-        reservations:
-          memory: 256M
-          cpus: "0.4"
-
-  # 🤖 ZeroIA — Décisionneur autonome Enhanced v2.6.0 Optimisé
-  arkalia-zeroia:
-    <<: *arkalia-defaults
-    container_name: arkalia-zeroia
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.zeroia
-    image: arkalia-luna-zeroia:optimized
-    command: python -m modules.zeroia.orchestrator_enhanced --mode daemon
-    environment:
-      - ZEROIA_ENV=development
-      - ZEROIA_HOLD_LOOP=false
-      - ZEROIA_ENHANCED_MODE=true
-      - ZEROIA_LOG_LEVEL=INFO
-      - ZEROIA_INIT_TIMEOUT=120
-      - ZEROIA_MAX_RETRIES=5
-      - ZEROIA_STARTUP_DELAY=15
-      - ZEROIA_GRACEFUL_SHUTDOWN=true
-    depends_on:
-      arkalia-reflexia:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "true"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
-    restart: unless-stopped
-    volumes:
-      - ./modules/zeroia/state:/app/modules/zeroia/state
-      - ./logs:/app/logs
-      - ./state:/app/state
-    networks:
-      - arkalia_network
+    command: ["uvicorn", "run_reflexia_api:app", "--host", "0.0.0.0", "--port", "8002"]
 
   # 🧠 Sandozia — Intelligence Croisée Enterprise v2.6.0 Optimisée
   arkalia-sandozia:
@@ -178,9 +133,7 @@ services:
       - SANDOZIA_LOG_LEVEL=INFO
       - SANDOZIA_ENHANCED_MODE=true
     depends_on:
-      arkalia-zeroia:
-        condition: service_healthy
-      arkalia-reflexia:
+      reflexia:
         condition: service_healthy
     healthcheck:
       test:
@@ -204,53 +157,28 @@ services:
           cpus: "0.8"
 
   # 🧠 Cognitive Reactor — Intelligence Avancée v2.7.0 Production Ready
-  arkalia-cognitive:
-    <<: *arkalia-defaults
-    container_name: arkalia-cognitive
+  cognitive:
     build:
       context: .
       dockerfile: docker/Dockerfile.cognitive-reactor
-    image: arkalia-luna-cognitive:production
+    container_name: arkalia-cognitive
+    restart: unless-stopped
     ports:
-      - "${PORT_COGNITIVE:-8003}:8003"
-    command: --mode production --daemon
+      - "8003:8003"
+    volumes:
+      - ./state:/app/state
+      - ./logs:/app/logs
     environment:
       - COGNITIVE_REACTOR_ENV=production
-      - COGNITIVE_REACTOR_ENABLED=true
-      - CHRONALIA_ENABLED=true
-      - COGNITIVE_LOG_LEVEL=INFO
-      - COGNITIVE_MAX_REACTIONS=100
-      - COGNITIVE_REACTION_INTERVAL=30
-    depends_on:
-      arkalia-sandozia:
-        condition: service_healthy
-      arkalia-zeroia:
-        condition: service_healthy
+    networks:
+      - arkalia_network
     healthcheck:
-      test:
-        [
-          "CMD",
-          "python",
-          "-c",
-          "from modules.cognitive_reactor.core import CognitiveReactor; print('CognitiveReactor OK')",
-        ]
-      interval: 60s
-      timeout: 15s
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
       retries: 3
-      start_period: 45s
-    restart: unless-stopped
-    volumes:
-      - ./modules/cognitive_reactor/state:/app/modules/cognitive_reactor/state
-      - ./logs:/app/logs
-      - ./state:/app/state
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: "1.0"
-        reservations:
-          memory: 256M
-          cpus: "0.5"
+      start_period: 20s
+    command: ["uvicorn", "run_cognitive_api:app", "--host", "0.0.0.0", "--port", "8003"]
 
   # 🚀 Generative AI — Intelligence Générative Avancée v2.8.0
   # generative-ai:

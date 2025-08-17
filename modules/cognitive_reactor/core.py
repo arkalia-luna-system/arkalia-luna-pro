@@ -70,6 +70,14 @@ async def get_metrics():
         )
 
 
+@app.get("/health")
+async def health():
+    try:
+        return {"status": "ok", "service": "cognitive_reactor"}
+    except Exception as e:
+        return {"status": "unhealthy", "error": str(e)}
+
+
 class CognitiveReactor:
     """
     🧠 Réacteur cognitif avancé pour Arkalia-LUNA

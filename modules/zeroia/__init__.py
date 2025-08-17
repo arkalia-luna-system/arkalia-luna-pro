@@ -3,51 +3,51 @@
 """
 🌕 ZeroIA - Module de décision autonome Enhanced v2.8.0
 
-Module principal pour la prise de décision autonome avec error recovery,
-circuit breaker, adaptive thresholds et graceful degradation.
+Module principal pour la prise de décision autonome avec coordinateur,
+confidence scoring, graceful degradation et error recovery.
 """
 
 __version__ = "3.0.0-enhanced"
 __author__ = "Arkalia-LUNA Team"
-__description__ = "Système de raisonnement intelligent avec protection avancée"
+__description__ = "Système de raisonnement intelligent avec coordinateur avancé"
 
-from .error_recovery_system import ErrorRecoverySystem  # noqa: F401
+# Imports des modules actifs
+from .confidence_score import ConfidenceScorer  # noqa: F401
+from .coordinator import ZeroIACoordinator, get_coordinator  # noqa: F401
+from .decision_engine import DecisionEngine  # noqa: F401
+from .error_recovery_system import ErrorRecoverySystem, ErrorType  # noqa: F401
 from .graceful_degradation import DegradationLevel, GracefulDegradationSystem  # noqa: F401
-from .reason_loop import reason_loop
-
-# Imports conditionnels pour éviter les erreurs si modules non disponibles
-try:
-    from .circuit_breaker import CircuitBreaker  # noqa: F401
-    from .event_store import EventStore, EventType  # noqa: F401
-    from .reason_loop_enhanced import reason_loop_enhanced  # noqa: F401
-except ImportError:
-    # Modules optionnels non disponibles
-    pass
+from .metrics import get_zeroia_metrics, update_zeroia_metrics  # noqa: F401
+from .orchestrator_enhanced import ZeroIAOrchestrator  # noqa: F401
+from .state_manager import StateManager  # noqa: F401
 
 # Configuration par défaut
 DEFAULT_CONFIG = {
     "max_loops": 100,
-    "interval_seconds": 1.0,
-    "circuit_breaker_threshold": 5,
-    "adaptive_thresholds": True,
+    "interval_seconds": 2.0,
+    "circuit_failure_threshold": 8,
+    "timeout": 45,
+    "confidence_threshold": 0.7,
     "graceful_degradation": True,
     "error_recovery": True,
-    "model_integrity": True,
 }
 
 # Exports publics
 __all__ = [
     # Core modules
-    "CircuitBreaker",
-    "EventStore",
-    "EventType",
-    "ErrorRecoverySystem",
+    "ZeroIACoordinator",
+    "get_coordinator",
+    "DecisionEngine",
+    "StateManager",
+    "ConfidenceScorer",
     "GracefulDegradationSystem",
     "DegradationLevel",
-    # Reason loops
-    "reason_loop",
-    "reason_loop_enhanced",
-    "reason_loop_enhanced_with_recovery",
+    "ErrorRecoverySystem",
+    "ErrorType",
+    "ZeroIAOrchestrator",
+    # Metrics
+    "get_zeroia_metrics",
+    "update_zeroia_metrics",
     # Configuration
     "DEFAULT_CONFIG",
 ]
@@ -57,24 +57,29 @@ def get_zeroia_status():
     """🔍 Obtenir le statut complet de ZeroIA"""
     try:
         # Test imports critiques
-        from . import reason_loop_enhanced  # noqa: F401
+        from .coordinator import get_coordinator
+
+        coordinator = get_coordinator()
 
         return {
             "status": "✅ HEALTHY",
             "version": "v2.8.0",
             "modules": {
-                "circuit_breaker": "✅",
-                "event_store": "✅",
-                "reason_loop": "✅",
-                "reason_loop_enhanced": "✅",
-                "error_recovery": "✅",
+                "coordinator": "✅",
+                "decision_engine": "✅",
+                "state_manager": "✅",
+                "confidence_scorer": "✅",
                 "graceful_degradation": "✅",
+                "error_recovery": "✅",
+                "orchestrator_enhanced": "✅",
             },
             "features": {
-                "circuit_breaker": "✅",
-                "event_store": "✅",
-                "error_recovery": "✅",
+                "coordination": "✅",
+                "decision_making": "✅",
+                "confidence_scoring": "✅",
                 "graceful_degradation": "✅",
+                "error_recovery": "✅",
+                "enhanced_orchestration": "✅",
             },
         }
     except ImportError as e:
@@ -99,24 +104,28 @@ def health_check() -> dict:
     """Vérifie l'état de santé du module ZeroIA"""
     try:
         # Test imports critiques
-        from . import circuit_breaker  # noqa: F401
+        from .coordinator import get_coordinator
+
+        coordinator = get_coordinator()
 
         return {
             "status": "healthy",
             "version": __version__,
             "components": {
-                "reason_loop": "available",
-                "circuit_breaker": "available",
-                "event_store": "available",
-                "error_recovery": "available",
+                "coordinator": "available",
+                "decision_engine": "available",
+                "state_manager": "available",
+                "confidence_scorer": "available",
                 "graceful_degradation": "available",
+                "error_recovery": "available",
+                "orchestrator_enhanced": "available",
             },
-            "timestamp": "2025-06-29T04:18:00Z",
+            "timestamp": "2025-07-05T16:27:00Z",
         }
     except Exception as e:
         return {
             "status": "unhealthy",
             "error": str(e),
             "version": __version__,
-            "timestamp": "2025-06-29T04:18:00Z",
+            "timestamp": "2025-07-05T16:27:00Z",
         }

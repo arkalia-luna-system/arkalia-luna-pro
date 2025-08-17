@@ -15,7 +15,7 @@
 - **🚀 arkalia-api** (Port 8000) - API centrale FastAPI optimisée avec healthcheck Python natif
 - **🧠 AssistantIA** (Port 8001) - Navigation contextuelle avec Ollama
 - **🔁 ReflexIA** (Port 8002) - Observateur cognitif réflexif
-- **🤖 ZeroIA** (Enhanced v2.6.0) - Décisionneur autonome, Error Recovery, Circuit Breaker
+- **🤖 ZeroIA Coordinator** (Enhanced v2.8.0) - **NOUVEAU** Coordinateur principal avec tous les systèmes avancés
 - **🧠 Sandozia** (v2.6.0) - Intelligence croisée, validation inter-modules
 - **🧠 Cognitive Reactor** (v2.7.0) - Orchestrateur cognitif central
 - **🔒 Security** - Vault, sandbox, tokens, audit sécurité
@@ -30,6 +30,11 @@
 - **🖥️ Node Exporter** - Métriques système
 
 ### 🎯 Nouvelles Fonctionnalités v2.8.0
+- ✅ **ZeroIA Coordinator** - **NOUVEAU** Coordinateur principal avec tous les systèmes avancés intégrés
+- ✅ **Confidence Scoring** - Scoring de confiance avec mémoire explicable
+- ✅ **Graceful Degradation** - Dégradation gracieuse enterprise
+- ✅ **Error Recovery System** - Récupération automatique d'erreurs
+- ✅ **Enhanced Orchestrator** - Orchestration avec Circuit Breaker
 - ✅ **Intelligence Générative Avancée** - Auto-génération de code Python
 - ✅ **Cognitive Reactor** - Réactions cognitives automatiques
 - ✅ **Monitoring Complet Enterprise** - Stack observabilité totale
@@ -58,11 +63,25 @@
          └───────────────────────┼───────────────────────┘
                                  │
                     ┌─────────────────┐
-                    │     ZeroIA      │
-                    │ (Décisionneur)  │
-                    │ Enhanced v2.6.0 │
-                    │ + Error Recovery│
-                    │ + Circuit Breaker│
+                    │   ZeroIA        │
+                    │  Coordinator    │
+                    │  Enhanced v2.8.0│
+                    │ ┌─────────────┐ │
+                    │ │Decision     │ │
+                    │ │Engine       │ │
+                    │ └─────────────┘ │
+                    │ ┌─────────────┐ │
+                    │ │Confidence   │ │
+                    │ │Scorer       │ │
+                    │ └─────────────┘ │
+                    │ ┌─────────────┐ │
+                    │ │Graceful     │ │
+                    │ │Degradation  │ │
+                    │ └─────────────┘ │
+                    │ ┌─────────────┐ │
+                    │ │Error        │ │
+                    │ │Recovery     │ │
+                    │ └─────────────┘ │
                     └─────────────────┘
                                  │
                     ┌─────────────────┐
@@ -125,6 +144,9 @@ python scripts/demo_generative_ai.py --mode quick
 # Test Cognitive Reactor
 docker logs cognitive-reactor -f
 
+# Test ZeroIA Coordinator (NOUVEAU)
+python -m modules.zeroia.coordinator
+
 # Vérification des services
 curl http://localhost:8000/health
 curl http://localhost:8001/health
@@ -133,6 +155,16 @@ curl http://localhost:8003/health
 ```
 
 ## 🔧 Fonctionnalités Principales v2.8.0
+
+### 🤖 **ZeroIA Coordinator - Décisionneur Autonome Enhanced v2.8.0** 🆕
+- **Coordinateur principal** avec tous les systèmes avancés intégrés
+- **Decision Engine** - Moteur de décision intelligent
+- **Confidence Scoring** - Scoring de confiance avec mémoire explicable
+- **Graceful Degradation** - Dégradation gracieuse enterprise
+- **Error Recovery System** - Récupération automatique d'erreurs
+- **Enhanced Orchestrator** - Orchestration avec Circuit Breaker
+- **Event Sourcing** pour la traçabilité complète
+- **Métriques temps réel** avec Prometheus
 
 ### 🚀 **Generative AI - Intelligence Générative Avancée**
 - **Auto-génération de code Python** pour tous les modules
@@ -147,13 +179,6 @@ curl http://localhost:8003/health
 - **Apprentissage continu** et prédictions
 - **Réactivité automatique** aux problèmes système
 - **Ajustement automatique** de seuils et paramètres
-
-### 🤖 **ZeroIA - Décisionneur Autonome Enhanced v2.6.0**
-- **Décisions intelligentes** basées sur l'état du système
-- **Circuit Breaker** pour éviter les surcharges
-- **Error Recovery** automatique en cas de contradiction
-- **Event Sourcing** pour la traçabilité complète
-- **Graceful Degradation** avec services classés par priorité
 
 ### 🔁 **ReflexIA - Observateur Cognitif**
 - **Monitoring temps réel** des autres modules

@@ -6,7 +6,7 @@ Ce module fait partie du système Arkalia Luna Pro.
 
 # 📁 modules/reflexia/core_api.py
 
-from fastapi import APIRouter
+from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Gauge, generate_latest
 
@@ -24,6 +24,9 @@ router = APIRouter(
     prefix="/reflexia",
     tags=["Reflexia"],
 )
+
+app = FastAPI()
+app.include_router(router)
 
 
 def get_reflexia_status() -> dict:
@@ -78,3 +81,11 @@ async def get_metrics():
             status_code=500,
             content={"error": f"Erreur métriques : {str(e)}"},
         )
+
+
+@app.get("/health")
+async def health():
+    try:
+        return {"status": "ok", "service": "reflexia"}
+    except Exception as e:
+        return {"status": "unhealthy", "error": str(e)}

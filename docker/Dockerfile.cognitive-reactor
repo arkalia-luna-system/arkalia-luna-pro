@@ -47,6 +47,7 @@ COPY modules/security/ ./modules/security/
 COPY modules/utils_enhanced/ ./modules/utils_enhanced/
 COPY modules/crossmodule_validator/ ./modules/crossmodule_validator/
 COPY modules/error_recovery/ ./modules/error_recovery/
+COPY run_cognitive_api.py ./
 
 # === Création des répertoires nécessaires ===
 RUN mkdir -p /app/modules/cognitive_reactor/state \
@@ -62,7 +63,7 @@ USER cognitive
 EXPOSE 8003
 
 # === Point d'entrée ===
-ENTRYPOINT ["python", "modules/cognitive_reactor/core.py"]
+ENTRYPOINT ["python", "run_cognitive_api.py"]
 
 # === Commande par défaut ===
-CMD ["--mode", "production", "--daemon"]
+CMD ["--workers", "1"]

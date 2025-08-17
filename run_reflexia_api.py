@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 """
-🚀 Lancement du serveur FastAPI et de la boucle réflexive pour ReflexIA
+🚀 Lancement du serveur FastAPI pour ReflexIA
 
 Ce script démarre :
 1. Le serveur FastAPI qui expose les endpoints de ReflexIA
-2. La boucle réflexive qui surveille le système en continu
 
 Endpoints exposés :
 - /health : État de santé du service
@@ -14,12 +13,10 @@ Endpoints exposés :
 - /snapshot : Dernier snapshot sauvegardé
 """
 
-import threading
-
 import uvicorn
 from fastapi import FastAPI
 
-from modules.reflexia.core import get_metrics, launch_reflexia_check, launch_reflexia_loop
+from modules.reflexia.core import get_metrics, launch_reflexia_check
 
 app = FastAPI(
     title="ReflexIA API",
@@ -46,18 +43,8 @@ async def get_system_status() -> dict:
     return launch_reflexia_check()
 
 
-def run_reflexia_loop() -> None:
-    """Lance la boucle réflexive dans un thread séparé"""
-    launch_reflexia_loop()
-
-
 if __name__ == "__main__":
-    # Démarrer la boucle réflexive dans un thread séparé
-    reflexia_thread = threading.Thread(target=run_reflexia_loop)
-    reflexia_thread.daemon = True  # Le thread s'arrêtera quand le programme principal s'arrête
-    reflexia_thread.start()
-
-    # Démarrer le serveur FastAPI dans le thread principal
+    # Démarrer le serveur FastAPI
     uvicorn.run(
-        app, host="127.0.0.1", port=8002
-    )  # nosec B104 - Interface locale pour développement
+        app, host="0.0.0.0", port=8002
+    )  # Interface accessible depuis l'extérieur du conteneur
