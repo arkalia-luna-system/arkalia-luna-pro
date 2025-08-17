@@ -40,14 +40,31 @@ def setup_logging(verbose: bool = False):
 def print_banner():
     """Affiche le banner de démarrage"""
     ark_logger.info("=" * 80, extra={"module": "scripts"})
-    ark_logger.info("🌕 ARKALIA MASTER ORCHESTRATOR v4.0.0 - ULTIMATE EDITION", extra={"module": "scripts"})
+    ark_logger.info(
+        "🌕 ARKALIA MASTER ORCHESTRATOR v4.0.0 - ULTIMATE EDITION", extra={"module": "scripts"}
+    )
     ark_logger.info("=" * 80, extra={"module": "scripts"})
-    ark_logger.info("🧠 Modules IA Coordonnés    : 10 modules (ZeroIA, ReflexIA, etc.)", extra={"module": "scripts"})
-    ark_logger.info("🔄 Cycles Adaptatifs        : 5s urgent → 30s normal → 300s deep", extra={"module": "scripts"})
-    ark_logger.error("🛡️ Protection Globale        : Circuit breaker + Error recovery", extra={"module": "scripts"})
-    ark_logger.info("🌐 État Global Unifié       : Synchronisation inter-modules", extra={"module": "scripts"})
-    ark_logger.info("📊 Monitoring Intégré       : Métriques temps réel", extra={"module": "scripts"})
-    ark_logger.info("🐳 Container Ready          : Mode daemon optimisé", extra={"module": "scripts"})
+    ark_logger.info(
+        "🧠 Modules IA Coordonnés    : 10 modules (ZeroIA, ReflexIA, etc.)",
+        extra={"module": "scripts"},
+    )
+    ark_logger.info(
+        "🔄 Cycles Adaptatifs        : 5s urgent → 30s normal → 300s deep",
+        extra={"module": "scripts"},
+    )
+    ark_logger.error(
+        "🛡️ Protection Globale        : Circuit breaker + Error recovery",
+        extra={"module": "scripts"},
+    )
+    ark_logger.info(
+        "🌐 État Global Unifié       : Synchronisation inter-modules", extra={"module": "scripts"}
+    )
+    ark_logger.info(
+        "📊 Monitoring Intégré       : Métriques temps réel", extra={"module": "scripts"}
+    )
+    ark_logger.info(
+        "🐳 Container Ready          : Mode daemon optimisé", extra={"module": "scripts"}
+    )
     ark_logger.info("=" * 80, extra={"module": "scripts"})
 
 
@@ -90,15 +107,21 @@ Exemples d'utilisation :
     config = OrchestratorConfig()
 
     if args.config:
-        ark_logger.info(f"📁 Chargement config personnalisée: {args.config}", extra={"module": "scripts"})
+        ark_logger.info(
+            f"📁 Chargement config personnalisée: {args.config}", extra={"module": "scripts"}
+        )
         # TODO: Implémenter chargement config
 
     if args.enable_modules:
         config.enabled_modules = args.enable_modules
-        ark_logger.info(f"🔧 Modules activés: {', '.join(args.enable_modules, extra={"module": "scripts"})}")
+        ark_logger.info(
+            f"🔧 Modules activés: {', '.join(args.enable_modules)}", extra={"module": "scripts"}
+        )
 
-    ark_logger.info(f"⚙️ Mode: {args.mode.upper(, extra={"module": "scripts"})}")
-    ark_logger.info(f"🔧 Modules actifs: {len(config.enabled_modules, extra={"module": "scripts"})}/10")
+    ark_logger.info(f"⚙️ Mode: {args.mode.upper()}", extra={"module": "scripts"})
+    ark_logger.info(
+        f"🔧 Modules actifs: {len(config.enabled_modules)}/10", extra={"module": "scripts"}
+    )
     ark_logger.info("")
 
     try:
@@ -122,12 +145,29 @@ Exemples d'utilisation :
 
             ark_logger.info("🌕 ARKALIA ORCHESTRATOR STATUS", extra={"module": "scripts"})
             ark_logger.info("=" * 50, extra={"module": "scripts"})
-            ark_logger.info(f"Version        : {status['orchestrator']['version']}", extra={"module": "scripts"})
-            ark_logger.info(f"Running        : {status['orchestrator']['is_running']}", extra={"module": "scripts"})
-            ark_logger.info(f"Uptime         : {status['orchestrator']['uptime_seconds']:.1f}s", extra={"module": "scripts"})
-            ark_logger.info(f"Cycles         : {status['orchestrator']['cycle_count']}", extra={"module": "scripts"})
-            ark_logger.info(f"Current Mode   : {status['orchestrator']['current_mode'].upper(, extra={"module": "scripts"})}")
-            ark_logger.info(f"Success Rate   : {status['orchestrator']['success_rate']}%", extra={"module": "scripts"})
+            ark_logger.info(
+                f"Version        : {status['orchestrator']['version']}", extra={"module": "scripts"}
+            )
+            ark_logger.info(
+                f"Running        : {status['orchestrator']['is_running']}",
+                extra={"module": "scripts"},
+            )
+            ark_logger.info(
+                f"Uptime         : {status['orchestrator']['uptime_seconds']:.1f}s",
+                extra={"module": "scripts"},
+            )
+            ark_logger.info(
+                f"Cycles         : {status['orchestrator']['cycle_count']}",
+                extra={"module": "scripts"},
+            )
+            ark_logger.info(
+                f"Current Mode   : {status['orchestrator']['current_mode'].upper()}",
+                extra={"module": "scripts"},
+            )
+            ark_logger.info(
+                f"Success Rate   : {status['orchestrator']['success_rate']}%",
+                extra={"module": "scripts"},
+            )
             ark_logger.info("")
 
             ark_logger.info("📋 MODULES STATUS:", extra={"module": "scripts"})
@@ -141,10 +181,19 @@ Exemples d'utilisation :
                     "initializing": "🔄",
                 }.get(module_info["status"], "❓")
 
-                ark_logger.info(f"{status_icon} {module_name:12} : {module_info['status'].upper(, extra={"module": "scripts"})}")
+                ark_logger.info(
+                    f"{status_icon} {module_name:12} : {module_info['status'].upper()}",
+                    extra={"module": "scripts"},
+                )
                 if module_info["execution_count"] > 0:
-                    ark_logger.info(f"   Executions  : {module_info['execution_count']}", extra={"module": "scripts"})
-                    ark_logger.error(f"   Errors      : {module_info['error_count']}", extra={"module": "scripts"})
+                    ark_logger.info(
+                        f"   Executions  : {module_info['execution_count']}",
+                        extra={"module": "scripts"},
+                    )
+                    ark_logger.error(
+                        f"   Errors      : {module_info['error_count']}",
+                        extra={"module": "scripts"},
+                    )
 
     except KeyboardInterrupt:
         ark_logger.info("\n⏹️ Arrêté par l'utilisateur", extra={"module": "scripts"})

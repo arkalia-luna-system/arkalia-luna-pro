@@ -13,7 +13,6 @@ Améliorations v3.x :
 - Recovery automatique et graceful degradation
 """
 
-from core.ark_logger import ark_logger
 import logging
 import sys
 import textwrap
@@ -24,6 +23,7 @@ from typing import Any, Optional
 
 import toml
 
+from core.ark_logger import ark_logger
 from modules.zeroia.circuit_breaker import (  # noqa: F401
     CircuitBreaker,
     CognitiveOverloadError,
@@ -239,7 +239,11 @@ def load_toml_enhanced_cache(path: Path, max_age: int | None = None) -> dict:
                     toml.dump(default_context, f)
                 _TOML_CACHE[path_str] = default_context
                 _CACHE_TIMESTAMPS[path_str] = current_time
-                ark_logger.info(f"✅ [ZeroIA Enhanced] Contexte par défaut créé: {path}", flush=True, extra={"module": "zeroia"})
+                ark_logger.info(
+                    f"✅ [ZeroIA Enhanced] Contexte par défaut créé: {path}",
+                    flush=True,
+                    extra={"module": "zeroia"},
+                )
                 return default_context
             raise ValueError(f"TOML file {path} is empty or missing")
 
@@ -642,20 +646,20 @@ def reason_loop_enhanced_with_recovery(
             f"{error_recovery_status} ZeroIA decided: {decision} "
             f"(confidence={score}, health={system_health:.2f})",
             flush=True,
-            extra={"module": "zeroia"}
+            extra={"module": "zeroia"},
         )
         ark_logger.info(
             f"[ZeroIA] CPU usage: {cpu}% → decision={decision} (score={score})",
             flush=True,
-            extra={"module": "zeroia"}
+            extra={"module": "zeroia"},
         )
 
         if decision_error:
-                    ark_logger.error(
-            f"[ZeroIA] Error Recovery triggered for: {type(decision_error).__name__}",
-            flush=True,
-            extra={"module": "zeroia"}
-        )
+            ark_logger.error(
+                f"[ZeroIA] Error Recovery triggered for: {type(decision_error).__name__}",
+                flush=True,
+                extra={"module": "zeroia"},
+            )
 
         return decision, score
 
@@ -719,7 +723,9 @@ def main_loop_enhanced() -> None:
         time.sleep(2)
 
     except SystemRebootRequired as e:
-        ark_logger.info(f"[ZeroIA Enhanced] 🔄 REDÉMARRAGE REQUIS: {e}", flush=True, extra={"module": "zeroia"})
+        ark_logger.info(
+            f"[ZeroIA Enhanced] 🔄 REDÉMARRAGE REQUIS: {e}", flush=True, extra={"module": "zeroia"}
+        )
 
         # Event sourcing critique
         if event_store is not None:
@@ -737,7 +743,9 @@ def main_loop_enhanced() -> None:
         time.sleep(60)
 
     except (CognitiveOverloadError, DecisionIntegrityError) as e:
-        ark_logger.info(f"[ZeroIA Enhanced] ⚠️ SURCHARGE: {e}", flush=True, extra={"module": "zeroia"})
+        ark_logger.info(
+            f"[ZeroIA Enhanced] ⚠️ SURCHARGE: {e}", flush=True, extra={"module": "zeroia"}
+        )
 
         # Graceful degradation
         time.sleep(30)

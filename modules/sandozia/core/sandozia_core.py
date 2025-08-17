@@ -33,7 +33,7 @@ from core.ark_logger import ark_logger
 # Imports Arkalia existants (functions disponibles)
 from ...reflexia.core import get_metrics as reflexia_get_metrics
 from ...reflexia.core import launch_reflexia_check
-from ...zeroia.reason_loop import load_context, load_reflexia_state
+from ...zeroia.reason_loop_enhanced import load_context, load_reflexia_state
 
 logger = logging.getLogger(__name__)
 

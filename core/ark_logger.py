@@ -102,9 +102,6 @@ Logger principal pour Arkalia-LUNA
 """
 
 import logging
-import sys
-from pathlib import Path
-from typing import Optional
 
 
 # Configuration du logger principal
