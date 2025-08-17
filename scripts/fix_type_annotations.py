@@ -4,11 +4,12 @@
 Corrige les erreurs de typage les plus communes dans le projet
 """
 
-from core.ark_logger import ark_logger
 import re
 import subprocess
 from pathlib import Path
 from typing import Any, Optional
+
+from core.ark_logger import ark_logger
 
 
 def add_return_type_annotations(content: str) -> str:
@@ -105,7 +106,9 @@ def process_file(file_path: Path) -> bool:
 
 def main() -> None:
     """Fonction principale"""
-    ark_logger.info("🔧 Début de la correction des annotations de type...", extra={"module": "scripts"})
+    ark_logger.info(
+        "🔧 Début de la correction des annotations de type...", extra={"module": "scripts"}
+    )
 
     # Fichiers à traiter en priorité
     priority_files = [

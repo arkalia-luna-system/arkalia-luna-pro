@@ -4,11 +4,12 @@ Script pour corriger automatiquement les annotations de type manquantes dans les
 Ajoute -> None sur toutes les fonctions de test qui n'ont pas d'annotation de retour.
 """
 
-from core.ark_logger import ark_logger
 import os
 import re
 import sys
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 
 def fix_file_annotations(file_path: str) -> int:
@@ -51,7 +52,9 @@ def fix_file_annotations(file_path: str) -> int:
     if fixed_count > 0:
         with open(file_path, "w", encoding="utf-8") as f:
             f.write("\n".join(new_lines))
-        ark_logger.info(f"✅ {file_path}: {fixed_count} annotations ajoutées", extra={"module": "scripts"})
+        ark_logger.info(
+            f"✅ {file_path}: {fixed_count} annotations ajoutées", extra={"module": "scripts"}
+        )
 
     return fixed_count
 
@@ -75,12 +78,16 @@ def main():
                         fixed = fix_file_annotations(file_path)
                         total_fixed += fixed
                     except Exception as e:
-                        ark_logger.info(f"❌ Erreur sur {file_path}: {e}", extra={"module": "scripts"})
+                        ark_logger.info(
+                            f"❌ Erreur sur {file_path}: {e}", extra={"module": "scripts"}
+                        )
 
     ark_logger.info(f"\n🎯 Total: {total_fixed} annotations ajoutées", extra={"module": "scripts"})
 
     if total_fixed > 0:
-        ark_logger.info("\n🔄 Relance Mypy pour vérifier les corrections...", extra={"module": "scripts"})
+        ark_logger.info(
+            "\n🔄 Relance Mypy pour vérifier les corrections...", extra={"module": "scripts"}
+        )
         os.system("mypy . --install-types --non-interactive | head -20")
 
 

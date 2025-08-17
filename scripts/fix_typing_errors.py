@@ -4,12 +4,13 @@
 Corrige UP035 (typing.Dict -> dict, typing.List -> list, etc.)
 """
 
-from core.ark_logger import ark_logger
 import os
 import re
 import subprocess
 from pathlib import Path
 from typing import Any
+
+from core.ark_logger import ark_logger
 
 # Patterns de remplacement
 REPLACEMENTS = {
@@ -55,7 +56,9 @@ def fix_typing_errors(file_path: Path) -> bool:
 
 def main():
     """Fonction principale"""
-    ark_logger.warning("🔧 Correction automatique des erreurs de typing deprecated...", extra={"module": "scripts"})
+    ark_logger.warning(
+        "🔧 Correction automatique des erreurs de typing deprecated...", extra={"module": "scripts"}
+    )
 
     # Trouver tous les fichiers Python
     python_files = []
@@ -79,7 +82,9 @@ def main():
             fixed_count += 1
             ark_logger.info(f"✅ Corrigé: {file_path}", extra={"module": "scripts"})
 
-    ark_logger.info(f"\n🎯 Résumé: {fixed_count}/{total_files} fichiers corrigés", extra={"module": "scripts"})
+    ark_logger.info(
+        f"\n🎯 Résumé: {fixed_count}/{total_files} fichiers corrigés", extra={"module": "scripts"}
+    )
 
     # Appliquer Black et isort
     ark_logger.info("\n🎨 Application du formatage...", extra={"module": "scripts"})

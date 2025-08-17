@@ -15,7 +15,6 @@ Version: 2.7.1-enhanced
 Auteur: Arkalia-LUNA Project
 """
 
-from core.ark_logger import ark_logger
 import hashlib
 import json
 import os
@@ -23,6 +22,8 @@ from datetime import datetime
 from typing import Any, Optional
 
 import toml
+
+from core.ark_logger import ark_logger
 
 
 def file_hash(path: str) -> str:

@@ -4,10 +4,11 @@
 Script pour valider tous les mécanismes de protection et résilience
 """
 
-from core.ark_logger import ark_logger
 import asyncio
 import logging
 from typing import Any, Optional
+
+from core.ark_logger import ark_logger
 
 # Configuration logging
 logging.basicConfig(
@@ -27,9 +28,14 @@ class MasterOrchestratorDiagnostic:
     def print_header(self):
         """Affiche l'en-tête du diagnostic"""
         ark_logger.info("=" * 80, extra={"module": "scripts"})
-        ark_logger.info("🔍 ARKALIA MASTER ORCHESTRATOR - DIAGNOSTIC ROBUSTESSE", extra={"module": "scripts"})
+        ark_logger.info(
+            "🔍 ARKALIA MASTER ORCHESTRATOR - DIAGNOSTIC ROBUSTESSE", extra={"module": "scripts"}
+        )
         ark_logger.info("=" * 80, extra={"module": "scripts"})
-        ark_logger.info("⚠️  Élément            | ❓ Question critique                     | ✅ Résultat", extra={"module": "scripts"})
+        ark_logger.info(
+            "⚠️  Élément            | ❓ Question critique                     | ✅ Résultat",
+            extra={"module": "scripts"},
+        )
         ark_logger.info("-" * 80, extra={"module": "scripts"})
 
     async def test_isolation_memoire(self) -> dict:
@@ -37,7 +43,8 @@ class MasterOrchestratorDiagnostic:
         ark_logger.info(
             "🧠 Isolation mémoire    | Un bug zeroia crash sandozia ?          | ",
             end="",
-        , extra={"module": "scripts"})
+            extra={"module": "scripts"},
+        )
 
         result = {"status": "PASS", "details": [], "protection_level": "EXCELLENT"}
 
@@ -73,7 +80,8 @@ class MasterOrchestratorDiagnostic:
         ark_logger.info(
             "🔄 Redémarrage partiel  | Relancer module sans conteneur ?        | ",
             end="",
-        , extra={"module": "scripts"})
+            extra={"module": "scripts"},
+        )
 
         result = {"status": "PASS", "details": [], "protection_level": "BON"}
 
@@ -104,7 +112,8 @@ class MasterOrchestratorDiagnostic:
         ark_logger.info(
             "📊 Logs et monitoring   | Prometheus/Grafana lisent métriques ?   | ",
             end="",
-        , extra={"module": "scripts"})
+            extra={"module": "scripts"},
+        )
 
         result = {"status": "PARTIAL", "details": [], "protection_level": "MOYEN"}
 
@@ -132,7 +141,11 @@ class MasterOrchestratorDiagnostic:
 
     async def test_crash_recovery(self) -> dict:
         """Test 4: Crash recovery du conteneur"""
-        ark_logger.info("🛡️ Crash recovery      | ZeroIA plante → conteneur survit ?      | ", end="", extra={"module": "scripts"})
+        ark_logger.info(
+            "🛡️ Crash recovery      | ZeroIA plante → conteneur survit ?      | ",
+            end="",
+            extra={"module": "scripts"},
+        )
 
         result = {"status": "PASS", "details": [], "protection_level": "EXCELLENT"}
 
@@ -163,7 +176,8 @@ class MasterOrchestratorDiagnostic:
         ark_logger.info(
             "🧪 Tests unitaires     | Tous les tests OK mode intégré ?        | ",
             end="",
-        , extra={"module": "scripts"})
+            extra={"module": "scripts"},
+        )
 
         result = {"status": "PASS", "details": [], "protection_level": "EXCELLENT"}
 
@@ -241,11 +255,19 @@ class MasterOrchestratorDiagnostic:
         ark_logger.error(f"❌ Tests ÉCHOUÉS  : {failed}", extra={"module": "scripts"})
 
         if passed >= 3:
-            ark_logger.info("\n🎉 MASTER ORCHESTRATOR : ROBUSTE ET PRÊT POUR LA PRODUCTION!", extra={"module": "scripts"})
+            ark_logger.info(
+                "\n🎉 MASTER ORCHESTRATOR : ROBUSTE ET PRÊT POUR LA PRODUCTION!",
+                extra={"module": "scripts"},
+            )
         elif passed >= 2:
-            ark_logger.info("\n⚠️ MASTER ORCHESTRATOR : BON MAIS AMÉLIORATIONS RECOMMANDÉES", extra={"module": "scripts"})
+            ark_logger.info(
+                "\n⚠️ MASTER ORCHESTRATOR : BON MAIS AMÉLIORATIONS RECOMMANDÉES",
+                extra={"module": "scripts"},
+            )
         else:
-            ark_logger.info("\n❌ MASTER ORCHESTRATOR : NÉCESSITE DES CORRECTIONS", extra={"module": "scripts"})
+            ark_logger.info(
+                "\n❌ MASTER ORCHESTRATOR : NÉCESSITE DES CORRECTIONS", extra={"module": "scripts"}
+            )
 
         ark_logger.info("=" * 80, extra={"module": "scripts"})
 

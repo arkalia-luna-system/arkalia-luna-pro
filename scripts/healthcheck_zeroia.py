@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # ✅ Healthcheck IA ZeroIA — Vérification de l'état cognitif
 
-from core.ark_logger import ark_logger
 import datetime
 import os
 import sys
 
 import toml
+
+from core.ark_logger import ark_logger
 
 STATE_PATH = "modules/zeroia/state/zeroia_state.toml"
 REQUIRED_FIELDS = ["last_decision", "confidence_score", "justification", "timestamp"]

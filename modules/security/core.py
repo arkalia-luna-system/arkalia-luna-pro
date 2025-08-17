@@ -7,7 +7,6 @@
 📅 Created: 2025-06-29
 """
 
-from core.ark_logger import ark_logger
 import asyncio
 import logging
 from dataclasses import dataclass
@@ -16,6 +15,8 @@ from typing import Any, Optional
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+
+from core.ark_logger import ark_logger
 
 # Configuration du logging
 logger = logging.getLogger("arkalia.security.core")

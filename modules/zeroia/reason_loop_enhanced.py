@@ -640,19 +640,22 @@ def reason_loop_enhanced_with_recovery(
         error_recovery_status = "✅" if decision_error is None else "🔄"
         ark_logger.error(
             f"{error_recovery_status} ZeroIA decided: {decision} "
-            f"(confidence={score}, health={system_health:.2f}, extra={"module": "zeroia"})",
+            f"(confidence={score}, health={system_health:.2f})",
             flush=True,
+            extra={"module": "zeroia"}
         )
         ark_logger.info(
-            f"[ZeroIA] CPU usage: {cpu}% → decision={decision} (score={score}, extra={"module": "zeroia"})",
+            f"[ZeroIA] CPU usage: {cpu}% → decision={decision} (score={score})",
             flush=True,
+            extra={"module": "zeroia"}
         )
 
         if decision_error:
-            ark_logger.error(
-                f"[ZeroIA] Error Recovery triggered for: {type(decision_error, extra={"module": "zeroia"}).__name__}",
-                flush=True,
-            )
+                    ark_logger.error(
+            f"[ZeroIA] Error Recovery triggered for: {type(decision_error).__name__}",
+            flush=True,
+            extra={"module": "zeroia"}
+        )
 
         return decision, score
 

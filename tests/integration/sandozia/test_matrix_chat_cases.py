@@ -8,13 +8,6 @@ from fastapi.testclient import TestClient
 # Ajout dynamique du chemin du projet pour garantir l'import correct
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
 
-<<<<<<<< HEAD:tests/matrix/test_matrix_chat_cases.py
-from core.ark_logger import ark_logger
-from modules.assistantia.core import app
-========
-# Import après modification du path
-from modules.assistantia.core import app  # noqa: E402
->>>>>>>> dev-migration:tests/integration/sandozia/test_matrix_chat_cases.py
 
 client = TestClient(app)
 

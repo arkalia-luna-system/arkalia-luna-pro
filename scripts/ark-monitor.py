@@ -1,7 +1,6 @@
 # 📊 Arkalia IA Monitor
 # Affiche un état synthétique de la cognition ZeroIA
 
-from core.ark_logger import ark_logger
 import json
 import subprocess  # nosec
 import sys
@@ -9,6 +8,8 @@ from pathlib import Path
 
 import requests
 import toml
+
+from core.ark_logger import ark_logger
 
 STATE_PATH = Path("modules/zeroia/state/zeroia_state.toml")
 DASHBOARD_PATH = Path("state/zeroia_dashboard.json")
@@ -25,10 +26,14 @@ def check_docker_status() -> None:
             shell=False,
         )  # nosec
         if result.stdout:
-            ark_logger.info("\n🐳 Docker — Conteneurs en cours d'exécution", extra={"module": "scripts"})
+            ark_logger.info(
+                "\n🐳 Docker — Conteneurs en cours d'exécution", extra={"module": "scripts"}
+            )
             ark_logger.info(result.stdout, extra={"module": "scripts"})
         else:
-            ark_logger.info("\n🐳 Docker — Aucun conteneur en cours d'exécution", extra={"module": "scripts"})
+            ark_logger.info(
+                "\n🐳 Docker — Aucun conteneur en cours d'exécution", extra={"module": "scripts"}
+            )
     except subprocess.CalledProcessError as e:
         ark_logger.info(f"💥 Erreur Docker : {e}", extra={"module": "scripts"})
 
@@ -49,7 +54,9 @@ def display_recent_errors() -> None:
     if LOG_FILE.exists():
         with LOG_FILE.open("r", encoding="utf-8") as f:
             lines = f.readlines()
-            ark_logger.info("".join(lines[-5:], extra={"module": "scripts"}))  # Affiche les 5 dernières lignes du fichier de log
+            ark_logger.info(
+                "".join(lines[-5:], extra={"module": "scripts"})
+            )  # Affiche les 5 dernières lignes du fichier de log
     else:
         ark_logger.info("Aucune erreur connue.", extra={"module": "scripts"})
 

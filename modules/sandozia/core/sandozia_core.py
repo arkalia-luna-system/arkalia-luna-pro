@@ -12,7 +12,6 @@ Coordonne l'intelligence collaborative entre les modules IA :
 - Monitoring temps réel
 """
 
-from core.ark_logger import ark_logger
 import asyncio
 import json
 import logging
@@ -28,6 +27,8 @@ import toml
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Gauge, generate_latest
+
+from core.ark_logger import ark_logger
 
 # Imports Arkalia existants (functions disponibles)
 from ...reflexia.core import get_metrics as reflexia_get_metrics

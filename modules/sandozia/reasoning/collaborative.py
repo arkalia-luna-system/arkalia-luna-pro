@@ -12,12 +12,13 @@ Coordonne le raisonnement entre modules IA :
 - Apprentissage collaboratif
 """
 
-from core.ark_logger import ark_logger
 import json
 import logging
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Optional
+
+from core.ark_logger import ark_logger
 
 logger = logging.getLogger(__name__)
 

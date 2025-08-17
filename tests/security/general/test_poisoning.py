@@ -7,7 +7,6 @@ Détecte les tentatives d'empoisonnement du modèle décisionnel de ZeroIA
 via injection de données malveillantes dans les inputs contextuels.
 """
 
-from core.ark_logger import ark_logger
 import tempfile
 import unittest
 from datetime import datetime, timedelta
@@ -15,6 +14,7 @@ from pathlib import Path
 
 import toml
 
+from core.ark_logger import ark_logger
 from modules.zeroia.reason_loop import decide, reason_loop
 
 

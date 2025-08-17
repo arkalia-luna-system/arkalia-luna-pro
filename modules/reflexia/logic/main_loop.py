@@ -1,7 +1,7 @@
-from core.ark_logger import ark_logger
 import time
 from typing import Optional
 
+from core.ark_logger import ark_logger
 from modules.reflexia.logic.decision import monitor_status
 from modules.reflexia.logic.metrics import read_metrics
 from modules.reflexia.logic.snapshot import save_snapshot
@@ -32,5 +32,7 @@ def reflexia_loop(max_iterations: int | None = None, sleep_seconds: float = 5.0)
         iteration += 1
 
         if max_iterations is not None and iteration >= max_iterations:
-            ark_logger.info("🛑 ReflexIA Loop finished (max iterations reached)", extra={"module": "logic"})
+            ark_logger.info(
+                "🛑 ReflexIA Loop finished (max iterations reached)", extra={"module": "logic"}
+            )
             break

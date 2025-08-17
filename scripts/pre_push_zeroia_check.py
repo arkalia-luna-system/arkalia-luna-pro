@@ -33,7 +33,9 @@ def check_pat_exposure() -> None:
     for file in ENV_FILES:
         content = file.read_text(errors="ignore")
         if pat_regex.search(content):
-            ark_logger.info(f"⚠️ Token PAT détecté dans : {file}", extra={"arkalia_module": "scripts"})
+            ark_logger.info(
+                f"⚠️ Token PAT détecté dans : {file}", extra={"arkalia_module": "scripts"}
+            )
             return False
     return True
 

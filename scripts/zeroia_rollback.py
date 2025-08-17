@@ -4,7 +4,6 @@ Script de rollback pour ZeroIA.
 Permet de restaurer un état précédent en cas de problème.
 """
 
-from core.ark_logger import ark_logger
 import argparse
 import logging
 import os
@@ -12,6 +11,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+
+from core.ark_logger import ark_logger
 
 # Ajouter le répertoire parent au PYTHONPATH pour les imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -32,36 +33,6 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("zeroia_rollback")
-
-
-<<<<<<< HEAD
-def log(msg: str, silent: bool = False):
-    """Log message to rollback.log and print if not silent."""
-    try:
-        with LOG_FILE.open("a", encoding="utf-8") as f:
-            f.write(f"[rollback] {msg}\n")
-    except Exception as e:
-        ark_logger.info(f"[rollback] Erreur : {e}", extra={"module": "scripts"})
-    if not silent:
-        ark_logger.info(msg, extra={"module": "scripts"})
-=======
-def backup_current_state() -> Path:
-    """Crée une sauvegarde de l'état actuel."""
-    current_state = read_state_safe("data/zeroia/state.toml")
-    if not current_state:
-        raise ValueError("Impossible de lire l'état actuel")
-
-    backup_dir = Path("data/backups")
-    backup_dir.mkdir(parents=True, exist_ok=True)
-
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    backup_path = backup_dir / f"zeroia_state_{timestamp}.toml"
-
-    with open(backup_path, "w", encoding="utf-8") as f:
-        toml.dump(current_state, f)
-
-    return backup_path
->>>>>>> dev-migration
 
 
 def parse_args() -> argparse.Namespace:

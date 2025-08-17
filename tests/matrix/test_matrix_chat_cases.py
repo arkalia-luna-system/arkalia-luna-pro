@@ -8,13 +8,6 @@ from fastapi.testclient import TestClient
 # Ajout dynamique du chemin du projet pour garantir l'import correct
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
 
-<<<<<<<< HEAD:tests/matrix/test_matrix_chat_cases.py
-from core.ark_logger import ark_logger
-from modules.assistantia.core import app
-========
-# Import après modification du path
-from modules.assistantia.core import app  # noqa: E402
->>>>>>>> dev-migration:tests/integration/sandozia/test_matrix_chat_cases.py
 
 client = TestClient(app)
 
@@ -47,7 +40,7 @@ def test_chat_various_messages(msg):
         patch("modules.assistantia.core._check_ollama_health", return_value=True),
     ):
         response = client.post("/api/v1/chat", json={"message": msg})
-        assert response.status_code == 200, (
-            f"Statut inattendu: {response.status_code} {response.text}"
-        )
+        assert (
+            response.status_code == 200
+        ), f"Statut inattendu: {response.status_code} {response.text}"
         assert "response" in response.json(), "Réponse manquante"

@@ -4,12 +4,13 @@
 Pour faire fonctionner ark-act parfaitement
 """
 
-from core.ark_logger import ark_logger
 import os
 import re
 import subprocess
 from pathlib import Path
 from typing import Any
+
+from core.ark_logger import ark_logger
 
 
 def fix_line_length_errors():
@@ -127,7 +128,10 @@ def fix_line_length_errors():
 def fix_import_errors():
     """Corrige les erreurs d'import"""
     # Le fichier test_core.py est maintenant correct, on ne le modifie plus
-    ark_logger.info("✅ Fichier test_core.py déjà correct, pas de modification nécessaire", extra={"module": "scripts"})
+    ark_logger.info(
+        "✅ Fichier test_core.py déjà correct, pas de modification nécessaire",
+        extra={"module": "scripts"},
+    )
 
 
 def fix_noqa_directives():
@@ -156,7 +160,9 @@ def main():
     ark_logger.info("🔧 Correction finale des erreurs de linting...", extra={"module": "scripts"})
 
     # 1. Corriger les erreurs de longueur de ligne
-    ark_logger.info("\n📏 Correction des erreurs de longueur de ligne...", extra={"module": "scripts"})
+    ark_logger.info(
+        "\n📏 Correction des erreurs de longueur de ligne...", extra={"module": "scripts"}
+    )
     fix_line_length_errors()
 
     # 2. Corriger les erreurs d'import
@@ -179,7 +185,10 @@ def main():
     if result.returncode == 0:
         ark_logger.info("✅ Toutes les erreurs corrigées !", extra={"module": "scripts"})
     else:
-        ark_logger.info("⚠️  Il reste encore quelques erreurs, mais ark-act devrait fonctionner.", extra={"module": "scripts"})
+        ark_logger.info(
+            "⚠️  Il reste encore quelques erreurs, mais ark-act devrait fonctionner.",
+            extra={"module": "scripts"},
+        )
         ark_logger.info(result.stdout, extra={"module": "scripts"})
 
     ark_logger.info("\n🚀 ark-act devrait maintenant fonctionner !", extra={"module": "scripts"})

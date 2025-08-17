@@ -12,17 +12,15 @@ Collecte et traite les métriques d'intelligence croisée :
 - Export Grafana
 """
 
-<<<<<<< HEAD
-from core.ark_logger import ark_logger
-=======
 import json
->>>>>>> dev-migration
 import logging
 import statistics
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any, Optional
+
+from core.ark_logger import ark_logger
 
 logger = logging.getLogger(__name__)
 
@@ -279,16 +277,27 @@ def demo_metrics():
         "reflexia_confidence_score", "zeroia_confidence_score"
     )
     if correlation:
-        ark_logger.info(f"Corrélation confiance Reflexia-ZeroIA: {correlation:.3f}", extra={"module": "utils"})
+        ark_logger.info(
+            f"Corrélation confiance Reflexia-ZeroIA: {correlation:.3f}", extra={"module": "utils"}
+        )
 
     # Santé cross-modules
     health = metrics.get_cross_module_health()
-    ark_logger.info(f"Cohérence inter-modules: {health['cross_module_coherence']:.3f}", extra={"module": "utils"})
+    ark_logger.info(
+        f"Cohérence inter-modules: {health['cross_module_coherence']:.3f}",
+        extra={"module": "utils"},
+    )
 
     # Export Prometheus
     prometheus_data = metrics.export_prometheus_format()
-    ark_logger.info(f"\n📤 Prometheus export ({len(prometheus_data.split(, extra={"module": "utils"}))} metrics):")
-    ark_logger.info(prometheus_data[:200] + "..." if len(prometheus_data, extra={"module": "utils"}) > 200 else prometheus_data)
+    ark_logger.info(
+        f"\n📤 Prometheus export ({len(prometheus_data.split())} metrics):",
+        extra={"module": "utils"},
+    )
+    ark_logger.info(
+        prometheus_data[:200] + "..." if len(prometheus_data) > 200 else prometheus_data,
+        extra={"module": "utils"},
+    )
 
 
 if __name__ == "__main__":

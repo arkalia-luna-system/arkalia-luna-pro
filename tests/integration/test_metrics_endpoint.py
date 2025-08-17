@@ -1,7 +1,6 @@
 # 🧪 tests/integration/test_metrics_endpoint.py
 # Tests d'intégration pour le système de métriques Arkalia-LUNA
 
-from core.ark_logger import ark_logger
 import json
 import time
 from pathlib import Path
@@ -10,6 +9,8 @@ from unittest.mock import patch
 import pytest
 import requests
 import toml
+
+from core.ark_logger import ark_logger
 
 
 @pytest.fixture
@@ -278,7 +279,9 @@ class TestMetricsPerformance:
         assert total_time < 1.0, f"Collecte trop lente: {total_time:.2f}s"
 
         avg_time_ms = (total_time / 10) * 1000
-        ark_logger.info(f"⚡ Temps moyen par collecte: {avg_time_ms:.1f}ms", extra={"module": "integration"})
+        ark_logger.info(
+            f"⚡ Temps moyen par collecte: {avg_time_ms:.1f}ms", extra={"module": "integration"}
+        )
 
     def test_prometheus_format_speed(self):
         """📝 Test vitesse de formatage Prometheus"""
@@ -300,7 +303,9 @@ class TestMetricsPerformance:
         assert total_time < 0.5, f"Formatage trop lent: {total_time:.2f}s"
 
         avg_time_ms = (total_time / 50) * 1000
-        ark_logger.info(f"📝 Temps moyen par formatage: {avg_time_ms:.1f}ms", extra={"module": "integration"})
+        ark_logger.info(
+            f"📝 Temps moyen par formatage: {avg_time_ms:.1f}ms", extra={"module": "integration"}
+        )
 
 
 # === TESTS COMPLÉMENTAIRES ===

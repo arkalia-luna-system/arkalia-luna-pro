@@ -1,11 +1,12 @@
 # scripts/generate_zeroia_status.py
 
-from core.ark_logger import ark_logger
 import datetime
 import os
 import subprocess  # nosec
 import sys
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 OUTPUT_FILE = "docs/logs/zeroia_status.md"
 
@@ -73,7 +74,9 @@ def main() -> None:
     decisions = parse_decisions(logs)
 
     if not logs:
-        ark_logger.info("❌ Impossible de récupérer les logs de ZeroIA.", extra={"module": "scripts"})
+        ark_logger.info(
+            "❌ Impossible de récupérer les logs de ZeroIA.", extra={"module": "scripts"}
+        )
         sys.exit(1)
 
     write_markdown(status, decisions)

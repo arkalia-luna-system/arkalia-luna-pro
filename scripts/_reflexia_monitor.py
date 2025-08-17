@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # 🧠 Monitor ReflexIA State — Arkalia LUNA
 
-from core.ark_logger import ark_logger
 import json
 from pathlib import Path
 
 import requests
+
+from core.ark_logger import ark_logger
 
 STATE_FILE = Path("modules/reflexia/state/reflexia_state.json")
 GRAFANA_API_URL = "http://your-grafana-instance/api/dashboards/db"

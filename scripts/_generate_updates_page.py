@@ -1,8 +1,9 @@
 # scripts/generate_updates_page.py
 
-from core.ark_logger import ark_logger
 import subprocess  # nosec
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 # Supprimer les fichiers ._* (pollution macOS)
 for file in Path("docs/releases").glob("._*"):
@@ -32,19 +33,25 @@ def main(**kwargs) -> None:
 
         new_content = "# 🔄 Dernières mises à jour\n" + result.stdout.strip() + "\n"
         if output_file.exists() and output_file.read_text(encoding="utf-8") == new_content:
-            ark_logger.info("✅ Aucun changement détecté, pas d'écriture nécessaire.", extra={"module": "scripts"})
+            ark_logger.info(
+                "✅ Aucun changement détecté, pas d'écriture nécessaire.",
+                extra={"module": "scripts"},
+            )
             return
 
         with output_file.open("w", encoding="utf-8") as f:
             f.write(new_content)
 
         ark_logger.info(
-            f"✅ Updates page générée avec {len(result.stdout.strip(, extra={"module": "scripts"}).splitlines())} "
-            "commits récents."
+            f"✅ Updates page générée avec {len(result.stdout.strip().splitlines())} "
+            "commits récents.",
+            extra={"module": "scripts"},
         )
 
         # Supprimer les fichiers macOS invisibles s'ils existent
         for file in output_file.parent.glob("._*"):
             file.unlink()
     except subprocess.CalledProcessError as e:
-        ark_logger.info(f"Erreur lors de l'exécution de la commande git: {e}", extra={"module": "scripts"})
+        ark_logger.info(
+            f"Erreur lors de l'exécution de la commande git: {e}", extra={"module": "scripts"}
+        )

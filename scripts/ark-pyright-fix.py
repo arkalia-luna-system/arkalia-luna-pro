@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-from core.ark_logger import ark_logger
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 ROOT = Path(__file__).resolve().parent.parent
 MODULES = ROOT / "modules"
@@ -31,7 +32,9 @@ def main() -> None:
     ark_logger.info("🔧 Patch Pyright / Cursor en cours…", extra={"module": "scripts"})
     ensure_init_py()
     ensure_env_py_path()
-    ark_logger.info("✅ Terminé. Recharge Cursor (⇧⌘P > Reload Window)", extra={"module": "scripts"})
+    ark_logger.info(
+        "✅ Terminé. Recharge Cursor (⇧⌘P > Reload Window)", extra={"module": "scripts"}
+    )
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
-from core.ark_logger import ark_logger
 import shutil
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 STATE_PATH = Path("modules/zeroia/state/zeroia_state.toml")
 BACKUP_PATH = Path("modules/zeroia/state/zeroia_state_backup.toml")

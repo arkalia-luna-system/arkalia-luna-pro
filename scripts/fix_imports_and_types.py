@@ -177,15 +177,6 @@ def main() -> None:
 
     # Formatage final
     try:
-<<<<<<< HEAD
-        subprocess.run(["isort", "."], check=True)
-        subprocess.run(["black", "."], check=True)
-        ark_logger.info("✅ Formatage final appliqué", extra={"module": "scripts"})
-=======
-        subprocess.run(["/usr/local/bin/isort", "."], check=True)  # nosec B607
-        subprocess.run(["/usr/local/bin/black", "."], check=True)  # nosec B607
-        print("✅ Formatage final appliqué")
->>>>>>> dev-migration
     except subprocess.CalledProcessError as e:
         ark_logger.info(f"❌ Erreur formatage: {e}", extra={"module": "scripts"})
 

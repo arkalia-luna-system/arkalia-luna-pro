@@ -1,6 +1,6 @@
-from core.ark_logger import ark_logger
 import toml
 
+from core.ark_logger import ark_logger
 from modules.utils_enhanced import load_toml_cached
 
 

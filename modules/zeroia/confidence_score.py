@@ -10,7 +10,6 @@ Fonctionnalités:
 - Détection de patterns et apprentissage
 """
 
-from core.ark_logger import ark_logger
 import json
 import math
 import time
@@ -19,6 +18,8 @@ from pathlib import Path
 from typing import Any, Optional
 
 import toml
+
+from core.ark_logger import ark_logger
 
 
 class ConfidenceScorer:
@@ -57,7 +58,9 @@ class ConfidenceScorer:
                 with open(self.state_file) as f:
                     return toml.load(f)
             except Exception as e:
-                ark_logger.info(f"⚠️ [CONFIDENCE] Erreur chargement mémoire: {e}", extra={"module": "zeroia"})
+                ark_logger.info(
+                    f"⚠️ [CONFIDENCE] Erreur chargement mémoire: {e}", extra={"module": "zeroia"}
+                )
 
         return {
             "decision_patterns": {},
@@ -77,7 +80,9 @@ class ConfidenceScorer:
             with open(self.state_file, "w") as f:
                 toml.dump(self.memory, f)
         except Exception as e:
-            ark_logger.info(f"❌ [CONFIDENCE] Erreur sauvegarde mémoire: {e}", extra={"module": "zeroia"})
+            ark_logger.info(
+                f"❌ [CONFIDENCE] Erreur sauvegarde mémoire: {e}", extra={"module": "zeroia"}
+            )
 
     def calculate_confidence(
         self, decision: str, context: dict, system_metrics: dict | None = None
@@ -388,7 +393,9 @@ class ConfidenceScorer:
             self._save_memory()
 
         except Exception as e:
-            ark_logger.info(f"❌ [CONFIDENCE] Erreur mise à jour mémoire: {e}", extra={"module": "zeroia"})
+            ark_logger.info(
+                f"❌ [CONFIDENCE] Erreur mise à jour mémoire: {e}", extra={"module": "zeroia"}
+            )
 
     def _adaptive_weight_learning(self, final_score: float, factor_scores: dict):
         """Apprentissage adaptatif des poids basé sur la performance"""
@@ -507,7 +514,9 @@ def main():
 
     ark_logger.info(f"\n📊 Score de confiance: {confidence:.3f}", extra={"module": "zeroia"})
     ark_logger.info(f"🎯 Niveau: {explanation['confidence_level']}", extra={"module": "zeroia"})
-    ark_logger.info(f"⏱️ Temps de traitement: {explanation['processing_time_ms']}ms", extra={"module": "zeroia"})
+    ark_logger.info(
+        f"⏱️ Temps de traitement: {explanation['processing_time_ms']}ms", extra={"module": "zeroia"}
+    )
 
     ark_logger.info("\n🔍 Détail des facteurs:", extra={"module": "zeroia"})
     for factor, score in explanation["factor_scores"].items():

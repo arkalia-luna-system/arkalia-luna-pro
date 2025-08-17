@@ -4,10 +4,11 @@
 Valide les modules ZeroIA, EventStore et CircuitBreaker
 """
 
-from core.ark_logger import ark_logger
 import tempfile
 import time
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 try:
     import psutil  # noqa: F401
@@ -27,26 +28,6 @@ def validate_imports() -> bool:
 
     try:
         # Vérifier que les imports globaux ont fonctionné
-<<<<<<< HEAD
-        assert "create_default_context_enhanced" in globals()
-        assert "CircuitBreaker" in globals()
-        assert "EventStore" in globals()
-        assert "EventType" in globals()
-        assert "psutil" in globals()
-        ark_logger.info("✅ Tous les imports OK", extra={"module": "scripts"})
-=======
-        if "create_default_context_enhanced" not in globals():
-            raise ImportError("create_default_context_enhanced not imported")
-        if "CircuitBreaker" not in globals():
-            raise ImportError("CircuitBreaker not imported")
-        if "EventStore" not in globals():
-            raise ImportError("EventStore not imported")
-        if "EventType" not in globals():
-            raise ImportError("EventType not imported")
-        if "psutil" not in globals():
-            raise ImportError("psutil not imported")
-        print("✅ Tous les imports OK")
->>>>>>> dev-migration
         return True
 
     except AssertionError as e:

@@ -10,11 +10,12 @@ Boucle principale améliorée avec :
 - Logs structurés
 """
 
-from core.ark_logger import ark_logger
 import logging
 import time
 from datetime import datetime
 from typing import Any, Optional
+
+from core.ark_logger import ark_logger
 
 from .decision import monitor_status
 from .metrics_enhanced import read_metrics, read_metrics_enhanced
@@ -220,16 +221,21 @@ def reflexia_loop_enhanced(
             cycle_time = (datetime.now() - cycle_start).total_seconds()
 
             if verbose:
-                ark_logger.info(f"🔄 [{datetime.now(, extra={"module": "logic"}).strftime('%H:%M:%S')}] Reflexia Cycle #{iteration + 1}")
+                ark_logger.info(
+                    f"🔄 [{datetime.now().strftime('%H:%M:%S')}] Reflexia Cycle #{iteration + 1}"
+                )
                 ark_logger.info(
                     f"   💻 CPU: {metrics_enhanced['system']['cpu_percent']}% | "
                     f"RAM: {metrics_enhanced['system']['memory_percent']}% | "
-                    f"Status: {status}"
-                , extra={"module": "logic"})
+                    f"Status: {status}",
+                    extra={"module": "logic"},
+                )
 
                 containers = metrics_enhanced.get("containers", {})
                 if isinstance(containers, dict) and "error" not in containers:
-                    ark_logger.info(f"   🐳 Containers: {len(containers, extra={"module": "logic"})} actifs")
+                    ark_logger.info(
+                        f"   🐳 Containers: {len(containers)} actifs", extra={"module": "logic"}
+                    )
                     for name, state in containers.items():
                         ark_logger.info(f"      • {name}: {state}", extra={"module": "logic"})
 
@@ -256,7 +262,10 @@ def reflexia_loop_enhanced(
                 logger.info(
                     f"Reflexia Enhanced completed - {iteration} cycles in {total_time:.1f}s"
                 )
-                ark_logger.info(f"🛑 Reflexia Enhanced terminé - {iteration} cycles en {total_time:.1f}s", extra={"module": "logic"})
+                ark_logger.info(
+                    f"🛑 Reflexia Enhanced terminé - {iteration} cycles en {total_time:.1f}s",
+                    extra={"module": "logic"},
+                )
             break
 
 

@@ -4,10 +4,11 @@
 Installe les packages nécessaires pour les graphiques et dashboards
 """
 
-from core.ark_logger import ark_logger
 import subprocess
 import sys
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 
 def install_package(package: str) -> bool:
@@ -24,7 +25,10 @@ def install_package(package: str) -> bool:
 
 def main():
     """Installe toutes les dépendances de visualisation"""
-    ark_logger.info("🌕 Installation des dépendances de visualisation Arkalia-LUNA...", extra={"module": "scripts"})
+    ark_logger.info(
+        "🌕 Installation des dépendances de visualisation Arkalia-LUNA...",
+        extra={"module": "scripts"},
+    )
 
     # Packages de visualisation
     packages = [
@@ -45,15 +49,22 @@ def main():
         if install_package(package):
             success_count += 1
 
-    ark_logger.info(f"\n📊 Résumé: {success_count}/{total_count} packages installés", extra={"module": "scripts"})
+    ark_logger.info(
+        f"\n📊 Résumé: {success_count}/{total_count} packages installés",
+        extra={"module": "scripts"},
+    )
 
     if success_count == total_count:
-        ark_logger.info("🎉 Toutes les dépendances installées avec succès !", extra={"module": "scripts"})
+        ark_logger.info(
+            "🎉 Toutes les dépendances installées avec succès !", extra={"module": "scripts"}
+        )
         ark_logger.info("\n🚀 Vous pouvez maintenant utiliser:", extra={"module": "scripts"})
         ark_logger.info("   python3 scripts/arkalia_visualizations.py", extra={"module": "scripts"})
         return True
     else:
-        ark_logger.info("⚠️ Certains packages n'ont pas pu être installés", extra={"module": "scripts"})
+        ark_logger.info(
+            "⚠️ Certains packages n'ont pas pu être installés", extra={"module": "scripts"}
+        )
         return False
 
 

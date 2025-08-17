@@ -1,12 +1,13 @@
 # 🌀 tests/chaos/common.py
 # Classes et utilitaires communs pour les tests de chaos
 
-from core.ark_logger import ark_logger
 import random
 import subprocess
 import tempfile
 import time
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 
 class ChaosTestConfig:
@@ -77,7 +78,9 @@ class ChaosTester:
                     original_path.write_bytes(backup_path.read_bytes())
                     backup_path.unlink()
             except Exception as e:
-                ark_logger.info(f"⚠️ Erreur restauration {original_path}: {e}", extra={"module": "chaos"})
+                ark_logger.info(
+                    f"⚠️ Erreur restauration {original_path}: {e}", extra={"module": "chaos"}
+                )
         self.corrupted_files.clear()
 
     def simulate_high_load(self, duration: int = 10):

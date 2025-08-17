@@ -18,7 +18,6 @@ Signale :
 - Incohérences répétitives
 """
 
-from core.ark_logger import ark_logger
 import json
 import logging
 import statistics
@@ -26,6 +25,8 @@ from collections import defaultdict, deque
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any, Optional
+
+from core.ark_logger import ark_logger
 
 logger = logging.getLogger(__name__)
 

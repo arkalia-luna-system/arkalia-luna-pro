@@ -341,11 +341,6 @@ async def demo_complete_workflow():
     ark_logger.info("🔄 Exécution 5 cycles normaux...", extra={"module": "scripts"})
     for i in range(5):
         result = await engine.run_enhanced_cycle()
-<<<<<<< HEAD
-        ark_logger.info(f"   Cycle {i+1}: {result['decision']} (confiance: {result['confidence']:.2f}, extra={"module": "scripts"})")
-=======
-        print(f"   Cycle {i + 1}: {result['decision']} (confiance: {result['confidence']:.2f})")
->>>>>>> dev-migration
 
     ark_logger.info("")
 
@@ -394,11 +389,6 @@ async def integrate_with_zeroia():
         result = await engine.run_enhanced_cycle(context)
 
         if result["cognitive_reactions"]:
-<<<<<<< HEAD
-            ark_logger.info(f"🔥 Réactions automatiques cycle {i+1}: {result['cognitive_reactions']}", extra={"module": "scripts"})
-=======
-            print(f"🔥 Réactions automatiques cycle {i + 1}: {result['cognitive_reactions']}")
->>>>>>> dev-migration
 
     ark_logger.info("✅ Intégration ZeroIA testée avec succès", extra={"module": "scripts"})
 

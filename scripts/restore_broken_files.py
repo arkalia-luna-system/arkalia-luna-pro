@@ -4,10 +4,11 @@
 Corrige les erreurs de syntaxe créées par les commentaires noqa mal placés
 """
 
-from core.ark_logger import ark_logger
 import re
 import subprocess
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 
 def fix_broken_imports(file_path: Path) -> bool:
@@ -85,7 +86,9 @@ def fix_variables_with_underscores(file_path: Path) -> bool:
 
 def main() -> None:
     """Fonction principale de restauration"""
-    ark_logger.info("🔧 Début de la restauration des fichiers cassés...", extra={"module": "scripts"})
+    ark_logger.info(
+        "🔧 Début de la restauration des fichiers cassés...", extra={"module": "scripts"}
+    )
 
     files_to_fix = [
         "modules/zeroia/__init__.py",

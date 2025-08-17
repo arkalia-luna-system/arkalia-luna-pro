@@ -4,10 +4,11 @@
 Crée un dashboard unifié avec toutes les métriques du système
 """
 
-from core.ark_logger import ark_logger
 import json
 from pathlib import Path
 from typing import Any
+
+from core.ark_logger import ark_logger
 
 
 def create_arkalia_overview_dashboard() -> dict[str, Any]:
@@ -393,7 +394,9 @@ def create_arkalia_overview_dashboard() -> dict[str, Any]:
 
 def main() -> None:
     """Fonction principale"""
-    ark_logger.info("🌕 Génération du Dashboard Grafana Arkalia-LUNA Pro...", extra={"module": "scripts"})
+    ark_logger.info(
+        "🌕 Génération du Dashboard Grafana Arkalia-LUNA Pro...", extra={"module": "scripts"}
+    )
 
     # Créer le dashboard
     dashboard = create_arkalia_overview_dashboard()

@@ -222,19 +222,6 @@ class ArkaliaModulesAnalyzer:
             ark_logger.info("\n# === INITIALISATION DANS initialize_modules() ===", extra={"module": "scripts"})
             for item in high_priority:
                 component_name = item["component"].split(".")[-1]
-<<<<<<< HEAD
-                ark_logger.info(f'# {item["module"].upper(, extra={"module": "scripts"})} - {item["type"]}')
-                ark_logger.info(f'if "{item["module"]}" in self.config.enabled_modules:', extra={"module": "scripts"})
-                ark_logger.info("    try:", extra={"module": "scripts"})
-                ark_logger.info(f'        {item["module"]}_component = {component_name}(, extra={"module": "scripts"})')
-                ark_logger.info(
-=======
-                print(f"# {item['module'].upper()} - {item['type']}")
-                print(f'if "{item["module"]}" in self.config.enabled_modules:')
-                print("    try:")
-                print(f"        {item['module']}_component = {component_name}()")
-                print(
->>>>>>> dev-migration
                     f'        initialization_results["{item["module"]}_'
                     f'{component_name.lower(, extra={"module": "scripts"})}"] = '
                     f'ModuleWrapper("{item["module"]}_{component_name.lower()}", '

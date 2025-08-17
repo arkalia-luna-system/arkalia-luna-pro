@@ -1,4 +1,3 @@
-from core.ark_logger import ark_logger
 import logging
 import time
 from collections.abc import AsyncGenerator
@@ -11,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
+from core.ark_logger import ark_logger
 from modules.assistantia.core import router as assistantia_router
 from modules.monitoring.prometheus_metrics import ArkaliaMetrics
 from modules.reflexia.core_api import router as reflexia_router
@@ -165,4 +165,6 @@ app.include_router(zeroia_router, prefix="/zeroia")
 def print_status() -> None:
     from rich import print
 
-    ark_logger.info("[green bold]Arkalia-LUNA is active and running.[/green bold]", extra={"module": "app"})
+    ark_logger.info(
+        "[green bold]Arkalia-LUNA is active and running.[/green bold]", extra={"module": "app"}
+    )

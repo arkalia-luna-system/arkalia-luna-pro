@@ -4,11 +4,12 @@ Script de validation CI pour Arkalia-LUNA
 Vérifie les points critiques sans échouer sur les erreurs mineures
 """
 
-from core.ark_logger import ark_logger
 import os
 import subprocess
 import sys
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 
 def run_command(cmd: list[str], description: str) -> bool:
