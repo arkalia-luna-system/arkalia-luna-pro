@@ -25,7 +25,9 @@ def main(**kwargs) -> None:
     ]
 
     try:
-        result = subprocess.run(command, cwd=repo_path, capture_output=True, text=True, check=True)  # nosec
+        result = subprocess.run(
+            command, cwd=repo_path, capture_output=True, text=True, check=True
+        )  # nosec
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
         new_content = "# 🔄 Dernières mises à jour\n" + result.stdout.strip() + "\n"

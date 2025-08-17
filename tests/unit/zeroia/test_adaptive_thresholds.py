@@ -28,6 +28,6 @@ def test_adjust_threshold_stable() -> None:
 def test_adjust_threshold_invalid_feedback() -> None:
     value = 0.6
     updated = adjust_threshold(current_threshold=value, feedback="unknown")
-    assert updated == value, (
-        f"Le seuil devrait rester identique pour feedback invalide mais vaut {updated}"
-    )
+    assert (
+        updated == value
+    ), f"Le seuil devrait rester identique pour feedback invalide mais vaut {updated}"

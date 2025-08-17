@@ -253,7 +253,7 @@ Après une analyse exhaustive de votre système Arkalia-LUNA Pro v2.8.0, je peux
 
 ### ✅ Ce qui est Parfaitement Documenté
 
-1. **Architecture Système** 
+1. **Architecture Système**
    - 6 modules IA : ZeroIA, ReflexIA, Sandozia, AssistantIA, Cognitive Reactor, Helloria
    - Tous présents et opérationnels
    - Docker Compose parfaitement aligné

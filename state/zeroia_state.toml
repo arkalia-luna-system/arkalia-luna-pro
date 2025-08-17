@@ -1,8 +1,8 @@
 last_check = "2025-07-04T01:01:25.780374"
-confidence_score = 0.1
+confidence_score = 0.4
 contradictions_detected = 1
 status = "monitoring"
-last_decision = "monitor"
+last_decision = "normal"
 reasoning_loop_active = true
-circuit_breaker_state = "HALF_OPEN"
-last_update = "2025-07-05T13:37:32.415511"
+circuit_breaker_state = "CLOSED"
+last_update = "2025-07-05T15:53:14.000531"

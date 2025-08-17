@@ -97,10 +97,24 @@ git clone https://github.com/athalia-siwek/arkalia-luna-pro.git
 cd arkalia-luna-pro
 
 # Démarrer tous les services v2.8.0
+make run
+
+# Ou avec Docker Compose directement
 docker compose up -d
 
 # Vérifier l'état de tous les modules
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+```
+
+### Démo CLI pour Experts
+```bash
+# Démo complète de tous les scénarios
+python scripts/launch_demo_scenario.py --all
+
+# Démo d'un scénario spécifique
+python scripts/launch_demo_scenario.py --scenario security
+python scripts/launch_demo_scenario.py --scenario performance
+python scripts/launch_demo_scenario.py --scenario learning
 ```
 
 ### Test du Système
@@ -197,17 +211,23 @@ curl http://localhost:8003/health
 
 ### Tests Automatisés
 ```bash
-# Tests unitaires
-pytest tests/unit/
+# Tests avec couverture complète
+make test
+
+# Tests unitaires uniquement
+make test-unit
 
 # Tests d'intégration
-pytest tests/integration/
+make test-integration
 
 # Tests de performance
-pytest tests/performance/
+make performance-check
 
-# Tests de sécurité
-pytest tests/security/
+# Vérification formatage
+make format-check
+
+# Nettoyage
+make clean
 ```
 
 - **Total tests** : 671 (642 unitaires, 29 intégration)

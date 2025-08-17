@@ -99,6 +99,16 @@ docker-test:
 	curl -f http://localhost:8000/health || exit 1
 	$(DOCKER_COMPOSE) down
 
+# 🚀 Lancement rapide
+run:
+	@echo "🚀 Lancement Arkalia-LUNA..."
+	$(DOCKER_COMPOSE) -f docker-compose.yml up --build
+
+# 🧪 Tests avec couverture
+test:
+	@echo "🧪 Tests avec couverture..."
+	pytest --cov=modules --cov-report=term-missing --cov-report=html
+
 docker-clean:
 	@echo "🐳 Nettoyage Docker..."
 	$(DOCKER_COMPOSE) down -v

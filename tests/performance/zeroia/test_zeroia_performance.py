@@ -324,10 +324,11 @@ class TestZeroIAPerformance:
             # Simulation d'opérations avec circuit breaker
             for _ in range(10):
                 circuit_breaker.call(lambda: True)
-            return circuit_breaker.get_state()
+            return circuit_breaker.get_status()
 
         result = benchmark(circuit_breaker_operation)
-        assert result in ["closed", "open", "half_open"]
+        assert "state" in result
+        assert result["state"] in ["CLOSED", "OPEN", "HALF_OPEN"]
 
     @pytest.mark.benchmark
     def test_event_store_write_performance(self, benchmark, event_store):
@@ -411,13 +412,13 @@ class TestZeroIAPerformance:
                 return {
                     "operation_id": operation_id,
                     "result": result,
-                    "state": circuit_breaker.get_state(),
+                    "state": circuit_breaker.get_status(),
                 }
             except Exception as e:
                 return {
                     "operation_id": operation_id,
                     "error": str(e),
-                    "state": circuit_breaker.get_state(),
+                    "state": circuit_breaker.get_status(),
                 }
 
         # 100 opérations concurrentes

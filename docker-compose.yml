@@ -52,12 +52,12 @@ services:
           cpus: "0.5"
 
   # 🤖 AssistantIA — Interface IA conversationnelle v2.8.0
-  assistantia:
+  arkalia-assistantia:
     <<: *arkalia-defaults
-    container_name: assistantia
+    container_name: arkalia-assistantia
     build:
       context: .
-      dockerfile: Dockerfile.assistantia
+      dockerfile: docker/Dockerfile.assistantia
     image: arkalia-luna-assistantia:production
     ports:
       - "${PORT_ASSISTANTIA:-8001}:8001"
@@ -95,12 +95,12 @@ services:
           cpus: "0.5"
 
   # 🔁 ReflexIA — Observateur cognitif réflexif Optimisé
-  reflexia:
+  arkalia-reflexia:
     <<: *arkalia-defaults
-    container_name: reflexia
+    container_name: arkalia-reflexia
     build:
       context: .
-      dockerfile: Dockerfile.reflexia
+      dockerfile: docker/Dockerfile.reflexia
     ports:
       - "${PORT_REFLEXIA:-8002}:8002"
     command: python run_reflexia_api.py
@@ -129,12 +129,12 @@ services:
           cpus: "0.4"
 
   # 🤖 ZeroIA — Décisionneur autonome Enhanced v2.6.0 Optimisé
-  zeroia:
+  arkalia-zeroia:
     <<: *arkalia-defaults
-    container_name: zeroia
+    container_name: arkalia-zeroia
     build:
       context: .
-      dockerfile: Dockerfile.zeroia
+      dockerfile: docker/Dockerfile.zeroia
     image: arkalia-luna-zeroia:optimized
     command: python -m modules.zeroia.orchestrator_enhanced --mode daemon
     environment:
@@ -147,7 +147,7 @@ services:
       - ZEROIA_STARTUP_DELAY=15
       - ZEROIA_GRACEFUL_SHUTDOWN=true
     depends_on:
-      reflexia:
+      arkalia-reflexia:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "true"]
@@ -164,12 +164,12 @@ services:
       - arkalia_network
 
   # 🧠 Sandozia — Intelligence Croisée Enterprise v2.6.0 Optimisée
-  sandozia:
+  arkalia-sandozia:
     <<: *arkalia-defaults
-    container_name: sandozia
+    container_name: arkalia-sandozia
     build:
       context: .
-      dockerfile: Dockerfile.sandozia
+      dockerfile: docker/Dockerfile.sandozia
     image: arkalia-luna-sandozia:optimized
     command: python -m modules.sandozia.core.sandozia_core --start
     environment:
@@ -178,9 +178,9 @@ services:
       - SANDOZIA_LOG_LEVEL=INFO
       - SANDOZIA_ENHANCED_MODE=true
     depends_on:
-      zeroia:
+      arkalia-zeroia:
         condition: service_healthy
-      reflexia:
+      arkalia-reflexia:
         condition: service_healthy
     healthcheck:
       test:
@@ -204,12 +204,12 @@ services:
           cpus: "0.8"
 
   # 🧠 Cognitive Reactor — Intelligence Avancée v2.7.0 Production Ready
-  cognitive-reactor:
+  arkalia-cognitive:
     <<: *arkalia-defaults
-    container_name: cognitive-reactor
+    container_name: arkalia-cognitive
     build:
       context: .
-      dockerfile: Dockerfile.cognitive-reactor
+      dockerfile: docker/Dockerfile.cognitive-reactor
     image: arkalia-luna-cognitive:production
     ports:
       - "${PORT_COGNITIVE:-8003}:8003"
@@ -222,9 +222,9 @@ services:
       - COGNITIVE_MAX_REACTIONS=100
       - COGNITIVE_REACTION_INTERVAL=30
     depends_on:
-      sandozia:
+      arkalia-sandozia:
         condition: service_healthy
-      zeroia:
+      arkalia-zeroia:
         condition: service_healthy
     healthcheck:
       test:

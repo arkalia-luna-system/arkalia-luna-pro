@@ -58,4 +58,6 @@ if __name__ == "__main__":
     reflexia_thread.start()
 
     # Démarrer le serveur FastAPI dans le thread principal
-    uvicorn.run(app, host="127.0.0.1", port=8002)  # nosec B104 - Interface locale pour développement
+    uvicorn.run(
+        app, host="127.0.0.1", port=8002
+    )  # nosec B104 - Interface locale pour développement

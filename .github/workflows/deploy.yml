@@ -3,9 +3,9 @@ name: 🚀 Deploy Arkalia-LUNA (Optimized)
 
 on:
   push:
-    branches: [main, develop, dev-migration, refonte-stable]
+    branches: [main, develop, dev, dev-migration, refonte-stable]
   pull_request:
-    branches: [main, develop, dev-migration, refonte-stable]
+    branches: [main, develop, dev, dev-migration, refonte-stable]
 
 env:
   PYTHON_VERSION: "3.10"

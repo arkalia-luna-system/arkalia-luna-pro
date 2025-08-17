@@ -34,9 +34,9 @@ def test_generate_snapshot_invalid_toml(tmp_path):
 
     with patch("modules.zeroia.snapshot_generator.is_valid_toml", return_value=False):
         result = generate_snapshot(input_path=invalid_toml_path, fallback=False)
-        assert result is False, (
-            "Le snapshot ne devrait pas être généré avec un fichier TOML invalide."
-        )
+        assert (
+            result is False
+        ), "Le snapshot ne devrait pas être généré avec un fichier TOML invalide."
 
 
 def test_snapshot_generator_returns_valid_path(tmp_path):
