@@ -21,7 +21,7 @@ REQUIRED_FIELDS = ["last_decision", "confidence_score", "justification", "timest
 def check_state_file() -> int:
     # Utiliser la variable d'environnement ou le chemin par défaut
     state_path = os.environ.get("ZEROIA_STATE_PATH", DEFAULT_STATE_PATH)
-    
+
     if not os.path.exists(state_path):
         ark_logger.info("❌ Fichier d'état introuvable.", extra={"arkalia_module": "scripts"})
         return 2

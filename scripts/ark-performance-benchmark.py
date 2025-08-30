@@ -12,7 +12,6 @@ Fonctionnalités :
 - Détecte régressions performance
 """
 
-from core.ark_logger import ark_logger
 import argparse
 import json
 import os
@@ -22,6 +21,8 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+from core.ark_logger import ark_logger
+
 # Ajouter le chemin des modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -29,8 +30,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 def run_performance_tests(output_dir="benchmark_results"):
     """Lance les tests de performance et collecte les résultats"""
 
-    ark_logger.info("🚀 Lancement des benchmarks performance Arkalia-LUNA", extra={"module": "scripts"})
-    ark_logger.info("=" * 60, extra={"module": "scripts"})
+    ark_logger.info(
+        "🚀 Lancement des benchmarks performance Arkalia-LUNA", extra={"arkalia_module": "scripts"}
+    )
+    ark_logger.info("=" * 60, extra={"arkalia_module": "scripts"})
 
     # Créer dossier de résultats
     results_dir = Path(output_dir)
@@ -51,19 +54,24 @@ def run_performance_tests(output_dir="benchmark_results"):
 
     # Commande pytest pour les tests de performance
     cmd = [
-        "python",
+        sys.executable,
         "-m",
         "pytest",
         "tests/performance/",
         "-v",
-        "--tb=short",
+        "--benchmark-only",
+        "--benchmark-sort=mean",
+        "--benchmark-min-rounds=5",
+        "--benchmark-warmup=1",
+        "--benchmark-disable-gc",
+        "--benchmark-skip",
         "-m",
         "performance",
         "--capture=no",  # Afficher les prints
     ]
 
-    ark_logger.info(f"📊 Commande : {' '.join(cmd, extra={"module": "scripts"})}")
-    ark_logger.info(f"📁 Résultats dans : {results_dir}", extra={"module": "scripts"})
+    ark_logger.info(f"📊 Commande : {' '.join(cmd)}", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"📁 Résultats dans : {results_dir}", extra={"arkalia_module": "scripts"})
     ark_logger.info("")
 
     # Exécuter les tests
@@ -100,34 +108,45 @@ def run_performance_tests(output_dir="benchmark_results"):
             json.dump(results, f, indent=2)
 
         # Afficher résultats
-        ark_logger.info(f"✅ Benchmarks terminés en {duration:.1f}s", extra={"module": "scripts"})
-        ark_logger.info(f"📊 Code retour : {result.returncode}", extra={"module": "scripts"})
-        ark_logger.info(f"💾 Résultats sauvés : {results_file}", extra={"module": "scripts"})
+        ark_logger.info(
+            f"✅ Benchmarks terminés en {duration:.1f}s", extra={"arkalia_module": "scripts"}
+        )
+        ark_logger.info(
+            f"📊 Code retour : {result.returncode}", extra={"arkalia_module": "scripts"}
+        )
+        ark_logger.info(
+            f"💾 Résultats sauvés : {results_file}", extra={"arkalia_module": "scripts"}
+        )
 
         if result.returncode == 0:
-            ark_logger.info("🎯 Tous les benchmarks ont réussi !", extra={"module": "scripts"})
+            ark_logger.info(
+                "🎯 Tous les benchmarks ont réussi !", extra={"arkalia_module": "scripts"}
+            )
         else:
-            ark_logger.info("⚠️ Certains benchmarks ont échoué", extra={"module": "scripts"})
+            ark_logger.info("⚠️ Certains benchmarks ont échoué", extra={"arkalia_module": "scripts"})
 
         # Afficher stdout si présent
         if result.stdout:
-            ark_logger.info("\n📋 Sortie des tests :", extra={"module": "scripts"})
-            ark_logger.info("-" * 40, extra={"module": "scripts"})
-            ark_logger.info(result.stdout, extra={"module": "scripts"})
+            ark_logger.info("\n📋 Sortie des tests :", extra={"arkalia_module": "scripts"})
+            ark_logger.info("-" * 40, extra={"arkalia_module": "scripts"})
+            ark_logger.info(result.stdout, extra={"arkalia_module": "scripts"})
 
         if result.stderr:
-            ark_logger.info("\n❌ Erreurs :", extra={"module": "scripts"})
-            ark_logger.info("-" * 40, extra={"module": "scripts"})
-            ark_logger.info(result.stderr, extra={"module": "scripts"})
+            ark_logger.info("\n❌ Erreurs :", extra={"arkalia_module": "scripts"})
+            ark_logger.info("-" * 40, extra={"arkalia_module": "scripts"})
+            ark_logger.info(result.stderr, extra={"arkalia_module": "scripts"})
 
         return result.returncode == 0
 
     except subprocess.TimeoutExpired:
-        ark_logger.info("❌ Timeout : Les benchmarks ont pris trop de temps (>5min)", extra={"module": "scripts"})
+        ark_logger.info(
+            "❌ Timeout : Les benchmarks ont pris trop de temps (>5min)",
+            extra={"arkalia_module": "scripts"},
+        )
         return False
 
     except Exception as e:
-        ark_logger.info(f"❌ Erreur lors de l'exécution : {e}", extra={"module": "scripts"})
+        ark_logger.info(f"❌ Erreur lors de l'exécution : {e}", extra={"arkalia_module": "scripts"})
         return False
 
 
@@ -136,13 +155,13 @@ def generate_summary_report(output_dir="benchmark_results"):
 
     results_dir = Path(output_dir)
     if not results_dir.exists():
-        ark_logger.info(f"❌ Dossier {output_dir} introuvable", extra={"module": "scripts"})
+        ark_logger.info(f"❌ Dossier {output_dir} introuvable", extra={"arkalia_module": "scripts"})
         return
 
     # Trouver le fichier de résultats le plus récent
     json_files = list(results_dir.glob("benchmark_results_*.json"))
     if not json_files:
-        ark_logger.info("❌ Aucun fichier de résultats trouvé", extra={"module": "scripts"})
+        ark_logger.info("❌ Aucun fichier de résultats trouvé", extra={"arkalia_module": "scripts"})
         return
 
     latest_file = max(json_files, key=lambda f: f.stat().st_mtime)
@@ -151,36 +170,49 @@ def generate_summary_report(output_dir="benchmark_results"):
         with open(latest_file) as f:
             results = json.load(f)
 
-        ark_logger.info("\n📊 RAPPORT DE SYNTHÈSE BENCHMARKS", extra={"module": "scripts"})
-        ark_logger.info("=" * 50, extra={"module": "scripts"})
-        ark_logger.info(f"📅 Date : {results['timestamp']}", extra={"module": "scripts"})
-        ark_logger.info(f"⏱️ Durée : {results['duration_seconds']:.1f}s", extra={"module": "scripts"})
-        ark_logger.info(f"🎯 Statut : {'✅ SUCCÈS' if results['return_code'] == 0 else '❌ ÉCHEC'}", extra={"module": "scripts"})
-        ark_logger.info(f"🐍 Python : {results['environment']['python_version'].split(, extra={"module": "scripts"})[0]}")
-        ark_logger.info(f"💻 Plateforme : {results['environment']['platform']}", extra={"module": "scripts"})
+        ark_logger.info("\n📊 RAPPORT DE SYNTHÈSE BENCHMARKS", extra={"arkalia_module": "scripts"})
+        ark_logger.info("=" * 50, extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"📅 Date : {results['timestamp']}", extra={"arkalia_module": "scripts"})
+        ark_logger.info(
+            f"⏱️ Durée : {results['duration_seconds']:.1f}s", extra={"arkalia_module": "scripts"}
+        )
+        ark_logger.info(
+            f"🎯 Statut : {'✅ SUCCÈS' if results['return_code'] == 0 else '❌ ÉCHEC'}",
+            extra={"arkalia_module": "scripts"},
+        )
+        ark_logger.info(
+            f"🐍 Python : {results['environment']['python_version'].split('.')[0]}",
+            extra={"arkalia_module": "scripts"},
+        )
+        ark_logger.info(
+            f"💻 Plateforme : {results['environment']['platform']}",
+            extra={"arkalia_module": "scripts"},
+        )
 
         # Extraire métriques du stdout si possible
         stdout = results.get("stdout", "")
         if "ZeroIA décision en" in stdout:
-            ark_logger.info("\n🧠 Métriques ZeroIA :", extra={"module": "scripts"})
+            ark_logger.info("\n🧠 Métriques ZeroIA :", extra={"arkalia_module": "scripts"})
             for line in stdout.split("\n"):
                 if "ZeroIA décision en" in line:
-                    ark_logger.info(f"  {line}", extra={"module": "scripts"})
+                    ark_logger.info(f"  {line}", extra={"arkalia_module": "scripts"})
 
         if "Circuit Breaker" in stdout:
-            ark_logger.info("\n⚡ Métriques Circuit Breaker :", extra={"module": "scripts"})
+            ark_logger.info("\n⚡ Métriques Circuit Breaker :", extra={"arkalia_module": "scripts"})
             for line in stdout.split("\n"):
                 if "Circuit Breaker" in line and "Latence" in line:
-                    ark_logger.info(f"  {line}", extra={"module": "scripts"})
+                    ark_logger.info(f"  {line}", extra={"arkalia_module": "scripts"})
 
         if "Event Store" in stdout:
-            ark_logger.info("\n💾 Métriques Event Store :", extra={"module": "scripts"})
+            ark_logger.info("\n💾 Métriques Event Store :", extra={"arkalia_module": "scripts"})
             for line in stdout.split("\n"):
                 if "Event Store" in line and "événements" in line:
-                    ark_logger.info(f"  {line}", extra={"module": "scripts"})
+                    ark_logger.info(f"  {line}", extra={"arkalia_module": "scripts"})
 
     except Exception as e:
-        ark_logger.info(f"❌ Erreur lors de la génération du rapport : {e}", extra={"module": "scripts"})
+        ark_logger.info(
+            f"❌ Erreur lors de la génération du rapport : {e}", extra={"arkalia_module": "scripts"}
+        )
 
 
 def main():
@@ -209,7 +241,7 @@ def main():
                 generate_summary_report(args.output_dir)
             sys.exit(0 if success else 1)
     except Exception as e:
-        ark_logger.info(f"❌ Erreur fatale : {e}", extra={"module": "scripts"})
+        ark_logger.info(f"❌ Erreur fatale : {e}", extra={"arkalia_module": "scripts"})
         sys.exit(1)
 
 
