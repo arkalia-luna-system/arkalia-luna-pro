@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
-# import pytest
-# import requests
+import pytest
+import requests
 from fastapi.testclient import TestClient
 
 from modules.assistantia.core import app, get_query_ollama

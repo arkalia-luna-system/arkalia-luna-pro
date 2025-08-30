@@ -18,7 +18,10 @@ try:
     from modules.zeroia.reason_loop_enhanced import create_default_context_enhanced  # noqa: F401
 except ImportError as e:
     ark_logger.info(f"❌ Erreur import modules: {e}", extra={"arkalia_module": "scripts"})
-    ark_logger.info("💡 Vérifiez que les modules sont installés et accessibles", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        "💡 Vérifiez que les modules sont installés et accessibles",
+        extra={"arkalia_module": "scripts"},
+    )
     exit(1)
 
 
@@ -81,7 +84,10 @@ def validate_event_store_performance() -> bool:
             if event.data["decision"] != "test":
                 raise ValueError("Event data mismatch")
 
-            ark_logger.info(f"✅ EventStore: {duration:.3f}s pour ajout + récupération", extra={"arkalia_module": "scripts"})
+            ark_logger.info(
+                f"✅ EventStore: {duration:.3f}s pour ajout + récupération",
+                extra={"arkalia_module": "scripts"},
+            )
             return duration < 0.1  # Doit être < 100ms
 
     except Exception as e:
@@ -138,9 +144,13 @@ def validate_system_resources() -> bool:
         disk = psutil.disk_usage("/")
         disk_free_gb = disk.free / (1024**3)
 
-        ark_logger.info(f"✅ RAM disponible: {memory_available_gb:.1f}GB", extra={"arkalia_module": "scripts"})
+        ark_logger.info(
+            f"✅ RAM disponible: {memory_available_gb:.1f}GB", extra={"arkalia_module": "scripts"}
+        )
         ark_logger.info(f"✅ CPU usage: {cpu_percent:.1f}%", extra={"arkalia_module": "scripts"})
-        ark_logger.info(f"✅ Disque libre: {disk_free_gb:.1f}GB", extra={"arkalia_module": "scripts"})
+        ark_logger.info(
+            f"✅ Disque libre: {disk_free_gb:.1f}GB", extra={"arkalia_module": "scripts"}
+        )
 
         # Critères de validation
         ram_ok = memory_available_gb > 1.0  # Au moins 1GB
@@ -150,13 +160,17 @@ def validate_system_resources() -> bool:
         return ram_ok and cpu_ok and disk_ok
 
     except Exception as e:
-        ark_logger.info(f"❌ Erreur validation ressources: {e}", extra={"arkalia_module": "scripts"})
+        ark_logger.info(
+            f"❌ Erreur validation ressources: {e}", extra={"arkalia_module": "scripts"}
+        )
         return False
 
 
 def main():
     """Fonction principale de validation"""
-    ark_logger.info("🚀 Validation des performances Arkalia-LUNA Pro", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        "🚀 Validation des performances Arkalia-LUNA Pro", extra={"arkalia_module": "scripts"}
+    )
     ark_logger.info("=" * 50, extra={"arkalia_module": "scripts"})
 
     results = []
@@ -178,10 +192,14 @@ def main():
         if result:
             passed += 1
 
-    ark_logger.info(f"\n🎯 {passed}/{len(results)} tests passés", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        f"\n🎯 {passed}/{len(results)} tests passés", extra={"arkalia_module": "scripts"}
+    )
 
     if passed == len(results):
-        ark_logger.info("🎉 Toutes les validations sont passées!", extra={"arkalia_module": "scripts"})
+        ark_logger.info(
+            "🎉 Toutes les validations sont passées!", extra={"arkalia_module": "scripts"}
+        )
         return 0
     else:
         ark_logger.info("⚠️ Certaines validations ont échoué", extra={"arkalia_module": "scripts"})

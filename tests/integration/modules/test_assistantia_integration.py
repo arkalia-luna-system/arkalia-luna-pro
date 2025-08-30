@@ -1,13 +1,17 @@
-# import os
-# import sys
+import os
+import sys
 from unittest.mock import patch
 
-# import pytest
+import pytest
 from fastapi.testclient import TestClient
 
 # Ajout dynamique du chemin du projet pour garantir l'import correct
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../..")))
 
+from core.ark_logger import ark_logger
+
+# Mock de l'app pour les tests
+app = None  # À remplacer par l'app réel dans les tests
 
 pytestmark = pytest.mark.asyncio
 

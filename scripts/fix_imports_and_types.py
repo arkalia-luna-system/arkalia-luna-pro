@@ -4,11 +4,12 @@
 Corrige les erreurs d'imports manquants et les types dépréciés
 """
 
-from core.ark_logger import ark_logger
 import re
 import subprocess
 from pathlib import Path
 from typing import Any
+
+from core.ark_logger import ark_logger
 
 
 def fix_imports(content: str) -> str:
@@ -113,13 +114,17 @@ def process_file(file_path: Path) -> bool:
 
         return False
     except Exception as e:
-        ark_logger.error(f"❌ Error processing {file_path}: {e}", extra={"arkalia_module": "scripts"})
+        ark_logger.error(
+            f"❌ Error processing {file_path}: {e}", extra={"arkalia_module": "scripts"}
+        )
         return False
 
 
 def main() -> None:
     """Fonction principale"""
-    ark_logger.info("🔧 Début de la correction des imports et types...", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        "🔧 Début de la correction des imports et types...", extra={"arkalia_module": "scripts"}
+    )
 
     # Fichiers à traiter
     files_to_fix = [

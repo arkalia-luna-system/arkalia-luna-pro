@@ -33,10 +33,22 @@ def display_info(result: dict) -> None:
     data = result["data"]
     ark_logger.info("🔎 État actuel de ReflexIA\n", extra={"arkalia_module": "scripts"})
 
-    ark_logger.info(f"🧠 Reasoning loop active : {data.get('reasoning_loop_active', False)}", extra={"arkalia_module": "scripts"})
-    ark_logger.info(f"📌 Dernière décision      : {data.get('last_decision', 'N/A')}", extra={"arkalia_module": "scripts"})
-    ark_logger.info(f"🕰️ Timestamp              : {data.get('timestamp', 'N/A')}", extra={"arkalia_module": "scripts"})
-    ark_logger.info(f"📜 Historique décisions   : {data.get('previous', [])}", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        f"🧠 Reasoning loop active : {data.get('reasoning_loop_active', False)}",
+        extra={"arkalia_module": "scripts"},
+    )
+    ark_logger.info(
+        f"📌 Dernière décision      : {data.get('last_decision', 'N/A')}",
+        extra={"arkalia_module": "scripts"},
+    )
+    ark_logger.info(
+        f"🕰️ Timestamp              : {data.get('timestamp', 'N/A')}",
+        extra={"arkalia_module": "scripts"},
+    )
+    ark_logger.info(
+        f"📜 Historique décisions   : {data.get('previous', [])}",
+        extra={"arkalia_module": "scripts"},
+    )
 
 
 def export_to_grafana(data) -> None:
@@ -72,7 +84,10 @@ def export_to_grafana(data) -> None:
     if response.status_code == 200:
         ark_logger.info("✅ Exportation vers Grafana réussie.", extra={"arkalia_module": "scripts"})
     else:
-        ark_logger.info(f"❌ Erreur lors de l'exportation vers Grafana : {response.content}", extra={"arkalia_module": "scripts"})
+        ark_logger.info(
+            f"❌ Erreur lors de l'exportation vers Grafana : {response.content}",
+            extra={"arkalia_module": "scripts"},
+        )
 
 
 if __name__ == "__main__":

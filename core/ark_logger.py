@@ -13,7 +13,7 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 
 # Configuration du logger centralisé Arkalia
@@ -100,8 +100,6 @@ ark_logger = ArkaliaLogger("core")
 """
 Logger principal pour Arkalia-LUNA
 """
-
-import logging
 
 
 # Configuration du logger principal

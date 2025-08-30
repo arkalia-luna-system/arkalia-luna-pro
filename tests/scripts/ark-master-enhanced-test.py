@@ -4,10 +4,11 @@
 Test complet de l'orchestrateur enhanced v5.0.0
 """
 
-from core.ark_logger import ark_logger
 import asyncio
 import sys
 from typing import Any, Optional
+
+from core.ark_logger import ark_logger
 
 
 async def test_enhanced_orchestrator():
@@ -43,34 +44,54 @@ async def test_enhanced_orchestrator():
         init_success = await orchestrator.initialize_modules_enhanced()
 
         if init_success:
-            ark_logger.info("✅ Modules enhanced initialisés avec succès", extra={"module": "scripts"})
+            ark_logger.info(
+                "✅ Modules enhanced initialisés avec succès", extra={"module": "scripts"}
+            )
         else:
-            ark_logger.info("⚠️ Certains modules enhanced ont échoué (normal si composants manquants)", extra={"module": "scripts"})
+            ark_logger.info(
+                "⚠️ Certains modules enhanced ont échoué (normal si composants manquants)",
+                extra={"module": "scripts"},
+            )
 
         # Test 4: Statut enhanced
         ark_logger.info("\n📊 Test statut enhanced...", extra={"module": "scripts"})
         status = orchestrator.get_enhanced_status()
 
-        ark_logger.info(f"🌟 Version: {status['orchestrator']['version']}", extra={"module": "scripts"})
-        ark_logger.info(f"🔧 Modules: {len(status['modules'], extra={"module": "scripts"})}")
-        ark_logger.info(f"🧠 Enhanced features actives: {sum(status['enhanced_features'].values(, extra={"module": "scripts"}))}")
+        ark_logger.info(
+            f"🌟 Version: {status['orchestrator']['version']}", extra={"module": "scripts"}
+        )
+        ark_logger.info(f"🔧 Modules: {len(status['modules'])}", extra={"module": "scripts"})
+        ark_logger.info(
+            f"🧠 Enhanced features actives: {sum(status['enhanced_features'].values())}",
+            extra={"module": "scripts"},
+        )
 
         # Test 5: Cycle enhanced (test rapide)
         ark_logger.info("\n🔄 Test cycle enhanced...", extra={"module": "scripts"})
         if len(orchestrator.modules) > 0:
             _cycle_result = await orchestrator.execute_enhanced_cycle()
 
-            ark_logger.info(f"✅ Cycle enhanced terminé en {_cycle_result['duration_seconds']}s", extra={"module": "scripts"})
+            ark_logger.info(
+                f"✅ Cycle enhanced terminé en {_cycle_result['duration_seconds']}s",
+                extra={"module": "scripts"},
+            )
             ark_logger.info(
                 f"📊 Opérations: {_cycle_result['operations_successful']}/"
-                f"{_cycle_result['operations_executed']}"
-            , extra={"module": "scripts"})
+                f"{_cycle_result['operations_executed']}",
+                extra={"module": "scripts"},
+            )
             ark_logger.info(
-                f"🧠 Événements cognitifs: {_cycle_result['enhanced_features']['cognitive_events']}"
-            , extra={"module": "scripts"})
-            ark_logger.info(f"🛡️ Récupérations: {_cycle_result['enhanced_features']['recovery_events']}", extra={"module": "scripts"})
+                f"🧠 Événements cognitifs: {_cycle_result['enhanced_features']['cognitive_events']}",
+                extra={"module": "scripts"},
+            )
+            ark_logger.info(
+                f"🛡️ Récupérations: {_cycle_result['enhanced_features']['recovery_events']}",
+                extra={"module": "scripts"},
+            )
         else:
-            ark_logger.info("⚠️ Aucun module disponible pour test cycle", extra={"module": "scripts"})
+            ark_logger.info(
+                "⚠️ Aucun module disponible pour test cycle", extra={"module": "scripts"}
+            )
 
         ark_logger.info("\n🎉 TEST ENHANCED TERMINÉ AVEC SUCCÈS!", extra={"module": "scripts"})
 
@@ -78,7 +99,10 @@ async def test_enhanced_orchestrator():
 
     except ImportError as e:
         ark_logger.info(f"❌ Erreur import: {e}", extra={"module": "scripts"})
-        ark_logger.info("💡 Certains modules enhanced peuvent être manquants (normal)", extra={"module": "scripts"})
+        ark_logger.info(
+            "💡 Certains modules enhanced peuvent être manquants (normal)",
+            extra={"module": "scripts"},
+        )
         return False
 
     except Exception as e:
@@ -162,13 +186,20 @@ async def test_enhanced_features():
     available_count = sum(features_availability.values())
     total_count = len(features_availability)
 
-    ark_logger.info(f"\n📊 RÉSUMÉ ENHANCED FEATURES: {available_count}/{total_count} disponibles", extra={"module": "scripts"})
+    ark_logger.info(
+        f"\n📊 RÉSUMÉ ENHANCED FEATURES: {available_count}/{total_count} disponibles",
+        extra={"module": "scripts"},
+    )
 
     if available_count >= 2:
-        ark_logger.info("🎉 Suffisamment de fonctionnalités enhanced pour tester", extra={"module": "scripts"})
+        ark_logger.info(
+            "🎉 Suffisamment de fonctionnalités enhanced pour tester", extra={"module": "scripts"}
+        )
         return True
     else:
-        ark_logger.info("⚠️ Peu de fonctionnalités enhanced disponibles", extra={"module": "scripts"})
+        ark_logger.info(
+            "⚠️ Peu de fonctionnalités enhanced disponibles", extra={"module": "scripts"}
+        )
         return False
 
 
@@ -191,11 +222,16 @@ async def main():
 
     if features_ok and orchestrator_ok:
         ark_logger.info("🎉 TOUS LES TESTS ENHANCED RÉUSSIS!", extra={"module": "scripts"})
-        ark_logger.info("✅ L'orchestrateur enhanced est prêt pour intégration", extra={"module": "scripts"})
+        ark_logger.info(
+            "✅ L'orchestrateur enhanced est prêt pour intégration", extra={"module": "scripts"}
+        )
         return 0
     elif orchestrator_ok:
         ark_logger.info("⚠️ TESTS PARTIELLEMENT RÉUSSIS", extra={"module": "scripts"})
-        ark_logger.info("✅ Orchestrateur fonctionne mais certaines features manquent", extra={"module": "scripts"})
+        ark_logger.info(
+            "✅ Orchestrateur fonctionne mais certaines features manquent",
+            extra={"module": "scripts"},
+        )
         return 1
     else:
         ark_logger.info("❌ TESTS ÉCHOUÉS", extra={"module": "scripts"})

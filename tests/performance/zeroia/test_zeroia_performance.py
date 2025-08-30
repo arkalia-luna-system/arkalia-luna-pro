@@ -27,6 +27,7 @@ import pytest_benchmark.plugin
 # Ajout du path pour les imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
+from core.ark_logger import ark_logger
 from modules.zeroia.circuit_breaker import CircuitBreaker
 from modules.zeroia.confidence_score import ConfidenceScorer
 from modules.zeroia.core import ZeroIACore
@@ -128,7 +129,10 @@ def test_zeroia_decision_time_under_2s(performance_metrics, temp_paths):
 
     assert elapsed < threshold, f"❌ ZeroIA trop lent : {elapsed:.3f}s (limite : {threshold}s)"
 
-    ark_logger.info(f"✅ ZeroIA décision en {elapsed:.3f}s (objectif < {threshold}s, extra={"module": "zeroia"})")
+    ark_logger.info(
+        f"✅ ZeroIA décision en {elapsed:.3f}s (objectif < {threshold}s)",
+        extra={"module": "zeroia"},
+    )
     memory_delta = performance_metrics.memory_delta
     if memory_delta is not None:
         ark_logger.info(f"📊 Mémoire utilisée : {memory_delta:.1f} MB", extra={"module": "zeroia"})
@@ -174,7 +178,6 @@ def test_circuit_breaker_latency_under_10ms(performance_metrics):
         f"❌ Circuit Breaker latence moyenne trop élevée : {avg_latency_ms:.2f}ms "
         f"(limite : {threshold_ms}ms)"
     )
-
 
 
 @pytest.mark.performance
@@ -227,9 +230,16 @@ def test_event_store_write_performance(performance_metrics, tmp_path):
         f"(limite : {threshold_ms}ms)"
     )
 
-    ark_logger.info(f"✅ Event Store - {events_count} événements écrits", extra={"module": "zeroia"})
-    ark_logger.info(f"📊 Moyenne: {avg_write_ms:.2f}ms | Max: {max_write_ms:.2f}ms", extra={"module": "zeroia"})
-    ark_logger.info(f"🚀 Throughput: {events_count / performance_metrics.elapsed_time:.0f} events/sec", extra={"module": "zeroia"})
+    ark_logger.info(
+        f"✅ Event Store - {events_count} événements écrits", extra={"module": "zeroia"}
+    )
+    ark_logger.info(
+        f"📊 Moyenne: {avg_write_ms:.2f}ms | Max: {max_write_ms:.2f}ms", extra={"module": "zeroia"}
+    )
+    ark_logger.info(
+        f"🚀 Throughput: {events_count / performance_metrics.elapsed_time:.0f} events/sec",
+        extra={"module": "zeroia"},
+    )
 
 
 @pytest.mark.performance
@@ -257,4 +267,3 @@ def test_performance_regression_detection():
 
     # Pour l'instant, juste valider que les seuils sont raisonnables
     assert all(threshold > 0 for threshold in reference_benchmarks.values())
-

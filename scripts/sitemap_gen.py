@@ -1,12 +1,13 @@
 # scripts/sitemap_generator.py
 
-from core.ark_logger import ark_logger
 import datetime
 import os
 import urllib.parse
 
 import requests
 import yaml
+
+from core.ark_logger import ark_logger
 
 
 def parse_nav_from_mkdocs(mkdocs_yml_path="mkdocs.yml"):
@@ -77,7 +78,9 @@ def ping_google_sitemap():
     try:
         response = requests.get(ping_url, timeout=5)
         if response.status_code != 200:
-            ark_logger.info(f"⚠️ Ping échoué ({response.status_code}, extra={"arkalia_module": "scripts"})")
+            ark_logger.info(
+                f"⚠️ Ping échoué ({response.status_code})", extra={"arkalia_module": "scripts"}
+            )
     except Exception:
         ark_logger.info("⚠️ Ping désactivé en local.", extra={"arkalia_module": "scripts"})
 

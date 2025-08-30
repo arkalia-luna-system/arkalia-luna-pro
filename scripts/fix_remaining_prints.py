@@ -11,6 +11,8 @@ import re
 import subprocess
 from pathlib import Path
 
+from core.ark_logger import ark_logger
+
 
 def fix_remaining_prints():
     """Corrige les violations ark_logger.info("") restantes"""

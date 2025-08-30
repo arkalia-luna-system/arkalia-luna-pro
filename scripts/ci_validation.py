@@ -35,7 +35,9 @@ def run_command(cmd: list[str], description: str) -> bool:
 
 def check_imports() -> bool:
     """Vérifie que les imports principaux fonctionnent"""
-    ark_logger.info("🔍 Vérification des imports principaux...", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        "🔍 Vérification des imports principaux...", extra={"arkalia_module": "scripts"}
+    )
 
     test_imports = [
         "import modules.zeroia.core",
@@ -58,7 +60,9 @@ def check_imports() -> bool:
 
 def check_config_files() -> bool:
     """Vérifie que les fichiers de configuration existent"""
-    ark_logger.info("🔍 Vérification des fichiers de configuration...", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        "🔍 Vérification des fichiers de configuration...", extra={"arkalia_module": "scripts"}
+    )
 
     required_files = [
         "pyproject.toml",
@@ -81,7 +85,9 @@ def check_config_files() -> bool:
 
 def check_test_structure() -> bool:
     """Vérifie la structure des tests"""
-    ark_logger.info("🔍 Vérification de la structure des tests...", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        "🔍 Vérification de la structure des tests...", extra={"arkalia_module": "scripts"}
+    )
 
     test_dirs = [
         "tests/unit",
@@ -95,9 +101,14 @@ def check_test_structure() -> bool:
         if Path(test_dir).exists():
             test_files = list(Path(test_dir).rglob("test_*.py"))
             if test_files:
-                ark_logger.info(f"✅ {test_dir} ({len(test_files, extra={"arkalia_module": "scripts"})} fichiers)")
+                ark_logger.info(
+                    f"✅ {test_dir} ({len(test_files)} fichiers)",
+                    extra={"arkalia_module": "scripts"},
+                )
             else:
-                ark_logger.info(f"⚠️ {test_dir} - Aucun test trouvé", extra={"arkalia_module": "scripts"})
+                ark_logger.info(
+                    f"⚠️ {test_dir} - Aucun test trouvé", extra={"arkalia_module": "scripts"}
+                )
         else:
             ark_logger.info(f"❌ {test_dir} - MANQUANT", extra={"arkalia_module": "scripts"})
             return False
@@ -141,10 +152,15 @@ def main() -> int:
         status = "✅ PASS" if success else "❌ FAIL"
         ark_logger.info(f"{status} {name}", extra={"arkalia_module": "scripts"})
 
-    ark_logger.info(f"\n🎯 Résultat: {passed}/{total} vérifications réussies", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        f"\n🎯 Résultat: {passed}/{total} vérifications réussies",
+        extra={"arkalia_module": "scripts"},
+    )
 
     if passed == total:
-        ark_logger.info("🎉 Toutes les vérifications CI sont passées !", extra={"arkalia_module": "scripts"})
+        ark_logger.info(
+            "🎉 Toutes les vérifications CI sont passées !", extra={"arkalia_module": "scripts"}
+        )
         return 0
     else:
         ark_logger.info("⚠️ Certaines vérifications ont échoué", extra={"arkalia_module": "scripts"})

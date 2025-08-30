@@ -10,7 +10,6 @@
 import os
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 
 class CoverageAnalyzer:
@@ -143,7 +142,7 @@ class CoverageAnalyzer:
         ]
 
         # Identifier les modules sans tests
-        for module_path, info in self.modules_info.items():
+        for _module_path, info in self.modules_info.items():
             if not info["has_tests"]:
                 suggestions.append(
                     f"   - Créer tests/unit/{info['module_name'].replace('.', '/')}/test_{info['module_name'].split('.')[-1]}.py"

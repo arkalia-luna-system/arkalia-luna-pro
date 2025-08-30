@@ -123,7 +123,10 @@ def run_ruff_fix() -> list[str]:
 
 def main():
     """Fonction principale de correction"""
-    ark_logger.info("🔧 Début de la correction automatique des problèmes de linting...", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        "🔧 Début de la correction automatique des problèmes de linting...",
+        extra={"arkalia_module": "scripts"},
+    )
 
     fixes = []
 
@@ -166,7 +169,9 @@ def main():
     except Exception as e:
         raise RuntimeError(f"Erreur lors de la correction linting: {e}") from e
 
-    ark_logger.info(f"\n✅ Corrections appliquées: {len(fixes, extra={"arkalia_module": "scripts"})}")
+    ark_logger.info(
+        f"\n✅ Corrections appliquées: {len(fixes)}", extra={"arkalia_module": "scripts"}
+    )
     for fix in fixes:
         ark_logger.info(f"  - {fix}", extra={"arkalia_module": "scripts"})
 

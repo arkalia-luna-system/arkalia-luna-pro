@@ -8,11 +8,11 @@ from pathlib import Path
 
 import toml
 
+from core.ark_logger import ark_logger
+
 # Ajouter le répertoire racine au path Python
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
-
-from core.ark_logger import ark_logger
 
 DEFAULT_STATE_PATH = "modules/zeroia/state/zeroia_state.toml"
 REQUIRED_FIELDS = ["last_decision", "confidence_score", "justification", "timestamp"]

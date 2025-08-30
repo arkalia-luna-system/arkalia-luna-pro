@@ -67,6 +67,23 @@ def check_zeroia_status() -> bool:
         return False
 
 
+def backup_current_state() -> str:
+    """Crée une sauvegarde de l'état actuel."""
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    backup_path = f"data/zeroia/backups/state_backup_{timestamp}.toml"
+
+    # Créer le répertoire de sauvegarde si nécessaire
+    os.makedirs(os.path.dirname(backup_path), exist_ok=True)
+
+    # Copier l'état actuel
+    if os.path.exists("data/zeroia/state.toml"):
+        import shutil
+
+        shutil.copy2("data/zeroia/state.toml", backup_path)
+
+    return backup_path
+
+
 def main() -> None:
     """Point d'entrée principal."""
     args = parse_args()
