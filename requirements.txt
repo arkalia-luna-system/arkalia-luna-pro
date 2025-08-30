@@ -2,6 +2,7 @@
 # 🔧 Version: 2.8.0
 # 👤 Author: Athalia
 # 📅 Updated: 2025-01-27
+# Version: 2.8.0
 
 aiohttp>=3.9.0
 

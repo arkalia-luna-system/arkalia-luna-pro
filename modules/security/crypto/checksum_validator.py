@@ -245,7 +245,7 @@ class BuildIntegrityValidator:
 
     def _get_critical_files_list(self) -> list[str]:
         return [
-            "modules/zeroia/core.py",
+            # "modules/zeroia/core.py",  # Module supprimé lors de la refactorisation
             "modules/reflexia/core.py",
             "modules/assistantia/core.py",
             "modules/security/__init__.py",
@@ -333,10 +333,15 @@ if __name__ == "__main__":
                 ark_logger.info("✅ Quick check passed", extra={"module": "crypto"})
 
         else:
-            ark_logger.info("Usage: python checksum_validator.py [generate|validate|quick]", extra={"module": "crypto"})
+            ark_logger.info(
+                "Usage: python checksum_validator.py [generate|validate|quick]",
+                extra={"module": "crypto"},
+            )
             sys.exit(1)
     else:
         # Mode interactif
         validator = BuildIntegrityValidator()
         checksums = validator.generate_checksums()
-        ark_logger.info(f"Generated checksums for {len(checksums, extra={"module": "crypto"})} files")
+        ark_logger.info(
+            f"Generated checksums for {len(checksums)} files", extra={"module": "crypto"}
+        )

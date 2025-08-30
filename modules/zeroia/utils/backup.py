@@ -10,6 +10,6 @@ BACKUP_PATH = Path("modules/zeroia/state/zeroia_state_backup.toml")
 def save_backup() -> None:
     if STATE_PATH.exists():
         shutil.copy2(STATE_PATH, BACKUP_PATH)
-        ark_logger.info("🧪 Backup auto effectué.", extra={"module": "utils"})
+        ark_logger.info("🧪 Backup auto effectué.", extra={"arkalia_module": "utils"})
     else:
-        ark_logger.info("⚠️ Aucun fichier d'état à sauvegarder.", extra={"module": "utils"})
+        ark_logger.info("⚠️ Aucun fichier d'état à sauvegarder.", extra={"arkalia_module": "utils"})

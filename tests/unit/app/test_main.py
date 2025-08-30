@@ -134,10 +134,11 @@ def test_cors_middleware():
     assert "content-type" in response.headers["access-control-allow-headers"].lower()
 
 
-def test_print_status(capsys):
+def test_print_status(caplog):
     """Test de la fonction print_status"""
     from app.main import print_status
 
     print_status()
-    captured = capsys.readouterr()
-    assert "Arkalia-LUNA is active and running" in captured.out
+
+    # Vérifier que le message a été loggé
+    assert "Arkalia-LUNA is active and running" in caplog.text

@@ -14,7 +14,7 @@ def before_startup() -> None:
     Fonction à exécuter avant le démarrage de l'application.
     Utilisée pour initialiser ou vérifier certains éléments.
     """
-    ark_logger.info("Initialisation avant le démarrage", extra={"module": "arkalia"})
+    ark_logger.info("Initialisation avant le démarrage", extra={"arkalia_module": "arkalia"})
     # Placeholder désactivé pour éviter erreurs F821
     # Exemple : initialiser base de données, logs, etc.
     return None

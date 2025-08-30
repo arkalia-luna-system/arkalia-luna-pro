@@ -6,11 +6,12 @@ Script de lancement du Master Orchestrator
 Coordonne l'écosystème complet Arkalia-LUNA
 """
 
-from core.ark_logger import ark_logger
 import asyncio
 import logging
 import sys
 from pathlib import Path
+
+from core.ark_logger import ark_logger
 
 # Ajouter le path des modules
 sys.path.append(str(Path(__file__).parent.parent / "modules"))

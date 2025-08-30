@@ -8,7 +8,8 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 
 # 📦 Import des routes externes (modules IA)
 from modules.reflexia.core_api import router as reflexia_router
-from modules.zeroia.core import router as zeroia_router
+
+# from modules.zeroia.core import router as zeroia_router  # Module supprimé lors de la refactorisation
 
 # from modules.monitoring.prometheus_metrics import get_metrics_summary  # Module supprimé
 
@@ -234,7 +235,7 @@ app = FastAPI(
 # 🧩 Inclusion des routers
 app.include_router(router)
 app.include_router(reflexia_router, prefix="/reflexia")
-app.include_router(zeroia_router, prefix="/zeroia")
+# app.include_router(zeroia_router, prefix="/zeroia")  # Module supprimé
 
 
 @app.get("/health")

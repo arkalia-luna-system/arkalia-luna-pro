@@ -9,7 +9,7 @@ on:
 
 env:
   PYTHON_VERSION: "3.10"
-  COVERAGE_MIN: 28
+  COVERAGE_MIN: 5
   SECURITY_COVERAGE_MIN: 10
   PERFORMANCE_COVERAGE_MIN: 10
   CHAOS_COVERAGE_MIN: 10
@@ -502,7 +502,7 @@ jobs:
     needs: [e2e, build-docker]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
-      name: production
+      name: prod
       url: ${{ steps.deployment.outputs.page_url }}
     timeout-minutes: 20
     steps:

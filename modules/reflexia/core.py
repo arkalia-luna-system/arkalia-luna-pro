@@ -64,7 +64,7 @@ def launch_reflexia_loop(max_iterations: int | None = None) -> None:
     """
     from modules.reflexia.logic.main_loop_enhanced import reflexia_loop_enhanced
 
-    ark_logger.info("🚀 Démarrage Reflexia Enhanced v2.6.0", extra={"module": "reflexia"})
+    ark_logger.info("🚀 Démarrage Reflexia Enhanced v2.6.0", extra={"arkalia_module": "reflexia"})
     reflexia_loop_enhanced(max_iterations=max_iterations)
 
 

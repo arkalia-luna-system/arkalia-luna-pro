@@ -23,19 +23,24 @@ def extract_version_from_file(file_path: Path) -> str | None:
             version = (
                 data.get("project", {}).get("version")
                 or data.get("tool", {}).get("poetry", {}).get("version")
+                or data.get("bumpver", {}).get("current_version")
                 or data.get("version")
             )
             return str(version) if version else None
         elif file_path.name == "requirements.txt":
-            # Chercher une ligne avec arkalia-luna-pro
+            # Chercher une ligne avec arkalia-luna-pro ou version commentée
             content = file_path.read_text()
             for line in content.split("\n"):
                 if "arkalia-luna-pro" in line and "==" in line:
                     match = re.search(r"==([0-9]+\.[0-9]+\.[0-9]+)", line)
                     return match.group(1) if match else None
+                # Chercher dans les commentaires de version
+                if "Version:" in line:
+                    match = re.search(r"Version:\s*([0-9]+\.[0-9]+\.[0-9]+)", line)
+                    return match.group(1) if match else None
         elif file_path.name == "version.toml":
             data = toml.load(file_path)
-            return str(data.get("version", ""))
+            return str(data.get("bumpver", {}).get("current_version", ""))
     except Exception as e:
         print(f"⚠️ Erreur lecture {file_path}: {e}")
     return None
@@ -76,7 +81,7 @@ def check_versions() -> bool:
         return False
 
 
-def main():
+def main() -> None:
     """Fonction principale."""
     success = check_versions()
     sys.exit(0 if success else 1)

@@ -14,7 +14,8 @@ from core.ark_logger import ark_logger
 from modules.assistantia.core import router as assistantia_router
 from modules.monitoring.prometheus_metrics import ArkaliaMetrics
 from modules.reflexia.core_api import router as reflexia_router
-from modules.zeroia.core import router as zeroia_router
+
+# from modules.zeroia.core import router as zeroia_router  # Module core n'existe pas
 
 # Configuration logging
 logging.basicConfig(level=logging.INFO)
@@ -159,12 +160,13 @@ async def get_metrics():
 # Inclusion des routers
 app.include_router(assistantia_router, prefix="/assistantia")
 app.include_router(reflexia_router, prefix="/reflexia")
-app.include_router(zeroia_router, prefix="/zeroia")
+# app.include_router(zeroia_router, prefix="/zeroia")  # Module core n'existe pas
 
 
 def print_status() -> None:
     from rich import print
 
     ark_logger.info(
-        "[green bold]Arkalia-LUNA is active and running.[/green bold]", extra={"module": "app"}
+        "[green bold]Arkalia-LUNA is active and running.[/green bold]",
+        extra={"arkalia_module": "app"},
     )
