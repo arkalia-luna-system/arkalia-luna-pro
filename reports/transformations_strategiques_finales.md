@@ -1,9 +1,9 @@
 # 🚀 TRANSFORMATIONS STRATÉGIQUES ARKALIA-LUNA - RAPPORT FINAL
 
-**Date** : 5 juillet 2025  
-**Version** : v2.8.0 → v2.9.0  
-**Auteur** : Assistant IA  
-**Objectif** : Transformation en produit de niveau Tech Lead/Architecte IA  
+**Date** : 5 juillet 2025
+**Version** : v2.8.0 → v2.9.0
+**Auteur** : Assistant IA
+**Objectif** : Transformation en produit de niveau Tech Lead/Architecte IA
 
 ## 📋 RÉSUMÉ EXÉCUTIF
 
@@ -86,7 +86,7 @@ sandozia_cognitive_score: "score_cognitif"
 sandozia_collaboration_events: "événements_collaboration"
 
 # Security
-security_vault_secrets_total: "secrets_dans_vault"
+security_vault_secrets_total: "secrets_dans_vault"  # pragma: allowlist secret
 security_rotation_events: "événements_rotation"
 security_integrity_violations: "violations_intégrité"
 ```
@@ -276,5 +276,5 @@ python scripts/launch_demo_scenario.py --scenario security
 
 ---
 
-*Rapport de transformation généré le 5 juillet 2025*  
-*Arkalia-LUNA v2.9.0 - Excellence Technique & Professionnelle* 🚀 
+*Rapport de transformation généré le 5 juillet 2025*
+*Arkalia-LUNA v2.9.0 - Excellence Technique & Professionnelle* 🚀

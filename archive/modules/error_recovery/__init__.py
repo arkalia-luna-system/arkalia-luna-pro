@@ -13,7 +13,9 @@ __author__ = "Athalia"
 # Import des composants principaux
 try:
 from core.ark_logger import ark_logger
-    from .core import ErrorRecoverySystem, get_error_recovery_status
+
+from .core import ErrorRecoverySystem, get_error_recovery_status
+
 except ImportError:
     pass
 

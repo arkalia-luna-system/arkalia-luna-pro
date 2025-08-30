@@ -215,4 +215,4 @@
 
 ---
 
-**🎊 Félicitations ! Ton architecture modulaire est un succès complet ! 🎊** 
+**🎊 Félicitations ! Ton architecture modulaire est un succès complet ! 🎊**

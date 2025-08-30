@@ -162,7 +162,7 @@ jobs:
         run: |
           # Nettoyer l'ancien cache
           rm -rf /tmp/.buildx-cache
-          
+
           # Déplacer le nouveau cache seulement s'il existe
           if [ -d "/tmp/.buildx-cache-new" ]; then
             mv /tmp/.buildx-cache-new /tmp/.buildx-cache

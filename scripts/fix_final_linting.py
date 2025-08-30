@@ -64,8 +64,7 @@ def fix_line_length_errors():
         (
             r'"Contradiction: ZeroIA détecte des incohérences mais '
             r'Reflexia a une confiance élevée"',
-            '"Contradiction: ZeroIA détecte des incohérences mais '
-            'Reflexia a une confiance élevée"',
+            '"Contradiction: ZeroIA détecte des incohérences mais Reflexia a une confiance élevée"',
         ),
         # modules/sandozia/validators/crossmodule.py:318
         (

@@ -224,9 +224,9 @@ def main():
     total = len(tests)
 
     for test_name, test_func in tests:
-        logger.info(f"\n{'='*50}")
+        logger.info(f"\n{'=' * 50}")
         logger.info(f"🧪 Test: {test_name}")
-        logger.info(f"{'='*50}")
+        logger.info(f"{'=' * 50}")
 
         start_time = time.time()
         success = test_func()
@@ -244,9 +244,9 @@ def main():
             logger.error(f"❌ {test_name}: ÉCHEC ({duration:.2f}s)")
 
     # Résumé final
-    logger.info(f"\n{'='*50}")
+    logger.info(f"\n{'=' * 50}")
     logger.info("📊 RÉSUMÉ DES TESTS")
-    logger.info(f"{'='*50}")
+    logger.info(f"{'=' * 50}")
 
     for test_name, result in results.items():
         status = "✅ SUCCÈS" if result["success"] else "❌ ÉCHEC"

@@ -101,7 +101,7 @@ class CoverageAnalyzer:
             f"💻 Lignes de code: {total_code_lines}",
             "",
             (
-                f"📈 Couverture modules: {tested_modules/total_modules*100:.1f}%"
+                f"📈 Couverture modules: {tested_modules / total_modules * 100:.1f}%"
                 if total_modules > 0
                 else "📈 Couverture modules: N/A"
             ),

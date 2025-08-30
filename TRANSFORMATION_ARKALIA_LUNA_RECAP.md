@@ -1,6 +1,6 @@
 # 🚀 TRANSFORMATION ARKALIA-LUNA - RÉCAPITULATIF COMPLET
 
-*Date : 5 juillet 2025*  
+*Date : 5 juillet 2025*
 *Version : v2.8.0 - Enterprise Ready*
 
 ---
@@ -216,4 +216,4 @@ arkalia-zeroia-coordinator : ✅ HEALTHY
 
 ---
 
-*Document généré automatiquement - Arkalia-LUNA v2.8.0* 
+*Document généré automatiquement - Arkalia-LUNA v2.8.0*

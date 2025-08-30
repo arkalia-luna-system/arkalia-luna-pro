@@ -166,4 +166,4 @@ arkalia-zeroia        Up 2s (health: starting)  -
 
 ---
 
-**🎊 Félicitations ! La roadmap Docker est FINALISÉE avec succès ! 🎊** 
+**🎊 Félicitations ! La roadmap Docker est FINALISÉE avec succès ! 🎊**

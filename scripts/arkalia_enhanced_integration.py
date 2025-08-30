@@ -188,9 +188,7 @@ class ArkaliaEnhancedEngine:
             "system_ram": base_ram,
             "reflexia_score": round(random.uniform(0.6, 1.0), 3),  # nosec B311
             "sandozia_health": round(random.uniform(0.7, 0.95), 3),  # nosec B311
-            "contradiction": random.choice(
-                [False, False, False, True]
-            ),  # nosec B311  # 25% contradictions
+            "contradiction": random.choice([False, False, False, True]),  # nosec B311  # 25% contradictions
             "modules_active": ["zeroia", "reflexia", "sandozia"],
             "quarantined_modules": [],
             "berserk_mode": False,
@@ -430,7 +428,7 @@ async def integrate_with_zeroia():
 
         if result["cognitive_reactions"]:
             ark_logger.info(
-                f"   - Réaction cognitive {i+1} déclenchée", extra={"arkalia_module": "scripts"}
+                f"   - Réaction cognitive {i + 1} déclenchée", extra={"arkalia_module": "scripts"}
             )
 
     ark_logger.info("✅ Intégration ZeroIA testée avec succès", extra={"arkalia_module": "scripts"})

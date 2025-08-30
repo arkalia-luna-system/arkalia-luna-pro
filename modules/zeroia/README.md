@@ -79,4 +79,4 @@ ZeroIA s'intègre avec tous les autres modules Arkalia-LUNA :
 - **Reflexia** : Pour l'observation
 - **Sandozia** : Pour l'intelligence croisée
 - **Security** : Pour la sécurité
-- **Monitoring** : Pour l'observabilité 
+- **Monitoring** : Pour l'observabilité

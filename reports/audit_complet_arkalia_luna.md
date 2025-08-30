@@ -158,4 +158,4 @@ Le projet Arkalia-LUNA Pro a **DÉPASSÉ** tous les objectifs initiaux de fin ju
 
 ---
 
-**🎊 Félicitations ! Le projet est un succès complet ! 🎊** 
+**🎊 Félicitations ! Le projet est un succès complet ! 🎊**

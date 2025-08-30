@@ -22,7 +22,7 @@ Le merge `dev-migration → main` a été **finalisé avec succès** malgré une
 
 #### **Modules ZeroIA (Priorité Haute)**
 - `modules/zeroia/core.py` → Version main conservée
-- `modules/zeroia/failsafe.py` → Version main conservée  
+- `modules/zeroia/failsafe.py` → Version main conservée
 - `modules/zeroia/healthcheck_zeroia.py` → Version main conservée
 - `modules/zeroia/reason_loop.py` → Version main conservée
 
@@ -136,4 +136,4 @@ git push --no-verify origin main --tags
 
 ---
 
-**🎯 Mission accomplie avec brio, Athalia ! Arkalia-LUNA Pro v3.2.0 est maintenant opérationnel ! 🌕** 
+**🎯 Mission accomplie avec brio, Athalia ! Arkalia-LUNA Pro v3.2.0 est maintenant opérationnel ! 🌕**

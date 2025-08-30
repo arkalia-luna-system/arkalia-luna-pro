@@ -23,7 +23,7 @@ def fix_remaining_prints():
     )
 
     if not result.stdout.strip():
-        print("✅ Aucune violation ark_logger.info(" ") restante !")
+        print("✅ Aucune violation ark_logger.info() restante !")
         return
 
     files_to_fix = {}
@@ -95,7 +95,7 @@ def main():
     print(f"  🚨 Violations restantes: {remaining}")
 
     if remaining == 0:
-        print("🎉 Toutes les violations ark_logger.info(" ") ont été éliminées !")
+        print("🎉 Toutes les violations ark_logger.info() ont été éliminées !")
     else:
         print(f"⚠️ Il reste {remaining} violations à corriger manuellement")
         print("📋 Violations restantes:")

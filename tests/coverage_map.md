@@ -1,8 +1,8 @@
 # 🧪 CARTE DE COUVERTURE DES TESTS - ARKALIA-LUNA PRO
 
-**Date** : 5 juillet 2025  
-**Version** : v2.8.0  
-**Objectif** : Couverture complète et robustesse professionnelle  
+**Date** : 5 juillet 2025
+**Version** : v2.8.0
+**Objectif** : Couverture complète et robustesse professionnelle
 
 ## 📋 EXIGENCES PAR MODULE
 
@@ -19,7 +19,7 @@ Chaque module doit avoir :
 ## 🧠 MODULES IA PRINCIPAUX
 
 ### 1. **ZeroIA** - Décisionneur Autonome
-**Statut** : ✅ COMPLET  
+**Statut** : ✅ COMPLET
 **Tests** : 15 unitaires + 3 intégration + 2 edge cases
 
 ```bash
@@ -44,7 +44,7 @@ pytest tests/unit/zeroia/test_graceful_degradation.py -v
 ---
 
 ### 2. **Reflexia** - Observateur Cognitif
-**Statut** : ✅ COMPLET  
+**Statut** : ✅ COMPLET
 **Tests** : 12 unitaires + 2 intégration + 1 edge case
 
 ```bash
@@ -67,7 +67,7 @@ pytest tests/unit/reflexia/test_alert_thresholds.py -v
 ---
 
 ### 3. **AssistantIA** - Interface Utilisateur
-**Statut** : ✅ COMPLET  
+**Statut** : ✅ COMPLET
 **Tests** : 8 unitaires + 3 intégration + 1 edge case
 
 ```bash
@@ -90,7 +90,7 @@ pytest tests/unit/assistantia/test_context_handling.py -v
 ---
 
 ### 4. **Sandozia** - Intelligence Croisée
-**Statut** : ✅ COMPLET  
+**Statut** : ✅ COMPLET
 **Tests** : 10 unitaires + 2 intégration + 2 edge cases
 
 ```bash
@@ -114,7 +114,7 @@ pytest tests/unit/sandozia/test_cognitive_reactor.py -v
 ---
 
 ### 5. **Cognitive Reactor** - Intelligence Avancée
-**Statut** : ✅ COMPLET  
+**Statut** : ✅ COMPLET
 **Tests** : 6 unitaires + 1 intégration + 2 edge cases
 
 ```bash
@@ -139,7 +139,7 @@ pytest tests/unit/cognitive_reactor/test_quarantine_mode.py -v
 ## 🔒 MODULES DE SÉCURITÉ
 
 ### 6. **Security** - Sécurité Avancée
-**Statut** : ✅ COMPLET  
+**Statut** : ✅ COMPLET
 **Tests** : 8 unitaires + 2 intégration + 2 edge cases
 
 ```bash
@@ -165,7 +165,7 @@ pytest tests/unit/security/test_integrity_validation.py -v
 ## 🛠️ MODULES DE SUPPORT
 
 ### 7. **Monitoring** - Observabilité
-**Statut** : ✅ COMPLET  
+**Statut** : ✅ COMPLET
 **Tests** : 6 unitaires + 1 intégration + 1 edge case
 
 ```bash
@@ -187,7 +187,7 @@ pytest tests/unit/monitoring/test_metric_collection.py -v
 ---
 
 ### 8. **Core** - Infrastructure
-**Statut** : ✅ COMPLET  
+**Statut** : ✅ COMPLET
 **Tests** : 4 unitaires + 1 intégration + 1 edge case
 
 ```bash
@@ -318,14 +318,14 @@ open htmlcov/index.html
 arkalia_module_name: "nom_du_module"
 uptime_seconds: "temps_de_fonctionnement"
 last_successful_interaction_timestamp: "dernière_interaction"
-cognitive_score: "score_cognitif"  # si disponible
+cognitive_score: "score_cognitif"  # pragma: allowlist secret
 
 # Métriques spécifiques par module
 zeroia_decisions_total: "nombre_total_décisions"
 reflexia_alerts_total: "nombre_total_alertes"
 assistantia_chat_requests_total: "nombre_total_requêtes"
 sandozia_patterns_detected: "patterns_détectés"
-security_vault_secrets_total: "secrets_dans_vault"
+security_vault_secrets_total: "secrets_dans_vault"  # pragma: allowlist secret
 monitoring_metrics_collected: "métriques_collectées"
 ```
 
@@ -344,5 +344,5 @@ monitoring_metrics_collected: "métriques_collectées"
 
 ---
 
-*Carte de couverture générée le 5 juillet 2025*  
-*Arkalia-LUNA v2.8.0 - Excellence Technique* 🌕 
+*Carte de couverture générée le 5 juillet 2025*
+*Arkalia-LUNA v2.8.0 - Excellence Technique* 🌕

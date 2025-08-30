@@ -50,7 +50,9 @@ class ArkaliaLogger:
         log_dir.mkdir(exist_ok=True)
 
         file_handler = logging.handlers.RotatingFileHandler(
-            log_dir / f"{self.module_name}.log", maxBytes=10 * 1024 * 1024, backupCount=5  # 10MB
+            log_dir / f"{self.module_name}.log",
+            maxBytes=10 * 1024 * 1024,
+            backupCount=5,  # 10MB
         )
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)

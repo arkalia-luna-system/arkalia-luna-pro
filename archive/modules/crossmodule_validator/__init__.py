@@ -13,7 +13,9 @@ __author__ = "Athalia"
 # Import des composants principaux
 try:
 from core.ark_logger import ark_logger
-    from .core import CrossModuleValidator, validate_states
+
+from .core import CrossModuleValidator, validate_states
+
 except ImportError:
     pass
 

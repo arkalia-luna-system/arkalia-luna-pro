@@ -116,9 +116,9 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
     )
 
     # Vérifier que le script s'est exécuté avec succès
-    assert (
-        result.returncode == 0
-    ), f"Script a échoué avec code {result.returncode}\nstdout: {result.stdout}\nstderr: {result.stderr}"
+    assert result.returncode == 0, (
+        f"Script a échoué avec code {result.returncode}\nstdout: {result.stdout}\nstderr: {result.stderr}"
+    )
 
     # Vérifier qu'un backup a été créé
     backup_dir = Path("data/backups")

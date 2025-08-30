@@ -101,12 +101,12 @@ class DocChecker:
             f"  📝 Fonctions avec docstring: {self.stats['functions_with_docs']}/{total_functions}",
             "",
             (
-                f"📈 Couverture fonctions: {self.stats['functions_with_docs']/total_functions*100:.1f}%"
+                f"📈 Couverture fonctions: {self.stats['functions_with_docs'] / total_functions * 100:.1f}%"
                 if total_functions > 0
                 else "📈 Couverture fonctions: N/A"
             ),
             (
-                f"📈 Couverture classes: {self.stats['classes_with_docs']/total_classes*100:.1f}%"
+                f"📈 Couverture classes: {self.stats['classes_with_docs'] / total_classes * 100:.1f}%"
                 if total_classes > 0
                 else "📈 Couverture classes: N/A"
             ),
