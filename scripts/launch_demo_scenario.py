@@ -28,7 +28,7 @@ try:
     from modules.sandozia.analyzer.behavior import BehaviorAnalyzer
     from modules.sandozia.core.sandozia_core import SandoziaCore
     from modules.security.crypto.vault_manager import ArkaliaVault
-    from modules.zeroia.core import ZeroIACore
+    from modules.zeroia import ZeroIACoordinator
 except ImportError as e:
     print(f"❌ Erreur import modules: {e}")
     print("Assurez-vous d'être dans le répertoire arkalia-luna-pro")
@@ -53,7 +53,7 @@ class ArkaliaDemoCLI:
         }
 
         # Initialisation des modules
-        self.zeroia = ZeroIACore()
+        self.zeroia = ZeroIACoordinator()
         self.sandozia = SandoziaCore()
         self.security = ArkaliaVault()
         self.behavior_analyzer = BehaviorAnalyzer()

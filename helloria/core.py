@@ -246,7 +246,7 @@ def health() -> dict:
 @app.get("/zeroia/health", tags=["ZeroIA"])
 def zeroia_health() -> dict:
     try:
-        from modules.zeroia.core import health_check
+        from modules.zeroia import health_check
 
         return health_check()
     except Exception as e:

@@ -9,7 +9,7 @@ from statistics import mean
 
 from demo_global import ReflexiaWrapper, SandoziaWrapper, SecurityWrapper
 from modules.core.storage import StorageManager
-from modules.zeroia.core import ZeroIACore
+from modules.zeroia import ZeroIACoordinator
 
 N_RUNS = 20
 
@@ -18,7 +18,7 @@ errors_avoided = 0
 
 for i in range(N_RUNS):
     t0 = time.perf_counter()
-    zeroia = ZeroIACore()
+    zeroia = ZeroIACoordinator()
     reflexia = ReflexiaWrapper()
     sandozia = SandoziaWrapper()
     security = SecurityWrapper()

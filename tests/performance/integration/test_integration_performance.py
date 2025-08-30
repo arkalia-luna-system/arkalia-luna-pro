@@ -20,14 +20,14 @@ from modules.cognitive_reactor.core import CognitiveReactor
 from modules.reflexia.core import launch_reflexia_check
 from modules.sandozia.analyzer.behavior import BehaviorAnalyzer
 from modules.sandozia.core.sandozia_core import SandoziaCore
-from modules.zeroia.core import ZeroIACore
+from modules.zeroia import ZeroIACoordinator
 
 
 # Fixtures au niveau module pour être accessibles à toutes les classes
 @pytest.fixture
 def zeroia_core():
     """Instance ZeroIA pour les tests"""
-    return ZeroIACore()
+    return ZeroIACoordinator()
 
 
 @pytest.fixture

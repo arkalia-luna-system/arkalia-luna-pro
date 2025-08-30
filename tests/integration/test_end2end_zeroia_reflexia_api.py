@@ -2,14 +2,14 @@ import pytest
 
 from demo_global import ReflexiaWrapper, SandoziaWrapper, SecurityWrapper
 from modules.core.storage import StorageManager
-from modules.zeroia.core import ZeroIACore
+from modules.zeroia import ZeroIACoordinator
 
 
 @pytest.mark.integration
 def test_end2end_zeroia_reflexia_api():
     """Test bout-en-bout : ZeroIA → Reflexia → API"""
     storage = StorageManager()
-    zeroia = ZeroIACore()
+    zeroia = ZeroIACoordinator()
     reflexia = ReflexiaWrapper()
     sandozia = SandoziaWrapper()
     security = SecurityWrapper()

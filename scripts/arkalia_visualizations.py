@@ -331,7 +331,8 @@ class ArkaliaVisualizer:
             for _i in range(50):
                 events_data.append(
                     {
-                        "timestamp": datetime.now() - timedelta(hours=random.randint(0, 24)),  # nosec B311
+                        "timestamp": datetime.now()
+                        - timedelta(hours=random.randint(0, 24)),  # nosec B311
                         "event": random.choice(event_types),  # nosec B311
                         "module": random.choice(modules),  # nosec B311
                         "severity": random.choice(["low", "medium", "high"]),  # nosec B311

@@ -28,9 +28,9 @@ import pytest_benchmark.plugin
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from core.ark_logger import ark_logger
+from modules.zeroia import ZeroIACoordinator
 from modules.zeroia.circuit_breaker import CircuitBreaker
 from modules.zeroia.confidence_score import ConfidenceScorer
-from modules.zeroia.core import ZeroIACore
 from modules.zeroia.event_store import EventStore, EventType
 from modules.zeroia.reason_loop_enhanced import (
     create_default_context_enhanced,

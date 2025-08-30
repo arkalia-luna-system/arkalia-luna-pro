@@ -14,7 +14,7 @@ from typing import Any
 # Configuration du logging
 from modules.core.optimizations.optimization_integrator import OptimizationIntegrator
 from modules.core.storage import StorageManager
-from modules.zeroia.core import ZeroIACore
+from modules.zeroia import ZeroIACoordinator
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -91,7 +91,7 @@ class ArkaliaGlobalDemo:
     def __init__(self):
         self.storage = StorageManager()
         self.optimizer = OptimizationIntegrator()
-        self.zeroia = ZeroIACore()
+        self.zeroia = ZeroIACoordinator()
         self.reflexia = ReflexiaWrapper()
         self.sandozia = SandoziaWrapper()
         self.security = SecurityWrapper()

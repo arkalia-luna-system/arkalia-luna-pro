@@ -604,9 +604,7 @@ class CrossModuleValidator:
             "overall_status": (
                 "healthy"
                 if coherence_score > 0.8
-                else "degraded"
-                if coherence_score > 0.6
-                else "critical"
+                else "degraded" if coherence_score > 0.6 else "critical"
             ),
         }
 
