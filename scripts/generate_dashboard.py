@@ -395,7 +395,8 @@ def create_arkalia_overview_dashboard() -> dict[str, Any]:
 def main() -> None:
     """Fonction principale"""
     ark_logger.info(
-        "🌕 Génération du Dashboard Grafana Arkalia-LUNA Pro...", extra={"module": "scripts"}
+        "🌕 Génération du Dashboard Grafana Arkalia-LUNA Pro...",
+        extra={"arkalia_module": "scripts"},
     )
 
     # Créer le dashboard
@@ -409,15 +410,15 @@ def main() -> None:
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(dashboard, f, indent=2, ensure_ascii=False)
 
-    ark_logger.info(f"✅ Dashboard créé: {output_path}", extra={"module": "scripts"})
-    ark_logger.info("📊 Panels inclus:", extra={"module": "scripts"})
-    ark_logger.info("  • 🕐 Uptime Système", extra={"module": "scripts"})
-    ark_logger.info("  • 💻 Utilisation CPU/RAM", extra={"module": "scripts"})
-    ark_logger.info("  • ⚡ Latence & Temps de Réponse", extra={"module": "scripts"})
-    ark_logger.info("  • 🧠 Décisions ZeroIA/min", extra={"module": "scripts"})
-    ark_logger.info("  • 🎯 Score de Confiance ZeroIA", extra={"module": "scripts"})
-    ark_logger.info("  • 💬 Prompts AssistantIA & Sécurité", extra={"module": "scripts"})
-    ark_logger.info("  • 🚨 Erreurs par Module", extra={"module": "scripts"})
+    ark_logger.info(f"✅ Dashboard créé: {output_path}", extra={"arkalia_module": "scripts"})
+    ark_logger.info("📊 Panels inclus:", extra={"arkalia_module": "scripts"})
+    ark_logger.info("  • 🕐 Uptime Système", extra={"arkalia_module": "scripts"})
+    ark_logger.info("  • 💻 Utilisation CPU/RAM", extra={"arkalia_module": "scripts"})
+    ark_logger.info("  • ⚡ Latence & Temps de Réponse", extra={"arkalia_module": "scripts"})
+    ark_logger.info("  • 🧠 Décisions ZeroIA/min", extra={"arkalia_module": "scripts"})
+    ark_logger.info("  • 🎯 Score de Confiance ZeroIA", extra={"arkalia_module": "scripts"})
+    ark_logger.info("  • 💬 Prompts AssistantIA & Sécurité", extra={"arkalia_module": "scripts"})
+    ark_logger.info("  • 🚨 Erreurs par Module", extra={"arkalia_module": "scripts"})
 
 
 if __name__ == "__main__":

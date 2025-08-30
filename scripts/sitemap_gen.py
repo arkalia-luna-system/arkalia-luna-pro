@@ -59,7 +59,7 @@ def generate_sitemap(site_url=None, output_dir="site", mkdocs_yml_path="mkdocs.y
             f.write("  </url>\n")
         f.write("</urlset>\n")
 
-    ark_logger.info(f"✅ Sitemap généré : {sitemap_path}", extra={"module": "scripts"})
+    ark_logger.info(f"✅ Sitemap généré : {sitemap_path}", extra={"arkalia_module": "scripts"})
     ping_google_sitemap()
 
 
@@ -77,9 +77,9 @@ def ping_google_sitemap():
     try:
         response = requests.get(ping_url, timeout=5)
         if response.status_code != 200:
-            ark_logger.info(f"⚠️ Ping échoué ({response.status_code}, extra={"module": "scripts"})")
+            ark_logger.info(f"⚠️ Ping échoué ({response.status_code}, extra={"arkalia_module": "scripts"})")
     except Exception:
-        ark_logger.info("⚠️ Ping désactivé en local.", extra={"module": "scripts"})
+        ark_logger.info("⚠️ Ping désactivé en local.", extra={"arkalia_module": "scripts"})
 
 
 # 🚀 Exécution directe

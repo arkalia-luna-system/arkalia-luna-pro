@@ -11,7 +11,7 @@ for file in Path("docs/releases").glob("._*"):
 
 
 def main(**kwargs) -> None:
-    ark_logger.info("✅ Hook exécuté : génération des updates", extra={"module": "scripts"})
+    ark_logger.info("✅ Hook exécuté : génération des updates", extra={"arkalia_module": "scripts"})
 
     repo_path = Path.cwd()  # Assure que le chemin actuel est un dépôt Git
     output_file = Path("docs/releases/dernieres_updates.md")
@@ -35,7 +35,7 @@ def main(**kwargs) -> None:
         if output_file.exists() and output_file.read_text(encoding="utf-8") == new_content:
             ark_logger.info(
                 "✅ Aucun changement détecté, pas d'écriture nécessaire.",
-                extra={"module": "scripts"},
+                extra={"arkalia_module": "scripts"},
             )
             return
 
@@ -45,7 +45,7 @@ def main(**kwargs) -> None:
         ark_logger.info(
             f"✅ Updates page générée avec {len(result.stdout.strip().splitlines())} "
             "commits récents.",
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )
 
         # Supprimer les fichiers macOS invisibles s'ils existent
@@ -53,5 +53,6 @@ def main(**kwargs) -> None:
             file.unlink()
     except subprocess.CalledProcessError as e:
         ark_logger.info(
-            f"Erreur lors de l'exécution de la commande git: {e}", extra={"module": "scripts"}
+            f"Erreur lors de l'exécution de la commande git: {e}",
+            extra={"arkalia_module": "scripts"},
         )

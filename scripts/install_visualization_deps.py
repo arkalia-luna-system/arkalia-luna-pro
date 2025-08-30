@@ -14,12 +14,14 @@ from core.ark_logger import ark_logger
 def install_package(package: str) -> bool:
     """Installe un package avec pip"""
     try:
-        ark_logger.info(f"📦 Installation de {package}...", extra={"module": "scripts"})
+        ark_logger.info(f"📦 Installation de {package}...", extra={"arkalia_module": "scripts"})
         subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-        ark_logger.info(f"✅ {package} installé avec succès", extra={"module": "scripts"})
+        ark_logger.info(f"✅ {package} installé avec succès", extra={"arkalia_module": "scripts"})
         return True
     except subprocess.CalledProcessError as e:
-        ark_logger.info(f"❌ Erreur installation {package}: {e}", extra={"module": "scripts"})
+        ark_logger.info(
+            f"❌ Erreur installation {package}: {e}", extra={"arkalia_module": "scripts"}
+        )
         return False
 
 
@@ -27,7 +29,7 @@ def main():
     """Installe toutes les dépendances de visualisation"""
     ark_logger.info(
         "🌕 Installation des dépendances de visualisation Arkalia-LUNA...",
-        extra={"module": "scripts"},
+        extra={"arkalia_module": "scripts"},
     )
 
     # Packages de visualisation
@@ -51,19 +53,24 @@ def main():
 
     ark_logger.info(
         f"\n📊 Résumé: {success_count}/{total_count} packages installés",
-        extra={"module": "scripts"},
+        extra={"arkalia_module": "scripts"},
     )
 
     if success_count == total_count:
         ark_logger.info(
-            "🎉 Toutes les dépendances installées avec succès !", extra={"module": "scripts"}
+            "🎉 Toutes les dépendances installées avec succès !",
+            extra={"arkalia_module": "scripts"},
         )
-        ark_logger.info("\n🚀 Vous pouvez maintenant utiliser:", extra={"module": "scripts"})
-        ark_logger.info("   python3 scripts/arkalia_visualizations.py", extra={"module": "scripts"})
+        ark_logger.info(
+            "\n🚀 Vous pouvez maintenant utiliser:", extra={"arkalia_module": "scripts"}
+        )
+        ark_logger.info(
+            "   python3 scripts/arkalia_visualizations.py", extra={"arkalia_module": "scripts"}
+        )
         return True
     else:
         ark_logger.info(
-            "⚠️ Certains packages n'ont pas pu être installés", extra={"module": "scripts"}
+            "⚠️ Certains packages n'ont pas pu être installés", extra={"arkalia_module": "scripts"}
         )
         return False
 

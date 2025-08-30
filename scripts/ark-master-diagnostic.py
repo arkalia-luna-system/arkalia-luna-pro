@@ -27,23 +27,24 @@ class MasterOrchestratorDiagnostic:
 
     def print_header(self):
         """Affiche l'en-tête du diagnostic"""
-        ark_logger.info("=" * 80, extra={"module": "scripts"})
+        ark_logger.info("=" * 80, extra={"arkalia_module": "scripts"})
         ark_logger.info(
-            "🔍 ARKALIA MASTER ORCHESTRATOR - DIAGNOSTIC ROBUSTESSE", extra={"module": "scripts"}
+            "🔍 ARKALIA MASTER ORCHESTRATOR - DIAGNOSTIC ROBUSTESSE",
+            extra={"arkalia_module": "scripts"},
         )
-        ark_logger.info("=" * 80, extra={"module": "scripts"})
+        ark_logger.info("=" * 80, extra={"arkalia_module": "scripts"})
         ark_logger.info(
             "⚠️  Élément            | ❓ Question critique                     | ✅ Résultat",
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )
-        ark_logger.info("-" * 80, extra={"module": "scripts"})
+        ark_logger.info("-" * 80, extra={"arkalia_module": "scripts"})
 
     async def test_isolation_memoire(self) -> dict:
         """Test 1: Isolation mémoire entre modules"""
         ark_logger.info(
             "🧠 Isolation mémoire    | Un bug zeroia crash sandozia ?          | ",
             end="",
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )
 
         result = {"status": "PASS", "details": [], "protection_level": "EXCELLENT"}
@@ -66,12 +67,12 @@ class MasterOrchestratorDiagnostic:
             result["details"] = protections
             result["recommendation"] = "ROBUSTE - Crash isolé par module"
 
-            ark_logger.info("✅ PROTÉGÉ", extra={"module": "scripts"})
+            ark_logger.info("✅ PROTÉGÉ", extra={"arkalia_module": "scripts"})
 
         except Exception as e:
             result["status"] = "PARTIAL"
             result["error"] = str(e)
-            ark_logger.info("⚠️ PARTIEL", extra={"module": "scripts"})
+            ark_logger.info("⚠️ PARTIEL", extra={"arkalia_module": "scripts"})
 
         return result
 
@@ -80,7 +81,7 @@ class MasterOrchestratorDiagnostic:
         ark_logger.info(
             "🔄 Redémarrage partiel  | Relancer module sans conteneur ?        | ",
             end="",
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )
 
         result = {"status": "PASS", "details": [], "protection_level": "BON"}
@@ -98,12 +99,12 @@ class MasterOrchestratorDiagnostic:
             result["details"] = recovery_mechanisms
             result["recommendation"] = "Ajouter restart_module() individuel"
 
-            ark_logger.info("⚠️ AMÉLIORER", extra={"module": "scripts"})
+            ark_logger.info("⚠️ AMÉLIORER", extra={"arkalia_module": "scripts"})
 
         except Exception as e:
             result["status"] = "FAIL"
             result["error"] = str(e)
-            ark_logger.info("❌ ÉCHEC", extra={"module": "scripts"})
+            ark_logger.info("❌ ÉCHEC", extra={"arkalia_module": "scripts"})
 
         return result
 
@@ -112,7 +113,7 @@ class MasterOrchestratorDiagnostic:
         ark_logger.info(
             "📊 Logs et monitoring   | Prometheus/Grafana lisent métriques ?   | ",
             end="",
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )
 
         result = {"status": "PARTIAL", "details": [], "protection_level": "MOYEN"}
@@ -130,12 +131,12 @@ class MasterOrchestratorDiagnostic:
             result["details"] = monitoring_status
             result["recommendation"] = "Exposer port 9090 pour métriques dans Master"
 
-            ark_logger.info("⚠️ AMÉLIORER", extra={"module": "scripts"})
+            ark_logger.info("⚠️ AMÉLIORER", extra={"arkalia_module": "scripts"})
 
         except Exception as e:
             result["status"] = "FAIL"
             result["error"] = str(e)
-            ark_logger.info("❌ ÉCHEC", extra={"module": "scripts"})
+            ark_logger.info("❌ ÉCHEC", extra={"arkalia_module": "scripts"})
 
         return result
 
@@ -144,7 +145,7 @@ class MasterOrchestratorDiagnostic:
         ark_logger.info(
             "🛡️ Crash recovery      | ZeroIA plante → conteneur survit ?      | ",
             end="",
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )
 
         result = {"status": "PASS", "details": [], "protection_level": "EXCELLENT"}
@@ -162,12 +163,12 @@ class MasterOrchestratorDiagnostic:
             result["details"] = crash_protections
             result["recommendation"] = "ROBUSTE - Conteneur survit aux crashs modules"
 
-            ark_logger.info("✅ PROTÉGÉ", extra={"module": "scripts"})
+            ark_logger.info("✅ PROTÉGÉ", extra={"arkalia_module": "scripts"})
 
         except Exception as e:
             result["status"] = "FAIL"
             result["error"] = str(e)
-            ark_logger.info("❌ ÉCHEC", extra={"module": "scripts"})
+            ark_logger.info("❌ ÉCHEC", extra={"arkalia_module": "scripts"})
 
         return result
 
@@ -176,7 +177,7 @@ class MasterOrchestratorDiagnostic:
         ark_logger.info(
             "🧪 Tests unitaires     | Tous les tests OK mode intégré ?        | ",
             end="",
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )
 
         result = {"status": "PASS", "details": [], "protection_level": "EXCELLENT"}
@@ -194,19 +195,19 @@ class MasterOrchestratorDiagnostic:
             result["details"] = test_results
             result["recommendation"] = "EXCELLENT - Tests validés"
 
-            ark_logger.info("✅ VALIDÉ", extra={"module": "scripts"})
+            ark_logger.info("✅ VALIDÉ", extra={"arkalia_module": "scripts"})
 
         except Exception as e:
             result["status"] = "FAIL"
             result["error"] = str(e)
-            ark_logger.info("❌ ÉCHEC", extra={"module": "scripts"})
+            ark_logger.info("❌ ÉCHEC", extra={"arkalia_module": "scripts"})
 
         return result
 
     async def test_ameliorations_recommandees(self) -> dict:
         """Améliorations recommandées"""
-        ark_logger.info("\n🚀 AMÉLIORATIONS RECOMMANDÉES:", extra={"module": "scripts"})
-        ark_logger.info("-" * 50, extra={"module": "scripts"})
+        ark_logger.info("\n🚀 AMÉLIORATIONS RECOMMANDÉES:", extra={"arkalia_module": "scripts"})
+        ark_logger.info("-" * 50, extra={"arkalia_module": "scripts"})
 
         improvements = [
             "1. Exposer port 9090 pour métriques Prometheus",
@@ -217,7 +218,7 @@ class MasterOrchestratorDiagnostic:
         ]
 
         for improvement in improvements:
-            ark_logger.info(f"💡 {improvement}", extra={"module": "scripts"})
+            ark_logger.info(f"💡 {improvement}", extra={"arkalia_module": "scripts"})
 
         return {"improvements": improvements}
 
@@ -232,7 +233,7 @@ class MasterOrchestratorDiagnostic:
         self.results["crash_recovery"] = await self.test_crash_recovery()
         self.results["tests"] = await self.test_tests_unitaires()
 
-        ark_logger.info("-" * 80, extra={"module": "scripts"})
+        ark_logger.info("-" * 80, extra={"arkalia_module": "scripts"})
 
         # Améliorations
         self.results["improvements"] = await self.test_ameliorations_recommandees()
@@ -242,34 +243,35 @@ class MasterOrchestratorDiagnostic:
 
     def print_summary(self):
         """Affiche le résumé final"""
-        ark_logger.info("\n" + "=" * 80, extra={"module": "scripts"})
-        ark_logger.info("📊 RÉSUMÉ DIAGNOSTIC", extra={"module": "scripts"})
-        ark_logger.info("=" * 80, extra={"module": "scripts"})
+        ark_logger.info("\n" + "=" * 80, extra={"arkalia_module": "scripts"})
+        ark_logger.info("📊 RÉSUMÉ DIAGNOSTIC", extra={"arkalia_module": "scripts"})
+        ark_logger.info("=" * 80, extra={"arkalia_module": "scripts"})
 
         passed = sum(1 for r in self.results.values() if r.get("status") == "PASS")
         partial = sum(1 for r in self.results.values() if r.get("status") == "PARTIAL")
         failed = sum(1 for r in self.results.values() if r.get("status") == "FAIL")
 
-        ark_logger.info(f"✅ Tests RÉUSSIS  : {passed}", extra={"module": "scripts"})
-        ark_logger.info(f"⚠️ Tests PARTIELS : {partial}", extra={"module": "scripts"})
-        ark_logger.error(f"❌ Tests ÉCHOUÉS  : {failed}", extra={"module": "scripts"})
+        ark_logger.info(f"✅ Tests RÉUSSIS  : {passed}", extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"⚠️ Tests PARTIELS : {partial}", extra={"arkalia_module": "scripts"})
+        ark_logger.error(f"❌ Tests ÉCHOUÉS  : {failed}", extra={"arkalia_module": "scripts"})
 
         if passed >= 3:
             ark_logger.info(
                 "\n🎉 MASTER ORCHESTRATOR : ROBUSTE ET PRÊT POUR LA PRODUCTION!",
-                extra={"module": "scripts"},
+                extra={"arkalia_module": "scripts"},
             )
         elif passed >= 2:
             ark_logger.info(
                 "\n⚠️ MASTER ORCHESTRATOR : BON MAIS AMÉLIORATIONS RECOMMANDÉES",
-                extra={"module": "scripts"},
+                extra={"arkalia_module": "scripts"},
             )
         else:
             ark_logger.info(
-                "\n❌ MASTER ORCHESTRATOR : NÉCESSITE DES CORRECTIONS", extra={"module": "scripts"}
+                "\n❌ MASTER ORCHESTRATOR : NÉCESSITE DES CORRECTIONS",
+                extra={"arkalia_module": "scripts"},
             )
 
-        ark_logger.info("=" * 80, extra={"module": "scripts"})
+        ark_logger.info("=" * 80, extra={"arkalia_module": "scripts"})
 
 
 async def main():

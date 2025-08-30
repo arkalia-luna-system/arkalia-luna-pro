@@ -286,48 +286,50 @@ class MonitoringValidator:
 
     def print_report(self):
         """Affiche le rapport de validation"""
-        ark_logger.info("\n" + "=" * 80, extra={"module": "scripts"})
-        ark_logger.info("🔍 RAPPORT DE VALIDATION DU MONITORING ARKALIA-LUNA PRO", extra={"module": "scripts"})
-        ark_logger.info("=" * 80, extra={"module": "scripts"})
-        ark_logger.info(f"📅 Timestamp: {self.results['timestamp']}", extra={"module": "scripts"})
-        ark_logger.info(f"🎯 Statut global: {self.results['overall_status'].upper(, extra={"module": "scripts"})}")
+        ark_logger.info("\n" + "=" * 80, extra={"arkalia_module": "scripts"})
+        ark_logger.info("🔍 RAPPORT DE VALIDATION DU MONITORING ARKALIA-LUNA PRO", extra={"arkalia_module": "scripts"})
+        ark_logger.info("=" * 80, extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"📅 Timestamp: {self.results['timestamp']}", extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"🎯 Statut global: {self.results['overall_status'].upper()}", extra={"arkalia_module": "scripts"})
 
-        ark_logger.info("\n📡 SERVICES:", extra={"module": "scripts"})
+        ark_logger.info("\n📡 SERVICES:", extra={"arkalia_module": "scripts"})
         for service_name, service_data in self.results["components"].items():
             status_emoji = "✅" if service_data.get("status") == "healthy" else "❌"
-            ark_logger.info(f"  {status_emoji} {service_name}: {service_data.get('status', 'unknown', extra={"module": "scripts"})}")
+            ark_logger.info(f"  {status_emoji} {service_name}: {service_data.get('status', 'unknown')}", extra={"arkalia_module": "scripts"})
             if service_data.get("error"):
-                ark_logger.error(f"     Erreur: {service_data['error']}", extra={"module": "scripts"})
+                ark_logger.error(f"     Erreur: {service_data['error']}", extra={"arkalia_module": "scripts"})
 
-        ark_logger.info("\n📊 MÉTRIQUES:", extra={"module": "scripts"})
+        ark_logger.info("\n📊 MÉTRIQUES:", extra={"arkalia_module": "scripts"})
         metrics_data = self.results.get("metrics", {}).get("arkalia_metrics", {})
-        ark_logger.info(f"  📈 Métriques Arkalia: {metrics_data.get('total_metrics', 0, extra={"module": "scripts"})}")
+        ark_logger.info(f"  📈 Métriques Arkalia: {metrics_data.get('total_metrics', 0)}", extra={"arkalia_module": "scripts"})
         if metrics_data.get("sample_metrics"):
-            ark_logger.info(f"     Exemples: {', '.join(metrics_data['sample_metrics'][:3], extra={"module": "scripts"})}")
+            ark_logger.info(f"     Exemples: {', '.join(metrics_data['sample_metrics'][:3])}", extra={"arkalia_module": "scripts"})
 
-        ark_logger.info("\n💻 RESSOURCES SYSTÈME:", extra={"module": "scripts"})
+        ark_logger.info("\n💻 RESSOURCES SYSTÈME:", extra={"arkalia_module": "scripts"})
         system_data = self.results.get("components", {}).get("system_resources", {})
         if system_data.get("status") == "healthy":
-            ark_logger.info(f"  🖥️  CPU: {system_data.get('cpu_percent', 0, extra={"module": "scripts"})}%")
+            ark_logger.info(f"  🖥️  CPU: {system_data.get('cpu_percent', 0)}%", extra={"arkalia_module": "scripts"})
             ark_logger.info(
-                f"  💾 RAM: {system_data.get('memory_percent', 0, extra={"module": "scripts"})}% ({system_data.get('memory_used_gb', 0)}GB/{system_data.get('memory_total_gb', 0)}GB)"
+                f"  💾 RAM: {system_data.get('memory_percent', 0)}% ({system_data.get('memory_used_gb', 0)}GB/{system_data.get('memory_total_gb', 0)}GB)",
+                extra={"arkalia_module": "scripts"}
             )
             ark_logger.info(
-                f"  💿 Disque: {system_data.get('disk_percent', 0, extra={"module": "scripts"})}% ({system_data.get('disk_used_gb', 0)}GB/{system_data.get('disk_total_gb', 0)}GB)"
+                f"  💿 Disque: {system_data.get('disk_percent', 0)}% ({system_data.get('disk_used_gb', 0)}GB/{system_data.get('disk_total_gb', 0)}GB)",
+                extra={"arkalia_module": "scripts"}
             )
 
-        ark_logger.info("\n💡 RECOMMANDATIONS:", extra={"module": "scripts"})
+        ark_logger.info("\n💡 RECOMMANDATIONS:", extra={"arkalia_module": "scripts"})
         for rec in self.results["recommendations"]:
-            ark_logger.info(f"  {rec}", extra={"module": "scripts"})
+            ark_logger.info(f"  {rec}", extra={"arkalia_module": "scripts"})
 
-        ark_logger.info("\n" + "=" * 80, extra={"module": "scripts"})
-        ark_logger.info("🌐 URLs d'accès:", extra={"module": "scripts"})
-        ark_logger.info("  📊 Grafana: http://localhost:3000 (admin/arkalia-secure-2025)", extra={"module": "scripts"})
-        ark_logger.info("  🎯 Prometheus: http://localhost:9090", extra={"module": "scripts"})
-        ark_logger.info("  🚨 AlertManager: http://localhost:9093", extra={"module": "scripts"})
-        ark_logger.info("  📝 Loki: http://localhost:3100", extra={"module": "scripts"})
-        ark_logger.info("  🔧 cAdvisor: http://localhost:8080", extra={"module": "scripts"})
-        ark_logger.info("=" * 80, extra={"module": "scripts"})
+        ark_logger.info("\n" + "=" * 80, extra={"arkalia_module": "scripts"})
+        ark_logger.info("🌐 URLs d'accès:", extra={"arkalia_module": "scripts"})
+        ark_logger.info("  📊 Grafana: http://localhost:3000 (admin/arkalia-secure-2025)", extra={"arkalia_module": "scripts"})
+        ark_logger.info("  🎯 Prometheus: http://localhost:9090", extra={"arkalia_module": "scripts"})
+        ark_logger.info("  🚨 AlertManager: http://localhost:9093", extra={"arkalia_module": "scripts"})
+        ark_logger.info("  📝 Loki: http://localhost:3100", extra={"arkalia_module": "scripts"})
+        ark_logger.info("  🔧 cAdvisor: http://localhost:8080", extra={"arkalia_module": "scripts"})
+        ark_logger.info("=" * 80, extra={"arkalia_module": "scripts"})
 
 
 async def main():
@@ -344,7 +346,7 @@ async def main():
     with open(report_file, "w") as f:
         json.dump(results, f, indent=2, default=str)
 
-    ark_logger.info(f"\n📄 Rapport sauvegardé: {report_file}", extra={"module": "scripts"})
+    ark_logger.info(f"\n📄 Rapport sauvegardé: {report_file}", extra={"arkalia_module": "scripts"})
 
     return results
 

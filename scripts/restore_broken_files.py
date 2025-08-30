@@ -48,7 +48,7 @@ def fix_broken_imports(file_path: Path) -> bool:
     if content != original_content:
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(content)
-        ark_logger.info(f"✅ Fixed {file_path}", extra={"module": "scripts"})
+        ark_logger.info(f"✅ Fixed {file_path}", extra={"arkalia_module": "scripts"})
         return True
 
     return False
@@ -78,7 +78,7 @@ def fix_variables_with_underscores(file_path: Path) -> bool:
     if content != original_content:
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(content)
-        ark_logger.info(f"✅ Fixed variables in {file_path}", extra={"module": "scripts"})
+        ark_logger.info(f"✅ Fixed variables in {file_path}", extra={"arkalia_module": "scripts"})
         return True
 
     return False
@@ -87,7 +87,7 @@ def fix_variables_with_underscores(file_path: Path) -> bool:
 def main() -> None:
     """Fonction principale de restauration"""
     ark_logger.info(
-        "🔧 Début de la restauration des fichiers cassés...", extra={"module": "scripts"}
+        "🔧 Début de la restauration des fichiers cassés...", extra={"arkalia_module": "scripts"}
     )
 
     files_to_fix = [
@@ -112,11 +112,11 @@ def main() -> None:
     try:
         subprocess.run(["isort", "."], check=True)
         subprocess.run(["black", "."], check=True)
-        ark_logger.info("✅ Formatage final appliqué", extra={"module": "scripts"})
+        ark_logger.info("✅ Formatage final appliqué", extra={"arkalia_module": "scripts"})
     except subprocess.CalledProcessError as e:
-        ark_logger.info(f"❌ Erreur formatage: {e}", extra={"module": "scripts"})
+        ark_logger.info(f"❌ Erreur formatage: {e}", extra={"arkalia_module": "scripts"})
 
-    ark_logger.info(f"\n✅ Fichiers restaurés: {fixed_count}", extra={"module": "scripts"})
+    ark_logger.info(f"\n✅ Fichiers restaurés: {fixed_count}", extra={"arkalia_module": "scripts"})
 
 
 if __name__ == "__main__":

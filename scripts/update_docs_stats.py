@@ -82,10 +82,10 @@ def update_file_stats(file_path):
         if content != original_content:
             with open(file_path, "w", encoding="utf-8") as f:
                 f.write(content)
-            ark_logger.info(f"✅ Mis à jour : {file_path}", extra={"module": "scripts"})
+            ark_logger.info(f"✅ Mis à jour : {file_path}", extra={"arkalia_module": "scripts"})
             return True
         else:
-            ark_logger.info(f"ℹ️  Aucun changement : {file_path}", extra={"module": "scripts"})
+            ark_logger.info(f"ℹ️  Aucun changement : {file_path}", extra={"arkalia_module": "scripts"})
             return False
 
     except Exception as e:
@@ -100,9 +100,9 @@ def main():
     ark_logger.info(
         f"🔄 Mise à jour des statistiques vers "
         f"{CURRENT_STATS['tests_passed']}/{CURRENT_STATS['tests_total']} "
-        f"({CURRENT_STATS['success_rate']}, extra={"module": "scripts"})"
+        f"({CURRENT_STATS['success_rate']}, extra={"arkalia_module": "scripts"})"
     )
-    ark_logger.info(f"📊 Coverage : {CURRENT_STATS['coverage']}", extra={"module": "scripts"})
+    ark_logger.info(f"📊 Coverage : {CURRENT_STATS['coverage']}", extra={"arkalia_module": "scripts"})
     ark_logger.info("")
 
     # Parcourir tous les fichiers .md dans docs/
@@ -111,7 +111,7 @@ def main():
             updated_files += 1
 
     ark_logger.info("")
-    ark_logger.info(f"🎉 Terminé ! {updated_files} fichiers mis à jour", extra={"module": "scripts"})
+    ark_logger.info(f"🎉 Terminé ! {updated_files} fichiers mis à jour", extra={"arkalia_module": "scripts"})
 
 
 if __name__ == "__main__":

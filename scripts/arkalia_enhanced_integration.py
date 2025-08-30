@@ -325,48 +325,48 @@ class ArkaliaEnhancedEngine:
 async def demo_complete_workflow():
     """🎯 Démo workflow complet des recommandations"""
 
-    ark_logger.info("\n🚀 DÉMO ARKALIA-LUNA ENHANCED v3.0-phase1+", extra={"module": "scripts"})
-    ark_logger.info("=" * 60, extra={"module": "scripts"})
-    ark_logger.info("🎯 Implémentation complète de tes recommandations :", extra={"module": "scripts"})
-    ark_logger.info("   ✅ 1. Réactions automatiques (7+ répétitions → pause)", extra={"module": "scripts"})
-    ark_logger.info("   ✅ 2. Timeline cognitive (Chronalia  # noqa: F401  JSONL)", extra={"module": "scripts"})
-    ark_logger.info("   ✅ 3. Mode quarantine cognitive", extra={"module": "scripts"})
-    ark_logger.info("   ✅ 4. Données heatmap Grafana", extra={"module": "scripts"})
-    ark_logger.info("   ✅ 5. Mode Berserk/Recovery pour panics", extra={"module": "scripts"})
+    ark_logger.info("\n🚀 DÉMO ARKALIA-LUNA ENHANCED v3.0-phase1+", extra={"arkalia_module": "scripts"})
+    ark_logger.info("=" * 60, extra={"arkalia_module": "scripts"})
+    ark_logger.info("🎯 Implémentation complète de tes recommandations :", extra={"arkalia_module": "scripts"})
+    ark_logger.info("   ✅ 1. Réactions automatiques (7+ répétitions → pause)", extra={"arkalia_module": "scripts"})
+    ark_logger.info("   ✅ 2. Timeline cognitive (Chronalia  # noqa: F401  JSONL)", extra={"arkalia_module": "scripts"})
+    ark_logger.info("   ✅ 3. Mode quarantine cognitive", extra={"arkalia_module": "scripts"})
+    ark_logger.info("   ✅ 4. Données heatmap Grafana", extra={"arkalia_module": "scripts"})
+    ark_logger.info("   ✅ 5. Mode Berserk/Recovery pour panics", extra={"arkalia_module": "scripts"})
     ark_logger.info("")
 
     engine = ArkaliaEnhancedEngine()
 
     # Test cycles normaux
-    ark_logger.info("🔄 Exécution 5 cycles normaux...", extra={"module": "scripts"})
+    ark_logger.info("🔄 Exécution 5 cycles normaux...", extra={"arkalia_module": "scripts"})
     for i in range(5):
         result = await engine.run_enhanced_cycle()
 
     ark_logger.info("")
 
     # Test de stress pour déclencher réactions
-    ark_logger.info("🧪 Test de stress (patterns répétitifs + dégradation)...", extra={"module": "scripts"})
+    ark_logger.info("🧪 Test de stress (patterns répétitifs + dégradation)...", extra={"arkalia_module": "scripts"})
     await engine.run_stress_test(cycles=15, force_patterns=True)
 
     ark_logger.info("")
 
     # Résumé final
     summary = engine.get_system_summary()
-    ark_logger.info("📊 RÉSUMÉ FINAL:", extra={"module": "scripts"})
-    ark_logger.info(f"   - Cycles totaux: {summary['global_stats']['total_cycles']}", extra={"module": "scripts"})
-    ark_logger.info(f"   - Réactions déclenchées: {summary['global_stats']['cognitive_reactions_triggered']}", extra={"module": "scripts"})
-    ark_logger.info(f"   - Activations berserk: {summary['global_stats']['berserk_activations']}", extra={"module": "scripts"})
-    ark_logger.info(f"   - Modules en quarantine: {len(summary['quarantined_modules'], extra={"module": "scripts"})}")
-    ark_logger.info(f"   - Patterns détectés: {summary['global_stats']['patterns_detected']}", extra={"module": "scripts"})
+    ark_logger.info("📊 RÉSUMÉ FINAL:", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"   - Cycles totaux: {summary['global_stats']['total_cycles']}", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"   - Réactions déclenchées: {summary['global_stats']['cognitive_reactions_triggered']}", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"   - Activations berserk: {summary['global_stats']['berserk_activations']}", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"   - Modules en quarantine: {len(summary['quarantined_modules'])}", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"   - Patterns détectés: {summary['global_stats']['patterns_detected']}", extra={"arkalia_module": "scripts"})
 
     # Export timeline et heatmap
-    ark_logger.info("\n📤 Export timeline et données heatmap...", extra={"module": "scripts"})
+    ark_logger.info("\n📤 Export timeline et données heatmap...", extra={"arkalia_module": "scripts"})
     exports = engine.export_timeline_and_heatmap()
-    ark_logger.info(f"   - Timeline: {exports['timeline_file']}", extra={"module": "scripts"})
-    ark_logger.info(f"   - Heatmap: {exports['heatmap_file']}", extra={"module": "scripts"})
+    ark_logger.info(f"   - Timeline: {exports['timeline_file']}", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"   - Heatmap: {exports['heatmap_file']}", extra={"arkalia_module": "scripts"})
 
-    ark_logger.info("\n🎉 DÉMO TERMINÉE - Toutes tes recommandations fonctionnelles !", extra={"module": "scripts"})
-    ark_logger.info(f"📋 Timeline disponible: {summary['timeline_file']}", extra={"module": "scripts"})
+    ark_logger.info("\n🎉 DÉMO TERMINÉE - Toutes tes recommandations fonctionnelles !", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"📋 Timeline disponible: {summary['timeline_file']}", extra={"arkalia_module": "scripts"})
 
     return engine
 
@@ -374,7 +374,7 @@ async def demo_complete_workflow():
 async def integrate_with_zeroia():
     """🔗 Intégration avec le reason_loop ZeroIA existant"""
 
-    ark_logger.info("🔗 Intégration avec ZeroIA Enhanced...", extra={"module": "scripts"})
+    ark_logger.info("🔗 Intégration avec ZeroIA Enhanced...", extra={"arkalia_module": "scripts"})
 
     engine = ArkaliaEnhancedEngine()
 
@@ -389,14 +389,15 @@ async def integrate_with_zeroia():
         result = await engine.run_enhanced_cycle(context)
 
         if result["cognitive_reactions"]:
+            ark_logger.info(f"   - Réaction cognitive {i+1} déclenchée", extra={"arkalia_module": "scripts"})
 
-    ark_logger.info("✅ Intégration ZeroIA testée avec succès", extra={"module": "scripts"})
+    ark_logger.info("✅ Intégration ZeroIA testée avec succès", extra={"arkalia_module": "scripts"})
 
 
 def generate_heatmap_sample():
     """📊 Génère échantillon données heatmap pour Grafana"""
 
-    ark_logger.info("📊 Génération données heatmap pour Grafana...", extra={"module": "scripts"})
+    ark_logger.info("📊 Génération données heatmap pour Grafana...", extra={"arkalia_module": "scripts"})
 
     chronalia = Chronalia  # noqa: F401
     heatmap_data = chronalia.get_heatmap_data(hours_back=24)
@@ -405,9 +406,9 @@ def generate_heatmap_sample():
     with output_file.open("w") as f:
         json.dump(heatmap_data, f, indent=2, ensure_ascii=False)
 
-    ark_logger.info(f"📊 Données heatmap générées: {output_file}", extra={"module": "scripts"})
-    ark_logger.info(f"   - {len(heatmap_data['heatmap_data'], extra={"module": "scripts"})} points de données")
-    ark_logger.info(f"   - Résolution: {heatmap_data['summary']['resolution_minutes']} minutes", extra={"module": "scripts"})
+    ark_logger.info(f"📊 Données heatmap générées: {output_file}", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"   - {len(heatmap_data['heatmap_data'])} points de données")
+    ark_logger.info(f"   - Résolution: {heatmap_data['summary']['resolution_minutes']} minutes", extra={"arkalia_module": "scripts"})
 
 
 # 🎯 MAIN

@@ -27,54 +27,55 @@ def check_docker_status() -> None:
         )  # nosec
         if result.stdout:
             ark_logger.info(
-                "\n🐳 Docker — Conteneurs en cours d'exécution", extra={"module": "scripts"}
+                "\n🐳 Docker — Conteneurs en cours d'exécution", extra={"arkalia_module": "scripts"}
             )
-            ark_logger.info(result.stdout, extra={"module": "scripts"})
+            ark_logger.info(result.stdout, extra={"arkalia_module": "scripts"})
         else:
             ark_logger.info(
-                "\n🐳 Docker — Aucun conteneur en cours d'exécution", extra={"module": "scripts"}
+                "\n🐳 Docker — Aucun conteneur en cours d'exécution",
+                extra={"arkalia_module": "scripts"},
             )
     except subprocess.CalledProcessError as e:
-        ark_logger.info(f"💥 Erreur Docker : {e}", extra={"module": "scripts"})
+        ark_logger.info(f"💥 Erreur Docker : {e}", extra={"arkalia_module": "scripts"})
 
 
 def ping_reflexia() -> None:
     try:
         response = requests.get("http://reflexia-endpoint/ping", timeout=5)
         if response.status_code == 200:
-            ark_logger.info("\n🔗 Reflexia — Actif", extra={"module": "scripts"})
+            ark_logger.info("\n🔗 Reflexia — Actif", extra={"arkalia_module": "scripts"})
         else:
-            ark_logger.info("\n🔗 Reflexia — Inactif", extra={"module": "scripts"})
+            ark_logger.info("\n🔗 Reflexia — Inactif", extra={"arkalia_module": "scripts"})
     except requests.RequestException as e:
-        ark_logger.info(f"💥 Erreur Reflexia : {e}", extra={"module": "scripts"})
+        ark_logger.info(f"💥 Erreur Reflexia : {e}", extra={"arkalia_module": "scripts"})
 
 
 def display_recent_errors() -> None:
-    ark_logger.info("\n📝 Dernières erreurs connues", extra={"module": "scripts"})
+    ark_logger.info("\n📝 Dernières erreurs connues", extra={"arkalia_module": "scripts"})
     if LOG_FILE.exists():
         with LOG_FILE.open("r", encoding="utf-8") as f:
             lines = f.readlines()
             ark_logger.info(
-                "".join(lines[-5:], extra={"module": "scripts"})
+                "".join(lines[-5:], extra={"arkalia_module": "scripts"})
             )  # Affiche les 5 dernières lignes du fichier de log
     else:
-        ark_logger.info("Aucune erreur connue.", extra={"module": "scripts"})
+        ark_logger.info("Aucune erreur connue.", extra={"arkalia_module": "scripts"})
 
 
 if __name__ == "__main__":
-    ark_logger.info("\n📄 ZeroIA — TOML State", extra={"module": "scripts"})
+    ark_logger.info("\n📄 ZeroIA — TOML State", extra={"arkalia_module": "scripts"})
     try:
         data = toml.load(STATE_PATH)
-        ark_logger.info(toml.dumps(data, extra={"module": "scripts"}))
+        ark_logger.info(toml.dumps(data, extra={"arkalia_module": "scripts"}))
     except Exception as e:
-        ark_logger.info(f"💥 Erreur lecture TOML : {e}", extra={"module": "scripts"})
+        ark_logger.info(f"💥 Erreur lecture TOML : {e}", extra={"arkalia_module": "scripts"})
 
-    ark_logger.info("\n📊 ZeroIA — Dashboard JSON", extra={"module": "scripts"})
+    ark_logger.info("\n📊 ZeroIA — Dashboard JSON", extra={"arkalia_module": "scripts"})
     try:
         data = json.loads(DASHBOARD_PATH.read_text())
-        ark_logger.info(json.dumps(data, indent=2, extra={"module": "scripts"}))
+        ark_logger.info(json.dumps(data, indent=2, extra={"arkalia_module": "scripts"}))
     except Exception as e:
-        ark_logger.info(f"💥 Erreur lecture JSON : {e}", extra={"module": "scripts"})
+        ark_logger.info(f"💥 Erreur lecture JSON : {e}", extra={"arkalia_module": "scripts"})
 
     check_docker_status()
     ping_reflexia()

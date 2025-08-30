@@ -108,18 +108,18 @@ def process_file(file_path: Path) -> bool:
         if content != original_content:
             with open(file_path, "w", encoding="utf-8") as f:
                 f.write(content)
-            ark_logger.info(f"✅ Fixed {file_path}", extra={"module": "scripts"})
+            ark_logger.info(f"✅ Fixed {file_path}", extra={"arkalia_module": "scripts"})
             return True
 
         return False
     except Exception as e:
-        ark_logger.error(f"❌ Error processing {file_path}: {e}", extra={"module": "scripts"})
+        ark_logger.error(f"❌ Error processing {file_path}: {e}", extra={"arkalia_module": "scripts"})
         return False
 
 
 def main() -> None:
     """Fonction principale"""
-    ark_logger.info("🔧 Début de la correction des imports et types...", extra={"module": "scripts"})
+    ark_logger.info("🔧 Début de la correction des imports et types...", extra={"arkalia_module": "scripts"})
 
     # Fichiers à traiter
     files_to_fix = [
@@ -177,10 +177,12 @@ def main() -> None:
 
     # Formatage final
     try:
+        subprocess.run(["black", "."], check=True, capture_output=True, text=True)
+        ark_logger.info("✅ Formatage Black appliqué", extra={"arkalia_module": "scripts"})
     except subprocess.CalledProcessError as e:
-        ark_logger.info(f"❌ Erreur formatage: {e}", extra={"module": "scripts"})
+        ark_logger.info(f"❌ Erreur formatage: {e}", extra={"arkalia_module": "scripts"})
 
-    ark_logger.info(f"\n✅ Fichiers corrigés: {fixed_count}", extra={"module": "scripts"})
+    ark_logger.info(f"\n✅ Fichiers corrigés: {fixed_count}", extra={"arkalia_module": "scripts"})
 
 
 if __name__ == "__main__":

@@ -52,7 +52,7 @@ def write_markdown(status: str, decisions: list[str]) -> None:
         else:
             f.write("Aucune décision récente détectée.\n")
 
-    ark_logger.info(f"✅ Statut écrit dans {OUTPUT_FILE}", extra={"module": "scripts"})
+    ark_logger.info(f"✅ Statut écrit dans {OUTPUT_FILE}", extra={"arkalia_module": "scripts"})
 
 
 def get_file_info(filepath) -> None:
@@ -75,7 +75,7 @@ def main() -> None:
 
     if not logs:
         ark_logger.info(
-            "❌ Impossible de récupérer les logs de ZeroIA.", extra={"module": "scripts"}
+            "❌ Impossible de récupérer les logs de ZeroIA.", extra={"arkalia_module": "scripts"}
         )
         sys.exit(1)
 

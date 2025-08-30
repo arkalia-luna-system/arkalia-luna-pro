@@ -14,16 +14,18 @@ def run_sitemap_generator(config=None) -> None:
         ark_logger.info(
             f"[hooks] ❌ Script non trouvé : {script_path}",
             file=sys.stderr,
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )
         return
 
     try:
         subprocess.run([sys.executable, script_path], check=True)  # nosec
-        ark_logger.info("[hooks] ✅ Sitemap généré avec succès", extra={"module": "scripts"})
+        ark_logger.info(
+            "[hooks] ✅ Sitemap généré avec succès", extra={"arkalia_module": "scripts"}
+        )
     except subprocess.CalledProcessError as e:
         ark_logger.info(
             f"[hooks] ❌ Erreur lors de l'exécution du sitemap : {e}",
             file=sys.stderr,
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )

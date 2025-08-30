@@ -57,7 +57,8 @@ def fix_typing_errors(file_path: Path) -> bool:
 def main():
     """Fonction principale"""
     ark_logger.warning(
-        "🔧 Correction automatique des erreurs de typing deprecated...", extra={"module": "scripts"}
+        "🔧 Correction automatique des erreurs de typing deprecated...",
+        extra={"arkalia_module": "scripts"},
     )
 
     # Trouver tous les fichiers Python
@@ -80,18 +81,19 @@ def main():
     for file_path in python_files:
         if fix_typing_errors(file_path):
             fixed_count += 1
-            ark_logger.info(f"✅ Corrigé: {file_path}", extra={"module": "scripts"})
+            ark_logger.info(f"✅ Corrigé: {file_path}", extra={"arkalia_module": "scripts"})
 
     ark_logger.info(
-        f"\n🎯 Résumé: {fixed_count}/{total_files} fichiers corrigés", extra={"module": "scripts"}
+        f"\n🎯 Résumé: {fixed_count}/{total_files} fichiers corrigés",
+        extra={"arkalia_module": "scripts"},
     )
 
     # Appliquer Black et isort
-    ark_logger.info("\n🎨 Application du formatage...", extra={"module": "scripts"})
+    ark_logger.info("\n🎨 Application du formatage...", extra={"arkalia_module": "scripts"})
     subprocess.run(["black", "."], check=False)
     subprocess.run(["isort", "."], check=False)
 
-    ark_logger.info("✅ Correction terminée!", extra={"module": "scripts"})
+    ark_logger.info("✅ Correction terminée!", extra={"arkalia_module": "scripts"})
 
 
 if __name__ == "__main__":

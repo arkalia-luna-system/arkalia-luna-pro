@@ -66,7 +66,7 @@ class LogScrubber:
                     user_config = json.load(f)
                 default_config.update(user_config)
             except Exception as e:
-                ark_logger.info(f"⚠️ [SCRUBBER] Erreur config: {e}, utilisation config par défaut", extra={"module": "scripts"})
+                ark_logger.info(f"⚠️ [SCRUBBER] Erreur config: {e}, utilisation config par défaut", extra={"arkalia_module": "scripts"})
 
         return default_config
 
@@ -142,7 +142,7 @@ class LogScrubber:
 
             ark_logger.info(
                 f"📦 [SCRUBBER] Archivé: {log_file.name} → {archive_name} "
-                f"(compression: {compression_ratio:.1f}%, extra={"module": "scripts"})"
+                f"(compression: {compression_ratio:.1f}%, extra={"arkalia_module": "scripts"})"
             )
 
             return archive_path
@@ -154,7 +154,7 @@ class LogScrubber:
     def _process_log_file(self, log_file: Path) -> bool:
         """Traite un fichier de log individuel"""
         try:
-            ark_logger.info(f"🧹 [SCRUBBER] Traitement: {log_file}", extra={"module": "scripts"})
+            ark_logger.info(f"🧹 [SCRUBBER] Traitement: {log_file}", extra={"arkalia_module": "scripts"})
 
             # Lecture du contenu
             with open(log_file, encoding="utf-8", errors="ignore") as f:
@@ -174,7 +174,7 @@ class LogScrubber:
                 # Suppression de l'original après archivage réussi
                 if not self.config["dry_run"] and archive_path:
                     log_file.unlink()
-                    ark_logger.info(f"🗑️ [SCRUBBER] Supprimé original: {log_file}", extra={"module": "scripts"})
+                    ark_logger.info(f"🗑️ [SCRUBBER] Supprimé original: {log_file}", extra={"arkalia_module": "scripts"})
             else:
                 # Réécriture du fichier nettoyé
                 if removed_count > 0 and not self.config["dry_run"]:
@@ -187,28 +187,28 @@ class LogScrubber:
             self.stats["bytes_saved"] += original_size - len(scrubbed_content)
 
             if removed_count > 0:
-                ark_logger.info(f"🛡️ [SCRUBBER] Données sensibles supprimées: {removed_count}", extra={"module": "scripts"})
+                ark_logger.info(f"🛡️ [SCRUBBER] Données sensibles supprimées: {removed_count}", extra={"arkalia_module": "scripts"})
 
             return True
 
         except Exception as e:
             error_msg = f"Erreur traitement {log_file}: {e}"
             self.stats["errors"].append(error_msg)
-            ark_logger.error(f"❌ [SCRUBBER] {error_msg}", extra={"module": "scripts"})
+            ark_logger.error(f"❌ [SCRUBBER] {error_msg}", extra={"arkalia_module": "scripts"})
             return False
 
     def run(self) -> dict:
         """Exécute le nettoyage complet des logs"""
         start_time = time.time()
         mode = "DRY RUN" if self.config["dry_run"] else "LIVE"
-        ark_logger.info(f"🚀 [SCRUBBER] Démarrage nettoyage logs - Mode: {mode}", extra={"module": "scripts"})
+        ark_logger.info(f"🚀 [SCRUBBER] Démarrage nettoyage logs - Mode: {mode}", extra={"arkalia_module": "scripts"})
 
         # Recherche des fichiers de logs
         log_files = self._find_log_files()
-        ark_logger.info(f"📂 [SCRUBBER] Fichiers trouvés: {len(log_files, extra={"module": "scripts"})}")
+        ark_logger.info(f"📂 [SCRUBBER] Fichiers trouvés: {len(log_files, extra={"arkalia_module": "scripts"})}")
 
         if not log_files:
-            ark_logger.info("ℹ️ [SCRUBBER] Aucun fichier de log à traiter", extra={"module": "scripts"})
+            ark_logger.info("ℹ️ [SCRUBBER] Aucun fichier de log à traiter", extra={"arkalia_module": "scripts"})
             return self.stats
 
         # Traitement des fichiers
@@ -240,12 +240,12 @@ class LogScrubber:
                     if not self.config["dry_run"]:
                         archive_file.unlink()
                     removed_count += 1
-                    ark_logger.info(f"🗑️ [SCRUBBER] Archive ancienne supprimée: {archive_file.name}", extra={"module": "scripts"})
+                    ark_logger.info(f"🗑️ [SCRUBBER] Archive ancienne supprimée: {archive_file.name}", extra={"arkalia_module": "scripts"})
             except Exception as e:
                 self.stats["errors"].append(f"Erreur suppression archive {archive_file}: {e}")
 
         if removed_count > 0:
-            ark_logger.info(f"🧹 [SCRUBBER] Archives anciennes supprimées: {removed_count}", extra={"module": "scripts"})
+            ark_logger.info(f"🧹 [SCRUBBER] Archives anciennes supprimées: {removed_count}", extra={"arkalia_module": "scripts"})
 
     def _generate_report(self, duration: float):
         """Génère le rapport final de nettoyage"""
@@ -270,20 +270,20 @@ class LogScrubber:
         with open(report_file, "w") as f:
             json.dump(report, f, indent=2)
 
-        ark_logger.info("\n📊 [SCRUBBER] RAPPORT FINAL:", extra={"module": "scripts"})
-        ark_logger.info(f"   ⏱️ Durée: {duration:.2f}s", extra={"module": "scripts"})
-        ark_logger.info(f"   📁 Fichiers traités: {self.stats['files_processed']}", extra={"module": "scripts"})
+        ark_logger.info("\n📊 [SCRUBBER] RAPPORT FINAL:", extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"   ⏱️ Durée: {duration:.2f}s", extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"   📁 Fichiers traités: {self.stats['files_processed']}", extra={"arkalia_module": "scripts"})
         sensitive_count = self.stats["sensitive_data_removed"]
-        ark_logger.info(f"   🛡️ Données sensibles supprimées: {sensitive_count}", extra={"module": "scripts"})
-        ark_logger.info(f"   💾 Octets économisés: {self.stats['bytes_saved']:,}", extra={"module": "scripts"})
-        ark_logger.info(f"   📦 Archives créées: {self.stats['archives_created']}", extra={"module": "scripts"})
-        ark_logger.error(f"   ❌ Erreurs: {len(self.stats['errors'], extra={"module": "scripts"})}")
-        ark_logger.info(f"   📄 Rapport: {report_file}", extra={"module": "scripts"})
+        ark_logger.info(f"   🛡️ Données sensibles supprimées: {sensitive_count}", extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"   💾 Octets économisés: {self.stats['bytes_saved']:,}", extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"   📦 Archives créées: {self.stats['archives_created']}", extra={"arkalia_module": "scripts"})
+        ark_logger.error(f"   ❌ Erreurs: {len(self.stats['errors'], extra={"arkalia_module": "scripts"})}")
+        ark_logger.info(f"   📄 Rapport: {report_file}", extra={"arkalia_module": "scripts"})
 
         if self.stats["errors"]:
-            ark_logger.info("\n⚠️ [SCRUBBER] ERREURS DÉTECTÉES:", extra={"module": "scripts"})
+            ark_logger.info("\n⚠️ [SCRUBBER] ERREURS DÉTECTÉES:", extra={"arkalia_module": "scripts"})
             for error in self.stats["errors"][:5]:  # Limite à 5 erreurs
-                ark_logger.error(f"   • {error}", extra={"module": "scripts"})
+                ark_logger.error(f"   • {error}", extra={"arkalia_module": "scripts"})
 
 
 def main():
@@ -312,7 +312,7 @@ def main():
         exit(exit_code)
 
     except KeyboardInterrupt:
-        ark_logger.info("\n🛑 [SCRUBBER] Interruption utilisateur", extra={"module": "scripts"})
+        ark_logger.info("\n🛑 [SCRUBBER] Interruption utilisateur", extra={"arkalia_module": "scripts"})
         exit(130)
     except Exception as e:
         raise RuntimeError(f"Erreur log scrubber: {e}") from e

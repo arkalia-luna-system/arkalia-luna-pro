@@ -53,7 +53,8 @@ def fix_file_annotations(file_path: str) -> int:
         with open(file_path, "w", encoding="utf-8") as f:
             f.write("\n".join(new_lines))
         ark_logger.info(
-            f"✅ {file_path}: {fixed_count} annotations ajoutées", extra={"module": "scripts"}
+            f"✅ {file_path}: {fixed_count} annotations ajoutées",
+            extra={"arkalia_module": "scripts"},
         )
 
     return fixed_count
@@ -79,14 +80,17 @@ def main():
                         total_fixed += fixed
                     except Exception as e:
                         ark_logger.info(
-                            f"❌ Erreur sur {file_path}: {e}", extra={"module": "scripts"}
+                            f"❌ Erreur sur {file_path}: {e}", extra={"arkalia_module": "scripts"}
                         )
 
-    ark_logger.info(f"\n🎯 Total: {total_fixed} annotations ajoutées", extra={"module": "scripts"})
+    ark_logger.info(
+        f"\n🎯 Total: {total_fixed} annotations ajoutées", extra={"arkalia_module": "scripts"}
+    )
 
     if total_fixed > 0:
         ark_logger.info(
-            "\n🔄 Relance Mypy pour vérifier les corrections...", extra={"module": "scripts"}
+            "\n🔄 Relance Mypy pour vérifier les corrections...",
+            extra={"arkalia_module": "scripts"},
         )
         os.system("mypy . --install-types --non-interactive | head -20")
 

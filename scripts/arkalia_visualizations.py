@@ -45,7 +45,9 @@ class ArkaliaVisualizer:
 
     def generate_system_metrics_dashboard(self, days: int = 7) -> None:
         """Génère un dashboard complet des métriques système"""
-        ark_logger.info("📊 Génération du dashboard système...", extra={"module": "scripts"})
+        ark_logger.info(
+            "📊 Génération du dashboard système...", extra={"arkalia_module": "scripts"}
+        )
 
         # Générer des données simulées
         dates = [datetime.now() - timedelta(days=i) for i in range(days, 0, -1)]
@@ -194,12 +196,14 @@ class ArkaliaVisualizer:
         # Sauvegarder
         output_path = self.output_dir / "system_dashboard.html"
         pyo.plot(fig, filename=str(output_path), auto_open=False)
-        ark_logger.info(f"✅ Dashboard sauvegardé: {output_path}", extra={"module": "scripts"})
+        ark_logger.info(
+            f"✅ Dashboard sauvegardé: {output_path}", extra={"arkalia_module": "scripts"}
+        )
 
     def generate_performance_timeline(self, hours: int = 24) -> None:
         """Génère une timeline de performance détaillée"""
         ark_logger.info(
-            "⏱️ Génération de la timeline de performance...", extra={"module": "scripts"}
+            "⏱️ Génération de la timeline de performance...", extra={"arkalia_module": "scripts"}
         )
 
         # Générer des données horaires
@@ -255,12 +259,15 @@ class ArkaliaVisualizer:
         output_path = self.output_dir / "performance_timeline.png"
         plt.savefig(output_path, dpi=300, bbox_inches="tight")
         plt.close()
-        ark_logger.info(f"✅ Timeline sauvegardée: {output_path}", extra={"module": "scripts"})
+        ark_logger.info(
+            f"✅ Timeline sauvegardée: {output_path}", extra={"arkalia_module": "scripts"}
+        )
 
     def generate_cognitive_load_heatmap(self, days: int = 7) -> None:
         """Génère une heatmap de la charge cognitive"""
         ark_logger.info(
-            "🧠 Génération de la heatmap de charge cognitive...", extra={"module": "scripts"}
+            "🧠 Génération de la heatmap de charge cognitive...",
+            extra={"arkalia_module": "scripts"},
         )
 
         # Données pour la heatmap
@@ -305,11 +312,15 @@ class ArkaliaVisualizer:
         output_path = self.output_dir / "cognitive_load_heatmap.png"
         plt.savefig(output_path, dpi=300, bbox_inches="tight")
         plt.close()
-        ark_logger.info(f"✅ Heatmap sauvegardée: {output_path}", extra={"module": "scripts"})
+        ark_logger.info(
+            f"✅ Heatmap sauvegardée: {output_path}", extra={"arkalia_module": "scripts"}
+        )
 
     def generate_event_timeline(self, events_data: list[dict] | None = None) -> None:
         """Génère une timeline des événements système"""
-        ark_logger.info("📅 Génération de la timeline d'événements...", extra={"module": "scripts"})
+        ark_logger.info(
+            "📅 Génération de la timeline d'événements...", extra={"arkalia_module": "scripts"}
+        )
 
         if events_data is None:
             # Données simulées
@@ -368,12 +379,15 @@ class ArkaliaVisualizer:
         output_path = self.output_dir / "event_timeline.html"
         pyo.plot(fig, filename=str(output_path), auto_open=False)
         ark_logger.info(
-            f"✅ Timeline d'événements sauvegardée: {output_path}", extra={"module": "scripts"}
+            f"✅ Timeline d'événements sauvegardée: {output_path}",
+            extra={"arkalia_module": "scripts"},
         )
 
     def generate_summary_report(self) -> None:
         """Génère un rapport de synthèse"""
-        ark_logger.info("📋 Génération du rapport de synthèse...", extra={"module": "scripts"})
+        ark_logger.info(
+            "📋 Génération du rapport de synthèse...", extra={"arkalia_module": "scripts"}
+        )
 
         # Statistiques simulées
         stats = {
@@ -444,14 +458,14 @@ class ArkaliaVisualizer:
             f.write(html_content)
 
         ark_logger.info(
-            f"✅ Rapport de synthèse sauvegardé: {output_path}", extra={"module": "scripts"}
+            f"✅ Rapport de synthèse sauvegardé: {output_path}", extra={"arkalia_module": "scripts"}
         )
 
     def generate_all_visualizations(self) -> None:
         """Génère toutes les visualisations"""
         ark_logger.info(
             "🚀 Génération de toutes les visualisations Arkalia-LUNA Pro...",
-            extra={"module": "scripts"},
+            extra={"arkalia_module": "scripts"},
         )
 
         try:
@@ -463,20 +477,24 @@ class ArkaliaVisualizer:
 
             ark_logger.info(
                 "🎉 Toutes les visualisations ont été générées avec succès!",
-                extra={"module": "scripts"},
+                extra={"arkalia_module": "scripts"},
             )
-            ark_logger.info(f"📁 Dossier de sortie: {self.output_dir}", extra={"module": "scripts"})
+            ark_logger.info(
+                f"📁 Dossier de sortie: {self.output_dir}", extra={"arkalia_module": "scripts"}
+            )
 
         except Exception as e:
-            ark_logger.info(f"❌ Erreur lors de la génération: {e}", extra={"module": "scripts"})
+            ark_logger.info(
+                f"❌ Erreur lors de la génération: {e}", extra={"arkalia_module": "scripts"}
+            )
 
 
 def main():
     """Fonction principale"""
     ark_logger.info(
-        "🌕 Arkalia-LUNA Pro - Générateur de Visualisations", extra={"module": "scripts"}
+        "🌕 Arkalia-LUNA Pro - Générateur de Visualisations", extra={"arkalia_module": "scripts"}
     )
-    ark_logger.info("=" * 50, extra={"module": "scripts"})
+    ark_logger.info("=" * 50, extra={"arkalia_module": "scripts"})
 
     visualizer = ArkaliaVisualizer()
     visualizer.generate_all_visualizations()
