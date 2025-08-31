@@ -394,7 +394,9 @@ class TestIntegrationLoadPerformance:
         total_time = end_time - start_time
         success_count = sum(1 for r in results if not isinstance(r, Exception))
 
-        assert total_time < 90.0  # Moins de 90 secondes (seuil réaliste pour opérations mémoire intensives)
+        assert (
+            total_time < 90.0
+        )  # Moins de 90 secondes (seuil réaliste pour opérations mémoire intensives)
         assert success_count > 15  # Au moins 75% de succès
 
 

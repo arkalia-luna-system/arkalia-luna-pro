@@ -48,7 +48,9 @@ def test_chat_post_empty(test_client) -> None:
     # nosec: assert_used
     # Vérifie que l'erreur de validation est présente
     error_detail = res.json()["detail"]
-    assert any("empty" in str(detail).lower() or "length" in str(detail).lower() for detail in error_detail), f"Détail inattendu: {error_detail}"
+    assert any(
+        "empty" in str(detail).lower() or "length" in str(detail).lower() for detail in error_detail
+    ), f"Détail inattendu: {error_detail}"
 
 
 def test_chat_post_bad_payload(test_client) -> None:

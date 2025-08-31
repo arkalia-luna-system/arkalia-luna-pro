@@ -162,7 +162,9 @@ class TestModelPoisoning(unittest.TestCase):
 
         # La décision devrait être cohérente malgré l'injection
         # Avec CPU 79.9% et severity "critical", la logique actuelle retourne "emergency_shutdown"
-        self.assertIn(decision, ["reduce_load", "emergency_shutdown"])  # Accepte les deux décisions logiques
+        self.assertIn(
+            decision, ["reduce_load", "emergency_shutdown"]
+        )  # Accepte les deux décisions logiques
         self.assertGreaterEqual(confidence, 0.7)
 
         # Le détecteur devrait signaler l'incohérence
@@ -331,4 +333,6 @@ if __name__ == "__main__":
     report = create_model_integrity_report()
     ark_logger.info("\n🛡️ Model Integrity Report:", extra={"arkalia_module": "general"})
     ark_logger.info(f"Status: {report['model_integrity']}", extra={"arkalia_module": "general"})
-    ark_logger.info(f"Recommendation: {report['recommendation']}", extra={"arkalia_module": "general"})
+    ark_logger.info(
+        f"Recommendation: {report['recommendation']}", extra={"arkalia_module": "general"}
+    )
