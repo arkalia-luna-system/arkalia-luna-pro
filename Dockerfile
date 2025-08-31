@@ -19,9 +19,9 @@ RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 # Copie et installation des dépendances
-COPY requirements.txt ./
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+COPY requirements-docker.txt ./
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements-docker.txt
 
 # Stage 2: Runtime - Image finale légère
 FROM python:3.10-slim AS runtime
