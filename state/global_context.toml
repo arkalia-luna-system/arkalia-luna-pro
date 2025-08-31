@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-last_update = "2025-07-01T00:13:49.332518"
-=======
 last_update = "2025-07-04T01:01:25.780377"
->>>>>>> dev-migration
 system_status = "operational"
-active_modules = [ "reflexia", "zeroia", "assistantia",]
+active_modules = [ "reflexia", "zeroia", "assistantia"]

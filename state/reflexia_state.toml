@@ -1,16 +1,7 @@
-<<<<<<< HEAD
-last_execution = "2025-07-01T00:13:49.332504"
-=======
 last_execution = "2025-07-04T01:01:25.780371"
->>>>>>> dev-migration
 recent_errors = []
 status = "active"
 
 [decision_metrics]
-<<<<<<< HEAD
-confidence = 0.9172168952811777
-accuracy = 0.9469987713145459
-=======
 confidence = 0.8100227418685156
 accuracy = 0.9335945050521486
->>>>>>> dev-migration

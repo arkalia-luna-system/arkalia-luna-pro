@@ -1,6 +1,2 @@
-<<<<<<<< HEAD:chaos_metric_1.toml
-id = 1
-========
 id = 6
->>>>>>>> dev-migration:chaos_metric_6.toml
 status = "testing"
