@@ -1,0 +1,38 @@
+# 🚀 Dockerfile Arkalia-LUNA Simplifié
+FROM python:3.10-slim
+
+# Variables d'environnement
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Installation des outils système
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+# Création utilisateur non-root
+RUN groupadd -r arkalia && \
+    useradd -r -g arkalia -d /app -s /bin/bash arkalia && \
+    mkdir -p /app/logs /app/state && \
+    chown -R arkalia:arkalia /app
+
+# Répertoire de travail
+WORKDIR /app
+
+# Copie des fichiers essentiels uniquement
+COPY --chown=arkalia:arkalia requirements.txt ./
+COPY --chown=arkalia:arkalia helloria ./helloria
+COPY --chown=arkalia:arkalia modules ./modules
+COPY --chown=arkalia:arkalia core ./core
+COPY --chown=arkalia:arkalia run_arkalia_api.py ./
+
+# Installation des dépendances
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Switch vers utilisateur non-root
+USER arkalia
+
+# Port exposé
+EXPOSE 8000
+
+# Point d'entrée
+CMD ["python", "run_arkalia_api.py"]
