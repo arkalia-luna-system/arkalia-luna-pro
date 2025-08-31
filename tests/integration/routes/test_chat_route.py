@@ -25,19 +25,22 @@ def test_chat_post_ok(mock_query_ollama, test_client) -> None:
     # Mock simple qui retourne directement le message
     mock_query_ollama.return_value = "Réponse: Hello"
 
-    res = test_client.post("/api/v1/chat", json={"message": "Hello"})
-    # nosec: assert_used
-    assert res.status_code == 200, "Statut inattendu"  # nosec
-    # nosec: assert_used
-    # Accepte la réponse système générique ou le message attendu
-    rep = res.json()["response"]
-    assert (
-        "Hello" in rep
-        or "Bonjour" in rep
-        or "ZeroIA" in rep
-        or "prêt à vous aider" in rep
-        or "Réponse:" in rep
-    ), f"Réponse inattendue: {rep}"
+    # Mock de la fonction de validation pour éviter les erreurs 503
+    with patch("modules.assistantia.core.get_query_ollama", return_value=override_success):
+        with patch("modules.assistantia.core._check_ollama_health", return_value=True):
+            res = test_client.post("/chat", json={"message": "Hello"})
+            # nosec: assert_used
+            assert res.status_code == 200, "Statut inattendu"  # nosec
+            # nosec: assert_used
+            # Accepte la réponse système générique ou le message attendu
+            rep = res.json()["response"]
+            assert (
+                "Hello" in rep
+                or "Bonjour" in rep
+                or "ZeroIA" in rep
+                or "prêt à vous aider" in rep
+                or "Réponse:" in rep
+            ), f"Réponse inattendue: {rep}"
 
 
 def test_chat_post_empty(test_client) -> None:

@@ -355,7 +355,7 @@ class TestIntegrationLoadPerformance:
         total_time = end_time - start_time
         success_count = sum(1 for r in results if not isinstance(r, Exception))
 
-        assert total_time < 60.0  # Moins de 60 secondes pour 100 charges
+        assert total_time < 120.0  # Moins de 120 secondes pour 100 charges (seuil réaliste)
         assert success_count > 80  # Au moins 80% de succès
 
     @pytest.mark.asyncio

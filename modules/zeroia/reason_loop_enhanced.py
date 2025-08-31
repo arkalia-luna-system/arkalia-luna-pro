@@ -241,8 +241,7 @@ def load_toml_enhanced_cache(path: Path, max_age: int | None = None) -> dict:
                 _CACHE_TIMESTAMPS[path_str] = current_time
                 ark_logger.info(
                     f"✅ [ZeroIA Enhanced] Contexte par défaut créé: {path}",
-                    flush=True,
-                    extra={"module": "zeroia"},
+                    extra={"arkalia_module": "zeroia"},
                 )
                 return default_context
             raise ValueError(f"TOML file {path} is empty or missing")
@@ -645,20 +644,17 @@ def reason_loop_enhanced_with_recovery(
         ark_logger.error(
             f"{error_recovery_status} ZeroIA decided: {decision} "
             f"(confidence={score}, health={system_health:.2f})",
-            flush=True,
-            extra={"module": "zeroia"},
+            extra={"arkalia_module": "zeroia"},
         )
         ark_logger.info(
             f"[ZeroIA] CPU usage: {cpu}% → decision={decision} (score={score})",
-            flush=True,
-            extra={"module": "zeroia"},
+            extra={"arkalia_module": "zeroia"},
         )
 
         if decision_error:
             ark_logger.error(
                 f"[ZeroIA] Error Recovery triggered for: {type(decision_error).__name__}",
-                flush=True,
-                extra={"module": "zeroia"},
+                extra={"arkalia_module": "zeroia"},
             )
 
         return decision, score
@@ -724,7 +720,7 @@ def main_loop_enhanced() -> None:
 
     except SystemRebootRequired as e:
         ark_logger.info(
-            f"[ZeroIA Enhanced] 🔄 REDÉMARRAGE REQUIS: {e}", flush=True, extra={"module": "zeroia"}
+            f"[ZeroIA Enhanced] 🔄 REDÉMARRAGE REQUIS: {e}", extra={"arkalia_module": "zeroia"}
         )
 
         # Event sourcing critique
@@ -743,15 +739,13 @@ def main_loop_enhanced() -> None:
         time.sleep(60)
 
     except (CognitiveOverloadError, DecisionIntegrityError) as e:
-        ark_logger.info(
-            f"[ZeroIA Enhanced] ⚠️ SURCHARGE: {e}", flush=True, extra={"module": "zeroia"}
-        )
+        ark_logger.info(f"[ZeroIA Enhanced] ⚠️ SURCHARGE: {e}", extra={"arkalia_module": "zeroia"})
 
         # Graceful degradation
         time.sleep(30)
 
     except Exception as e:
-        ark_logger.info(f"[ZeroIA Enhanced] 🚨 ERREUR: {e}", flush=True, extra={"module": "zeroia"})
+        ark_logger.info(f"[ZeroIA Enhanced] 🚨 ERREUR: {e}", extra={"arkalia_module": "zeroia"})
         logger.exception(e)
 
         # Event sourcing d'erreur
@@ -781,7 +775,9 @@ def reset_circuit_breaker() -> None:
     """Réinitialise manuellement le circuit breaker"""
     cb, es, _, _ = initialize_components_with_recovery()
     cb.reset()
-    ark_logger.info("🔄 Circuit breaker réinitialisé manuellement", extra={"module": "zeroia"})
+    ark_logger.info(
+        "🔄 Circuit breaker réinitialisé manuellement", extra={"arkalia_module": "zeroia"}
+    )
 
 
 def cleanup_components(circuit_breaker: CircuitBreaker, event_store: EventStore) -> None:
