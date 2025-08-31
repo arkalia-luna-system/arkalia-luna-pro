@@ -23,8 +23,12 @@ def test_print_routes():
 
 def test_chat_endpoint_success():
     """Teste l'endpoint /api/v1/chat avec un message valide."""
-    with patch(
-        "modules.assistantia.core.real_query_ollama", return_value="Réponse simulée pour le test"
+    with (
+        patch(
+            "modules.assistantia.core.real_query_ollama",
+            return_value="Réponse simulée pour le test",
+        ),
+        patch("modules.assistantia.core._check_ollama_health", return_value=True),
     ):
         client = TestClient(app)
         response = client.post("/api/v1/chat", json={"message": "Bonjour"})
@@ -37,8 +41,12 @@ def test_chat_endpoint_success():
 
 def test_chat_endpoint_empty_payload():
     """Teste l'endpoint /api/v1/chat avec un payload vide."""
-    with patch(
-        "modules.assistantia.core.real_query_ollama", return_value="Réponse simulée pour le test"
+    with (
+        patch(
+            "modules.assistantia.core.real_query_ollama",
+            return_value="Réponse simulée pour le test",
+        ),
+        patch("modules.assistantia.core._check_ollama_health", return_value=True),
     ):
         client = TestClient(app)
         response = client.post("/api/v1/chat", json={})
@@ -47,8 +55,12 @@ def test_chat_endpoint_empty_payload():
 
 def test_chat_endpoint_empty_message():
     """Teste l'endpoint /api/v1/chat avec un message vide."""
-    with patch(
-        "modules.assistantia.core.real_query_ollama", return_value="Réponse simulée pour le test"
+    with (
+        patch(
+            "modules.assistantia.core.real_query_ollama",
+            return_value="Réponse simulée pour le test",
+        ),
+        patch("modules.assistantia.core._check_ollama_health", return_value=True),
     ):
         client = TestClient(app)
         response = client.post("/api/v1/chat", json={"message": ""})
@@ -58,8 +70,12 @@ def test_chat_endpoint_empty_message():
 
 def test_chat_endpoint_missing_message():
     """Teste l'endpoint /api/v1/chat sans le champ message."""
-    with patch(
-        "modules.assistantia.core.real_query_ollama", return_value="Réponse simulée pour le test"
+    with (
+        patch(
+            "modules.assistantia.core.real_query_ollama",
+            return_value="Réponse simulée pour le test",
+        ),
+        patch("modules.assistantia.core._check_ollama_health", return_value=True),
     ):
         client = TestClient(app)
         response = client.post("/api/v1/chat", json={"other_field": "value"})
@@ -68,15 +84,16 @@ def test_chat_endpoint_missing_message():
 
 def test_health_endpoint():
     """Teste l'endpoint /api/v1/health."""
-    client = TestClient(app)
-    response = client.get("/api/v1/health")
-    assert response.status_code == 200
-    data = response.json()
-    assert "status" in data
-    assert "ollama_available" in data
-    assert "arkalia_modules" in data
-    assert "uptime" in data
-    assert "version" in data
+    with patch("modules.assistantia.core._check_ollama_health", return_value=True):
+        client = TestClient(app)
+        response = client.get("/api/v1/health")
+        assert response.status_code == 200
+        data = response.json()
+        assert "status" in data
+        assert "ollama_available" in data
+        assert "arkalia_modules" in data
+        assert "uptime" in data
+        assert "version" in data
 
 
 def test_metrics_endpoint():
