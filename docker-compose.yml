@@ -38,10 +38,10 @@ services:
       - ARKALIA_LOG_LEVEL=INFO
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 15s
-      retries: 5
-      start_period: 120s
+      interval: 45s
+      timeout: 20s
+      retries: 3
+      start_period: 180s
     deploy:
       resources:
         limits:
@@ -74,10 +74,10 @@ services:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8001/api/v1/health"]
-      interval: 30s
-      timeout: 10s
+      interval: 45s
+      timeout: 15s
       retries: 3
-      start_period: 30s
+      start_period: 60s
     restart: unless-stopped
     volumes:
       - ./logs:/app/logs
@@ -96,6 +96,7 @@ services:
 
   # 🔁 ReflexIA — Observateur cognitif réflexif Optimisé
   reflexia:
+    <<: *arkalia-defaults
     build:
       context: .
       dockerfile: docker/Dockerfile.reflexia
@@ -110,12 +111,15 @@ services:
       - REFLEXIA_ENV=production
     networks:
       - arkalia_network
+    depends_on:
+      arkalia-api:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
-      interval: 30s
-      timeout: 10s
+      interval: 45s
+      timeout: 15s
       retries: 3
-      start_period: 20s
+      start_period: 60s
     command: ["uvicorn", "run_reflexia_api:app", "--host", "0.0.0.0", "--port", "8002"]
 
   # 🧠 Sandozia — Intelligence Croisée Enterprise v2.6.0 Optimisée
@@ -143,10 +147,10 @@ services:
           "-c",
           "from modules.sandozia.core.sandozia_core import SandoziaCore; print('OK')",
         ]
-      interval: 45s
-      timeout: 10s
+      interval: 60s
+      timeout: 20s
       retries: 3
-      start_period: 20s
+      start_period: 90s
     deploy:
       resources:
         limits:
@@ -158,6 +162,7 @@ services:
 
   # 🧠 Cognitive Reactor — Intelligence Avancée v2.7.0 Production Ready
   cognitive:
+    <<: *arkalia-defaults
     build:
       context: .
       dockerfile: docker/Dockerfile.cognitive-reactor
@@ -172,12 +177,15 @@ services:
       - COGNITIVE_REACTOR_ENV=production
     networks:
       - arkalia_network
+    depends_on:
+      reflexia:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
-      interval: 30s
-      timeout: 10s
+      interval: 45s
+      timeout: 15s
       retries: 3
-      start_period: 20s
+      start_period: 60s
     command: ["uvicorn", "run_cognitive_api:app", "--host", "0.0.0.0", "--port", "8003"]
 
   # 🚀 Generative AI — Intelligence Générative Avancée v2.8.0
