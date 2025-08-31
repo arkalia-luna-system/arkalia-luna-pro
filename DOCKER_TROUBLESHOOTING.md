@@ -1,207 +1,189 @@
 # 🐳 Guide de dépannage Docker - Arkalia-LUNA
 
-## 🚨 Problèmes identifiés et solutions
+## 🚨 **Problèmes courants et solutions**
 
-### ❌ **Problème principal : Conteneurs marqués comme "unhealthy"**
+### **1. Conteneur arkalia-api "unhealthy"**
 
-**Symptômes :**
-- Build Docker réussi
-- Conteneurs créés mais démarrage échoué
-- Erreur : `dependency failed to start: container arkalia-api is unhealthy`
+#### **Symptômes :**
+```
+Container arkalia-api Error
+dependency failed to start: container arkalia-api is unhealthy
+```
 
-**Causes identifiées :**
-1. **Healthchecks avec `curl`** : `curl` n'est pas installé dans les conteneurs
-2. **Dépendances circulaires** : Services qui dépendent les uns des autres
-3. **Timeouts trop courts** : Healthchecks qui échouent avant que les services soient prêts
+#### **Causes possibles :**
+- **Port incorrect** : Le service écoute sur `127.0.0.1` au lieu de `0.0.0.0`
+- **Healthcheck trop strict** : L'endpoint `/health` n'est pas accessible
+- **Dépendances manquantes** : Modules Python non trouvés
+- **Timing** : Le service n'a pas le temps de démarrer avant le healthcheck
 
-## 🔧 **Solutions appliquées**
+#### **Solutions :**
 
-### 1. **Fichier Docker Compose corrigé** (`docker-compose-fixed.yml`)
+##### **A. Vérifier la configuration du port**
+```python
+# Dans run_arkalia_api.py, s'assurer que :
+uvicorn.run(
+    app,
+    host="0.0.0.0",  # ✅ Correct pour Docker
+    port=8000,
+    # ...
+)
+```
 
-**Améliorations :**
-- ✅ Healthchecks avec Python au lieu de `curl`
-- ✅ Dépendances ordonnées et logiques
-- ✅ Timeouts et retries ajustés
-- ✅ Gestion robuste des services
+##### **B. Vérifier l'endpoint /health**
+```bash
+# Tester localement
+curl -f http://localhost:8000/health
+# Doit retourner : {"status": "ok"}
+```
 
-**Changements clés :**
+##### **C. Ajuster les paramètres de healthcheck**
 ```yaml
-# Avant (problématique)
+# Dans docker-compose.yml
 healthcheck:
   test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-
-# Après (corrigé)
-healthcheck:
-  test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health', timeout=5)"]
-  start_period: 60s  # Plus de temps pour le démarrage
+  interval: 30s      # ✅ Augmenter si nécessaire
+  timeout: 15s       # ✅ Augmenter si nécessaire
+  retries: 5         # ✅ Augmenter si nécessaire
+  start_period: 120s # ✅ Augmenter si nécessaire
 ```
 
-### 2. **Script de démarrage robuste** (`scripts/docker-start-robust.sh`)
+### **2. Dépendances circulaires entre services**
 
-**Fonctionnalités :**
-- 🚀 Démarrage séquentiel des services
-- ⏳ Attente intelligente des healthchecks
-- 🔍 Vérification des endpoints
-- 📊 Monitoring du statut des services
+#### **Problème :**
+Les services dépendent les uns des autres, créant des deadlocks.
 
-**Ordre de démarrage :**
-1. **arkalia-api** (service principal)
-2. **reflexia** (dépend de l'API)
-3. **autres services** (dépendent de ReflexIA)
+#### **Solution :**
+Démarrer les services dans l'ordre correct avec des délais :
 
-### 3. **Variables d'environnement** (`docker.env`)
-
-**Configuration :**
-- Ports standardisés
-- Environnements cohérents
-- Timeouts configurables
-- Ressources Docker optimisées
-
-## 🚀 **Utilisation des corrections**
-
-### **Option 1 : Utiliser le fichier corrigé directement**
 ```bash
-# Démarrer avec le fichier corrigé
-docker-compose -f docker-compose-fixed.yml up -d
-
-# Vérifier le statut
-docker-compose -f docker-compose-fixed.yml ps
+# Utiliser le script de démarrage robuste
+./docker-start.sh
 ```
 
-### **Option 2 : Utiliser le script robuste (recommandé)**
-```bash
-# Rendre le script exécutable
-chmod +x scripts/docker-start-robust.sh
+**Ordre recommandé :**
+1. `arkalia-api` (service principal)
+2. `reflexia` (après que arkalia-api soit healthy)
+3. `arkalia-sandozia` (après que reflexia soit healthy)
+4. `arkalia-assistantia` (après que arkalia-api soit healthy)
+5. `cognitive` (après que reflexia soit healthy)
 
-# Lancer le démarrage robuste
-./scripts/docker-start-robust.sh
+### **3. Tests de healthcheck locaux**
+
+#### **Script de test :**
+```bash
+./test_healthcheck.sh
 ```
 
-### **Option 3 : Utiliser les variables d'environnement**
+#### **Tests manuels :**
 ```bash
-# Charger les variables d'environnement
-export $(cat docker.env | xargs)
-
-# Démarrer avec Docker Compose
-docker-compose -f docker-compose-fixed.yml up -d
-```
-
-## 🔍 **Vérification et diagnostic**
-
-### **Vérifier le statut des services**
-```bash
-# Statut général
-docker-compose -f docker-compose-fixed.yml ps
-
-# Logs d'un service spécifique
-docker-compose -f docker-compose-fixed.yml logs arkalia-api
-
-# Logs en temps réel
-docker-compose -f docker-compose-fixed.yml logs -f reflexia
-```
-
-### **Tester les endpoints**
-```bash
-# API principale
+# Test de l'endpoint /health
 curl -f http://localhost:8000/health
 
-# AssistantIA
-curl -f http://localhost:8001/api/v1/health
+# Test de l'endpoint /status
+curl -f http://localhost:8000/status
 
-# ReflexIA
-curl -f http://localhost:8002/health
-
-# Cognitive Reactor
-curl -f http://localhost:8003/health
+# Test de l'endpoint racine
+curl -f http://localhost:8000/
 ```
 
-### **Vérifier les ressources Docker**
+### **4. Logs et diagnostic**
+
+#### **Voir les logs d'un service :**
 ```bash
-# Utilisation des ressources
-docker stats
-
-# Espace disque
-docker system df
-
-# Nettoyage si nécessaire
-docker system prune -f
+docker-compose logs arkalia-api
+docker-compose logs reflexia
+docker-compose logs arkalia-sandozia
 ```
 
-## 🛠️ **Résolution des problèmes courants**
-
-### **Problème : Service ne démarre pas**
+#### **Voir le statut des services :**
 ```bash
-# 1. Vérifier les logs
-docker-compose -f docker-compose-fixed.yml logs <service-name>
-
-# 2. Redémarrer le service
-docker-compose -f docker-compose-fixed.yml restart <service-name>
-
-# 3. Vérifier les dépendances
-docker-compose -f docker-compose-fixed.yml ps
+docker-compose ps
 ```
 
-### **Problème : Healthcheck échoue**
+#### **Redémarrer un service spécifique :**
 ```bash
-# 1. Vérifier que le service écoute sur le bon port
-docker exec -it <container-name> netstat -tlnp
-
-# 2. Tester l'endpoint depuis l'intérieur du conteneur
-docker exec -it <container-name> python -c "import requests; print(requests.get('http://localhost:8000/health'))"
-
-# 3. Vérifier les variables d'environnement
-docker exec -it <container-name> env | grep ARKALIA
+docker-compose restart arkalia-api
 ```
 
-### **Problème : Port déjà utilisé**
+### **5. Nettoyage et redémarrage complet**
+
+#### **Arrêter tous les services :**
 ```bash
-# 1. Identifier le processus qui utilise le port
-lsof -i :8000
-
-# 2. Arrêter le processus
-kill -9 <PID>
-
-# 3. Ou changer le port dans docker.env
-echo "PORT_API=8001" >> docker.env
+docker-compose down --remove-orphans
 ```
 
-## 📚 **Documentation et ressources**
-
-### **Fichiers de configuration**
-- `docker-compose-fixed.yml` : Configuration Docker Compose corrigée
-- `docker.env` : Variables d'environnement
-- `scripts/docker-start-robust.sh` : Script de démarrage robuste
-
-### **Commandes utiles**
+#### **Nettoyer les images :**
 ```bash
-# Arrêter tous les services
-docker-compose -f docker-compose-fixed.yml down
-
-# Arrêter et supprimer les volumes
-docker-compose -f docker-compose-fixed.yml down -v
-
-# Reconstruire les images
-docker-compose -f docker-compose-fixed.yml build --no-cache
-
-# Voir les logs de tous les services
-docker-compose -f docker-compose-fixed.yml logs
+docker-compose down --rmi all --volumes --remove-orphans
 ```
 
-### **Support et dépannage**
-- Vérifiez que Docker est en cours d'exécution
-- Assurez-vous d'avoir suffisamment de ressources (RAM, CPU)
-- Vérifiez que les ports ne sont pas déjà utilisés
-- Consultez les logs pour identifier les erreurs spécifiques
+#### **Redémarrer depuis zéro :**
+```bash
+./docker-start.sh
+```
 
-## 🎯 **Objectif final**
+### **6. Vérification de l'environnement**
 
-Avec ces corrections, Arkalia-LUNA devrait :
-- ✅ Démarrer de manière robuste et fiable
-- ✅ Gérer correctement les dépendances entre services
-- ✅ Fournir des healthchecks fonctionnels
-- ✅ Offrir un monitoring en temps réel
-- ✅ Être prêt pour la production
+#### **Dépendances système :**
+```bash
+# Vérifier que curl est installé dans le conteneur
+docker exec arkalia-api which curl
+
+# Vérifier les permissions des fichiers
+docker exec arkalia-api ls -la /app
+```
+
+#### **Variables d'environnement :**
+```bash
+# Voir les variables d'environnement d'un conteneur
+docker exec arkalia-api env
+```
+
+### **7. Scripts de démarrage**
+
+#### **Script principal :**
+- `docker-start.sh` : Démarrage robuste avec gestion des dépendances
+- `test_healthcheck.sh` : Test des endpoints de santé
+
+#### **Utilisation :**
+```bash
+# Rendre exécutables
+chmod +x docker-start.sh test_healthcheck.sh
+
+# Démarrer
+./docker-start.sh
+
+# Tester
+./test_healthcheck.sh
+```
+
+## 🔧 **Configuration recommandée**
+
+### **Healthchecks optimisés :**
+```yaml
+healthcheck:
+  test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+  interval: 45s      # Plus long pour éviter la surcharge
+  timeout: 20s       # Plus long pour les services lents
+  retries: 3         # Moins de tentatives
+  start_period: 180s # Plus long pour le démarrage initial
+```
+
+### **Dépendances avec conditions :**
+```yaml
+depends_on:
+  arkalia-api:
+    condition: service_healthy
+  reflexia:
+    condition: service_healthy
+```
+
+## 📚 **Ressources supplémentaires**
+
+- [Documentation Docker Compose](https://docs.docker.com/compose/)
+- [Healthchecks Docker](https://docs.docker.com/engine/reference/builder/#healthcheck)
+- [Troubleshooting Docker](https://docs.docker.com/config/daemon/#troubleshooting)
 
 ---
 
-*Guide créé le 31 août 2025 - Arkalia-LUNA v2.8.0* 🌕
+**💡 Conseil :** Utilisez toujours `./docker-start.sh` pour un démarrage fiable des services !

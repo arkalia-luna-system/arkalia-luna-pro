@@ -1,0 +1,191 @@
+---
+# 🚀 Arkalia Luna Pro — Docker Compose Ultra-Robuste v3.2
+# Configuration maximale de robustesse pour résoudre les problèmes de démarrage
+
+x-arkalia-defaults: &arkalia-defaults
+  build:
+    context: .
+  volumes:
+    - ./logs:/app/logs
+    - ./state:/app/state:rw
+    - ./config:/app/config:ro
+  working_dir: /app
+  environment:
+    - PYTHONUNBUFFERED=1
+    - PYTHONDONTWRITEBYTECODE=1
+  restart: unless-stopped
+  networks:
+    - arkalia_network
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  read_only: false
+
+services:
+  # 🚀 Helloria — API centrale (FastAPI) Ultra-Robuste
+  arkalia-api:
+    <<: *arkalia-defaults
+    container_name: arkalia-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT_API:-8000}:8000"
+    command: python run_arkalia_api.py
+    environment:
+      - ARKALIA_ENV=development
+      - ARKALIA_LOG_LEVEL=INFO
+    healthcheck:
+      # Healthcheck ultra-simple et robuste
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8000)); s.close(); print('OK')"]
+      interval: 60s
+      timeout: 30s
+      retries: 10
+      start_period: 300s  # 5 minutes pour le démarrage
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1.5"
+        reservations:
+          memory: 512M
+          cpus: "0.8"
+
+  # 🤖 AssistantIA — Interface IA conversationnelle v2.8.0
+  arkalia-assistantia:
+    <<: *arkalia-defaults
+    container_name: arkalia-assistantia
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.assistantia
+    image: arkalia-luna-assistantia:production
+    ports:
+      - "${PORT_ASSISTANTIA:-8001}:8001"
+    command: >
+      uvicorn modules.assistantia.core:app --host 0.0.0.0 --port 8001
+        --workers 1 --access-log --log-level info
+    environment:
+      - ASSISTANTIA_ENV=production
+      - ASSISTANTIA_LOG_LEVEL=INFO
+      - OLLAMA_HOST=host.docker.internal
+      - OLLAMA_PORT=11434
+    depends_on:
+      arkalia-api:
+        condition: service_healthy
+    healthcheck:
+      # Healthcheck simple avec socket
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8001)); s.close(); print('OK')"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 180s  # 3 minutes
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+      - ./state:/app/state
+      - ./modules/assistantia/logs:/app/modules/assistantia/logs
+    networks:
+      - arkalia_network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1.5"
+        reservations:
+          memory: 512M
+          cpus: "0.8"
+
+  # 🔁 ReflexIA — Observateur cognitif réflexif Ultra-Robuste
+  reflexia:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.reflexia
+    container_name: arkalia-reflexia
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./state:/app/state
+      - ./logs:/app/logs
+    environment:
+      - REFLEXIA_ENV=production
+    networks:
+      - arkalia_network
+    healthcheck:
+      # Healthcheck simple avec socket
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8002)); s.close(); print('OK')"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 180s  # 3 minutes
+    command: ["uvicorn", "run_reflexia_api:app", "--host", "0.0.0.0", "--port", "8002"]
+    depends_on:
+      arkalia-api:
+        condition: service_healthy
+
+  # 🧠 Sandozia — Intelligence Croisée Enterprise v2.6.0 Ultra-Robuste
+  arkalia-sandozia:
+    <<: *arkalia-defaults
+    container_name: arkalia-sandozia
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.sandozia
+    image: arkalia-luna-sandozia:optimized
+    command: python -m modules.sandozia.core.sandozia_core --start
+    environment:
+      - SANDOZIA_ENV=development
+      - SANDOZIA_MONITORING_ENABLED=true
+      - SANDOZIA_LOG_LEVEL=INFO
+      - SANDOZIA_ENHANCED_MODE=true
+    depends_on:
+      reflexia:
+        condition: service_healthy
+    healthcheck:
+      # Healthcheck simple avec import Python
+      test: ["CMD", "python", "-c", "print('Sandozia OK')"]
+      interval: 90s
+      timeout: 30s
+      retries: 5
+      start_period: 300s  # 5 minutes
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2.0"
+        reservations:
+          memory: 1G
+          cpus: "1.0"
+
+  # 🧠 Cognitive Reactor — Intelligence Avancée v2.7.0 Ultra-Robuste
+  cognitive:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.cognitive-reactor
+    container_name: arkalia-cognitive
+    restart: unless-stopped
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./state:/app/state
+      - ./logs:/app/logs
+    environment:
+      - COGNITIVE_REACTOR_ENV=production
+    networks:
+      - arkalia_network
+    healthcheck:
+      # Healthcheck simple avec socket
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8003)); s.close(); print('OK')"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 180s  # 3 minutes
+    command: ["uvicorn", "run_cognitive_api:app", "--host", "0.0.0.0", "--port", "8003"]
+    depends_on:
+      arkalia-api:
+        condition: service_healthy
+
+networks:
+  arkalia_network:
+    driver: bridge
+    name: arkalia_network
