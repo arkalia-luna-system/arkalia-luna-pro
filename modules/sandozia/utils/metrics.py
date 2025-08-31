@@ -242,7 +242,7 @@ def demo_metrics():
 
     metrics = create_sandozia_metrics()
 
-    ark_logger.info("📊 Generating demo metrics...", extra={"module": "utils"})
+    ark_logger.info("📊 Generating demo metrics...", extra={"arkalia_module": "utils"})
 
     # Générer des métriques synthétiques
     for _i in range(100):

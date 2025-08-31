@@ -87,7 +87,7 @@ async def main():
 
     # Test du module
     result = await core.process({"test": "data"})
-    ark_logger.info(f"✅ Résultat: {result}", extra={"module": "security"})
+    ark_logger.info(f"✅ Résultat: {result}", extra={"arkalia_module": "security"})
 
     health = core.health_check()
     ark_logger.info(f"🏥 Santé: {health}", extra={"module": "security"})

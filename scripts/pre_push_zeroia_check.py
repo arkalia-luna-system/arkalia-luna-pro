@@ -2,15 +2,24 @@
 # 🚫 Pre-push ZeroIA Validator — Arkalia LUNA v2.6.x
 
 import re
+from pathlib import Path
 
-from core.ark_logger import ark_logger
+try:
+    from core.ark_logger import ark_logger
+except ImportError:
+    # Fallback si l'import échoue
+    import logging
+
+    ark_logger = logging.getLogger("arkalia")
+    ark_logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter("%(levelname)s - %(message)s"))
+    ark_logger.addHandler(handler)
 
 try:
     import tomllib  # type: ignore
 except ModuleNotFoundError:
     import tomli as tomllib  # type: ignore
-
-from pathlib import Path
 
 STATE_FILE = Path("modules/zeroia/state/zeroia_state.toml")
 DASHBOARD_FILE = Path("state/zeroia_dashboard.json")

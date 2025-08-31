@@ -21,11 +21,23 @@ import toml
 
 try:
     from modules.utils.helpers.io_safe import read_state_safe
-    from modules.zeroia.failsafe import restore_backup
 except ImportError as e:
     print(f"Erreur d'import: {e}")
     print("Vérifiez que le PYTHONPATH inclut le répertoire racine du projet")
     sys.exit(1)
+
+
+def restore_backup(source_path: str, target_path: str) -> None:
+    """Restaure un fichier de sauvegarde."""
+    import shutil
+
+    try:
+        shutil.copy2(source_path, target_path)
+        logger.info(f"Backup restauré : {source_path} → {target_path}")
+    except Exception as e:
+        logger.error(f"Erreur lors de la restauration : {e}")
+        raise
+
 
 # Configuration du logging
 logging.basicConfig(

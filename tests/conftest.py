@@ -35,9 +35,7 @@ class MockSandoziaCore:
 
 
 # Mock des modules qui n'existent pas
-sys.modules["modules.zeroia.core"] = MagicMock()
 sys.modules["modules.zeroia.reason_loop"] = MagicMock()
-sys.modules["modules.sandozia.core.sandozia_core"] = MagicMock()
 sys.modules["modules.sandozia.core.chronalia"] = MagicMock()
 sys.modules["modules.sandozia.core.cognitive_reactor"] = MagicMock()
 

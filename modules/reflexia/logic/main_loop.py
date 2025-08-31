@@ -20,7 +20,7 @@ def reflexia_loop(max_iterations: int | None = None, sleep_seconds: float = 5.0)
     :param sleep_seconds: Délai entre chaque itération (en secondes)
     """
     iteration = 0
-    ark_logger.info("🔄 ReflexIA Loop started", extra={"module": "logic"})
+    ark_logger.info("🔄 ReflexIA Loop started", extra={"arkalia_module": "logic"})
 
     while True:
         metrics = read_metrics()

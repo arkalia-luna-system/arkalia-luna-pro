@@ -191,7 +191,7 @@ class TestCognitiveReactor:
     @pytest.mark.asyncio
     async def test_integration_with_zeroia(self, reactor):
         """Test d'intégration avec ZeroIA"""
-        with patch("modules.zeroia.core.ZeroIACore") as mock_zeroia:
+        with patch("modules.zeroia.ZeroIACoordinator") as mock_zeroia:
             mock_zeroia_instance = AsyncMock()
             mock_zeroia.return_value = mock_zeroia_instance
 
@@ -373,7 +373,7 @@ class TestCognitiveReactorIntegration:
 
         # Mock des modules réels
         with (
-            patch("modules.zeroia.core.ZeroIACore") as mock_zeroia,
+            patch("modules.zeroia.ZeroIACoordinator") as mock_zeroia,
             patch("modules.reflexia.core.launch_reflexia_check") as mock_reflexia,
         ):
             mock_zeroia_instance = AsyncMock()
