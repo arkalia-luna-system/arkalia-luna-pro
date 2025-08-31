@@ -138,9 +138,6 @@ python scripts/launch_demo_scenario.py --scenario learning
 
 ### Test du Système
 ```bash
-# Test Intelligence Générative
-python scripts/demo_generative_ai.py --mode quick
-
 # Test Cognitive Reactor
 docker logs cognitive-reactor -f
 
@@ -165,13 +162,6 @@ curl http://localhost:8003/health
 - **Enhanced Orchestrator** - Orchestration avec Circuit Breaker
 - **Event Sourcing** pour la traçabilité complète
 - **Métriques temps réel** avec Prometheus
-
-### 🚀 **Generative AI - Intelligence Générative Avancée**
-- **Auto-génération de code Python** pour tous les modules
-- **Création automatique de modèles** personnalisés
-- **Génération de tests automatiques** pour améliorer la couverture
-- **Optimisation automatique** de code existant
-- **Analyse intelligente** de base de code (82 modules analysés)
 
 ### 🧠 **Cognitive Reactor - Intelligence Avancée**
 - **Détection automatique** de patterns cognitifs

@@ -65,9 +65,6 @@ ark-sandozia-demo
 
 # Reflexia Monitoring
 ark-reflexia-monitor
-
-# Generative AI
-ark-generative-ai-demo (désactivé)
 ```
 
 ## 📊 Services Monitoring

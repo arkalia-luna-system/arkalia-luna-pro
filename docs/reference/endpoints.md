@@ -86,15 +86,15 @@ GET /metrics
 ### **Base URL**
 
 ```
-http://localhost:8001
+http://localhost:8000
 ```
 
 ### **Endpoints**
 
-#### **POST /decide** - Prise de décision
+#### **POST /zeroia/decision** - Prise de décision
 
 ```http
-POST /decide
+POST /zeroia/decision
 Content-Type: application/json
 
 {
@@ -234,52 +234,20 @@ Content-Type: application/json
 
 ---
 
-## 🎯 **Cognitive Reactor - Orchestrateur Central**
-
-### **Base URL**
-
-```
-http://localhost:8004
-```
-
-### **Endpoints**
-
-#### **GET /orchestration** - État de l'orchestration
-
-```http
-GET /orchestration
-```
-
-**Réponse** :
-
-```json
-{
-  "orchestration": {
-    "status": "active",
-    "modules_coordinated": 6,
-    "patterns_managed": 12,
-    "optimizations_applied": 3
-  },
-  "timestamp": "2025-06-30T21:10:00Z"
-}
-```
-
----
-
 ## 🤖 **AssistantIA - Assistant IA**
 
 ### **Base URL**
 
 ```
-http://localhost:8005
+http://localhost:8001
 ```
 
 ### **Endpoints**
 
-#### **POST /chat** - Conversation IA
+#### **POST /api/v1/chat** - Conversation IA
 
 ```http
-POST /chat
+POST /api/v1/chat
 Content-Type: application/json
 
 {
@@ -300,10 +268,10 @@ Content-Type: application/json
 }
 ```
 
-#### **POST /validate** - Validation de prompt
+#### **POST /api/v1/validate** - Validation de prompt
 
 ```http
-POST /validate
+POST /api/v1/validate
 Content-Type: application/json
 
 {
@@ -404,7 +372,7 @@ curl -X GET http://localhost:8000/health
 ### **cURL - Décision ZeroIA**
 
 ```bash
-curl -X POST http://localhost:8001/decide \
+curl -X POST http://localhost:8000/zeroia/decision \
   -H "Content-Type: application/json" \
   -d '{
     "context": "High CPU usage detected",
@@ -416,7 +384,7 @@ curl -X POST http://localhost:8001/decide \
 ### **cURL - Chat AssistantIA**
 
 ```bash
-curl -X POST http://localhost:8005/chat \
+curl -X POST http://localhost:8001/api/v1/chat \
   -H "Content-Type: application/json" \
   -d '{
     "message": "What is the current system status?",

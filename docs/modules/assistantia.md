@@ -58,8 +58,10 @@ uvicorn modules.assistantia.core:app --port 8001
 
 Le module est connecté à :
 - `helloria/` (API externe)
-- `reflexia/` (logs et surveillance IA)
-- `nyxalia (en développement)/` (interprétation mobile)
+- `reflexia/` (monitoring et observabilité)
+- `sandozia/` (intelligence croisée)
+- `zeroia/` (moteur de décision)
+- `cognitive_reactor/` (orchestrateur central)
 
 💡 **Prêt pour une extension** vers Ollama, Langchain, ou des modèles hybrides.
 

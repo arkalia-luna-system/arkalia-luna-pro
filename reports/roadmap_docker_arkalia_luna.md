@@ -99,7 +99,6 @@ Dockerfile.sandozia ✅
 Dockerfile.zeroia ✅
 Dockerfile.master ✅
 Dockerfile.security ✅
-Dockerfile.generative-ai ✅ (commenté)
 ```
 
 ### 4️⃣ **Monitoring Stack (DÉJÀ EN PLACE ✅)**
