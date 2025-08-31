@@ -19,8 +19,10 @@ def test_debug_routes():
     """Test de debug pour afficher les routes disponibles."""
     ark_logger.info("\n--- ROUTES DISPONIBLES ---", extra={"arkalia_module": "matrix"})
     for route in app.routes:
-        if hasattr(route, 'path') and hasattr(route, 'methods'):
-            ark_logger.info(f"{route.path} | methods: {route.methods}", extra={"arkalia_module": "matrix"})
+        if hasattr(route, "path") and hasattr(route, "methods"):
+            ark_logger.info(
+                f"{route.path} | methods: {route.methods}", extra={"arkalia_module": "matrix"}
+            )
     ark_logger.info("--- FIN ROUTES ---\n", extra={"arkalia_module": "matrix"})
     # On ne fait pas d'assert pour ne pas bloquer
 
