@@ -418,7 +418,7 @@ class TestIntegrationMemoryPerformance:
         # Exécuter des opérations d'intégration
         for i in range(100):
             # Décision ZeroIA
-            decision = zeroia_core.make_decision({"cpu_usage": 70.0 + (i % 20)})
+            decision = asyncio.run(zeroia_core.make_decision({"cpu_usage": 70.0 + (i % 20)}))
 
             # Vérification ReflexIA
             health_check = reflexia_core.check_module_health("zeroia")
