@@ -278,7 +278,8 @@ def demo_metrics():
     )
     if correlation:
         ark_logger.info(
-            f"Corrélation confiance Reflexia-ZeroIA: {correlation:.3f}", extra={"arkalia_module": "utils"}
+            f"Corrélation confiance Reflexia-ZeroIA: {correlation:.3f}",
+            extra={"arkalia_module": "utils"},
         )
 
     # Santé cross-modules

@@ -26,13 +26,16 @@ def reflexia_loop(max_iterations: int | None = None, sleep_seconds: float = 5.0)
         metrics = read_metrics()
         status = monitor_status(metrics)
         save_snapshot(metrics, status)
-        ark_logger.info(f"✅ Status: {status} | Metrics: {metrics}", extra={"arkalia_module": "logic"})
+        ark_logger.info(
+            f"✅ Status: {status} | Metrics: {metrics}", extra={"arkalia_module": "logic"}
+        )
 
         time.sleep(sleep_seconds)
         iteration += 1
 
         if max_iterations is not None and iteration >= max_iterations:
             ark_logger.info(
-                "🛑 ReflexIA Loop finished (max iterations reached)", extra={"arkalia_module": "logic"}
+                "🛑 ReflexIA Loop finished (max iterations reached)",
+                extra={"arkalia_module": "logic"},
             )
             break
