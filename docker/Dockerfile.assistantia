@@ -1,7 +1,7 @@
 # 🚀 AssistantIA - Dockerfile Optimisé v2.8.0
 # Interface IA conversationnelle Arkalia-LUNA
 
-FROM python:3.11-slim
+FROM python:3.10-slim
 
 # Métadonnées
 LABEL maintainer="Athalia <athalia@arkalia-luna.com>"
