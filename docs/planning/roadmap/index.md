@@ -28,11 +28,11 @@
 |---------|--------|
 | 🧠 Modules IA actifs | `Reflexia`, `ZeroIA`, `Helloria`, `AssistantIA` |
 | 🌐 API | Endpoint `/chat`, `/status`, `/echo` — via **FastAPI** |
-| 🧪 Tests | `pytest` OK (couverture : 59.25%), `ark-test` intégré |
+| 🧪 Tests | `pytest` OK (couverture : 59.25%), tests intégrés |
 | 🐳 Docker | Déploiement local stable (`docker-compose`) |
 | ⚙️ CI/CD | `black`, `ruff`, `pytest`, `mkdocs`, `gh-pages` |
 | 🎨 UI Docs | Thème personnalisé Luna (`extra.css`, couleurs, Mermaid, animation douce) |
-| 🧠 Aliases Système | `ark-test`, `ark-docker`, `ark-docs`, `ark-bump`, etc. |
+| 🧠 Aliases Système | `pytest`, `docker-compose`, `mkdocs serve`, etc. |
 
 ---
 

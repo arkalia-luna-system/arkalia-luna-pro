@@ -74,7 +74,7 @@
    - Ajuster les seuils de performance
 
 2. **Corriger les endpoints API**
-   - Vérifier les routes `/zeroia/decision`
+   - Vérifier les routes `/api/v1/chat` (AssistantIA)
    - Vérifier les routes `/reflexia/check`
    - Vérifier les routes `/sandozia/analyze`
 

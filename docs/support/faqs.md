@@ -46,7 +46,9 @@ Consultez notre [Guide de Contribution](credits/CONTRIBUTING.md) et soumettez de
 
 <details>
 <summary>### 5. Comment tester Sandozia Intelligence Croisée ?</summary>
-Utilisez notre suite de démonstration : `ark-sandozia-demo` pour test complet, ou `ark-sandozia-validator` pour validation croisée uniquement. Score de cohérence > 0.95 indique un système optimal.
+**Q : Comment tester la cohérence de Sandozia ?**
+
+**R :** Utilisez notre suite de validation : `python scripts/ark-validate-performance.py` pour test complet, ou `python scripts/ark-validate-monitoring.py` pour validation croisée uniquement. Score de cohérence > 0.95 indique un système optimal.
 </details>
 
 <details>
@@ -81,7 +83,7 @@ source scripts/setup-env.sh
 ark-run
 
 # Test intelligence croisée
-ark-sandozia-demo
+python scripts/ark-validate-performance.py
 ```
 </details>
 

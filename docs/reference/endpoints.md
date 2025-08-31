@@ -91,29 +91,13 @@ http://localhost:8000
 
 ### **Endpoints**
 
-#### **POST /zeroia/decision** - Prise de décision
+#### **POST /api/v1/chat** - Interface de chat avec l'IA
 
-```http
-POST /zeroia/decision
-Content-Type: application/json
+**Endpoint** : `POST /api/v1/chat`
 
-{
-  "context": "string",
-  "options": ["option1", "option2"],
-  "confidence_threshold": 0.8
-}
-```
+**Description** : Interface de chat avec l'IA pour la prise de décision et l'assistance
 
-**Réponse** :
-
-```json
-{
-  "decision": "option1",
-  "confidence": 0.85,
-  "reasoning": "string",
-  "timestamp": "2025-06-30T21:10:00Z"
-}
-```
+**Port** : 8001 (AssistantIA)
 
 #### **GET /patterns** - Patterns comportementaux
 
@@ -386,11 +370,7 @@ curl -X POST http://localhost:8000/zeroia/decision \
 ```bash
 curl -X POST http://localhost:8001/api/v1/chat \
   -H "Content-Type: application/json" \
-  -d '{
-    "message": "What is the current system status?",
-    "context": "system_monitoring",
-    "user_id": "admin"
-  }'
+  -d '{"message": "Analysez cette situation et prenez une décision"}'
 ```
 
 ---

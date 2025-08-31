@@ -284,13 +284,13 @@ assistantia_security_blocks_total 2
 ### **Targets Configuration**
 ```yaml
 scrape_configs:
-  - job_name: 'arkalia-api (port 8000)'
+  - job_name: 'arkalia-api'
     static_configs:
       - targets: ['localhost:8000']
     metrics_path: '/metrics'
     scrape_interval: 15s
 
-  - job_name: 'zeroia'
+  - job_name: 'assistantia'
     static_configs:
       - targets: ['localhost:8001']
     metrics_path: '/metrics'
@@ -302,69 +302,9 @@ scrape_configs:
     metrics_path: '/metrics'
     scrape_interval: 15s
 
-  - job_name: 'sandozia'
+  - job_name: 'cognitive-reactor'
     static_configs:
       - targets: ['localhost:8003']
     metrics_path: '/metrics'
     scrape_interval: 15s
-
-  - job_name: 'cognitive-reactor'
-    static_configs:
-      - targets: ['localhost:8004']
-    metrics_path: '/metrics'
-    scrape_interval: 15s
-
-  - job_name: 'assistantia'
-    static_configs:
-      - targets: ['localhost:8005']
-    metrics_path: '/metrics'
-    scrape_interval: 15s
 ```
-
----
-
-## 📈 **Requêtes PromQL Utiles**
-
-### **Requêtes de Base**
-```promql
-# CPU Usage moyen
-avg(arkalia_cpu_usage_percent)
-
-# Memory Usage moyen
-avg(arkalia_memory_usage_percent)
-
-# Requests par seconde
-rate(arkalia_http_requests_total[5m])
-
-# Response time 95th percentile
-histogram_quantile(0.95, rate(arkalia_http_request_duration_seconds_bucket[5m]))
-
-# Module status
-arkalia_module_status
-```
-
-### **Requêtes Avancées**
-```promql
-# Error rate
-rate(arkalia_http_responses_total{status_code=~"5.."}[5m]) / rate(arkalia_http_responses_total[5m])
-
-# ZeroIA decision confidence
-avg(zeroia_decision_confidence)
-
-# Security events rate
-rate(arkalia_security_events_total[5m])
-```
-
----
-
-## 📚 **Documentation Complète**
-
-- [🔗 Endpoints API](endpoints.md)
-- [📖 API Documentation](api.md)
-- [🔧 Configuration](../devops/index.md)
-- [📊 Monitoring](../devops/index.md)
-
----
-
-**Arkalia-LUNA Pro v2.8.0** - Documentation des métriques Prometheus
-**Dernière mise à jour** : 30 juin 2025

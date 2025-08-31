@@ -165,6 +165,8 @@ receivers:
 - [x] **Prometheus scrape** les métriques
 - [x] **Alertes configurées** et testées
 - [x] **Validation monitoring** (`python scripts/ark-validate-monitoring.py`)
+- [x] **Tests de performance** (`pytest tests/performance/`)
+- [x] **Tests de sécurité** (`pytest tests/security/`)
 
 ---
 
@@ -188,13 +190,13 @@ curl -u admin:arkalia-secure-2025 http://localhost:3000/api/health
 ### Test Modules
 ```bash
 # Test ZeroIA
-ark-zeroia-enhanced
+python -c "from modules.zeroia.coordinator import ZeroIACoordinator; print('ZeroIA OK')"
 
 # Test Sandozia
-ark-sandozia-demo
+python -c "from modules.sandozia.core.sandozia_core import SandoziaCore; print('Sandozia OK')"
 
 # Test Reflexia
-ark-reflexia-monitor
+python -c "from modules.reflexia.core import launch_reflexia_check; print('Reflexia OK')"
 
 # Test API
 curl http://localhost:8000/status
@@ -203,3 +205,15 @@ curl http://localhost:8000/status
 ---
 
 💡 Une **configuration propre**, c'est la garantie d'un système IA **autonome, sécurisé, monitoré et sans dette technique**.
+
+### **Validation et Tests**
+```bash
+# Validation monitoring
+python scripts/ark-validate-monitoring.py
+
+# Tests de performance
+pytest tests/performance/ -v
+
+# Tests de sécurité
+pytest tests/security/ -v
+```

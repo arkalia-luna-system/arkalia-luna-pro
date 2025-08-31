@@ -33,11 +33,16 @@ docker-compose -f docker-compose.monitoring.yml ps
 
 ### 2. Validation Automatique
 ```bash
+### **Validation du Monitoring**
+```bash
 # Validation complète
 python scripts/ark-validate-monitoring.py
 
-# Vérification des métriques
-curl http://localhost:8000/metrics
+# Tests de performance
+pytest tests/performance/ -v
+
+# Tests de sécurité
+pytest tests/security/ -v
 ```
 
 ### 3. Accès aux Services

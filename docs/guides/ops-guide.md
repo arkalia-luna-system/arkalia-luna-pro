@@ -179,17 +179,19 @@ docker-compose -f docker-compose.monitoring.yml up -d
 
 ### Tests Automatisés
 ```bash
-# Validation complète
+### **Tests et Validation**
+```bash
+# Validation monitoring
 python scripts/ark-validate-monitoring.py
 
-# Tests modules
-ark-test
+# Tests complets
+pytest tests/ -v
 
-# Tests performance
-ark-test-performance
+# Tests de performance
+pytest tests/performance/ -v
 
-# Tests sécurité
-ark-test-security
+# Tests de sécurité
+pytest tests/security/ -v
 ```
 
 ### Rapports

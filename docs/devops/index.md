@@ -109,16 +109,28 @@ ark-ci-check         # Vérification complète locale
 ark-ci-fixall        # Fix CI + commit automatique
 ```
 
-### Tests et couverture
+### **Tests et Validation**
 ```bash
-ark-test             # Tests + rapport HTML couverture
-ark-test-modules     # Tests spécifiques modules
+# Tests complets
+pytest tests/ -v
+
+# Tests de modules spécifiques
+pytest tests/unit/ -v
+pytest tests/integration/ -v
+pytest tests/performance/ -v
+
+# Tests de sécurité
+pytest tests/security/ -v
+
+# Validation monitoring
+python scripts/ark-validate-monitoring.py
 ```
 
 ### ZeroIA et monitoring
 ```bash
 ark-zeroia-health    # Contrôle intégrité cognitive
-ark-zeroia-full      # Diagnostic + fix + tests complets
+# Diagnostic + fix + tests complets
+pytest tests/ -v --tb=short
 ```
 
 ### Monitoring et observabilité

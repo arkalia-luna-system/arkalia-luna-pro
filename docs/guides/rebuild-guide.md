@@ -37,16 +37,16 @@ ark-docs-local
 ark-docs
 ```
 
-### Rebuild Tests
+### **Tests et Validation**
 ```bash
 # Tests complets
-ark-test-full
+pytest tests/ -v
 
-# Tests avec couverture
-ark-test
+# Tests de performance
+pytest tests/performance/ -v
 
-# Validation CI
-ark-ci-check
+# Tests de sécurité
+pytest tests/security/ -v
 ```
 
 ## 🎯 **Métriques de Performance Actuelles**

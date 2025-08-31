@@ -29,10 +29,10 @@ docker-compose up --build
 
 🧠 Via alias terminal (voir `.zshrc`)
 
-- `ark-run`         # Lancement IA local (API + monitoring)
-- `ark-docker`      # Build & run docker
-- `ark-test`        # Tests unitaires + couverture (671 tests, 59.25%)
-- `ark-docs-local`  # Documentation locale (MkDocs)
+- `docker-compose up -d`  # Lancement IA local (API + monitoring)
+- `docker-compose build`  # Build & run docker
+- `pytest tests/ -v`      # Tests unitaires + couverture (671 tests, 59.25%)
+- `mkdocs serve`          # Documentation locale (MkDocs)
 
 ---
 

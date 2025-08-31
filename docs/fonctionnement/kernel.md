@@ -70,7 +70,7 @@ arkalia-luna-pro/
 | 🧠 Modularité                | Chaque module IA est autonome et testable     |
 | 🧪 Qualité                   | CI active : `black`, `ruff`, `pytest`, `cov`  |
 | 📚 Documentation continue   | Auto-générée avec MkDocs, versionnée          |
-| 🛰 Déploiement local maîtrisé | Docker + scripts `ark-docker`, `ark-test`, etc.|
+| 🛰 Déploiement local maîtrisé | Docker + scripts `docker-compose`, `pytest`, etc.|
 | 🛡️ Sécurité avancée         | Vault, chiffrement AES-256, validation modèles|
 | 📊 Monitoring complet        | 34 métriques, 8 dashboards, 15 alertes        |
 

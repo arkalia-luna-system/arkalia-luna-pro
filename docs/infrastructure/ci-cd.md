@@ -77,27 +77,19 @@ per-file-ignores =
 
 ## 🧑‍💻 Automatisation CLI
 
-### Commandes de qualité de code
-
+### **Commandes de Test**
 ```bash
-# Tests et qualité
-ark-test              # Lance tests + couverture HTML
-ark-ci-check          # Vérification complète (ruff + black + pytest)
-ark-fixall            # Auto-format + lint + pre-commit
-ark-ci-fixall         # Fix CI + commit automatique
+# Tests complets
+pytest tests/ -v
 
-# Git et commits
-ark-commit "message"  # Commit signé GPG + push
-ark-clean-push        # Format + vérif + commit propre
-ark-safe-commit       # Commit stable sans fichiers instables
+# Tests de performance
+pytest tests/performance/ -v
 
-# Docker et services
-ark-docker            # Lance l'API dans un conteneur local
-ark-run               # Démarrage complet (Ollama + Docker + API)
+# Tests de sécurité
+pytest tests/security/ -v
 
-# Documentation
-ark-docs              # Génère et déploie la doc MkDocs
-ark-docs-local        # Serveur doc local (port 9000)
+# Validation monitoring
+python scripts/ark-validate-monitoring.py
 ```
 
 ### Vérifications ZeroIA
@@ -105,7 +97,9 @@ ark-docs-local        # Serveur doc local (port 9000)
 ```bash
 ark-zeroia-health     # Contrôle d'intégrité cognitive
 ark-zeroia-fix        # Auto-format du module ZeroIA
-ark-zeroia-full       # Cycle complet (debug + fix + tests)
+# Cycle complet (debug + fix + tests)
+pytest tests/ -v --tb=short
+
 ```
 
 ---
@@ -198,7 +192,9 @@ Arkalia suit une philosophie de **code propre**, **tests exhaustifs** et **autom
 Commandes utiles :
 
 ```bash
-ark-test        # Lance tests + couverture
+pytest tests/ -v        # Lance tests + couverture
 ark-docs        # Génère et ouvre la doc MkDocs
 ark-docker      # Lance l'API dans un conteneur local
 ark-clean-push  # Formate, vérifie, commit propre
+
+```

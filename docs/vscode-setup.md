@@ -48,12 +48,12 @@ aimp     # Section d'imports avec logging
 
 ### Développement
 ```bash
-acmt     # Commit style Arkalia avec emoji
-atodo    # TODO structuré avec priorité
-afix     # FIXME avec impact et solution
-atest    # Structure de test AAA
-aasync   # Fonction asynchrone avec gestion d'erreur
-aconfig  # Section de configuration
+pytest tests/ -v        # Tests complets
+pytest tests/unit/ -v   # Tests rapides
+ruff check --fix        # Nettoyage linting
+black .                 # Formatage code
+mkdocs serve           # Documentation locale
+mkdocs build           # Build documentation
 ```
 
 ## ⚙️ Configuration VSCode
@@ -110,12 +110,12 @@ ark-welcome     # Message de bienvenue
 
 ### Développement
 ```bash
-ark-test        # Tests complets
-ark-test-fast   # Tests rapides
-ark-lint        # Nettoyage linting
-ark-style       # Formatage code
-ark-docs        # Documentation locale
-ark-docs-build  # Build documentation
+pytest tests/ -v        # Tests complets
+pytest tests/unit/ -v   # Tests rapides
+ruff check --fix        # Nettoyage linting
+black .                 # Formatage code
+mkdocs serve           # Documentation locale
+mkdocs build           # Build documentation
 ```
 
 ### Docker
@@ -135,8 +135,8 @@ ark-push          # Push vers main
 ```bash
 ark-logs          # Suivi des logs
 ark-metrics       # Métriques système
-ark-security      # Tests de sécurité
-ark-performance   # Tests de performance
+pytest tests/security/ -v    # Tests de sécurité
+pytest tests/performance/ -v # Tests de performance
 ```
 
 ### Nettoyage
@@ -185,27 +185,29 @@ ark-docker-status
 ### 2. Développement
 ```bash
 # Tests avant développement
-ark-test-fast
+pytest tests/unit/ -v
 
 # Développement avec snippets
 # Utiliser logia, adoc, atest, etc.
 
 # Vérification continue
-ark-lint
-ark-style
+ruff check --fix
+black .
 ```
 
-### 3. Tests & Validation
+### **Tests et Validation**
 ```bash
 # Tests complets
-ark-test
+pytest tests/ -v
 
-# Tests spécialisés
-ark-security
-ark-performance
+# Tests rapides
+pytest tests/unit/ -v
 
-# Documentation
-ark-docs-build
+# Tests de sécurité
+pytest tests/security/ -v
+
+# Tests de performance
+pytest tests/performance/ -v
 ```
 
 ### 4. Commit & Déploiement

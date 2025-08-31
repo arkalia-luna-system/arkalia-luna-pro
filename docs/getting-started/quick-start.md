@@ -21,37 +21,41 @@ docker --version    # Docker requis
 git --version       # Git requis
 ```
 
-### 2. Clone & Setup
+### 2. **Démo et Monitoring**
 ```bash
-# Clone du projet
-git clone https://github.com/arkalia-luna-system/arkalia-luna-pro.git
-cd arkalia-luna-pro
+# Validation du monitoring
+python scripts/ark-validate-monitoring.py
 
-# Setup automatique
-./ark-start.sh
+# Monitoring des services
+python scripts/ark-monitor.py
+
+# Tests de performance
+python scripts/ark-validate-performance.py
 ```
 
 ### 3. Test Système
 ```bash
 # Vérifier l'installation
-ark-test  # 671 tests PASSED (59.25% couverture)
+pytest tests/ -v  # 671 tests PASSED (59.25% couverture)
 
 # Statut des modules
 ark-status
 ```
 
-## 🏃‍♂️ Démarrage Rapide
+## 🚀 Démarrage Rapide
 
-### Option 1 : Interface Complète avec Monitoring
+### 1. **Tests et Validation**
 ```bash
-# Lancer tous les services
-ark-run  # → http://localhost:8000
+# Tests complets avec pytest
+pytest tests/ -v
 
-# Démarrer le monitoring
-cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml up -d
+# Tests de performance
+pytest tests/performance/ -v
 
-# Valider l'installation
+# Tests de sécurité
+pytest tests/security/ -v
+
+# Validation du monitoring
 python scripts/ark-validate-monitoring.py
 ```
 
@@ -61,10 +65,10 @@ python scripts/ark-validate-monitoring.py
 ark-zeroia-enhanced
 
 # Sandozia Intelligence
-ark-sandozia-demo
+python scripts/ark-validate-performance.py
 
 # Reflexia Monitoring
-ark-reflexia-monitor
+python scripts/ark-monitor.py
 ```
 
 ## 📊 Services Monitoring
@@ -103,17 +107,20 @@ curl http://localhost:8000/metrics
 
 ### Commandes Essentielles
 ```bash
-# Aide générale
-ark-help
+# Tests complets
+pytest tests/ -v
 
-# Nettoyage
-ark-clean
+# Tests rapides
+pytest tests/unit/ -v
 
-# Monitoring
-ark-monitor
+# Tests de sécurité
+pytest tests/security/ -v
+
+# Tests de performance
+pytest tests/performance/ -v
 
 # Documentation locale
-ark-docs-local  # → http://127.0.0.1:9000
+mkdocs serve  # → http://127.0.0.1:8000
 
 # Validation monitoring
 python scripts/ark-validate-monitoring.py
@@ -122,7 +129,7 @@ python scripts/ark-validate-monitoring.py
 ### Problèmes Courants
 - **Port occupé** : `lsof -i :8000` puis `kill -9 <PID>`
 - **Docker issues** : `docker-compose down && docker-compose up --build`
-- **Tests échoués** : `ark-test --verbose`
+- **Tests échoués** : `pytest tests/ -v --tb=short`
 - **Monitoring down** : `cd infrastructure/monitoring && docker-compose -f docker-compose.monitoring.yml restart`
 
 ### Monitoring Troubleshooting

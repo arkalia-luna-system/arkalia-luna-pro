@@ -39,7 +39,7 @@ tests/
 
 ### ⚠️ Tests Éparpillés (25 fichiers)
 ```
-./ark-test-full.sh                    # Script de test principal
+pytest tests/ -v                      # Script de test principal
 ./test_ameliorations_finales.py       # Test d'améliorations
 ./modules/taskia/test_simple.py       # Test dans module
 ./scripts/test_assistantia_manual.py  # Test manuel
