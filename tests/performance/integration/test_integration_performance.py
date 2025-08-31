@@ -82,7 +82,7 @@ class TestIntegrationPerformance:
             context = {"cpu_usage": 75.0, "memory_usage": 80.0, "error_rate": 0.02}
 
             # Décision ZeroIA
-            decision = zeroia_core.make_decision(context)
+            decision = asyncio.run(zeroia_core.make_decision(context))
 
             # Vérification ReflexIA
             check_result = reflexia_core.check_module_health("zeroia")
@@ -150,7 +150,7 @@ class TestIntegrationPerformance:
             )
 
             # 3. Décision ZeroIA
-            decision = zeroia_core.make_decision(system_metrics)
+            decision = asyncio.run(zeroia_core.make_decision(system_metrics))
 
             # 4. Vérification ReflexIA
             health_check = reflexia_core.check_module_health("zeroia")
@@ -223,7 +223,7 @@ class TestIntegrationPerformance:
 
         async def communication_chain():
             # Chaîne de communication : ZeroIA → ReflexIA → Sandozia
-            decision = zeroia_core.make_decision({"cpu_usage": 70.0})
+            decision = await zeroia_core.make_decision({"cpu_usage": 70.0})
 
             health_check = reflexia_core.check_module_health("zeroia")
 
@@ -261,7 +261,7 @@ class TestIntegrationPerformance:
                 if time.time() % 10 < 5:  # 50% de chance d'échec
                     raise Exception("Simulated error")
 
-                decision = zeroia_core.make_decision({"cpu_usage": 70.0})
+                decision = await zeroia_core.make_decision({"cpu_usage": 70.0})
                 return {"status": "success", "decision": decision}
 
             except Exception as e:
@@ -319,7 +319,7 @@ class TestIntegrationLoadPerformance:
             )
 
             # Décision ZeroIA basée sur l'analyse
-            decision = zeroia_core.make_decision(system_metrics)
+            decision = await zeroia_core.make_decision(system_metrics)
 
             # Vérification ReflexIA
             health_check = reflexia_core.check_module_health("zeroia")
@@ -381,7 +381,7 @@ class TestIntegrationLoadPerformance:
             analysis = sandozia_core.analyze_data(large_dataset)
 
             # Décision basée sur l'analyse
-            decision = zeroia_core.make_decision(large_dataset["system_metrics"])
+            decision = await zeroia_core.make_decision(large_dataset["system_metrics"])
 
             return {"analysis": analysis, "decision": decision}
 
