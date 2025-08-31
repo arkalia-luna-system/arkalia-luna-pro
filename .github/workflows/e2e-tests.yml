@@ -1,9 +1,0 @@
-# Fichier temporaire pour nettoyer le workflow orphelin
-name: 🧪 E2E Tests Arkalia-LUNA Pro
-on:
-  workflow_dispatch:
-jobs:
-  cleanup:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Nettoyage en cours..."
