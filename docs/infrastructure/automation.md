@@ -24,15 +24,15 @@ Arkalia-LUNA embarque une **boucle d'automatisation intelligente** basée sur la
 
 ```mermaid
 sequenceDiagram
+  participant AssistantIA
   participant Reflexia
   participant ZeroIA
-  participant AssistantIA
-  participant Nyxalia
+  participant Sandozia
 
   Reflexia->>ZeroIA: 📊 Anomalie détectée
   ZeroIA->>AssistantIA: 💬 Proposition d'action
-  AssistantIA->>Nyxalia: 💬 Notification / exécution
-  Nyxalia-->>Reflexia: 🔄 Retour de signal
+  AssistantIA->>Sandozia: 💬 Notification / exécution
+  Sandozia-->>Reflexia: 🔄 Retour de signal
 
 
   🎯 Types de Déclencheurs

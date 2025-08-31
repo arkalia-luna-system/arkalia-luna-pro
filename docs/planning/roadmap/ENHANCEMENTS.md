@@ -77,7 +77,7 @@ Fichier de suivi des améliorations techniques et qualité pour le dépôt [`ark
 
 ## 🧩 Suggestions Modules à venir
 
-- [x] `Nyxalia` → Interface mobile / vocale
+- [x] `ZeroIA` → Moteur de Décision Autonome Enhanced
 - [x] `Reflexia` → Superviseur réflexif IA
 - [ ] `Psykalia` → Analyse émotionnelle & signaux cognitifs
 - [ ] `Logaria` → Analyseur de logs en temps réel

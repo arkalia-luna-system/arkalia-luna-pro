@@ -34,7 +34,7 @@
 | Objectif Initial | Statut Actuel | Amélioration |
 |------------------|---------------|--------------|
 | ❌ Créer API Sandozia | ✅ **AssistantIA API** (port 8001) | **Mieux** : Interface conversationnelle complète |
-| ❌ Dockeriser nyxalia | ✅ **6 services dockerisés** | **Mieux** : Architecture complète |
+| ✅ Dockeriser tous les modules | ✅ **6 services dockerisés** | **Mieux** : Architecture complète |
 | ❌ Supprimer assistantia | ✅ **AssistantIA actif et fonctionnel** | **Mieux** : Service principal avec Ollama |
 | ❌ Exposer zeroia/reflexia | ✅ **Tous exposés + contrôlés** | **Mieux** : Health checks + monitoring |
 | ❌ MetaDashboard Grafana | ✅ **Stack monitoring complet** | **Mieux** : Prometheus + AlertManager + Loki |

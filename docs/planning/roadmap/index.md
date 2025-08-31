@@ -26,7 +26,7 @@
 
 | Objectif | Détail |
 |---------|--------|
-| 🧠 Modules IA actifs | `Reflexia`, `Nyxalia`, `Helloria`, `AssistantIA` |
+| 🧠 Modules IA actifs | `Reflexia`, `ZeroIA`, `Helloria`, `AssistantIA` |
 | 🌐 API | Endpoint `/chat`, `/status`, `/echo` — via **FastAPI** |
 | 🧪 Tests | `pytest` OK (couverture : 59.25%), `ark-test` intégré |
 | 🐳 Docker | Déploiement local stable (`docker-compose`) |
@@ -53,7 +53,8 @@
 | Évolution                        | Détail attendu |
 |----------------------------------|----------------|
 | ⚙️ Générateur CLI IA             | `arkalia new-module` (CLI rapide) |
-| 🧠 Nyxalia Web UI               | Interface cognitive réactive (React/Svelte) |
+| 🧠 ZeroIA Coordinator | Moteur de Décision Autonome Enhanced v2.8.0 |
+| 🧠 Cognitive Reactor | Intelligence Avancée et Réactions Automatiques |
 | 🔒 Sandozia v2                  | Sécurité IA (authentification, signature, watchdog) |
 | ☁️ Sync local/cloud chiffré     | `rclone` + `gocryptfs` pour backup IA privé |
 | 🧠 Mémoire vectorielle IA       | `FAISS` ou `ChromaDB` pour mémoire contextuelle |

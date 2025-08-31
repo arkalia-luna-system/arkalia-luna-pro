@@ -34,8 +34,7 @@
 | Module              | Fonction                                                                 |
 |---------------------|--------------------------------------------------------------------------|
 | 🔄 **Reflexia**      | Veille cognitive adaptative, surveillance système                        |
-| 🧠 **ZeroIA**        | Raisonnement logique et décisions contextuelles                          |
-| 🌐 **Nyxalia**       | Interfaces mobiles, vocales et API externes                              |
+| 🧠 **ZeroIA**       | Moteur de Décision Autonome Enhanced v2.8.0                    |
 | 🔍 **Helloria**      | Passerelle FastAPI, expose les endpoints, route les appels               |
 | 🛡️ **Sandozia**      | Cybersécurité cognitive, renforcement du noyau                          |
 | ♻️ **ArkaliaLoop**   | Orchestration réflexive, exécution modulaire intelligente               |

@@ -89,7 +89,6 @@ graph TD
 
     subgraph "🌐 Services Support"
         Helloria[Helloria<br/>FastAPI Server]
-        Nyxalia[Nyxalia<br/>Mobile Interface]
         Taskia[Taskia<br/>Task Manager]
     end
 
@@ -122,7 +121,6 @@ graph TD
     AssistantIA --> AuditTrail
 
     Helloria --> AssistantIA
-    Nyxalia --> Helloria
     Taskia --> StateManager
 
     StateManager --> ReflexiaState

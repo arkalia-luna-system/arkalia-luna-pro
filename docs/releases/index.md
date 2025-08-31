@@ -53,7 +53,7 @@ Historique des versions et releases d'Arkalia-LUNA Pro.
 - ✅ **Penetration Testing** : Framework de tests sécurité spécialisé IA
 
 ### v2.8.0 — Stabilisation Kernel
-- ✅ ZeroIA orchestrateur stabilisé
+- ✅ ZeroIA Coordinator Enhanced v2.8.0
 - ✅ Reflexia monitoring temps réel
 - ✅ Tests automatisés 59.25% couverture
 - ✅ Docker hardening complet
@@ -61,7 +61,6 @@ Historique des versions et releases d'Arkalia-LUNA Pro.
 ### v2.3.0 — Modules IA
 - ✅ AssistantIA production-ready
 - ✅ Helloria FastAPI intégration
-- ✅ Nyxalia connectivité mobile
 - ✅ TaskIA assistant cognitif
 
 ### v2.2.0 — Infrastructure
