@@ -3,9 +3,9 @@ name: 🔒 Security Scan
 on:
   # Désactivé temporairement - décommenter pour activer
   # push:
-  #   branches: [main, dev-migration]
+  #   branches: [main, develop]
   # pull_request:
-  #   branches: [main, dev-migration]
+  #   branches: [main, develop]
   # schedule:
   #   # Scan quotidien à 2h du matin
   #   - cron: "0 2 * * *"

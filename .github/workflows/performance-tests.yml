@@ -4,9 +4,9 @@ name: 🚀 Tests de Performance
 on:
   # Désactivé temporairement - décommenter pour activer
   # push:
-  #   branches: [main, dev-migration]
+  #   branches: [main, develop]
   # pull_request:
-  #   branches: [main, dev-migration]
+  #   branches: [main, develop]
   # schedule:
   #   # Tests de performance quotidiens à 2h du matin
   #   - cron: "0 2 * * *"

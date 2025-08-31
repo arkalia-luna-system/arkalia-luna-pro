@@ -73,7 +73,7 @@
 - **Documentation** : Build strict, validation
 
 ### **Environnements**
-- **Branches principales** : `main`, `develop`, `dev-migration`, `refonte-stable`
+- **Branches principales** : `main`, `develop`
 - **Runners** : `ubuntu-latest`
 - **Timeouts** : 10-45 minutes selon la complexité
 - **Artefacts** : Rétention 7-30 jours

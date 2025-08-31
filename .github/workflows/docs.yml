@@ -3,9 +3,9 @@ name: 📘 Deploy Documentation
 
 on:
   push:
-    branches: [main, develop, dev, dev-migration, refonte-stable]
+    branches: [main, develop]
   pull_request:
-    branches: [main, develop, dev, dev-migration, refonte-stable]
+    branches: [main, develop]
 
 permissions:
   contents: write # ⬅️ Autorise le push sur gh-pages via le GITHUB_TOKEN
