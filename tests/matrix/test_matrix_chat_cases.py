@@ -9,19 +9,19 @@ from fastapi.testclient import TestClient
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
 
 from core.ark_logger import ark_logger
+from modules.assistantia.core import app
 
-# Mock de l'app pour les tests
-app = None  # À remplacer par l'app réel dans les tests
-
+# Création du client de test avec l'application réelle
 client = TestClient(app)
 
 
 def test_debug_routes():
     """Test de debug pour afficher les routes disponibles."""
-    ark_logger.info("\n--- ROUTES DISPONIBLES ---", extra={"module": "matrix"})
+    ark_logger.info("\n--- ROUTES DISPONIBLES ---", extra={"arkalia_module": "matrix"})
     for route in app.routes:
-        ark_logger.info(f"{route.path} | methods: {route.methods}", extra={"module": "matrix"})
-    ark_logger.info("--- FIN ROUTES ---\n", extra={"module": "matrix"})
+        if hasattr(route, 'path') and hasattr(route, 'methods'):
+            ark_logger.info(f"{route.path} | methods: {route.methods}", extra={"arkalia_module": "matrix"})
+    ark_logger.info("--- FIN ROUTES ---\n", extra={"arkalia_module": "matrix"})
     # On ne fait pas d'assert pour ne pas bloquer
 
 
