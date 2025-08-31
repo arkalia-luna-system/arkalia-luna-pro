@@ -4,25 +4,22 @@
 Vérifie que l'API fonctionne avant de tester avec Docker
 """
 
-import requests
-import time
 import sys
+import time
 from pathlib import Path
+
+import requests
+
 
 def test_api_endpoints():
     """Test des endpoints de l'API"""
     base_url = "http://localhost:8000"
-    endpoints = [
-        "/",
-        "/health",
-        "/status",
-        "/metrics"
-    ]
-    
+    endpoints = ["/", "/health", "/status", "/metrics"]
+
     print("🧪 Test des endpoints de l'API Arkalia-LUNA...")
     print(f"📍 URL de base: {base_url}")
     print()
-    
+
     for endpoint in endpoints:
         try:
             response = requests.get(f"{base_url}{endpoint}", timeout=10)
@@ -38,52 +35,57 @@ def test_api_endpoints():
             print(f"⏰ {endpoint} - Timeout (API trop lente)")
         except Exception as e:
             print(f"💥 {endpoint} - Erreur: {e}")
-    
+
     print()
+
 
 def test_api_startup():
     """Test du démarrage de l'API"""
     print("🚀 Test du démarrage de l'API...")
-    
+
     # Vérifier que le fichier principal existe
     api_file = Path("run_arkalia_api.py")
     if not api_file.exists():
         print("❌ Fichier run_arkalia_api.py non trouvé")
         return False
-    
+
     # Vérifier que helloria/core.py existe
     core_file = Path("helloria/core.py")
     if not core_file.exists():
         print("❌ Fichier helloria/core.py non trouvé")
         return False
-    
+
     print("✅ Fichiers de l'API présents")
-    
+
     # Vérifier les dépendances
     try:
         import fastapi
         import uvicorn
+
         print("✅ Dépendances FastAPI et Uvicorn disponibles")
     except ImportError as e:
         print(f"❌ Dépendance manquante: {e}")
         return False
-    
+
     return True
+
 
 def test_docker_healthcheck():
     """Test du healthcheck Docker"""
     print("🐳 Test du healthcheck Docker...")
-    
+
     # Simuler le healthcheck Docker
     healthcheck_cmd = [
-        "python", "-c", 
-        "import requests; requests.get('http://localhost:8000/health', timeout=5)"
+        "python",
+        "-c",
+        "import requests; requests.get('http://localhost:8000/health', timeout=5)",
     ]
-    
+
     print(f"🔍 Commande de test: {' '.join(healthcheck_cmd)}")
-    
+
     try:
         import requests
+
         response = requests.get("http://localhost:8000/health", timeout=5)
         if response.status_code == 200:
             print("✅ Healthcheck Docker - OK")
@@ -96,31 +98,33 @@ def test_docker_healthcheck():
         print(f"❌ Healthcheck Docker - Erreur: {e}")
         return False
 
+
 def main():
     """Fonction principale"""
     print("🌕 Test de l'API Arkalia-LUNA")
     print("=" * 50)
-    
+
     # Test 1: Vérification des fichiers et dépendances
     if not test_api_startup():
         print("❌ L'API ne peut pas démarrer")
         sys.exit(1)
-    
+
     print()
-    
+
     # Test 2: Test du healthcheck Docker
     if not test_docker_healthcheck():
         print("❌ Le healthcheck Docker échoue")
         print("💡 Vérifiez que l'API est démarrée sur le port 8000")
         sys.exit(1)
-    
+
     print()
-    
+
     # Test 3: Test de tous les endpoints
     test_api_endpoints()
-    
+
     print("🎉 Tous les tests sont passés!")
     print("✅ L'API est prête pour Docker")
+
 
 if __name__ == "__main__":
     main()
