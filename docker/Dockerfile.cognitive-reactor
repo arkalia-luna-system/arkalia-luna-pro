@@ -40,13 +40,10 @@ COPY modules/sandozia/ ./modules/sandozia/
 COPY modules/reflexia/ ./modules/reflexia/
 COPY modules/assistantia/ ./modules/assistantia/
 COPY modules/helloria/ ./modules/helloria/
-COPY modules/nyxalia/ ./modules/nyxalia/
 COPY modules/taskia/ ./modules/taskia/
 COPY modules/monitoring/ ./modules/monitoring/
 COPY modules/security/ ./modules/security/
 COPY modules/utils_enhanced/ ./modules/utils_enhanced/
-COPY modules/crossmodule_validator/ ./modules/crossmodule_validator/
-COPY modules/error_recovery/ ./modules/error_recovery/
 COPY run_cognitive_api.py ./
 
 # === Création des répertoires nécessaires ===
