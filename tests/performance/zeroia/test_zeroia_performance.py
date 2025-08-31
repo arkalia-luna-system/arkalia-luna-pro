@@ -266,7 +266,7 @@ def test_performance_regression_detection():
     # de benchmarks précédents et détecter des régressions
 
     for benchmark, threshold in reference_benchmarks.items():
-        ark_logger.info(f"📊 Benchmark {benchmark}: seuil {threshold}", extra={"module": "zeroia"})
+        ark_logger.info(f"📊 Benchmark {benchmark}: seuil {threshold}", extra={"arkalia_module": "zeroia"})
 
     # Pour l'instant, juste valider que les seuils sont raisonnables
     assert all(threshold > 0 for threshold in reference_benchmarks.values())

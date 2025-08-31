@@ -24,7 +24,7 @@ def test_end2end_zeroia_reflexia_api():
             "type": "security_threat",
             "severity": "high",
             "source": "zeroia",
-            "details": decision,
+            "details": str(decision),
         }
     )
     assert alert_id is not None
@@ -34,7 +34,7 @@ def test_end2end_zeroia_reflexia_api():
     analysis = sandozia.analyze_behavior(
         {
             "event_type": "security_incident",
-            "decision_id": decision.get("id", "n/a"),
+            "decision_id": str(decision),
         }
     )
     assert analysis is not None
