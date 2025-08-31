@@ -29,6 +29,7 @@ def check_state_file() -> int:
     state_path = os.environ.get("ZEROIA_STATE_PATH", DEFAULT_STATE_PATH)
 
     if not os.path.exists(state_path):
+        print("❌ Fichier d'état introuvable.")
         ark_logger.info("❌ Fichier d'état introuvable.", extra={"arkalia_module": "scripts"})
         return 2
 
@@ -36,6 +37,7 @@ def check_state_file() -> int:
         with open(state_path) as f:
             data = toml.load(f)
     except toml.TomlDecodeError as e:
+        print(f"❌ Erreur TOML : {e}")
         ark_logger.info(f"❌ Erreur TOML : {e}", extra={"arkalia_module": "scripts"})
         return 2
 
@@ -43,9 +45,11 @@ def check_state_file() -> int:
     missing = [f for f in REQUIRED_FIELDS if f not in decision_block]
 
     if missing:
+        print(f"⚠️ Champs manquants : {missing}")
         ark_logger.info(f"⚠️ Champs manquants : {missing}", extra={"arkalia_module": "scripts"})
         return 1
 
+    print("✅ État ZeroIA valide.")
     ark_logger.info("✅ État ZeroIA valide.", extra={"arkalia_module": "scripts"})
     return 0
 

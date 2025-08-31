@@ -90,7 +90,7 @@ async def main():
     ark_logger.info(f"✅ Résultat: {result}", extra={"arkalia_module": "security"})
 
     health = core.health_check()
-    ark_logger.info(f"🏥 Santé: {health}", extra={"module": "security"})
+    ark_logger.info(f"🏥 Santé: {health}", extra={"arkalia_module": "security"})
 
 
 if __name__ == "__main__":

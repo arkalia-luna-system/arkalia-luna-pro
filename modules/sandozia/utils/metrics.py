@@ -270,7 +270,7 @@ def demo_metrics():
         time.sleep(0.01)
 
     # Analyser les résultats
-    ark_logger.info("\n🔍 Analysis results:", extra={"module": "utils"})
+    ark_logger.info("\n🔍 Analysis results:", extra={"arkalia_module": "utils"})
 
     # Corrélation entre confiances
     correlation = metrics.calculate_correlation(
@@ -278,25 +278,25 @@ def demo_metrics():
     )
     if correlation:
         ark_logger.info(
-            f"Corrélation confiance Reflexia-ZeroIA: {correlation:.3f}", extra={"module": "utils"}
+            f"Corrélation confiance Reflexia-ZeroIA: {correlation:.3f}", extra={"arkalia_module": "utils"}
         )
 
     # Santé cross-modules
     health = metrics.get_cross_module_health()
     ark_logger.info(
         f"Cohérence inter-modules: {health['cross_module_coherence']:.3f}",
-        extra={"module": "utils"},
+        extra={"arkalia_module": "utils"},
     )
 
     # Export Prometheus
     prometheus_data = metrics.export_prometheus_format()
     ark_logger.info(
         f"\n📤 Prometheus export ({len(prometheus_data.split())} metrics):",
-        extra={"module": "utils"},
+        extra={"arkalia_module": "utils"},
     )
     ark_logger.info(
         prometheus_data[:200] + "..." if len(prometheus_data) > 200 else prometheus_data,
-        extra={"module": "utils"},
+        extra={"arkalia_module": "utils"},
     )
 
 

@@ -26,18 +26,20 @@ DASHBOARD_FILE = Path("state/zeroia_dashboard.json")
 ENV_FILES = list(Path(".").rglob("*.env"))
 
 
-def check_toml_validity() -> None:
+def check_toml_validity() -> bool:
     try:
         with STATE_FILE.open("rb") as f:
             tomllib.load(f)
+        print("✅ Fichier TOML valide.")
         ark_logger.info("✅ Fichier TOML valide.", extra={"arkalia_module": "scripts"})
         return True
     except Exception as e:
+        print(f"❌ Erreur de parsing TOML: {e}")
         ark_logger.info(f"❌ Erreur de parsing TOML: {e}", extra={"arkalia_module": "scripts"})
         return False
 
 
-def check_pat_exposure() -> None:
+def check_pat_exposure() -> bool:
     pat_regex = re.compile(r"ghp_[A-Za-z0-9]{36,}")
     for file in ENV_FILES:
         content = file.read_text(errors="ignore")
@@ -59,8 +61,10 @@ if __name__ == "__main__":
         errors.append("PAT exposé")
 
     if errors:
+        print("🚫 Pre-push bloqué.")
         ark_logger.info("🚫 Pre-push bloqué.", extra={"arkalia_module": "scripts"})
         exit(1)
 
+    print("🛡️ Tous les contrôles ZeroIA sont OK.")
     ark_logger.info("🛡️ Tous les contrôles ZeroIA sont OK.", extra={"arkalia_module": "scripts"})
     exit(0)

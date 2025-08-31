@@ -62,35 +62,55 @@ class ArkaliaLogger:
     def info(self, message: str, extra: dict[str, Any] | None = None) -> None:
         """Log info avec contexte structuré"""
         if extra:
-            extra["arkalia_module"] = self.module_name
+            # Normaliser la clé module pour éviter les conflits
+            if "module" in extra and "arkalia_module" not in extra:
+                extra["arkalia_module"] = extra.pop("module")
+            elif "arkalia_module" not in extra:
+                extra["arkalia_module"] = self.module_name
             extra["timestamp"] = datetime.now().isoformat()
         self.logger.info(message, extra=extra)
 
     def error(self, message: str, extra: dict[str, Any] | None = None) -> None:
         """Log error avec contexte structuré"""
         if extra:
-            extra["arkalia_module"] = self.module_name
+            # Normaliser la clé module pour éviter les conflits
+            if "module" in extra and "arkalia_module" not in extra:
+                extra["arkalia_module"] = extra.pop("module")
+            elif "arkalia_module" not in extra:
+                extra["arkalia_module"] = self.module_name
             extra["timestamp"] = datetime.now().isoformat()
         self.logger.error(message, extra=extra)
 
     def warning(self, message: str, extra: dict[str, Any] | None = None) -> None:
         """Log warning avec contexte structuré"""
         if extra:
-            extra["arkalia_module"] = self.module_name
+            # Normaliser la clé module pour éviter les conflits
+            if "module" in extra and "arkalia_module" not in extra:
+                extra["arkalia_module"] = extra.pop("module")
+            elif "arkalia_module" not in extra:
+                extra["arkalia_module"] = self.module_name
             extra["timestamp"] = datetime.now().isoformat()
         self.logger.warning(message, extra=extra)
 
     def debug(self, message: str, extra: dict[str, Any] | None = None) -> None:
         """Log debug avec contexte structuré"""
         if extra:
-            extra["arkalia_module"] = self.module_name
+            # Normaliser la clé module pour éviter les conflits
+            if "module" in extra and "arkalia_module" not in extra:
+                extra["arkalia_module"] = extra.pop("module")
+            elif "arkalia_module" not in extra:
+                extra["arkalia_module"] = self.module_name
             extra["timestamp"] = datetime.now().isoformat()
         self.logger.debug(message, extra=extra)
 
     def critical(self, message: str, extra: dict[str, Any] | None = None) -> None:
         """Log critical avec contexte structuré"""
         if extra:
-            extra["arkalia_module"] = self.module_name
+            # Normaliser la clé module pour éviter les conflits
+            if "module" in extra and "arkalia_module" not in extra:
+                extra["arkalia_module"] = extra.pop("module")
+            elif "arkalia_module" not in extra:
+                extra["arkalia_module"] = self.module_name
             extra["timestamp"] = datetime.now().isoformat()
         self.logger.critical(message, extra=extra)
 
