@@ -280,7 +280,8 @@ class TestMetricsPerformance:
 
         avg_time_ms = (total_time / 10) * 1000
         ark_logger.info(
-            f"⚡ Temps moyen par collecte: {avg_time_ms:.1f}ms", extra={"module": "integration"}
+            f"⚡ Temps moyen par collecte: {avg_time_ms:.1f}ms",
+            extra={"arkalia_module": "integration"},
         )
 
     def test_prometheus_format_speed(self):
@@ -304,7 +305,8 @@ class TestMetricsPerformance:
 
         avg_time_ms = (total_time / 50) * 1000
         ark_logger.info(
-            f"📝 Temps moyen par formatage: {avg_time_ms:.1f}ms", extra={"module": "integration"}
+            f"📝 Temps moyen par formatage: {avg_time_ms:.1f}ms",
+            extra={"arkalia_module": "integration"},
         )
 
 

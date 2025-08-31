@@ -19,14 +19,15 @@ RUN groupadd -r arkalia && \
 WORKDIR /app
 
 # Copie des fichiers essentiels uniquement
-COPY --chown=arkalia:arkalia requirements.txt ./
+COPY --chown=arkalia:arkalia requirements-docker.txt ./
 COPY --chown=arkalia:arkalia helloria ./helloria
 COPY --chown=arkalia:arkalia modules ./modules
 COPY --chown=arkalia:arkalia core ./core
 COPY --chown=arkalia:arkalia run_arkalia_api.py ./
 
 # Installation des dépendances
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements-docker.txt
 
 # Switch vers utilisateur non-root
 USER arkalia

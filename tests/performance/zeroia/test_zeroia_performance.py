@@ -131,11 +131,13 @@ def test_zeroia_decision_time_under_2s(performance_metrics, temp_paths):
 
     ark_logger.info(
         f"✅ ZeroIA décision en {elapsed:.3f}s (objectif < {threshold}s)",
-        extra={"module": "zeroia"},
+        extra={"arkalia_module": "zeroia"},
     )
     memory_delta = performance_metrics.memory_delta
     if memory_delta is not None:
-        ark_logger.info(f"📊 Mémoire utilisée : {memory_delta:.1f} MB", extra={"module": "zeroia"})
+        ark_logger.info(
+            f"📊 Mémoire utilisée : {memory_delta:.1f} MB", extra={"arkalia_module": "zeroia"}
+        )
 
 
 @pytest.mark.performance
@@ -231,14 +233,15 @@ def test_event_store_write_performance(performance_metrics, tmp_path):
     )
 
     ark_logger.info(
-        f"✅ Event Store - {events_count} événements écrits", extra={"module": "zeroia"}
+        f"✅ Event Store - {events_count} événements écrits", extra={"arkalia_module": "zeroia"}
     )
     ark_logger.info(
-        f"📊 Moyenne: {avg_write_ms:.2f}ms | Max: {max_write_ms:.2f}ms", extra={"module": "zeroia"}
+        f"📊 Moyenne: {avg_write_ms:.2f}ms | Max: {max_write_ms:.2f}ms",
+        extra={"arkalia_module": "zeroia"},
     )
     ark_logger.info(
         f"🚀 Throughput: {events_count / performance_metrics.elapsed_time:.0f} events/sec",
-        extra={"module": "zeroia"},
+        extra={"arkalia_module": "zeroia"},
     )
 
 

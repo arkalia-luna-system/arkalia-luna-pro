@@ -23,11 +23,11 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # === Copie des fichiers de dépendances ===
-COPY requirements.txt .
-COPY pyproject.toml .
+COPY requirements-docker.txt .
 
 # === Installation des dépendances Python ===
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements-docker.txt
 
 # === Copie du code source ===
 COPY modules/generative_ai/ ./modules/generative_ai/
