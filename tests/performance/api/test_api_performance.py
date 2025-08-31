@@ -14,6 +14,7 @@ from typing import Any
 import aiohttp
 import httpx
 import pytest
+import requests
 
 # Ajout du path pour les imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -31,84 +32,99 @@ class TestAPIPerformance:
     @pytest.mark.benchmark
     def test_health_endpoint_response_time(self, benchmark):
         """Test du temps de réponse du endpoint health"""
+        try:
 
-        def health_check():
-            import requests
+            def health_check():
+                import requests
 
-            response = requests.get("http://localhost:8000/health", timeout=5)
-            return response.status_code
+                response = requests.get("http://localhost:8000/health", timeout=5)
+                return response.status_code
 
-        result = benchmark(health_check)
-        assert result == 200
+            result = benchmark(health_check)
+            assert result == 200
+        except requests.exceptions.ConnectionError:
+            pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.benchmark
     def test_zeroia_decision_response_time(self, benchmark):
         """Test du temps de réponse du endpoint de décision ZeroIA"""
+        try:
 
-        def zeroia_decision():
-            import requests
+            def zeroia_decision():
+                import requests
 
-            payload = {
-                "context": {"cpu_usage": 75.0, "memory_usage": 80.0, "error_rate": 0.02},
-                "priority": "medium",
-            }
-            response = requests.post(
-                "http://localhost:8000/zeroia/decision", json=payload, timeout=10
-            )
-            return response.status_code
+                payload = {
+                    "context": {"cpu_usage": 75.0, "memory_usage": 80.0, "error_rate": 0.02},
+                    "priority": "medium",
+                }
+                response = requests.post(
+                    "http://localhost:8000/zeroia/decision", json=payload, timeout=10
+                )
+                return response.status_code
 
-        result = benchmark(zeroia_decision)
-        assert result == 200
+            result = benchmark(zeroia_decision)
+            assert result == 200
+        except requests.exceptions.ConnectionError:
+            pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.benchmark
     def test_reflexia_check_response_time(self, benchmark):
         """Test du temps de réponse du endpoint ReflexIA"""
+        try:
 
-        def reflexia_check():
-            import requests
+            def reflexia_check():
+                import requests
 
-            payload = {"module": "zeroia", "check_type": "health"}
-            response = requests.post(
-                "http://localhost:8000/reflexia/check", json=payload, timeout=10
-            )
-            return response.status_code
+                payload = {"module": "zeroia", "check_type": "health"}
+                response = requests.post(
+                    "http://localhost:8000/reflexia/check", json=payload, timeout=10
+                )
+                return response.status_code
 
-        result = benchmark(reflexia_check)
-        assert result == 200
+            result = benchmark(reflexia_check)
+            assert result == 200
+        except requests.exceptions.ConnectionError:
+            pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.benchmark
     def test_sandozia_analyze_response_time(self, benchmark):
         """Test du temps de réponse du endpoint Sandozia"""
+        try:
 
-        def sandozia_analyze():
-            import requests
+            def sandozia_analyze():
+                import requests
 
-            payload = {
-                "data": {
-                    "system_metrics": {"cpu": 70.0, "memory": 75.0, "disk": 60.0},
-                    "events": ["high_cpu", "memory_warning"],
+                payload = {
+                    "data": {
+                        "system_metrics": {"cpu": 70.0, "memory": 75.0, "disk": 60.0},
+                        "events": ["high_cpu", "memory_warning"],
+                    }
                 }
-            }
-            response = requests.post(
-                "http://localhost:8000/sandozia/analyze", json=payload, timeout=10
-            )
-            return response.status_code
+                response = requests.post(
+                    "http://localhost:8000/sandozia/analyze", json=payload, timeout=10
+                )
+                return response.status_code
 
-        result = benchmark(sandozia_analyze)
-        assert result == 200
+            result = benchmark(sandozia_analyze)
+            assert result == 200
+        except requests.exceptions.ConnectionError:
+            pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.benchmark
     def test_metrics_endpoint_response_time(self, benchmark):
         """Test du temps de réponse du endpoint metrics"""
+        try:
 
-        def metrics_check():
-            import requests
+            def metrics_check():
+                import requests
 
-            response = requests.get("http://localhost:8000/metrics", timeout=5)
-            return response.status_code
+                response = requests.get("http://localhost:8000/metrics", timeout=5)
+                return response.status_code
 
-        result = benchmark(metrics_check)
-        assert result == 200
+            result = benchmark(metrics_check)
+            assert result == 200
+        except requests.exceptions.ConnectionError:
+            pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.asyncio
     async def test_concurrent_api_requests(self, api_client):

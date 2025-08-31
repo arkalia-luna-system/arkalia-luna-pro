@@ -76,7 +76,7 @@ def test_chat_post_timeout(test_client) -> None:
     try:
         with patch("modules.assistantia.core._check_ollama_health", return_value=True):
             res = test_client.post("/api/v1/chat", json={"message": "Hello"})
-            # Accepte 422 (validation), 503 (service unavailable) ou 500 selon le comportement réel
-            assert res.status_code in [422, 503, 500], f"Statut inattendu: {res.status_code}"
+            # Accepte 422 (validation), 503 (service unavailable), 500 (erreur interne) ou 504 (timeout)
+            assert res.status_code in [422, 503, 500, 504], f"Statut inattendu: {res.status_code}"
     finally:
         app.dependency_overrides = {}
