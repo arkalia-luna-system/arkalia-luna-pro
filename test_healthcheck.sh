@@ -10,7 +10,7 @@ test_endpoint() {
     local url=$1
     local name=$2
     echo "📡 Test de l'endpoint $name..."
-    
+
     if response=$(curl -s -f "$url" 2>/dev/null); then
         echo "✅ $name accessible: $response"
         return 0

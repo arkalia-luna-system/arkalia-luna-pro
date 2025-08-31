@@ -26,14 +26,14 @@ wait_for_service() {
     local service_name=$1
     local timeout=$2
     local health_check_type=$3
-    
+
     echo "⏳ Attente que $service_name soit prêt (timeout: ${timeout}s)..."
-    
+
     elapsed=0
     while [ $elapsed -lt $timeout ]; do
         # Vérifier le statut du conteneur
         container_status=$(docker-compose -f docker-compose-ultra-robust.yml ps $service_name | grep -o "healthy\|unhealthy\|starting" | head -1 || echo "unknown")
-        
+
         if [ "$container_status" = "healthy" ]; then
             echo "✅ $service_name est prêt!"
             return 0
@@ -44,12 +44,12 @@ wait_for_service() {
             docker-compose -f docker-compose-ultra-robust.yml logs --tail=20 $service_name
             return 1
         fi
-        
+
         echo "⏳ Attente... ($elapsed/$timeout secondes) - Status: $container_status"
         sleep 15
         elapsed=$((elapsed + 15))
     done
-    
+
     echo "⏰ Timeout: $service_name n'est pas prêt après ${timeout}s"
     echo "📋 Logs de $service_name:"
     docker-compose -f docker-compose-ultra-robust.yml logs --tail=50 $service_name
@@ -61,12 +61,12 @@ test_endpoint() {
     local service_name=$1
     local port=$2
     local endpoint=$3
-    
+
     echo "🔍 Test manuel de $service_name sur le port $port..."
-    
+
     # Attendre un peu que le service démarre
     sleep 10
-    
+
     # Test avec curl si disponible
     if command -v curl > /dev/null 2>&1; then
         if curl -f -s "http://localhost:$port$endpoint" > /dev/null 2>&1; then
@@ -138,12 +138,12 @@ elapsed=0
 while [ $elapsed -lt $timeout ]; do
     unhealthy_count=$(docker-compose -f docker-compose-ultra-robust.yml ps | grep -c "unhealthy" || true)
     starting_count=$(docker-compose -f docker-compose-ultra-robust.yml ps | grep -c "starting" || true)
-    
+
     if [ "$unhealthy_count" -eq 0 ] && [ "$starting_count" -eq 0 ]; then
         echo "✅ Tous les services sont prêts!"
         break
     fi
-    
+
     echo "⏳ Attente... Services non prêts: unhealthy=$unhealthy_count, starting=$starting_count"
     sleep 30
     elapsed=$((elapsed + 30))
@@ -165,7 +165,7 @@ services=(
 all_services_ok=true
 for service_info in "${services[@]}"; do
     IFS=':' read -r service_name port endpoint <<< "$service_info"
-    
+
     if test_endpoint "$service_name" "$port" "$endpoint"; then
         echo "✅ $service_name - OK"
     else
