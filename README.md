@@ -156,7 +156,7 @@ curl http://localhost:8003/health
 
 ## 🔧 Fonctionnalités Principales v2.8.0
 
-### 🤖 **ZeroIA Coordinator - Décisionneur Autonome Enhanced v2.8.0** 🆕
+### 🤖 **ZeroIA Coordinator - Moteur de Décision Autonome Enhanced v2.8.0** 🆕
 - **Coordinateur principal** avec tous les systèmes avancés intégrés
 - **Decision Engine** - Moteur de décision intelligent
 - **Confidence Scoring** - Scoring de confiance avec mémoire explicable

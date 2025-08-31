@@ -140,7 +140,7 @@
     <div class="module-card">
         <div class="module-icon">🤖</div>
         <h3>ZeroIA</h3>
-        <p>Décisionneur autonome avec circuit breaker et adaptive thresholds</p>
+        <p>Moteur de Décision Autonome avec circuit breaker et adaptive thresholds</p>
         <span class="status-badge healthy">✅ Opérationnel</span>
     </div>
 

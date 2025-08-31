@@ -23,7 +23,7 @@
 ---
 
 ## ✨ Fonctionnalités clés
-- **ZeroIA** : Décisionneur autonome, circuit breaker, error recovery
+- **ZeroIA** : Moteur de Décision Autonome, circuit breaker, error recovery
 - **Reflexia** : Observateur cognitif, alertes, feedback
 - **Sandozia** : Analyse comportementale, heatmaps, validation croisée
 - **Assistantia** : Interface utilisateur, API REST, navigation contextuelle

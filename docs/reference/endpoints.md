@@ -81,7 +81,7 @@ GET /metrics
 
 ---
 
-## 🧠 **ZeroIA - Décisionneur Autonome**
+## 🧠 **ZeroIA - Moteur de Décision Autonome**
 
 ### **Base URL**
 

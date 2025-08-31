@@ -18,7 +18,7 @@ Chaque module doit avoir :
 
 ## 🧠 MODULES IA PRINCIPAUX
 
-### 1. **ZeroIA** - Décisionneur Autonome
+### 1. **ZeroIA** - Moteur de Décision Autonome
 **Statut** : ✅ COMPLET
 **Tests** : 15 unitaires + 3 intégration + 2 edge cases
 

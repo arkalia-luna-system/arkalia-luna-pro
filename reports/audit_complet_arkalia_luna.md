@@ -65,7 +65,7 @@
 
 ### 🧠 **zeroia (Pas de port)**
 - **Statut** : ✅ Healthy (daemon mode)
-- **Fonction** : Décisionneur autonome enhanced
+- **Fonction** : Moteur de Décision Autonome enhanced
 - **Mode** : Orchestrator daemon
 - **Dépendances** : reflexia
 

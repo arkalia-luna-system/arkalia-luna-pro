@@ -8,7 +8,7 @@
 | **arkalia-api** | 8000 | ✅ Healthy | API FastAPI | **API centrale** - Point d'entrée principal |
 | **assistantia** | 8001 | ✅ Healthy | API FastAPI | **Interface IA** - Chat avec Ollama + contexte Arkalia |
 | **reflexia** | 8002 | ✅ Healthy | API FastAPI | **Observateur cognitif** - Monitoring réflexif |
-| **zeroia** | - | ✅ Healthy | Daemon | **Décisionneur autonome** - Orchestrateur enhanced |
+| **zeroia** | - | ✅ Healthy | Daemon | **Moteur de Décision Autonome** - Orchestrateur enhanced |
 | **sandozia** | - | ✅ Healthy | Daemon | **Intelligence croisée** - Core enterprise |
 | **cognitive-reactor** | 8003 | ✅ Healthy | API + Daemon | **Intelligence avancée** - Réactions cognitives |
 
@@ -37,7 +37,7 @@
 - **Action** : **GARDER** - Service essentiel
 
 ### 🧠 **zeroia (Pas de port) - ✅ CONFIRMÉ ESSENTIEL**
-- **Fonction** : Décisionneur autonome enhanced
+- **Fonction** : Moteur de Décision Autonome enhanced
 - **Utilité** : Orchestrateur principal en mode daemon
 - **Action** : **GARDER** - Service essentiel
 

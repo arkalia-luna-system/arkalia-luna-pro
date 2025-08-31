@@ -29,7 +29,7 @@
 
 ## 🧩 **ANALYSE DÉTAILLÉE PAR MODULE**
 
-### 1. **🧠 ZeroIA** - Décisionneur Autonome
+### 1. **🧠 ZeroIA** - Moteur de Décision Autonome
 **Statut** : ✅ **EXCELLENT**
 **Taille** : 15 fichiers, ~8 000 lignes
 **Complexité** : Élevée (système de décision avancé)

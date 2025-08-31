@@ -87,7 +87,7 @@ arkalia-luna-pro/
 
 ### Modules Actifs
 - **arkalia-api** : API centrale (port 8000)
-- **zeroia** : Décisionneur autonome (87% couverture)
+- **zeroia** : Moteur de Décision Autonome (87% couverture)
 - **reflexia** : Observateur cognitif (74% couverture)
 - **sandozia** : Intelligence croisée (92% couverture)
 - **cognitive-reactor** : Orchestrateur central (45% couverture)

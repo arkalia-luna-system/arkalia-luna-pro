@@ -110,13 +110,13 @@
 
 ### 🧠 **10. zeroia (22 fichiers) - ✅ ACTIF & FONCTIONNEL**
 - **Statut** : ✅ **Service principal** (Daemon)
-- **Fonction** : Décisionneur autonome enhanced
+- **Fonction** : Moteur de Décision Autonome enhanced
 - **Fonctionnalités** :
   - Orchestrateur enhanced
   - Circuit breaker
   - Adaptive thresholds
   - Récupération d'erreurs
-- **État** : **OPÉRATIONNEL** - Décisionneur
+- **État** : **OPÉRATIONNEL** - Moteur de Décision
 - **Action** : **GARDER** - Service essentiel
 
 ### 🔧 **11. utils_enhanced (3 fichiers) - ✅ ACTIF & FONCTIONNEL**
@@ -149,7 +149,7 @@
 3. **helloria** - API centrale
 4. **reflexia** - Observateur cognitif
 5. **sandozia** - Intelligence croisée
-6. **zeroia** - Décisionneur autonome
+6. **zeroia** - Moteur de Décision Autonome
 
 ### 🟡 **Modules de Support (4 modules)**
 1. **core** - Orchestrateur central

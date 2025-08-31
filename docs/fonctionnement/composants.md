@@ -17,7 +17,7 @@
 
 | Composant        | Rôle                                                                                 | Couverture tests |
 |------------------|--------------------------------------------------------------------------------------|------------------|
-| **ZeroIA**       | Décisionneur autonome, détection d'anomalies, circuit breaker, auto-récupération     | 87%              |
+| **ZeroIA**       | Moteur de Décision Autonome, détection d'anomalies, circuit breaker, auto-récupération     | 87%              |
 | **Reflexia**     | Observateur cognitif, monitoring adaptatif, analyse des patterns                     | 74%              |
 | **Sandozia**     | Intelligence croisée, validation inter-modules, analyse comportementale              | 92%              |
 | **CognitiveReactor** | Orchestrateur central, coordination des modules, adaptation cognitive           | 45%              |

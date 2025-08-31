@@ -1,4 +1,4 @@
-# ZeroIA — Décisionneur autonome Enhanced v2.6.0
+# ZeroIA — Moteur de Décision Autonome Enhanced v2.6.0
 
 ZeroIA est le module de décision autonome du kernel Arkalia-LUNA. Il fonctionne en mode daemon (pas d'API HTTP publique) et prend en charge :
 
