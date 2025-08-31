@@ -41,7 +41,7 @@ uvicorn modules.assistantia.core:app --port 8001
 
 - **Fichiers** :
   - `test_assistantia.py` (unitaires)
-  - `test_assistantia_integration.py` (intégration)
+  - `test_assistantia_api_integration.py` (intégration API)
 - **Pipeline CI/CD** :
   - 671 tests passés, 0 échec
   - Couverture globale : **59.25 %** (seuil requis 28 % largement dépassé)

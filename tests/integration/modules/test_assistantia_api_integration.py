@@ -18,10 +18,12 @@ pytestmark = pytest.mark.asyncio
 
 def test_print_routes():
     """Affiche les routes disponibles pour debug."""
-    ark_logger.info("\n--- ROUTES DISPONIBLES ---", extra={"module": "modules"})
+    ark_logger.info("\n--- ROUTES DISPONIBLES ---", extra={"arkalia_module": "modules"})
     for route in app.routes:
-        ark_logger.info(f"{route.path} | methods: {route.methods}", extra={"module": "modules"})
-    ark_logger.info("--- FIN ROUTES ---\n", extra={"module": "modules"})
+        ark_logger.info(
+            f"{route.path} | methods: {route.methods}", extra={"arkalia_module": "modules"}
+        )
+    ark_logger.info("--- FIN ROUTES ---\n", extra={"arkalia_module": "modules"})
 
 
 def test_chat_endpoint_success():
