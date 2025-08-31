@@ -115,4 +115,28 @@ Corriger et nettoyer la documentation Markdown pour qu'elle corresponde à la r�
 
 ---
 
+## 🌳 **Nettoyage des Branches Git (31 août 2025)**
+
+### **Branches Supprimées (Obsolètes)**
+- ❌ **`backup`** - Ancienne sauvegarde (2 semaines) remplacée par la sauvegarde récente
+- ❌ **`fix/zeroia-modular-architecture-v2.8.0`** - Feature intégrée dans `main`, plus nécessaire
+
+### **Branches Conservées (Actives)**
+- ✅ **`main`** - Branche de production (synchronisée avec `dev`)
+- ✅ **`dev`** - Branche de développement active
+- ✅ **`gh-pages`** - Déploiement automatique de la documentation
+- ✅ **`backup-main-20250831_152259`** - Sauvegarde de sécurité récente
+
+### **Raison des Suppressions**
+- **`backup`** : Remplacée par `backup-main-20250831_152259` (plus récente)
+- **`fix/zeroia-*`** : Architecture modulaire déjà intégrée dans `main`
+
+### **Bénéfices du Nettoyage des Branches**
+- **Architecture Git plus claire** : Seulement les branches nécessaires
+- **Maintenance simplifiée** : Moins de branches à surveiller
+- **Historique propre** : Suppression des branches de feature obsolètes
+- **Sécurité maintenue** : Sauvegarde récente conservée
+
+---
+
 **🌟 Documentation Arkalia-LUNA Pro maintenant 100% cohérente et à jour !**
