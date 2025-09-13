@@ -1,6 +1,8 @@
-# 🌕 Arkalia-LUNA Pro v3.2.0
+# 🌕🤖🚀 **Arkalia-LUNA Pro** - Orchestrateur IA Enterprise
 
-**Orchestrateur IA Enterprise - Monitoring, Sécurité, CI/CD & Modularité Avancée**
+> **🌍 English**: Enterprise AI orchestration platform with FastAPI, advanced monitoring, security, deployment, cognitive modules - reference open-source for production.
+
+> **🇫🇷 Français**: Plateforme d'orchestration IA d'entreprise avec FastAPI, monitoring avancé, sécurité, déploiement, modules cognitifs - référence open-source pour production.
 
 [![Release](https://img.shields.io/github/v/tag/athalia-siwek/arkalia-luna-pro?label=release)](https://github.com/athalia-siwek/arkalia-luna-pro/releases)
 [![Status](https://img.shields.io/badge/status-production%20ready-brightgreen.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
