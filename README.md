@@ -1,17 +1,35 @@
-# 🌕 Arkalia-LUNA Pro v2.8.0
+# 🌕 Arkalia-LUNA Pro v3.2.0
 
-**Système IA Enterprise avec Intelligence Générative Avancée et Cognitive Reactor**
+**Orchestrateur IA Enterprise - Monitoring, Sécurité, CI/CD & Modularité Avancée**
 
-[![Version](https://img.shields.io/badge/version-2.8.0-blue.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
-[![Status](https://img.shields.io/badge/status-production%20ready-green.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
-[![Docker](https://img.shields.io/badge/docker-7%20modules%20healthy-green.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
-[![Tests](https://img.shields.io/badge/tests-100%25%20passing-green.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
-[![Coverage](https://img.shields.io/badge/coverage-59.25%25-green.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
-[![CI](https://img.shields.io/badge/CI-100%25%20verte-green.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
+[![Release](https://img.shields.io/github/v/tag/athalia-siwek/arkalia-luna-pro?label=release)](https://github.com/athalia-siwek/arkalia-luna-pro/releases)
+[![Status](https://img.shields.io/badge/status-production%20ready-brightgreen.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
+[![Docker](https://img.shields.io/badge/containers-7%20healthy-success.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
+[![Tests](https://img.shields.io/badge/test%20files-100-success.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
+[![Coverage](https://img.shields.io/badge/coverage-59.25%25-orange.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
+[![Workflows](https://img.shields.io/badge/CI%2FCD-8%20workflows-blue.svg)](https://github.com/athalia-siwek/arkalia-luna-pro/.github/workflows)
 
 ## 🚀 État Actuel du Système
 
-### ✅ Services Opérationnels v2.8.0
+## 🚀 Déploiement Express (10 secondes)
+
+```bash
+# 1. Clone et setup (3 sec)
+git clone https://github.com/athalia-siwek/arkalia-luna-pro.git && cd arkalia-luna-pro
+
+# 2. Lancement stack complète (5 sec)
+make docker-build && docker-compose up -d
+
+# 3. Vérification santé (2 sec)
+make test-integration
+```
+
+**Accès immédiat** : 
+- 🌐 API principale : http://localhost:8000/health
+- 📊 Grafana : http://localhost:3000 (admin/admin)
+- 📈 Prometheus : http://localhost:9090
+
+### ✅ Services Opérationnels v3.2.0
 - **🚀 arkalia-api** (Port 8000) - API centrale FastAPI optimisée avec healthcheck Python natif
 - **🧠 AssistantIA** (Port 8001) - Navigation contextuelle avec Ollama
 - **🔁 ReflexIA** (Port 8002) - Observateur cognitif réflexif
@@ -43,15 +61,34 @@
 - ✅ **Health Checks Automatiques** - Tous les services healthy (vérification Python natif)
 - ✅ **CI/CD 100% verte** - Workflows optimisés, artefacts conditionnels, upload Bandit/coverage
 
-### 📈 Métriques Récentes
-- **Tests unitaires** : 642/642 passés ✅
-- **Tests d'intégration** : 29/29 passés ✅
-- **Total tests** : 671
-- **Couverture globale** : 59.25% (bien au-dessus du seuil de 28%)
+### 📈 Métriques Authentiques
+- **Fichiers de tests** : 100 fichiers Python ✅
+- **Tests exécutés** : 509 tests collectés ✅
+- **Couverture globale** : 59.25% (objectif: 65%) 🎯
+- **Workflows CI/CD** : 8 workflows actifs ✅
 - **CI/CD** : 100% verte, artefacts uploadés, sécurité validée
 - **Stabilité** : Tous les conteneurs healthy et opérationnels
 
-## 🏗️ Architecture v2.8.0
+## ⚠️ Limitations & Contexte d'Usage
+
+**Ce système est adapté pour** :
+- ✅ Environnements de développement et intégration
+- ✅ Proof of concept et prototypage IA
+- ✅ Formation et apprentissage des technologies IA
+- ✅ Tests de charge et évaluation de performance
+
+**Limitations actuelles** :
+- 🎯 Couverture tests à 59% (cible: 65%+)
+- ⚡ Optimisation mémoire en cours (forte consommation)
+- 🔧 Dépendance Ollama locale requise
+- 📊 Métriques Prometheus basiques (non enterprise)
+
+**Non recommandé pour** :
+- ❌ Production critique sans audit sécurité
+- ❌ Données sensibles sans chiffrement end-to-end
+- ❌ Haute disponibilité sans cluster
+
+## 🏗️ Architecture v3.2.0
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -269,13 +306,32 @@ make clean
 - **CI/CD 100% verte** : tests non-bloquants, healthcheck Python, upload conditionnel
 - **Déploiement** : staging, production, healthchecks, rollback sécurisé
 
-## 🧭 Roadmap & Améliorations
-- **Objectif couverture** : 65% puis 70% puis 75%
-- **Optimisation tests lents**
-- **Parallélisation**
-- **Migration print() → ark_logger** (progressive, sécurisée)
-- **Monitoring avancé** (alertes Slack, auto-recovery)
+## 🤝 Contribution & Support
+
+### Comment Contribuer
+- 🐛 **Bug Reports** : Utilisez les [issues templates](.github/ISSUE_TEMPLATE.md)
+- ✨ **Nouvelles fonctionnalités** : Fork → PR avec tests
+- 📚 **Documentation** : Améliorations bienvenues
+- 🧪 **Tests** : Objectif 65%+ de couverture
+
+### Support & Questions
+- 📋 **GitHub Issues** : Questions techniques et bugs
+- 💬 **Discussions** : Architecture et roadmap
+- 📧 **Contact** : Pour collaborations professionnelles
+
+### Standards de Qualité
+- ✅ Tests obligatoires pour toute PR
+- ✅ Black + Ruff + pre-commit  
+- ✅ Documentation à jour
+- ✅ Performance maintenue
+
+## 🧭 Roadmap & Prochaines Étapes
+- **Couverture tests** : 59% → 65% → 70%
+- **Optimisation mémoire** : Réduction footprint
+- **Monitoring avancé** : Métriques enterprise
+- **Migration logging** : print() → ark_logger
+- **Documentation** : API auto-générée
 
 ---
 
-**🌟 Arkalia-LUNA v2.8.0 - Production Ready avec Intelligence Générative Avancée, CI/CD robuste, sécurité et monitoring complet !**
+**🌟 Arkalia-LUNA Pro v3.2.0 - Orchestrateur IA structuré pour performer, ouvert et pensé pour l'apprentissage collectif**
