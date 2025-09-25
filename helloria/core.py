@@ -2,6 +2,7 @@
 
 import json
 import logging
+from typing import Any
 
 from fastapi import APIRouter, FastAPI, Request, Response
 from fastapi.responses import JSONResponse, PlainTextResponse
@@ -16,6 +17,7 @@ from modules.reflexia.core_api import router as reflexia_router
 
 # 🚦 Router principal
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 # 🧾 Logging d'erreurs
 logging.basicConfig(
@@ -27,7 +29,7 @@ logging.basicConfig(
 
 # 🎯 Endpoint principal IA
 @router.post("/chat", tags=["IA"])
-async def chat(request: Request):
+async def chat(request: Request) -> dict[str, Any] | JSONResponse:
     try:
         data = await request.json()
         prompt = data.get("message", "").strip()
@@ -46,13 +48,13 @@ async def chat(request: Request):
 
 # 🌐 Racine API
 @router.get("/", tags=["Root"])
-async def root():
+async def root() -> dict:
     return {"message": "Arkalia-LUNA API active"}
 
 
 # 📊 Endpoint statut détaillé
 @router.get("/status", tags=["Status"])
-async def status():
+async def status() -> dict:
     """Statut détaillé de l'API avec métriques système"""
     import time
 
@@ -90,7 +92,7 @@ async def status():
 
 # 📊 Endpoint métriques Prometheus
 @router.get("/metrics", tags=["Monitoring"])
-async def metrics():
+async def metrics() -> PlainTextResponse:
     """
     Endpoint Prometheus pour exposition des métriques Arkalia-LUNA
     Format: OpenMetrics/Prometheus standard
@@ -165,32 +167,33 @@ def _get_fallback_metrics() -> dict:
     try:
         sandozia_state = Path("state/sandozia")
         sandozia_active = 1 if sandozia_state.exists() else 0
-    except Exception:
-        pass
+    except Exception as e:
+        # En cas d'erreur, on logge au lieu de passer silencieusement
+        logger.warning(f"Sandozia state check failed: {e}")
 
     # État AssistantIA
     assistantia_active = 0
     try:
         assistantia_state = Path("modules/assistantia/core.py")
         assistantia_active = 1 if assistantia_state.exists() else 0
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"AssistantIA state check failed: {e}")
 
     # État Nyxalia
     nyxalia_active = 0
     try:
         nyxalia_state = Path("modules/nyxalia/core.py")
         nyxalia_active = 1 if nyxalia_state.exists() else 0
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Nyxalia state check failed: {e}")
 
     # État Taskia
     taskia_active = 0
     try:
         taskia_state = Path("modules/taskia/core.py")
         taskia_active = 1 if taskia_state.exists() else 0
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Taskia state check failed: {e}")
 
     return {
         "arkalia_system_health": 1 if all(critical_files.values()) else 0,
@@ -284,14 +287,17 @@ def sandozia_health() -> dict:
 
 
 @app.get("/zeroia/status", tags=["ZeroIA"])
-def zeroia_status():
+def zeroia_status() -> dict[str, Any]:
     try:
         with open("state/zeroia_dashboard.json") as f:
-            return json.load(f)
+            data = json.load(f)
+            if isinstance(data, dict):
+                return data
+            return {"status": "error", "error": "invalid dashboard format"}
     except Exception as e:
         return {"status": "error", "error": str(e)}
 
 
 def _get_metrics() -> dict:
     # Implementation of _get_metrics function
-    pass
+    return _get_fallback_metrics()

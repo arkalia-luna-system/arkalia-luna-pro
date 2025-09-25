@@ -237,10 +237,11 @@ class BuildIntegrityValidator:
 
             version_file = self.base_dir / "version.toml"
             if version_file.exists():
-                version_data = toml.load(version_file)
-                return version_data.get("current_version", "unknown")
+                version_data: dict[str, Any] = toml.load(version_file)
+                current = version_data.get("current_version", "unknown")
+                return str(current)
         except Exception:
-            pass
+            return "unknown"
         return "unknown"
 
     def _get_critical_files_list(self) -> list[str]:
@@ -253,7 +254,7 @@ class BuildIntegrityValidator:
             "docker-compose.yml",
         ]
 
-    def _log_violations(self, violations: list[str], metadata: dict):
+    def _log_violations(self, violations: list[str], metadata: dict) -> None:
         timestamp = datetime.now().isoformat()
         log_entry = {
             "timestamp": timestamp,
@@ -296,12 +297,11 @@ def validate_production_integrity() -> bool:
 
 def _get_git_commit() -> str:
     try:
-        import subprocess
+        from git import Repo
 
-        result = subprocess.run(
-            ["git", "rev-parse", "HEAD"], capture_output=True, text=True, timeout=5
-        )
-        return result.stdout.strip() if result.returncode == 0 else "unknown"
+        repo = Repo(search_parent_directories=True)
+        sha: str = repo.head.commit.hexsha
+        return sha
     except Exception:
         return "unknown"
 

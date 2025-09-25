@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
-      
+
       - name: 🔍 Verify current workflows
         run: |
           echo "🔍 Vérification des workflows actuels..."
@@ -25,13 +25,13 @@ jobs:
               grep "^name:" "$file" || echo "  Pas de nom défini"
             fi
           done
-      
+
       - name: 🧹 Force cleanup
         run: |
           echo "🧹 Forçage du nettoyage des workflows obsolètes..."
           echo "📝 Ce workflow force GitHub à se resynchroniser"
           echo "🗑️ Les workflows obsolètes devraient être supprimés automatiquement"
-      
+
       - name: ✅ Cleanup complete
         run: |
           echo "✅ Nettoyage forcé terminé"

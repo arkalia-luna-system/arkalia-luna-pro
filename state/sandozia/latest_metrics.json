@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-31T11:26:51.240189",
+  "timestamp": "2025-09-25T13:51:50.300168",
   "coherence_score": 1.0,
   "cross_validation_passed": 1,
   "anomalies_detected": 0,
@@ -9,5 +9,10 @@
     "zeroia",
     "assistant"
   ],
-  "total_correlations": 0
+  "total_correlations": 0,
+  "cpu_usage": 0.0,
+  "memory_usage": 0.0,
+  "response_time": 0.0,
+  "throughput": 0.0,
+  "error_rate": 0.0
 }

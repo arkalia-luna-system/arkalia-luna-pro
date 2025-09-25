@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 
-def check_dependencies():
+def check_dependencies() -> bool:
     """Vérification des dépendances critiques"""
     try:
         import fastapi
@@ -28,7 +28,7 @@ def check_dependencies():
         return False
 
 
-def check_modules():
+def check_modules() -> bool:
     """Vérification des modules critiques"""
     critical_modules = [
         "helloria/core.py",
@@ -50,7 +50,7 @@ def check_modules():
     return True
 
 
-def create_directories():
+def create_directories() -> None:
     """Création des répertoires nécessaires"""
     directories = ["logs", "state", "cache", "modules/zeroia/state", "modules/assistantia/logs"]
 
@@ -60,7 +60,7 @@ def create_directories():
     logger.info("✅ Répertoires créés")
 
 
-def start_api():
+def start_api() -> None:
     """Démarrage de l'API avec gestion d'erreurs"""
     try:
         # Vérifications préalables
@@ -73,17 +73,19 @@ def start_api():
 
         create_directories()
 
-        # Import de l'application
-        from helloria.core import app
+        # Import de l'application principale FastAPI
+        # Utilise app.main (API centrale) afin d'exposer les endpoints attendus par les tests
+        from app.main import app
 
         logger.info("🚀 Démarrage de l'API Arkalia-LUNA...")
 
         # Configuration uvicorn
         import uvicorn
 
+        bind_host = os.getenv("ARK_BIND_HOST", "127.0.0.1")
         uvicorn.run(
             app,
-            host="0.0.0.0",  # Interface accessible depuis Docker
+            host=bind_host,
             port=8000,
             workers=1,
             access_log=True,

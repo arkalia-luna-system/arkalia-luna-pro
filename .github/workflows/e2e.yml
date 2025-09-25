@@ -1,0 +1,9 @@
+# Fichier temporaire pour nettoyer le workflow orphelin
+name: 🧪 Tests End-to-End (E2E)
+on:
+  workflow_dispatch:
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Nettoyage en cours..."

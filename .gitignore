@@ -382,3 +382,10 @@ demo_sandozia_results.json
 .ruff_cache/
 __pycache__/
 *.pyc
+
+# Local artifacts to ignore
+chaos_metric_*.toml
+tests_last_output.txt
+data/zeroia/backups/
+
+bandit-report.txt

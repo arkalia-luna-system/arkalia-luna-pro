@@ -12,12 +12,18 @@ Collecte de vraies métriques système :
 
 import json
 import os
-import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
 from core.ark_logger import ark_logger
+
+docker_mod: Any | None
+try:
+    import docker as docker_mod
+except Exception:  # pragma: no cover - docker SDK optionnel en local
+    docker_mod = None
+
 
 try:
     import psutil
@@ -46,37 +52,24 @@ def get_system_metrics() -> dict:
 
 def get_arkalia_containers_status() -> dict:
     """Vérifie l'état des containers Arkalia"""
-    try:
-        result = subprocess.run(
-            [
-                "docker",
-                "ps",
-                "--filter",
-                "name=zeroia\\|sandozia\\|reflexia\\|assistantia",
-                "--format",
-                "{{.Names}} {{.Status}}",
-            ],
-            capture_output=True,
-            text=True,
-            timeout=5,
-        )
+    containers: dict[str, Any] = {}
 
-        if result.returncode == 0:
-            lines = result.stdout.strip().split("\n")
-            containers: dict[str, Any] = {}
-            for line in lines:
-                if line.strip():
-                    parts = line.split(" ", 1)
-                    if len(parts) >= 2:
-                        name = parts[0].strip()
-                        status = parts[1].strip()
-                        containers[name] = "healthy" if "healthy" in status else "running"
+    # Utiliser le SDK Docker si disponible (plus sûr que subprocess)
+    if docker_mod is not None:
+        try:
+            client = docker_mod.from_env()
+            for c in client.containers.list():
+                name = (c.name or "").strip()
+                if name.startswith(("zeroia", "sandozia", "reflexia", "assistantia")):
+                    containers[name] = (
+                        "healthy" if getattr(c, "status", "") == "running" else c.status
+                    )
             return containers
-        else:
-            return {"error": "Docker unavailable"}
+        except Exception as e:
+            return {"error": f"Container check failed: {str(e)}"}
 
-    except Exception as e:
-        return {"error": f"Container check failed: {str(e)}"}
+    # Fallback si SDK indisponible
+    return {"error": "Docker SDK unavailable"}
 
 
 def get_arkalia_modules_health() -> dict:
@@ -143,8 +136,8 @@ def analyze_error_logs() -> dict:
                 elif "WARNING" in line.upper():
                     warning_count += 1
 
-        except Exception:
-            pass
+        except Exception as e:
+            ark_logger.warning(f"Error reading app_errors.log: {e}")
 
     return {
         "recent_errors": error_count,
@@ -162,7 +155,7 @@ def read_metrics_enhanced() -> dict:
     """
     timestamp = datetime.now()
 
-    metrics = {
+    metrics: dict[str, Any] = {
         "timestamp": timestamp.isoformat(),
         "system": get_system_metrics(),
         "containers": get_arkalia_containers_status(),

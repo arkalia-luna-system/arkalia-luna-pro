@@ -26,7 +26,7 @@ make docker-build && docker-compose up -d
 make test-integration
 ```
 
-**Accès immédiat** : 
+**Accès immédiat** :
 - 🌐 API principale : http://localhost:8000/health
 - 📊 Grafana : http://localhost:3000 (admin/admin)
 - 📈 Prometheus : http://localhost:9090
@@ -323,7 +323,7 @@ make clean
 
 ### Standards de Qualité
 - ✅ Tests obligatoires pour toute PR
-- ✅ Black + Ruff + pre-commit  
+- ✅ Black + Ruff + pre-commit
 - ✅ Documentation à jour
 - ✅ Performance maintenue
 

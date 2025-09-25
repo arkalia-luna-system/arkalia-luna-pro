@@ -1,6 +1,6 @@
 # 🧹 Rapport de Nettoyage et Correction - Arkalia-LUNA Pro
 
-*Date : 31 août 2025*  
+*Date : 31 août 2025*
 *Version : v2.8.0*
 
 ---

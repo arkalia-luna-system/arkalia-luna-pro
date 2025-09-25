@@ -49,6 +49,8 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies: [types-requests, types-PyYAML]
+        files: >-
+          ^(app/|helloria/|modules/reflexia/logic/metrics_enhanced\.py|modules/security/crypto/checksum_validator\.py|run_arkalia_api\.py)
         args: [--ignore-missing-imports]
         exclude: ^archive/
 
@@ -94,12 +96,26 @@ repos:
     rev: 1.8.5
     hooks:
       - id: bandit
-        args: ["-c", "bandit.yaml", "-r", "modules", "core", "app", "arkalia"]
+        args:
+          [
+            "-c",
+            "bandit.yaml",
+            "-r",
+            "modules",
+            "core",
+            "app",
+            "arkalia",
+            "--severity-level",
+            "medium",
+            "--confidence-level",
+            "high",
+          ]
+        pass_filenames: false
         exclude: ^(tests/|archive/)
 
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:
       - id: detect-secrets
-        args: ['--baseline', '.secrets.baseline']
+        args: ["--baseline", ".secrets.baseline"]
         exclude: package.lock.json

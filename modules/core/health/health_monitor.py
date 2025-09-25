@@ -274,7 +274,9 @@ class HealthMonitor:
             "status": (
                 "healthy"
                 if self._health_score > 0.7
-                else "degraded" if self._health_score > 0.3 else "critical"
+                else "degraded"
+                if self._health_score > 0.3
+                else "critical"
             ),
             "health_score": self._health_score,
             "last_check": self._last_check.isoformat() if self._last_check else None,
