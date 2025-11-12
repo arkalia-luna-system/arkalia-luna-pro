@@ -89,12 +89,15 @@ class StateManager:
             try:
                 save_backup()
             except Exception as e:
-                logger.warning(f"Backup échoué: {e}")
+                ark_logger.warning(f"Backup échoué: {e}", extra={"arkalia_module": "zeroia"})
 
-            logger.info(f"✅ État persisté: {decision} (score: {score:.2f})")
+            ark_logger.info(
+                f"✅ État persisté: {decision} (score: {score:.2f})",
+                extra={"arkalia_module": "zeroia"},
+            )
 
         except Exception as e:
-            logger.error(f"❌ Erreur persistance état: {e}")
+            ark_logger.error(f"❌ Erreur persistance état: {e}", extra={"arkalia_module": "zeroia"})
             raise
 
     def update_dashboard_enhanced(
@@ -158,10 +161,14 @@ class StateManager:
             # Sauvegarder
             save_json_if_changed(dashboard, str(dashboard_path))
 
-            logger.debug(f"📊 Dashboard mis à jour: {decision}")
+            ark_logger.debug(
+                f"📊 Dashboard mis à jour: {decision}", extra={"arkalia_module": "zeroia"}
+            )
 
         except Exception as e:
-            logger.error(f"❌ Erreur mise à jour dashboard: {e}")
+            ark_logger.error(
+                f"❌ Erreur mise à jour dashboard: {e}", extra={"arkalia_module": "zeroia"}
+            )
             # Ne pas faire échouer le processus principal
 
     def check_for_ia_conflict_enhanced(
@@ -272,7 +279,7 @@ class StateManager:
             }
 
         except Exception as e:
-            logger.error(f"Erreur résumé dashboard: {e}")
+            ark_logger.error(f"Erreur résumé dashboard: {e}", extra={"arkalia_module": "zeroia"})
             return {"total_decisions": 0, "last_decision": "error"}
 
     def cleanup_old_logs(self, max_age_days: int = 30) -> None:
@@ -303,7 +310,10 @@ class StateManager:
             with open(self.contradiction_log_path, "w", encoding="utf-8") as f:
                 f.writelines(recent_lines)
 
-            logger.info(f"🧹 Logs nettoyés: {len(lines) - len(recent_lines)} entrées supprimées")
+            ark_logger.info(
+                f"🧹 Logs nettoyés: {len(lines) - len(recent_lines)} entrées supprimées",
+                extra={"arkalia_module": "zeroia"},
+            )
 
         except Exception as e:
-            logger.error(f"Erreur nettoyage logs: {e}")
+            ark_logger.error(f"Erreur nettoyage logs: {e}", extra={"arkalia_module": "zeroia"})

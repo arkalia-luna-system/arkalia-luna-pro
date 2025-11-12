@@ -20,7 +20,7 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 import tomli
 from fastapi import FastAPI
@@ -53,7 +53,7 @@ cognitive_reactor_reactions = Gauge(
 app = FastAPI()
 
 
-@app.get("/metrics")
+@app.get("/metrics", response_model=None)
 async def get_metrics() -> PlainTextResponse | JSONResponse:
     """
     📊 Endpoint métriques Prometheus pour Cognitive Reactor
