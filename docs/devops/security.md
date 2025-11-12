@@ -140,4 +140,4 @@ En cas d'incident de sécurité, contactez immédiatement l'équipe Arkalia Secu
 
 *Documentation mise à jour automatiquement par Arkalia-LUNA Pro System*
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

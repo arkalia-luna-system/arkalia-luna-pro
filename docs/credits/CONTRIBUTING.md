@@ -108,4 +108,4 @@ Merci de contribuer à un projet IA propre et durable ✨
 
 © Athalia — Arkalia System
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

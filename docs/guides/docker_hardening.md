@@ -414,4 +414,4 @@ docker exec suspicious_container ps aux > incident_$(date +%s).log
 **© 2025 Arkalia-LUNA Pro Team** — Docker Hardening Enterprise v3.x
 🛡️ *Secured by Sandozia Intelligence Croisée*
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

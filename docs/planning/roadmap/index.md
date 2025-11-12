@@ -362,4 +362,4 @@ graph TB
 
 ---
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

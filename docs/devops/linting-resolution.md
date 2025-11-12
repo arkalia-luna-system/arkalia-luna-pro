@@ -265,4 +265,4 @@ L'harmonisation des outils de qualité garantit une **maintenance aisée** et un
 © 2025 **Athalia** – Tous droits réservés.
 🤖 Powered by Arkalia Reflexia `v2.8.0` — Industrial AI Operations
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

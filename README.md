@@ -9,6 +9,7 @@
 [![Docker](https://img.shields.io/badge/containers-5%20active-success.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
 [![Tests](https://img.shields.io/badge/test%20files-100-success.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
 [![Coverage](https://img.shields.io/badge/coverage-59.25%25-orange.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
+[![codecov](https://codecov.io/gh/athalia-siwek/arkalia-luna-pro/branch/develop/graph/badge.svg)](https://codecov.io/gh/athalia-siwek/arkalia-luna-pro)
 [![Workflows](https://img.shields.io/badge/CI%2FCD-8%20workflows-blue.svg)](https://github.com/athalia-siwek/arkalia-luna-pro/.github/workflows)
 
 ## 🚀 État Actuel du Système
@@ -92,53 +93,326 @@ make test-integration
 
 ## 🏗️ Architecture v3.2.0
 
+```mermaid
+graph TB
+    subgraph "🌐 API Layer"
+        H[Helloria API<br/>Port 8000<br/>FastAPI Central]
+        A[AssistantIA<br/>Port 8001<br/>Navigation Contextuelle]
+        R[ReflexIA<br/>Port 8002<br/>Observateur Cognitif]
+    end
+
+    subgraph "🧠 Core Intelligence"
+        Z[ZeroIA Coordinator<br/>Enhanced v2.8.0<br/>Moteur de Décision]
+        ZD[Decision Engine<br/>Prise de décision]
+        ZC[Confidence Scorer<br/>Scoring de confiance]
+        ZG[Graceful Degradation<br/>Dégradation gracieuse]
+        ZE[Error Recovery<br/>Récupération auto]
+    end
+
+    subgraph "🔍 Intelligence Croisée"
+        S[Sandozia v2.6.0<br/>Intelligence Croisée]
+        SA[Behavior Analyzer<br/>Analyse comportementale]
+        SV[Cross Validator<br/>Validation inter-modules]
+    end
+
+    subgraph "⚡ Cognitive Processing"
+        CR[Cognitive Reactor<br/>v2.7.0<br/>Orchestrateur Cognitif]
+        GA[Generative AI<br/>v2.8.0<br/>Auto-génération code]
+    end
+
+    subgraph "📊 Monitoring Stack"
+        P[Prometheus<br/>Port 9090<br/>34 métriques]
+        G[Grafana<br/>Port 3000<br/>8 dashboards]
+        L[Loki<br/>Port 3100<br/>Logs centralisés]
+        AM[AlertManager<br/>Port 9093<br/>15 alertes]
+    end
+
+    subgraph "🔒 Security Layer"
+        V[Vault Manager<br/>Secrets & Tokens]
+        SB[Sandbox<br/>Isolation]
+        SC[Security Scanner<br/>Bandit Audit]
+    end
+
+    subgraph "💾 Storage & State"
+        GS[Global State<br/>Synchronisation]
+        ST[Storage Manager<br/>JSON/SQLite]
+    end
+
+    H --> Z
+    A --> Z
+    R --> Z
+    
+    Z --> ZD
+    Z --> ZC
+    Z --> ZG
+    Z --> ZE
+    
+    Z --> S
+    S --> SA
+    S --> SV
+    
+    Z --> CR
+    CR --> GA
+    
+    H --> GS
+    S --> GS
+    CR --> GS
+    
+    H --> V
+    S --> V
+    Z --> V
+    
+    H --> P
+    Z --> P
+    S --> P
+    CR --> P
+    
+    P --> G
+    P --> AM
+    L --> G
+    
+    GS --> ST
+    V --> ST
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│    Helloria     │    │   AssistantIA   │    │    ReflexIA     │
-│   (API Centrale)│    │  (Navigation)   │    │  (Observateur)  │
-│   Port 8000     │    │   Port 8001     │    │   Port 8002     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 │
-                    ┌─────────────────┐
-                    │   ZeroIA        │
-                    │  Coordinator    │
-                    │  Enhanced v2.8.0│
-                    │ ┌─────────────┐ │
-                    │ │Decision     │ │
-                    │ │Engine       │ │
-                    │ └─────────────┘ │
-                    │ ┌─────────────┐ │
-                    │ │Confidence   │ │
-                    │ │Scorer       │ │
-                    │ └─────────────┘ │
-                    │ ┌─────────────┐ │
-                    │ │Graceful     │ │
-                    │ │Degradation  │ │
-                    │ └─────────────┘ │
-                    │ ┌─────────────┐ │
-                    │ │Error        │ │
-                    │ │Recovery     │ │
-                    │ └─────────────┘ │
-                    └─────────────────┘
-                                 │
-                    ┌─────────────────┐
-                    │    Sandozia     │
-                    │ (Intelligence   │
-                    │  Croisée) v2.6.0│
-                    └─────────────────┘
-                                 │
-         ┌───────────────────────┼───────────────────────┐
-         │                       │                       │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  Cognitive      │    │  Generative AI  │    │   Monitoring    │
-│  Reactor v2.7.0 │    │   v2.8.0        │    │   Stack Complet │
-│ (Intelligence   │    │ (Auto-génération│    │ (Grafana,       │
-│  Avancée)       │    │  de code)       │    │  Prometheus,    │
-└─────────────────┘    └─────────────────┘    │  Loki, etc.)    │
-                                              └─────────────────┘
+
+### 🔄 Flux de Données Principal
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Helloria as Helloria API
+    participant ZeroIA as ZeroIA Coordinator
+    participant Sandozia as Sandozia
+    participant ReflexIA as ReflexIA
+    participant Cognitive as Cognitive Reactor
+    participant Monitor as Monitoring Stack
+
+    Client->>Helloria: Requête API
+    Helloria->>ZeroIA: Demande de décision
+    ZeroIA->>Sandozia: Analyse comportementale
+    Sandozia-->>ZeroIA: Patterns détectés
+    ZeroIA->>ZeroIA: Calcul confiance & décision
+    ZeroIA->>ReflexIA: Surveillance exécution
+    ReflexIA->>Cognitive: Réaction cognitive
+    Cognitive-->>ZeroIA: Validation
+    ZeroIA-->>Helloria: Décision + métadonnées
+    Helloria->>Monitor: Métriques Prometheus
+    Helloria-->>Client: Réponse enrichie
 ```
+
+## 🐳 Architecture des Containers
+
+Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose :
+
+| Container | Port | Rôle | Dépendances |
+|-----------|------|------|-------------|
+| **arkalia-api** | 8000 | API centrale FastAPI (Helloria) | - |
+| **arkalia-assistantia** | 8001 | Interface IA conversationnelle | arkalia-api |
+| **reflexia** | 8002 | Observateur cognitif réflexif | arkalia-api |
+| **arkalia-sandozia** | - | Intelligence croisée | reflexia |
+| **cognitive** | 8003 | Intelligence avancée (Cognitive Reactor) | reflexia |
+
+**Note** : Le container `generative-ai` est actuellement commenté dans `docker-compose.yml` (non actif).
+
+### Diagramme d'Interactions
+
+```mermaid
+graph TD
+    A[arkalia-api:8000] --> B[arkalia-assistantia:8001]
+    A --> C[reflexia:8002]
+    C --> D[arkalia-sandozia]
+    C --> E[cognitive:8003]
+    
+    style A fill:#4CAF50
+    style B fill:#2196F3
+    style C fill:#FF9800
+    style D fill:#9C27B0
+    style E fill:#F44336
+```
+
+## 🎯 Cas d'Usage Métier
+
+Arkalia-LUNA Pro s'adapte à plusieurs cas d'usage professionnels :
+
+### 1. Détection d'incidents et réponse automatisée
+- **Contexte** : Surveillance système 24/7 avec détection automatique d'anomalies
+- **Modules utilisés** : ZeroIA (décision), Reflexia (monitoring), Sandozia (validation)
+- **Bénéfice** : Réduction du temps de réponse de 90%
+
+### 2. Surveillance cognitive temps réel
+- **Contexte** : Monitoring de la santé et performance des modules IA
+- **Modules utilisés** : Reflexia, Prometheus, Grafana
+- **Bénéfice** : Visibilité complète sur l'état du système
+
+### 3. Automatisation de workflows critiques
+- **Contexte** : Orchestration de tâches complexes avec validation croisée
+- **Modules utilisés** : ZeroIA, Sandozia, Cognitive Reactor
+- **Bénéfice** : Fiabilité accrue grâce à la validation multi-modules
+
+### 4. Audit et conformité IA
+- **Contexte** : Traçabilité des décisions et conformité réglementaire
+- **Modules utilisés** : ZeroIA (Event Sourcing), Security (audit)
+- **Bénéfice** : Conformité GDPR, traçabilité complète
+
+### 5. SaaS IA modulaire pour PME/ETI/Grands comptes
+- **Contexte** : Plateforme IA modulaire et scalable
+- **Modules utilisés** : Tous les modules (architecture modulaire)
+- **Bénéfice** : Déploiement rapide, scalabilité, maintenance facilitée
+
+Pour plus de détails, voir [Guide des Cas d'Usage](docs/getting-started/use-cases.md).
+
+## 🎯 Cas d'Usage
+
+### 1. 🔒 Détection et Réponse Automatique aux Incidents de Sécurité
+
+**Scénario** : Détection d'une tentative d'intrusion ou d'une activité suspecte sur le système.
+
+**Flux d'exécution** :
+1. **Détection** : Le module Security détecte une anomalie (tentative d'intrusion, scan de port)
+2. **Alerte ReflexIA** : Création automatique d'une alerte avec niveau de menace (high/critical)
+3. **Décision ZeroIA** : Analyse du contexte et prise de décision (blocage, redirection, isolation)
+4. **Analyse Sandozia** : Validation croisée et analyse comportementale des patterns détectés
+5. **Action automatique** : Exécution de la réponse (blocage IP, activation sandbox, etc.)
+
+**Exemple de commande** :
+```bash
+# Démo scénario sécurité
+python scripts/launch_demo_scenario.py --scenario security
+```
+
+**Résultat attendu** :
+- ⏱️ Temps de réponse : < 30ms
+- ✅ Décision prise automatiquement
+- 📊 Métriques enregistrées dans Prometheus
+- 🚨 Alerte visible dans Grafana
+
+---
+
+### 2. ⚡ Optimisation Automatique de Performance
+
+**Scénario** : Détection de lenteur ou de dégradation de performance système.
+
+**Flux d'exécution** :
+1. **Détection** : Monitoring détecte une latence élevée (> 2s) ou CPU/RAM saturés
+2. **Alerte ReflexIA** : Création d'alerte performance avec métriques
+3. **Décision ZeroIA** : Analyse et décision d'optimisation (cache, load balancing, circuit breaker)
+4. **Optimisation** : Application automatique des mesures (réduction charge, activation cache)
+5. **Vérification** : Validation de l'amélioration (2500ms → 1200ms)
+
+**Exemple de commande** :
+```bash
+# Démo scénario performance
+python scripts/launch_demo_scenario.py --scenario performance
+```
+
+**Résultat attendu** :
+- ⏱️ Temps de traitement : ~500ms
+- ✅ Amélioration mesurée et validée
+- 📈 Métriques de performance mises à jour
+- 🔄 Circuit breaker activé si nécessaire
+
+---
+
+### 3. 🧠 Apprentissage Adaptatif et Détection de Patterns
+
+**Scénario** : Apprentissage continu à partir des données système et détection de patterns comportementaux.
+
+**Flux d'exécution** :
+1. **Collecte** : Sandozia collecte les données comportementales des modules
+2. **Analyse** : Détection de patterns récurrents (2+ patterns identifiés)
+3. **Décision ZeroIA** : Validation et intégration des patterns dans le modèle
+4. **Surveillance ReflexIA** : Monitoring de l'application des nouveaux patterns
+5. **Mise à jour** : Enrichissement du modèle de décision
+
+**Exemple de commande** :
+```bash
+# Démo scénario apprentissage
+python scripts/launch_demo_scenario.py --scenario learning
+```
+
+**Résultat attendu** :
+- ⏱️ Temps d'analyse : < 10ms
+- ✅ Patterns détectés et validés
+- 📊 Heatmaps cognitives générées
+- 🧠 Modèle de décision enrichi
+
+---
+
+### 4. 🔄 Orchestration Cognitive Multi-Modules
+
+**Scénario** : Coordination intelligente entre plusieurs modules pour une tâche complexe.
+
+**Flux d'exécution** :
+1. **Requête** : Client envoie une requête complexe via Helloria API
+2. **Orchestration ZeroIA** : Coordination des modules nécessaires
+3. **Validation croisée Sandozia** : Vérification de cohérence inter-modules
+4. **Réaction Cognitive Reactor** : Génération de réactions automatiques intelligentes
+5. **Exécution** : Traitement parallèle avec monitoring en temps réel
+6. **Retour** : Réponse enrichie avec métadonnées et score de confiance
+
+**Exemple de code** :
+```python
+# Démo workflow complet
+python demo_global.py
+```
+
+**Résultat attendu** :
+- ✅ Tous les modules coordonnés efficacement
+- 📊 Score de confiance calculé
+- 🔍 Traçabilité complète dans les logs
+- 📈 Métriques Prometheus mises à jour
+
+---
+
+### 5. 🛡️ Audit et Conformité Automatisés
+
+**Scénario** : Audit automatique de sécurité et validation de conformité.
+
+**Flux d'exécution** :
+1. **Scan automatique** : Security module lance un scan Bandit
+2. **Analyse Vault** : Vérification de l'intégrité des secrets et tokens
+3. **Rapport ReflexIA** : Génération d'un rapport d'audit
+4. **Décision ZeroIA** : Évaluation des risques et recommandations
+5. **Alertes** : Notification si seuils de sécurité dépassés
+
+**Exemple de commande** :
+```bash
+# Vérification sécurité
+make security-check
+```
+
+**Résultat attendu** :
+- ✅ Scan Bandit exécuté
+- 📋 Rapport d'audit généré
+- 🔒 Secrets validés
+- 🚨 Alertes si anomalies détectées
+
+---
+
+### 6. 📊 Monitoring et Observabilité en Temps Réel
+
+**Scénario** : Surveillance complète du système avec dashboards et alertes.
+
+**Flux d'exécution** :
+1. **Collecte métriques** : Prometheus collecte 34 métriques en temps réel
+2. **Visualisation Grafana** : 8 dashboards spécialisés (Cognitif, Sécurité, Ops)
+3. **Alertes AlertManager** : 15 alertes automatiques configurées
+4. **Logs centralisés Loki** : Agrégation de tous les logs système
+5. **Score IA global** : Calcul et suivi du score cognitif global
+
+**Accès** :
+- 📊 Grafana : http://localhost:3000 (admin/admin)
+- 📈 Prometheus : http://localhost:9090
+- 📝 Loki : http://localhost:3100
+- 🚨 AlertManager : http://localhost:9093
+
+**Résultat attendu** :
+- 📊 Visualisation temps réel de toutes les métriques
+- 🚨 Alertes automatiques sur seuils critiques
+- 📈 Score IA global suivi et historisé
+- 🔍 Recherche avancée dans les logs
+
+---
 
 ## 🚀 Démarrage Rapide
 

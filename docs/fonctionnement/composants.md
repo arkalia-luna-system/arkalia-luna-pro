@@ -69,4 +69,4 @@ Chaque composant est testé, monitoré, et peut être mis à jour indépendammen
 
 💡 *La modularité d'Arkalia-LUNA Pro garantit robustesse, évolutivité, sécurité et performance pour tous les usages IA critiques.*
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

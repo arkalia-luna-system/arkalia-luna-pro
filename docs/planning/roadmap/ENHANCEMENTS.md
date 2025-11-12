@@ -6,7 +6,7 @@
 
 Fichier de suivi des améliorations techniques et qualité pour le dépôt [`arkalia-luna-pro`](https://github.com/athalia-siwek/arkalia-luna-pro).
 
-🗓️ Dernière mise à jour : **2025-06-19** — Version : `v1.2.1`
+🗓️ Dernière mise à jour : novembre 2025
 
 ---
 

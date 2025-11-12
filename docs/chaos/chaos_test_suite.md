@@ -263,5 +263,5 @@ git checkout -- config/ modules/
 
 ---
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025
 *Prochaine révision : 28 novembre 2025 - 09:00*

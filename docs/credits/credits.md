@@ -121,4 +121,4 @@ Arkalia-LUNA Pro est conçu pour fonctionner **entièrement en local**, garantis
 © 2025 **Athalia** – Tous droits réservés.
 🤖 Powered by Arkalia Reflexia `v2.8.0`
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

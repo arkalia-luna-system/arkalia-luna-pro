@@ -101,4 +101,4 @@ python scripts/ark-validate-performance.py
 **© 2025 Arkalia-LUNA Pro Team** — FAQ Enterprise v2.8.0
 🧠 *Powered by Sandozia Intelligence Croisée*
 
-*Dernière mise à jour : novembre 2025*
+*Dernière mise à jour : novembre 2025

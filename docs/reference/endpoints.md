@@ -384,4 +384,4 @@ curl -X POST http://localhost:8001/api/v1/chat \
 ---
 
 **Arkalia-LUNA Pro v2.8.0** - Documentation des endpoints API
-**Dernière mise à jour** : 30 juin 2025
+**Dernière mise à jour : novembre 2025

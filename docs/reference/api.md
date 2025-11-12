@@ -572,4 +572,4 @@ L'**API Arkalia-LUNA Pro Enhanced v2.8.0** offre :
 
 **🌟 Une API enterprise-ready pour l'IA de nouvelle génération !**
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

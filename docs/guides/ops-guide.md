@@ -225,4 +225,4 @@ pytest tests/security/ -v
 
 💡 **Le monitoring Arkalia-LUNA Pro v2.8.0 offre une observabilité totale avec 34 métriques, 8 dashboards et 15 alertes pour garantir la fiabilité et les performances du système IA.**
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

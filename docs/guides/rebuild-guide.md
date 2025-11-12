@@ -62,4 +62,4 @@ pytest tests/security/ -v
 
 [📖 Guide Complet →](rebuild-guide.md)
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

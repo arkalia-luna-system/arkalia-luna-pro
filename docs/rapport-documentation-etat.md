@@ -30,7 +30,7 @@ La documentation est **très bien maintenue** et cohérente avec la version actu
   - API Reference
 
 ### 3. **Mises à Jour Récentes** ✅
-- **Dernière mise à jour** : novembre 2025 - 18:50
+- **Dernière mise à jour : novembre 2025
 - Documentation des **corrections récentes** dans v2.8.0.md :
   - Healthcheck arkalia-api migré vers Python urllib natif
   - Upload artefacts CI avec gestion conditionnelle
@@ -70,7 +70,7 @@ La documentation est **très bien maintenue** et cohérente avec la version actu
 |----------|--------|--------|
 | **Fichiers MD principaux** | 40+ | ✅ Excellent |
 | **Cohérence version** | 100% | ✅ Parfait |
-| **Dernière mise à jour** | Aujourd'hui | ✅ À jour |
+| **Dernière mise à jour : novembre 2025
 | **Couverture des modules** | Tous documentés | ✅ Complet |
 | **API documentée** | 576 lignes | ✅ Très détaillée |
 | **Guides pratiques** | 5+ guides | ✅ Complet |

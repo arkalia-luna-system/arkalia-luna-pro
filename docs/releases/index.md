@@ -95,4 +95,4 @@ Historique des versions et releases d'Arkalia-LUNA Pro.
 
 © 2025 Arkalia-LUNA Pro — Système IA Auto-Réflexif
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

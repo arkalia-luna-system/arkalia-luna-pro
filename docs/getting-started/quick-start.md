@@ -190,4 +190,4 @@ Le monitoring expose **34 métriques Arkalia** :
 
 > 💡 **Astuce** : Commencez par Grafana pour visualiser l'état complet du système ! 📊
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025

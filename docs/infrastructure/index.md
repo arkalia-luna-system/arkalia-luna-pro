@@ -305,4 +305,4 @@ curl http://localhost:8000/health
 ---
 
 **Arkalia-LUNA Pro v2.8.0** - Infrastructure robuste et scalable
-**Dernière mise à jour** : novembre 2025 - 18:50
+**Dernière mise à jour : novembre 2025

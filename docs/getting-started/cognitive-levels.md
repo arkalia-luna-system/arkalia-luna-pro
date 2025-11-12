@@ -37,4 +37,4 @@ Pour évoluer vers une IA auto-réparatrice dans la version 3.0, ZeroIA devra in
 
 ---
 
-*Dernière mise à jour : novembre 2025 - 18:50*
+*Dernière mise à jour : novembre 2025
