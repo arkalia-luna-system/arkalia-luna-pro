@@ -78,7 +78,7 @@ class BuildIntegrityValidator:
                     )
 
         ark_logger.info(
-            f"✅ Generated checksums for {len(checksum, )} files",
+            f"✅ Generated checksums for {len(checksums)} files",
             extra={"arkalia_module": "security"},
         )
         return checksums
