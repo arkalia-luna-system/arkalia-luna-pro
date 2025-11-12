@@ -8,7 +8,6 @@ Ce module fait partie du système Arkalia Luna Pro.
 # Arkalia-Vault Enterprise - Gestionnaire de secrets sécurisé
 
 import json
-import logging
 import os
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -17,8 +16,7 @@ from typing import Any, Optional
 from cryptography.fernet import Fernet
 
 from .checksum_validator import BuildIntegrityValidator, SecurityError
-
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class VaultError(SecurityError):
@@ -115,7 +113,9 @@ class ArkaliaVault(BuildIntegrityValidator):
         # Charger les métadonnées existantes
         self.secrets_metadata: dict[str, SecretMetadata] = self._load_metadata()
 
-        logger.info("🔐 ArkaliaVault initialized successfully")
+        ark_logger.info(
+            "🔐 ArkaliaVault initialized successfully", extra={"arkalia_module": "security"}
+        )
 
     def _initialize_encryption(self, master_key: bytes | None = None) -> Fernet:
         if master_key:
@@ -130,7 +130,9 @@ class ArkaliaVault(BuildIntegrityValidator):
             # Sauvegarder la clé de manière sécurisée
             self.key_file.write_bytes(key)
             os.chmod(self.key_file, 0o600)  # Lecture seule pour le propriétaire
-            logger.info("🔑 New vault master key generated")
+            ark_logger.info(
+                "🔑 New vault master key generated", extra={"arkalia_module": "security"}
+            )
 
         return Fernet(key)
 
@@ -148,7 +150,9 @@ class ArkaliaVault(BuildIntegrityValidator):
 
             return metadata
         except Exception as e:
-            logger.error(f"❌ Error loading metadata: {e}")
+            ark_logger.error(
+                f"❌ Error loading metadata: {e}", extra={"arkalia_module": "security"}
+            )
             return {}
 
     def _save_metadata(self) -> None:
@@ -167,7 +171,7 @@ class ArkaliaVault(BuildIntegrityValidator):
             secrets_dict: dict[str, str] = json.loads(decrypted_data.decode())
             return secrets_dict
         except Exception as e:
-            logger.error(f"❌ Error loading secrets: {e}")
+            ark_logger.error(f"❌ Error loading secrets: {e}", extra={"arkalia_module": "security"})
             raise VaultError(f"Failed to decrypt vault: {e}") from e
 
     def _save_secrets(self, secrets: dict[str, str]) -> None:
@@ -177,7 +181,7 @@ class ArkaliaVault(BuildIntegrityValidator):
             self.secrets_file.write_bytes(encrypted_data)
             os.chmod(self.secrets_file, 0o600)
         except Exception as e:
-            logger.error(f"❌ Error saving secrets: {e}")
+            ark_logger.error(f"❌ Error saving secrets: {e}", extra={"arkalia_module": "security"})
             raise VaultError(f"Failed to encrypt vault: {e}") from e
 
     def _audit_log_entry(self, action: str, secret_name: str, details: str = "") -> None:
@@ -236,7 +240,9 @@ class ArkaliaVault(BuildIntegrityValidator):
         # Audit log
         self._audit_log_entry("STORE", name, f"tags={tags}, expires={expires_at}")
 
-        logger.info(f"🔐 Secret '{name}' stored successfully")
+        ark_logger.info(
+            f"🔐 Secret '{name}' stored successfully", extra={"arkalia_module": "security"}
+        )
         return True
 
     def retrieve_secret(self, name: str) -> str | None:
@@ -253,14 +259,16 @@ class ArkaliaVault(BuildIntegrityValidator):
             VaultError: Si secret expiré
         """
         if name not in self.secrets_metadata:
-            logger.warning(f"⚠️ Secret '{name}' not found")
+            ark_logger.warning(f"⚠️ Secret '{name}' not found", extra={"arkalia_module": "security"})
             return None
 
         metadata = self.secrets_metadata[name]
 
         # Vérifier l'expiration
         if metadata.expires_at and datetime.now() > metadata.expires_at:
-            logger.warning(f"⚠️ Secret '{name}' has expired")
+            ark_logger.warning(
+                f"⚠️ Secret '{name}' has expired", extra={"arkalia_module": "security"}
+            )
             self._audit_log_entry("ACCESS_DENIED", name, "EXPIRED")
             raise VaultError(f"Secret '{name}' has expired")
 
@@ -269,7 +277,10 @@ class ArkaliaVault(BuildIntegrityValidator):
         value = secrets.get(name)
 
         if value is None:
-            logger.error(f"❌ Secret '{name}' found in metadata but missing from vault")
+            ark_logger.error(
+                f"❌ Secret '{name}' found in metadata but missing from vault",
+                extra={"arkalia_module": "security"},
+            )
             return None
 
         # Mettre à jour les statistiques d'accès
@@ -293,7 +304,9 @@ class ArkaliaVault(BuildIntegrityValidator):
             True si suppression réussie
         """
         if name not in self.secrets_metadata:
-            logger.warning(f"⚠️ Secret '{name}' not found for deletion")
+            ark_logger.warning(
+                f"⚠️ Secret '{name}' not found for deletion", extra={"arkalia_module": "security"}
+            )
             return False
 
         # Charger et supprimer le secret
@@ -309,7 +322,9 @@ class ArkaliaVault(BuildIntegrityValidator):
         # Audit log
         self._audit_log_entry("DELETE", name)
 
-        logger.info(f"🗑️ Secret '{name}' deleted successfully")
+        ark_logger.info(
+            f"🗑️ Secret '{name}' deleted successfully", extra={"arkalia_module": "security"}
+        )
         return True
 
     def list_secrets(self, include_expired: bool = False) -> list[SecretMetadata]:
@@ -348,7 +363,10 @@ class ArkaliaVault(BuildIntegrityValidator):
         for name in expired_secrets:
             self.delete_secret(name)
 
-        logger.info(f"🧹 Cleaned up {len(expired_secrets)} expired secrets")
+        ark_logger.info(
+            f"🧹 Cleaned up {len(expired_secret, extra={"arkalia_module": "security"})} expired secrets",
+            extra={"arkalia_module": "security"},
+        )
         return len(expired_secrets)
 
     def rotate_master_key(self, new_key: bytes | None = None) -> bytes:
@@ -364,7 +382,7 @@ class ArkaliaVault(BuildIntegrityValidator):
         Raises:
             VaultError: Si erreur de rotation
         """
-        logger.info("🔄 Starting master key rotation...")
+        ark_logger.info("🔄 Starting master key rotation...", extra={"arkalia_module": "security"})
 
         # Charger tous les secrets avec l'ancienne clé
         secrets = self._load_secrets()
@@ -395,7 +413,10 @@ class ArkaliaVault(BuildIntegrityValidator):
             # Audit log
             self._audit_log_entry("KEY_ROTATION", "SYSTEM", f"secrets_count={len(secrets)}")
 
-            logger.info("✅ Master key rotation completed successfully")
+            ark_logger.info(
+                "✅ Master key rotation completed successfully",
+                extra={"arkalia_module": "security"},
+            )
             return new_key
 
         except Exception as e:
@@ -404,7 +425,7 @@ class ArkaliaVault(BuildIntegrityValidator):
                 self.key_file.write_bytes(backup_key_file.read_bytes())
                 self.cipher_suite = self._initialize_encryption()
 
-            logger.error(f"❌ Key rotation failed: {e}")
+            ark_logger.error(f"❌ Key rotation failed: {e}", extra={"arkalia_module": "security"})
             raise VaultError(f"Key rotation failed: {e}") from e
 
     def validate_vault_integrity(self) -> bool:
@@ -420,7 +441,7 @@ class ArkaliaVault(BuildIntegrityValidator):
         Raises:
             VaultError: Si violation d'intégrité
         """
-        logger.info("🔍 Validating vault integrity...")
+        ark_logger.info("🔍 Validating vault integrity...", extra={"arkalia_module": "security"})
 
         # 1. Validation des checksums génériques (classe parente)
         try:
@@ -465,7 +486,9 @@ class ArkaliaVault(BuildIntegrityValidator):
             self._audit_log_entry("INTEGRITY_VIOLATION", "SYSTEM", violation_msg)
             raise VaultError(f"Vault integrity violations: {violation_msg}")
 
-        logger.info("✅ Vault integrity validation PASSED")
+        ark_logger.info(
+            "✅ Vault integrity validation PASSED", extra={"arkalia_module": "security"}
+        )
         return True
 
     def get_vault_stats(self) -> dict:
@@ -535,7 +558,9 @@ class ArkaliaVault(BuildIntegrityValidator):
             }
 
         except Exception as e:
-            logger.error(f"❌ Security health check failed: {e}")
+            ark_logger.error(
+                f"❌ Security health check failed: {e}", extra={"arkalia_module": "security"}
+            )
             return {
                 "score": 0.0,
                 "error": str(e),
@@ -562,14 +587,18 @@ def migrate_from_env_file(
     env_path = Path(env_file_path)
 
     if not env_path.exists():
-        logger.warning(f"⚠️ .env file not found: {env_path}")
+        ark_logger.warning(
+            f"⚠️ .env file not found: {env_path}", extra={"arkalia_module": "security"}
+        )
         return 0
 
     # Backup du fichier .env si demandé
     if backup_env:
         backup_path = env_path.parent / f"{env_path.name}.backup.{int(datetime.now().timestamp())}"
         backup_path.write_text(env_path.read_text())
-        logger.info(f"📦 .env backed up to: {backup_path}")
+        ark_logger.info(
+            f"📦 .env backed up to: {backup_path}", extra={"arkalia_module": "security"}
+        )
 
     # Parser le fichier .env
     secrets_migrated = 0
@@ -596,12 +625,17 @@ def migrate_from_env_file(
                         overwrite=True,
                     )
                     secrets_migrated += 1
-                    logger.info(f"✅ Migrated: {key}")
+                    ark_logger.info(f"✅ Migrated: {key}", extra={"arkalia_module": "security"})
 
                 except Exception as e:
-                    logger.error(f"❌ Failed to migrate {key}: {e}")
+                    ark_logger.error(
+                        f"❌ Failed to migrate {key}: {e}", extra={"arkalia_module": "security"}
+                    )
 
-    logger.info(f"🚀 Migration completed: {secrets_migrated} secrets migrated from {env_path}")
+    ark_logger.info(
+        f"🚀 Migration completed: {secrets_migrated} secrets migrated from {env_path}",
+        extra={"arkalia_module": "security"},
+    )
     return secrets_migrated
 
 

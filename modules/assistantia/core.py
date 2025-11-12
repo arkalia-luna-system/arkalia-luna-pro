@@ -6,7 +6,6 @@ Ce module fait partie du système Arkalia Luna Pro.
 
 import asyncio
 import json
-import logging
 from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
@@ -19,6 +18,8 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Counter, Gauge, Histogram, generate_latest
 from pydantic import BaseModel, Field
 
+from core.ark_logger import ark_logger
+
 from .utils.ollama_connector import check_ollama_health
 from .utils.ollama_connector import query_ollama as real_query_ollama
 from .utils.processing import process_input
@@ -27,10 +28,6 @@ from .utils.processing import process_input
 def _check_ollama_health() -> bool:
     return check_ollama_health()
 
-
-# Configuration du logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Métriques Prometheus locales pour AssistantIA
 assistantia_prompts_total = Counter(

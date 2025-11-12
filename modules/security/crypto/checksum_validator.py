@@ -9,14 +9,11 @@ Ce module fait partie du système Arkalia Luna Pro.
 
 import hashlib
 import json
-import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
 from core.ark_logger import ark_logger
-
-logger = logging.getLogger(__name__)
 
 
 class SecurityError(Exception):
@@ -64,7 +61,9 @@ class BuildIntegrityValidator:
         scan_dir = Path(target_dir or self.base_dir)
         checksums: dict[str, Any] = {}
 
-        logger.info(f"🔍 Scanning {scan_dir} for critical files...")
+        ark_logger.info(
+            f"🔍 Scanning {scan_dir} for critical files...", extra={"arkalia_module": "security"}
+        )
 
         for file_path in scan_dir.rglob("*"):
             if self._is_critical_file(file_path):
@@ -74,9 +73,14 @@ class BuildIntegrityValidator:
                     checksums[str(relative_path)] = sha256_hash
 
                 except Exception as e:
-                    logger.warning(f"⚠️ Skipping {file_path}: {e}")
+                    ark_logger.warning(
+                        f"⚠️ Skipping {file_path}: {e}", extra={"arkalia_module": "security"}
+                    )
 
-        logger.info(f"✅ Generated checksums for {len(checksums)} files")
+        ark_logger.info(
+            f"✅ Generated checksums for {len(checksum, extra={"arkalia_module": "security"})} files",
+            extra={"arkalia_module": "security"},
+        )
         return checksums
 
     def save_manifest(self, checksums: dict[str, str], metadata: dict | None = None) -> Path:
@@ -106,7 +110,9 @@ class BuildIntegrityValidator:
 
         save_json_safe(manifest_data, str(self.manifest_file))
 
-        logger.info(f"💾 Manifest saved: {self.manifest_file}")
+        ark_logger.info(
+            f"💾 Manifest saved: {self.manifest_file}", extra={"arkalia_module": "security"}
+        )
         return self.manifest_file
 
     def validate_integrity(self, manifest_path: Path | None = None) -> bool:
@@ -127,7 +133,9 @@ class BuildIntegrityValidator:
         if not manifest_file.exists():
             raise SecurityError(f"Manifest not found: {manifest_file}")
 
-        logger.info(f"🔍 Validating integrity against {manifest_file}")
+        ark_logger.info(
+            f"🔍 Validating integrity against {manifest_file}", extra={"arkalia_module": "security"}
+        )
 
         # Load reference manifest
         manifest_data = json.loads(manifest_file.read_text())
@@ -159,7 +167,7 @@ class BuildIntegrityValidator:
             self._log_violations(violations, manifest_data.get("metadata", {}))
             raise SecurityError(f"Integrity violations detected: {len(violations)} issues")
 
-        logger.info("✅ Integrity validation PASSED")
+        ark_logger.info("✅ Integrity validation PASSED", extra={"arkalia_module": "security"})
         return True
 
     def quick_check(self, critical_files: list[str] | None = None) -> dict[str, bool]:
@@ -173,7 +181,9 @@ class BuildIntegrityValidator:
             Dict {fichier: integrity_ok}
         """
         if not self.manifest_file.exists():
-            logger.warning("⚠️ No manifest found for quick check")
+            ark_logger.warning(
+                "⚠️ No manifest found for quick check", extra={"arkalia_module": "security"}
+            )
             return {}
 
         manifest_data = json.loads(self.manifest_file.read_text())
@@ -190,7 +200,9 @@ class BuildIntegrityValidator:
                     expected_hash = reference_checksums[file_path]
                     results[file_path] = current_hash == expected_hash
                 except Exception as e:
-                    logger.error(f"❌ Error checking {file_path}: {e}")
+                    ark_logger.error(
+                        f"❌ Error checking {file_path}: {e}", extra={"arkalia_module": "security"}
+                    )
                     results[file_path] = False
             else:
                 results[file_path] = False
@@ -270,7 +282,10 @@ class BuildIntegrityValidator:
         with open(self.violations_log, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
 
-        logger.critical(f"🚨 SECURITY VIOLATION: {len(violations)} integrity issues logged")
+        ark_logger.critical(
+            f"🚨 SECURITY VIOLATION: {len(violation, extra={"arkalia_module": "security"})} integrity issues logged",
+            extra={"arkalia_module": "security"},
+        )
 
 
 # Fonctions utilitaires
@@ -312,7 +327,9 @@ def validate_production_integrity() -> bool:
         validator = BuildIntegrityValidator()
         return validator.validate_integrity()
     except SecurityError as e:
-        logger.critical(f"🚨 PRODUCTION INTEGRITY FAILED: {e}")
+        ark_logger.critical(
+            f"🚨 PRODUCTION INTEGRITY FAILED: {e}", extra={"arkalia_module": "security"}
+        )
         return False
 
 
@@ -364,5 +381,5 @@ if __name__ == "__main__":
         validator = BuildIntegrityValidator()
         checksums = validator.generate_checksums()
         ark_logger.info(
-            f"Generated checksums for {len(checksums)} files", extra={"module": "crypto"}
+            f"Generated checksums for {len(checksum, extra={"arkalia_module": "security"})} files", extra={"module": "crypto"}
         )

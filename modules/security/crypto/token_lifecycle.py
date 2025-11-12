@@ -8,7 +8,6 @@ Ce module fait partie du système Arkalia Luna Pro.
 # Gestion du cycle de vie des tokens et sessions Arkalia-Vault
 
 import json
-import logging
 import secrets
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
@@ -18,8 +17,7 @@ from typing import Any, Optional
 import jwt
 
 from .vault_manager import ArkaliaVault, VaultError
-
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class TokenType(Enum):
@@ -192,7 +190,7 @@ class TokenManager:
         # Charger les métadonnées existantes
         self._load_token_metadata()
 
-        logger.info("🎫 TokenManager initialized")
+        ark_logger.info("🎫 TokenManager initialized", extra={"arkalia_module": "security"})
 
     def _ensure_jwt_secret(self) -> None:
         """
@@ -211,9 +209,13 @@ class TokenManager:
                     tags=["jwt", "master_secret", "system"],
                     overwrite=False,
                 )
-                logger.info("🔑 New JWT master secret generated")
+                ark_logger.info(
+                    "🔑 New JWT master secret generated", extra={"arkalia_module": "security"}
+                )
         except VaultError as e:
-            logger.error(f"❌ Failed to ensure JWT secret: {e}")
+            ark_logger.error(
+                f"❌ Failed to ensure JWT secret: {e}", extra={"arkalia_module": "security"}
+            )
             raise
 
     def _get_jwt_secret(self) -> str:
@@ -240,9 +242,14 @@ class TokenManager:
                 for token_id, meta_dict in data.items():
                     self.token_metadata[token_id] = TokenMetadata.from_dict(meta_dict)
 
-                logger.info(f"📊 Loaded metadata for {len(self.token_metadata)} tokens")
+                ark_logger.info(
+                    f"📊 Loaded metadata for {len(self.token_metadat, extra={"arkalia_module": "security"})} tokens",
+                    extra={"arkalia_module": "security"},
+                )
         except Exception as e:
-            logger.warning(f"⚠️ Could not load token metadata: {e}")
+            ark_logger.warning(
+                f"⚠️ Could not load token metadata: {e}", extra={"arkalia_module": "security"}
+            )
 
     def _save_token_metadata(self) -> None:
         """
@@ -261,7 +268,9 @@ class TokenManager:
                 overwrite=True,
             )
         except Exception as e:
-            logger.error(f"❌ Failed to save token metadata: {e}")
+            ark_logger.error(
+                f"❌ Failed to save token metadata: {e}", extra={"arkalia_module": "security"}
+            )
 
     def generate_token(
         self,
@@ -342,7 +351,10 @@ class TokenManager:
             overwrite=True,
         )
 
-        logger.info(f"🎫 Generated {token_type.value} token: {token_id}")
+        ark_logger.info(
+            f"🎫 Generated {token_type.value} token: {token_id}",
+            extra={"arkalia_module": "security"},
+        )
         return token_id, token_value
 
     def _generate_jwt_token(
@@ -438,7 +450,9 @@ class TokenManager:
             return True, metadata, "Valid"
 
         except Exception as e:
-            logger.error(f"❌ Token validation error: {e}")
+            ark_logger.error(
+                f"❌ Token validation error: {e}", extra={"arkalia_module": "security"}
+            )
             return False, None, f"Validation error: {e}"
 
     def revoke_token(self, token_id: str, reason: str = "Manual revocation") -> bool:
@@ -453,7 +467,9 @@ class TokenManager:
             True si révocation réussie
         """
         if token_id not in self.token_metadata:
-            logger.warning(f"⚠️ Token {token_id} not found for revocation")
+            ark_logger.warning(
+                f"⚠️ Token {token_id} not found for revocation", extra={"arkalia_module": "security"}
+            )
             return False
 
         # Marquer comme révoqué
@@ -466,7 +482,9 @@ class TokenManager:
         # Sauvegarder
         self._save_token_metadata()
 
-        logger.info(f"🚫 Token {token_id} revoked: {reason}")
+        ark_logger.info(
+            f"🚫 Token {token_id} revoked: {reason}", extra={"arkalia_module": "security"}
+        )
         return True
 
     def revoke_user_tokens(self, user_id: str) -> int:
@@ -486,7 +504,10 @@ class TokenManager:
                 if self.revoke_token(token_id, f"User {user_id} tokens revoked"):
                     revoked_count += 1
 
-        logger.info(f"🚫 Revoked {revoked_count} tokens for user {user_id}")
+        ark_logger.info(
+            f"🚫 Revoked {revoked_count} tokens for user {user_id}",
+            extra={"arkalia_module": "security"},
+        )
         return revoked_count
 
     def cleanup_expired_tokens(self) -> int:
@@ -507,7 +528,9 @@ class TokenManager:
             if self.revoke_token(token_id, "Automatic cleanup - expired"):
                 cleaned_count += 1
 
-        logger.info(f"🧹 Cleaned up {cleaned_count} expired tokens")
+        ark_logger.info(
+            f"🧹 Cleaned up {cleaned_count} expired tokens", extra={"arkalia_module": "security"}
+        )
         return cleaned_count
 
     def refresh_token(self, refresh_token: str) -> tuple[str | None, str | None]:
@@ -524,11 +547,15 @@ class TokenManager:
         is_valid, metadata, reason = self.validate_token(refresh_token)
 
         if not is_valid or not metadata:
-            logger.warning(f"⚠️ Invalid refresh token: {reason}")
+            ark_logger.warning(
+                f"⚠️ Invalid refresh token: {reason}", extra={"arkalia_module": "security"}
+            )
             return None, None
 
         if metadata.token_type != TokenType.REFRESH_TOKEN:
-            logger.warning("⚠️ Token is not a refresh token")
+            ark_logger.warning(
+                "⚠️ Token is not a refresh token", extra={"arkalia_module": "security"}
+            )
             return None, None
 
         # Générer un nouveau token d'accès
@@ -541,7 +568,10 @@ class TokenManager:
             client_info=metadata.client_info,
         )
 
-        logger.info(f"🔄 Token refreshed for user {metadata.associated_user}")
+        ark_logger.info(
+            f"🔄 Token refreshed for user {metadata.associated_user}",
+            extra={"arkalia_module": "security"},
+        )
         return new_token_id, new_token_value
 
     def get_token_stats(self) -> dict[str, Any]:

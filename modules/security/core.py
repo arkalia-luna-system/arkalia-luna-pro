@@ -8,7 +8,6 @@
 """
 
 import asyncio
-import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Optional
@@ -17,10 +16,6 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
 from core.ark_logger import ark_logger
-
-# Configuration du logging
-logger = logging.getLogger("arkalia.security.core")
-logger.setLevel(logging.INFO)
 
 app = FastAPI()
 
@@ -48,21 +43,20 @@ class UsecurityCore:
 
     def __init__(self, config: UsecurityConfig) -> None:
         self.config = config
-        self.logger = logging.getLogger("arkalia.security.core")
         self._initialize()
 
     def _initialize(self) -> None:
         """Initialisation du core"""
-        self.logger.info("🧠 UsecurityCore initialisé")
+        ark_logger.info("🧠 UsecurityCore initialisé", extra={"arkalia_module": "security"})
 
     async def process(self, data: dict[str, Any]) -> dict[str, Any]:
         """Traitement principal"""
         try:
-            self.logger.info(f"🧠 Traitement: {data}")
+            ark_logger.info(f"🧠 Traitement: {data}", extra={"arkalia_module": "security"})
             # TODO: Implémenter la logique spécifique
             return {"status": "success", "data": data, "module": "security"}
         except Exception as e:
-            self.logger.error(f"❌ Erreur: {e}")
+            ark_logger.error(f"❌ Erreur: {e}", extra={"arkalia_module": "security"})
             return {"status": "error", "error": str(e), "module": "security"}
 
     def health_check(self) -> dict[str, Any]:
