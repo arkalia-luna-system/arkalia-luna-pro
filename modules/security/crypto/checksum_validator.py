@@ -78,7 +78,7 @@ class BuildIntegrityValidator:
                     )
 
         ark_logger.info(
-            f"✅ Generated checksums for {len(checksum, extra={"arkalia_module": "security"})} files",
+            f"✅ Generated checksums for {len(checksum, )} files",
             extra={"arkalia_module": "security"},
         )
         return checksums
@@ -283,7 +283,7 @@ class BuildIntegrityValidator:
             f.write(json.dumps(log_entry) + "\n")
 
         ark_logger.critical(
-            f"🚨 SECURITY VIOLATION: {len(violation, extra={"arkalia_module": "security"})} integrity issues logged",
+            f"🚨 SECURITY VIOLATION: {len(violation, )} integrity issues logged",
             extra={"arkalia_module": "security"},
         )
 
@@ -381,5 +381,5 @@ if __name__ == "__main__":
         validator = BuildIntegrityValidator()
         checksums = validator.generate_checksums()
         ark_logger.info(
-            f"Generated checksums for {len(checksum, extra={"arkalia_module": "security"})} files", extra={"module": "crypto"}
+            f"Generated checksums for {len(checksum, )} files", extra={"module": "crypto"}
         )

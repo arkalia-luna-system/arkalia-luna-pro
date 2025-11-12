@@ -128,14 +128,16 @@ async def get_arkalia_context() -> tuple[str, float]:
                 context_parts.append(f"ZeroIA: {status}")
                 quality_score += 25.0 if status != "unknown" else 10.0
             except (json.JSONDecodeError, KeyError, OSError) as e:
-                logger.warning(f"Erreur lecture ZeroIA: {e}")
+                ark_logger.warning(
+                    f"Erreur lecture ZeroIA: {e}", extra={"arkalia_module": "assistantia"}
+                )
                 context_parts.append("ZeroIA: error")
                 quality_score += 5.0
         else:
             context_parts.append("ZeroIA: inactive")
             quality_score += 2.0
     except Exception as e:
-        logger.error(f"Erreur contexte ZeroIA: {e}")
+        ark_logger.error(f"Erreur contexte ZeroIA: {e}", extra={"arkalia_module": "assistantia"})
         context_parts.append("ZeroIA: unavailable")
 
     try:
@@ -150,14 +152,16 @@ async def get_arkalia_context() -> tuple[str, float]:
                 context_parts.append(f"Reflexia: {status}")
                 quality_score += 25.0 if status != "unknown" else 10.0
             except Exception as e:
-                logger.warning(f"Erreur lecture Reflexia: {e}")
+                ark_logger.warning(
+                    f"Erreur lecture Reflexia: {e}", extra={"arkalia_module": "assistantia"}
+                )
                 context_parts.append("Reflexia: error")
                 quality_score += 5.0
         else:
             context_parts.append("Reflexia: inactive")
             quality_score += 2.0
     except Exception as e:
-        logger.error(f"Erreur contexte Reflexia: {e}")
+        ark_logger.error(f"Erreur contexte Reflexia: {e}", extra={"arkalia_module": "assistantia"})
         context_parts.append("Reflexia: unavailable")
 
     try:
@@ -170,7 +174,7 @@ async def get_arkalia_context() -> tuple[str, float]:
             context_parts.append("Sandozia: inactive")
             quality_score += 2.0
     except Exception as e:
-        logger.error(f"Erreur contexte Sandozia: {e}")
+        ark_logger.error(f"Erreur contexte Sandozia: {e}", extra={"arkalia_module": "assistantia"})
         context_parts.append("Sandozia: unavailable")
 
     try:
@@ -185,14 +189,16 @@ async def get_arkalia_context() -> tuple[str, float]:
                 context_parts.append(f"Cognitive: {status}")
                 quality_score += 25.0 if status != "unknown" else 10.0
             except Exception as e:
-                logger.warning(f"Erreur lecture Cognitive: {e}")
+                ark_logger.warning(
+                    f"Erreur lecture Cognitive: {e}", extra={"arkalia_module": "assistantia"}
+                )
                 context_parts.append("Cognitive: error")
                 quality_score += 5.0
         else:
             context_parts.append("Cognitive: inactive")
             quality_score += 2.0
     except Exception as e:
-        logger.error(f"Erreur contexte Cognitive: {e}")
+        ark_logger.error(f"Erreur contexte Cognitive: {e}", extra={"arkalia_module": "assistantia"})
         context_parts.append("Cognitive: unavailable")
 
     # Normaliser le score de qualité
@@ -273,7 +279,7 @@ async def post_chat(
         ).inc()
         raise HTTPException(status_code=504, detail="Délai de réponse dépassé") from None
     except Exception as e:
-        logger.error(f"Erreur AssistantIA: {e}")
+        ark_logger.error(f"Erreur AssistantIA: {e}", extra={"arkalia_module": "assistantia"})
         assistantia_prompts_total.labels(
             status="error", security_level="medium", model=data.model
         ).inc()
@@ -303,7 +309,9 @@ async def log_chat_interaction(message: str, response: str, processing_time: flo
             f.write(json.dumps(log_entry) + "\n")
 
     except Exception as e:
-        logger.error(f"Erreur logging AssistantIA: {e}")
+        ark_logger.error(
+            f"Erreur logging AssistantIA: {e}", extra={"arkalia_module": "assistantia"}
+        )
 
 
 @router.get("/health", response_model=HealthResponse)
@@ -334,7 +342,7 @@ async def health() -> HealthResponse:
         )
 
     except Exception as e:
-        logger.error(f"Erreur health check: {e}")
+        ark_logger.error(f"Erreur health check: {e}", extra={"arkalia_module": "assistantia"})
         return HealthResponse(
             status="unhealthy", ollama_available=False, arkalia_modules={}, uptime="unknown"
         )
@@ -347,7 +355,7 @@ async def get_metrics():
         prometheus_data = generate_latest()
         return PlainTextResponse(content=prometheus_data, media_type=CONTENT_TYPE_LATEST)
     except Exception as e:
-        logger.error(f"Erreur métriques: {e}")
+        ark_logger.error(f"Erreur métriques: {e}", extra={"arkalia_module": "assistantia"})
         return JSONResponse(
             status_code=500,
             content={"error": f"Erreur métriques : {str(e)}"},
@@ -366,7 +374,9 @@ async def get_available_models():
         else:
             return {"models": [], "error": "Impossible de récupérer les modèles"}
     except Exception as e:
-        logger.error(f"Erreur récupération modèles: {e}")
+        ark_logger.error(
+            f"Erreur récupération modèles: {e}", extra={"arkalia_module": "assistantia"}
+        )
         return JSONResponse(
             status_code=500, content={"error": f"Erreur récupération modèles: {str(e)}"}
         )
