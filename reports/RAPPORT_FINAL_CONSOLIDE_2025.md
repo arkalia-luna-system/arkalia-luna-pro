@@ -214,32 +214,32 @@ services:
 
 ### Dockerfiles Optimisés
 ```bash
-✅ Dockerfile.security      # Multi-stage, utilisateur non-root
-✅ Dockerfile.zeroia        # Multi-stage, healthcheck
-✅ Dockerfile.reflexia      # Multi-stage, healthcheck
-✅ Dockerfile.sandozia      # Utilisateur non-root, healthcheck
-✅ Dockerfile.assistantia   # Utilisateur non-root, healthcheck
-✅ Dockerfile.cognitive-reactor # Utilisateur non-root
+# Dockerfile.security      # Multi-stage, utilisateur non-root
+# Dockerfile.zeroia        # Multi-stage, healthcheck
+# Dockerfile.reflexia      # Multi-stage, healthcheck
+# Dockerfile.sandozia      # Utilisateur non-root, healthcheck
+# Dockerfile.assistantia   # Utilisateur non-root, healthcheck
+# Dockerfile.cognitive-reactor # Utilisateur non-root
 ```
 
 ---
 
-## 📚 DOCUMENTATION FINALE
+## DOCUMENTATION FINALE
 
-### 📖 Rapports Principaux
+### Rapports Principaux
 - **`RAPPORT_FINAL_CONSOLIDE_2025.md`** ← Ce rapport (état final)
 - **`RAPPORT_AMELIORATIONS_FINALES.md`** - Détails des améliorations
 - **`VALIDATION_FINALE_OPTIMISATIONS.md`** - Validation des optimisations
 - **`RAPPORT_NETTOYAGE_FINAL_VALIDE.md`** - Détails du nettoyage
 - **`AUDIT_NETTOYAGE_FINAL.md`** - Audit complet du nettoyage
 
-### 🏗️ Documentation Technique
+### Documentation Technique
 - **`docs/architecture.md`** - Architecture visuelle avec Mermaid
 - **`GUIDE_UTILISATION_SOLID.md`** - Guide d'utilisation SOLID
 - **`README.md`** - Documentation principale
 - **`docs/`** - Documentation complète MkDocs
 
-### 🧪 Scripts de Test
+### Scripts de Test
 - **`test_ameliorations_finales.py`** - Tests de validation finale
 - **`scripts/demo/demo_global.py`** - Démonstration globale
 - **`scripts/tools/arkalia_score.py`** - Générateur de score cognitif
@@ -247,9 +247,9 @@ services:
 
 ---
 
-## 🎯 FONCTIONNALITÉS FINALES
+## FONCTIONNALITÉS FINALES
 
-### 🔧 Abstraction Storage
+### Abstraction Storage
 ```python
 # Interface unifiée
 storage.get_state(module="zeroia")
@@ -258,14 +258,14 @@ storage.get_metrics(module="cache")
 storage.backup_module(module="zeroia")
 ```
 
-### 🔗 Tests d'Intégration Inter-Modules
+### Tests d'Intégration Inter-Modules
 ```python
 # Synchronisation ZeroIA ↔ Reflexia
 test_zeroia_reflexia_sync.py
 test_api_guardian_behavior.py
 ```
 
-### 📊 Score Cognitif Global
+### Score Cognitif Global
 ```toml
 # arkalia_score.toml (temps réel)
 global_score = 0.654
@@ -274,7 +274,7 @@ alerts = 3
 last_updated = "2025-07-04T18:45:00"
 ```
 
-### 🐳 Déploiement Optimisé
+### Déploiement Optimisé
 ```bash
 # Lancement complet
 ./arkalia-launch-optimized.sh
