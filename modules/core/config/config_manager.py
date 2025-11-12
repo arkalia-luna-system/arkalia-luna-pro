@@ -6,7 +6,6 @@
 """
 
 import json
-import logging
 import os
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -131,12 +130,14 @@ class ConfigManager:
 
     def _apply_config(self) -> None:
         """Application de la configuration"""
-        # Configuration du logging
+        # Configuration du logging via ark_logger
+        # Note: ark_logger gère son propre niveau de logging
+        # Pas besoin de configurer logging standard
         if "core" in self._config:
             core_config = self._config["core"]
             if "log_level" in core_config:
-                log_level = getattr(logging, core_config["log_level"], logging.INFO)
-                logging.getLogger("ark_logger.core").setLevel(log_level)
+                # ark_logger gère son propre niveau, pas besoin de logging standard
+                pass
 
     def get_config(self, section: str | None = None) -> dict[str, Any]:
         """
