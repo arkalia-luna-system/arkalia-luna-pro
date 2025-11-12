@@ -154,7 +154,7 @@ class TestModelPoisoning(unittest.TestCase):
         self.detector = ModelPoisoningDetector()
         self.fake_data = FakePoisonedDatasets()
 
-    def test_cpu_injection_detection(self):
+    def test_cpu_injection_detection(self) -> None:
         """Test détection injection CPU malveillante"""
         poisoned_ctx = self.fake_data.create_cpu_injection_attack()
 
@@ -172,7 +172,7 @@ class TestModelPoisoning(unittest.TestCase):
         # Le test peut passer même si impossible_decisions est False
         self.assertIsInstance(analysis["patterns"]["impossible_decisions"], bool)
 
-    def test_oscillation_attack_detection(self):
+    def test_oscillation_attack_detection(self) -> None:
         """Test détection attaque par oscillation"""
         contexts = self.fake_data.create_oscillation_attack()
         decisions = []
@@ -185,7 +185,7 @@ class TestModelPoisoning(unittest.TestCase):
         # Tolère l'absence d'anomalie pour la CI
         self.assertIn(analysis["anomaly_detected"], [True, False])
 
-    def test_yaml_injection_protection(self):
+    def test_yaml_injection_protection(self) -> None:
         """Test protection contre injection YAML"""
         malicious_ctx = self.fake_data.create_yaml_injection_attack()
 
@@ -206,7 +206,7 @@ class TestModelPoisoning(unittest.TestCase):
                 f"Erreur inattendue: {e}",
             )
 
-    def test_stealth_poisoning_detection(self):
+    def test_stealth_poisoning_detection(self) -> None:
         """Test détection empoisonnement furtif"""
         stealth_ctx = self.fake_data.create_stealth_poisoning()
 
@@ -221,7 +221,7 @@ class TestModelPoisoning(unittest.TestCase):
         # Tolère une confiance faible pour la CI
         self.assertGreaterEqual(analysis["confidence"], 0.0)
 
-    def test_normal_operation_baseline(self):
+    def test_normal_operation_baseline(self) -> None:
         """Test que l'opération normale ne déclenche pas d'alerte"""
         normal_contexts = [
             {"status": {"cpu": 45, "severity": "none", "ram": 40, "disk": 25}},
@@ -242,7 +242,7 @@ class TestModelPoisoning(unittest.TestCase):
             "NORMAL: Decision patterns within expected parameters",
         )
 
-    def test_integration_with_reason_loop(self):
+    def test_integration_with_reason_loop(self) -> None:
         """Test intégration avec reason_loop principal"""
         with tempfile.TemporaryDirectory() as tmp_dir:
             # Création fichiers temporaires

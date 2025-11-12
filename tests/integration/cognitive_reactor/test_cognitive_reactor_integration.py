@@ -9,7 +9,7 @@ from modules.cognitive_reactor.core import CognitiveReactor
 
 @pytest.mark.integration
 @pytest.mark.asyncio
-async def test_cognitive_reactor_integration_basic():
+async def test_cognitive_reactor_integration_basic() -> None:
     reactor = CognitiveReactor()
     stimulus = {"type": "integration_test", "severity": "low", "source": "test", "data": {}}
     result = await reactor.process_stimulus(stimulus)

@@ -13,7 +13,7 @@ from modules.zeroia.orchestrator_enhanced import ZeroIAOrchestrator, orchestrate
 class TestZeroIAOrchestrator:
     """Tests pour la classe ZeroIAOrchestrator"""
 
-    def test_orchestrator_initialization(self):
+    def test_orchestrator_initialization(self) -> None:
         """Test initialisation de l'orchestrateur."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -36,7 +36,7 @@ class TestZeroIAOrchestrator:
         assert mock_circuit_breaker.timeout == 30
         assert orchestrator.session_stats["total_decisions"] == 0
 
-    def test_orchestrator_initialization_defaults(self):
+    def test_orchestrator_initialization_defaults(self) -> None:
         """Test initialisation avec valeurs par défaut."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -51,7 +51,7 @@ class TestZeroIAOrchestrator:
         assert mock_circuit_breaker.failure_threshold == 10
         assert mock_circuit_breaker.timeout == 60
 
-    def test_should_continue_with_max_loops(self):
+    def test_should_continue_with_max_loops(self) -> None:
         """Test condition de continuation avec max_loops."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_init.return_value = (Mock(), Mock())
@@ -64,7 +64,7 @@ class TestZeroIAOrchestrator:
         orchestrator.loop_count = 3
         assert orchestrator._should_continue() is False
 
-    def test_should_continue_without_max_loops(self):
+    def test_should_continue_without_max_loops(self) -> None:
         """Test condition de continuation sans max_loops."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_init.return_value = (Mock(), Mock())
@@ -74,7 +74,7 @@ class TestZeroIAOrchestrator:
         orchestrator.loop_count = 100
         assert orchestrator._should_continue() is True
 
-    def test_execute_single_loop_success(self):
+    def test_execute_single_loop_success(self) -> None:
         """Test exécution d'une boucle avec succès."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -92,7 +92,7 @@ class TestZeroIAOrchestrator:
         mock_circuit_breaker.call.assert_called_once()
         mock_event_store.add_event.assert_called_once()
 
-    def test_execute_single_loop_system_reboot_required(self):
+    def test_execute_single_loop_system_reboot_required(self) -> None:
         """Test exécution avec SystemRebootRequired."""
         from modules.zeroia.circuit_breaker import SystemRebootRequired
 
@@ -112,7 +112,7 @@ class TestZeroIAOrchestrator:
         mock_sleep.assert_called_once_with(mock_circuit_breaker.timeout)
         assert mock_event_store.add_event.call_count == 1  # PATCH : 1 seul event loggé en pratique
 
-    def test_execute_single_loop_cognitive_overload_error(self):
+    def test_execute_single_loop_cognitive_overload_error(self) -> None:
         """Test exécution avec CognitiveOverloadError."""
         from modules.zeroia.circuit_breaker import CognitiveOverloadError
 
@@ -129,7 +129,7 @@ class TestZeroIAOrchestrator:
         assert orchestrator.session_stats["failed_decisions"] == 1
         assert orchestrator.session_stats["total_decisions"] == 1
 
-    def test_execute_single_loop_decision_integrity_error(self):
+    def test_execute_single_loop_decision_integrity_error(self) -> None:
         """Test exécution avec DecisionIntegrityError."""
         from modules.zeroia.circuit_breaker import DecisionIntegrityError
 
@@ -146,7 +146,7 @@ class TestZeroIAOrchestrator:
         assert orchestrator.session_stats["failed_decisions"] == 1
         assert orchestrator.session_stats["total_decisions"] == 1
 
-    def test_execute_single_loop_unexpected_error(self):
+    def test_execute_single_loop_unexpected_error(self) -> None:
         """Test exécution avec erreur inattendue."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -161,7 +161,7 @@ class TestZeroIAOrchestrator:
         assert orchestrator.session_stats["failed_decisions"] == 1
         assert orchestrator.session_stats["total_decisions"] == 1
 
-    def test_handle_system_reboot(self):
+    def test_handle_system_reboot(self) -> None:
         """Test gestion du reboot système."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -177,7 +177,7 @@ class TestZeroIAOrchestrator:
         mock_sleep.assert_called_once_with(mock_circuit_breaker.timeout)
         mock_event_store.add_event.assert_called_once()
 
-    def test_get_status(self):
+    def test_get_status(self) -> None:
         """Test récupération du statut."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -202,7 +202,7 @@ class TestZeroIAOrchestrator:
         assert status["circuit_breaker"]["state"] == "closed"
         assert status["event_store"]["total_events"] == 42
 
-    def test_cleanup_and_report(self):
+    def test_cleanup_and_report(self) -> None:
         """Test nettoyage et rapport final."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -224,7 +224,7 @@ class TestZeroIAOrchestrator:
 class TestOrchestrateZeroiaEnhanced:
     """Tests pour la fonction orchestrate_zeroia_enhanced"""
 
-    def test_orchestrate_zeroia_enhanced_success(self):
+    def test_orchestrate_zeroia_enhanced_success(self) -> None:
         """Test exécution réussie de l'orchestration."""
         with patch(
             "modules.zeroia.orchestrator_enhanced.ZeroIAOrchestrator"
@@ -247,7 +247,7 @@ class TestOrchestrateZeroiaEnhanced:
         )
         mock_orchestrator.run.assert_called_once()
 
-    def test_orchestrate_zeroia_enhanced_defaults(self):
+    def test_orchestrate_zeroia_enhanced_defaults(self) -> None:
         """Test exécution avec valeurs par défaut."""
         with patch(
             "modules.zeroia.orchestrator_enhanced.ZeroIAOrchestrator"
@@ -269,7 +269,7 @@ class TestOrchestrateZeroiaEnhanced:
 class TestZeroIAOrchestratorIntegration:
     """Tests d'intégration pour ZeroIAOrchestrator"""
 
-    def test_full_orchestration_cycle(self):
+    def test_full_orchestration_cycle(self) -> None:
         """Test cycle complet d'orchestration."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -293,7 +293,7 @@ class TestZeroIAOrchestratorIntegration:
         assert mock_sleep.call_count == 2
         assert mock_event_store.add_event.call_count == 3  # 2 décisions + 1 arrêt
 
-    def test_orchestration_with_keyboard_interrupt(self):
+    def test_orchestration_with_keyboard_interrupt(self) -> None:
         """Test orchestration avec interruption clavier."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -316,7 +316,7 @@ class TestZeroIAOrchestratorIntegration:
         assert orchestrator.session_stats["successful_decisions"] == 1
         mock_logger.info.assert_any_call("⏹️ Arrêt orchestration (Ctrl+C)")
 
-    def test_orchestration_with_system_exit(self):
+    def test_orchestration_with_system_exit(self) -> None:
         """Test orchestration avec SystemExit."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -339,7 +339,7 @@ class TestZeroIAOrchestratorIntegration:
         assert orchestrator.session_stats["successful_decisions"] == 1
         mock_logger.info.assert_any_call("⏹️ Arrêt orchestration (SystemExit)")
 
-    def test_orchestration_with_fatal_error(self):
+    def test_orchestration_with_fatal_error(self) -> None:
         """Test orchestration avec erreur fatale."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -367,7 +367,7 @@ class TestZeroIAOrchestratorIntegration:
 class TestZeroIAOrchestratorRobustness:
     """Tests de robustesse pour ZeroIAOrchestrator"""
 
-    def test_orchestrator_with_high_failure_rate(self):
+    def test_orchestrator_with_high_failure_rate(self) -> None:
         """Test orchestrateur avec taux d'échec élevé."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()
@@ -393,7 +393,7 @@ class TestZeroIAOrchestratorRobustness:
         assert orchestrator.session_stats["failed_decisions"] == 3
         assert orchestrator.session_stats["total_decisions"] == 5
 
-    def test_orchestrator_mixed_scenarios(self):
+    def test_orchestrator_mixed_scenarios(self) -> None:
         """Test orchestrateur avec scénarios mixtes."""
         from modules.zeroia.circuit_breaker import CognitiveOverloadError, SystemRebootRequired
 
@@ -421,7 +421,7 @@ class TestZeroIAOrchestratorRobustness:
         assert orchestrator.session_stats["circuit_openings"] == 1
         assert orchestrator.session_stats["total_decisions"] == 4
 
-    def test_orchestrator_status_calculation(self):
+    def test_orchestrator_status_calculation(self) -> None:
         """Test calculs de statut complexes."""
         with patch("modules.zeroia.orchestrator_enhanced.initialize_components") as mock_init:
             mock_circuit_breaker = Mock()

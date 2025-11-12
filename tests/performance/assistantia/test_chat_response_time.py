@@ -13,7 +13,7 @@ client = TestClient(app)
 @pytest.mark.performance
 @pytest.mark.slow
 @pytest.mark.skipif(os.getenv("CI") == "true", reason="Ignoré en CI")
-def test_chat_response_time_under_2s():
+def test_chat_response_time_under_2s() -> None:
     """Teste que la réponse de l'API /chat est rapide."""
     with (
         patch("modules.assistantia.core.real_query_ollama", return_value="Réponse rapide"),
@@ -33,7 +33,7 @@ def test_chat_response_time_under_2s():
 
 @pytest.mark.performance
 @pytest.mark.skipif(os.getenv("ARK_FORCE_OLLAMA") != "true", reason="Requires real Ollama")
-def test_chat_response_time_with_real_ollama():
+def test_chat_response_time_with_real_ollama() -> None:
     """
     Test optionnel avec Ollama réel (plus lent, pour validation complète).
     """

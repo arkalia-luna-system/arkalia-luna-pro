@@ -32,7 +32,7 @@ def test_status() -> None:
 
 
 @pytest.mark.asyncio
-async def test_status_response_format():
+async def test_status_response_format() -> None:
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         response = await ac.get("/status")

@@ -20,7 +20,7 @@ def base_url():
 class TestBasicE2E:
     """Tests E2E de base"""
 
-    def test_api_health_endpoint(self, base_url):
+    def test_api_health_endpoint(self, base_url) -> None:
         """Test de l'endpoint de santé de l'API"""
         try:
             response = requests.get(f"{base_url}/health", timeout=5)
@@ -30,7 +30,7 @@ class TestBasicE2E:
         except requests.exceptions.RequestException:
             pytest.skip("API non disponible - test ignoré")
 
-    def test_zeroia_health_endpoint(self, base_url):
+    def test_zeroia_health_endpoint(self, base_url) -> None:
         """Test de l'endpoint de santé ZeroIA"""
         try:
             response = requests.get(f"{base_url}/zeroia/health", timeout=5)
@@ -42,7 +42,7 @@ class TestBasicE2E:
         except requests.exceptions.RequestException:
             pytest.skip("ZeroIA non disponible - test ignoré")
 
-    def test_reflexia_health_endpoint(self, base_url):
+    def test_reflexia_health_endpoint(self, base_url) -> None:
         """Test de l'endpoint de santé ReflexIA"""
         try:
             response = requests.get(f"{base_url}/reflexia/health", timeout=5)
@@ -54,7 +54,7 @@ class TestBasicE2E:
         except requests.exceptions.RequestException:
             pytest.skip("Reflexia non disponible - test ignoré")
 
-    def test_zeroia_decision_endpoint(self, base_url):
+    def test_zeroia_decision_endpoint(self, base_url) -> None:
         """Test de l'endpoint de décision ZeroIA"""
         try:
             response = requests.post(
@@ -68,7 +68,7 @@ class TestBasicE2E:
         except requests.exceptions.RequestException:
             pytest.skip("ZeroIA decision non disponible - test ignoré")
 
-    def test_docker_services_running(self):
+    def test_docker_services_running(self) -> None:
         """Test que les services Docker sont en cours d'exécution"""
         import subprocess
 
@@ -92,7 +92,7 @@ class TestBasicE2E:
         except (subprocess.TimeoutExpired, FileNotFoundError):
             pytest.skip("Docker non disponible - test ignoré")
 
-    def test_state_files_exist(self):
+    def test_state_files_exist(self) -> None:
         """Test que les fichiers d'état existent"""
         state_files = [
             "state/zeroia_state.toml",
@@ -106,13 +106,13 @@ class TestBasicE2E:
             else:
                 pytest.skip(f"Fichier d'état {state_file} non trouvé - test ignoré")
 
-    def test_logs_directory_exists(self):
+    def test_logs_directory_exists(self) -> None:
         """Test que le répertoire des logs existe"""
         logs_dir = Path("logs")
         assert logs_dir.exists()
         assert logs_dir.is_dir()
 
-    def test_config_files_exist(self):
+    def test_config_files_exist(self) -> None:
         """Test que les fichiers de configuration existent"""
         config_files = [
             "config/arkalia_master_config.toml",
@@ -130,7 +130,7 @@ class TestBasicE2E:
 class TestE2EIntegration:
     """Tests d'intégration E2E"""
 
-    def test_full_system_workflow(self, base_url):
+    def test_full_system_workflow(self, base_url) -> None:
         """Test d'un workflow complet du système"""
         try:
             # 1. Vérifier la santé du système
@@ -155,7 +155,7 @@ class TestE2EIntegration:
         except requests.exceptions.RequestException:
             pytest.skip("Système non disponible - test ignoré")
 
-    def test_error_handling(self, base_url):
+    def test_error_handling(self, base_url) -> None:
         """Test de la gestion d'erreur"""
         try:
             # Test avec des données invalides

@@ -37,13 +37,13 @@ class TestGracefulDegradationSystem:
 
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         """Test d'initialisation du système"""
         assert self.system is not None
         assert self.system.current_level == DegradationLevel.NORMAL
         assert len(self.system.services) > 0
 
-    def test_service_registration(self):
+    def test_service_registration(self) -> None:
         """Test d'enregistrement d'un service"""
         service = ServiceDefinition(
             name="test_service", priority=ServicePriority.HIGH, description="Service de test"
@@ -78,7 +78,7 @@ class TestGracefulDegradationSystem:
         recovery_success = await self.system.attempt_recovery()
         assert isinstance(recovery_success, bool)
 
-    def test_system_status(self):
+    def test_system_status(self) -> None:
         """Test de récupération du statut système"""
         status = self.system.get_system_status()
         assert "degradation_level" in status or "current_level" in status
@@ -91,7 +91,7 @@ class TestGracefulDegradationSystem:
         assert isinstance(health_result, dict)
         assert "health_score" in health_result or "degradation_level" in health_result
 
-    def test_service_metrics_creation(self):
+    def test_service_metrics_creation(self) -> None:
         """Test de création de métriques de service"""
         metrics = ServiceMetrics(
             name="test_service", status=ServiceStatus.ACTIVE, uptime=100.0, resource_usage=50.0
@@ -101,7 +101,7 @@ class TestGracefulDegradationSystem:
         assert metrics.status == ServiceStatus.ACTIVE
         assert metrics.uptime == 100.0
 
-    def test_degradation_levels(self):
+    def test_degradation_levels(self) -> None:
         """Test des niveaux de dégradation"""
         levels = [
             DegradationLevel.NORMAL,
@@ -115,7 +115,7 @@ class TestGracefulDegradationSystem:
         for level in levels:
             assert isinstance(level, DegradationLevel)
 
-    def test_service_priorities(self):
+    def test_service_priorities(self) -> None:
         """Test des priorités de service"""
         priorities = [
             ServicePriority.CRITICAL,
@@ -177,7 +177,7 @@ class TestGracefulDegradationPerformance:
 
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    def test_health_assessment_performance(self):
+    def test_health_assessment_performance(self) -> None:
         """Test de performance de l'évaluation de santé"""
         system = GracefulDegradationSystem()
 
@@ -200,7 +200,7 @@ class TestGracefulDegradationPerformance:
 class TestGracefulDegradationRobustness:
     """Tests de robustesse pour la dégradation gracieuse"""
 
-    def test_handling_invalid_config(self):
+    def test_handling_invalid_config(self) -> None:
         """Test de gestion de configuration invalide"""
         # Test avec un chemin de config inexistant
         try:
@@ -209,7 +209,7 @@ class TestGracefulDegradationRobustness:
         except Exception:
             raise AssertionError("Le système n'a pas géré la configuration invalide") from None
 
-    def test_initialization_limits(self):
+    def test_initialization_limits(self) -> None:
         """Test des limites d'initialisation"""
         system = GracefulDegradationSystem()
 
@@ -217,7 +217,7 @@ class TestGracefulDegradationRobustness:
         can_init = system.can_initialize()
         assert isinstance(can_init, bool)
 
-    def test_service_unregistration(self):
+    def test_service_unregistration(self) -> None:
         """Test de désenregistrement de service"""
         system = GracefulDegradationSystem()
 

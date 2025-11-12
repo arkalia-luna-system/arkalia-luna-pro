@@ -8,7 +8,7 @@ from modules.assistantia.core import app
 client = TestClient(app)
 
 
-def test_chat_sql_injection_like():
+def test_chat_sql_injection_like() -> None:
     """Teste la protection contre les tentatives d'injection SQL-like"""
     payload = {"message": "'; DROP TABLE users; --"}
     with (

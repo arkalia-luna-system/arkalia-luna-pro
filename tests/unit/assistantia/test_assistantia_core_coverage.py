@@ -12,22 +12,22 @@ def test_client() -> TestClient:
     return TestClient(app)
 
 
-def test_chat_route_exists():
+def test_chat_route_exists() -> None:
     """✅ Vérifie que l'application FastAPI est bien instanciée."""
     assert app is not None
 
 
-def test_process_input_empty():
+def test_process_input_empty() -> None:
     """✅ Teste le traitement d'une entrée vide."""
     assert process_input("") == "Tu as dit : "
 
 
-def test_process_input_normal():
+def test_process_input_normal() -> None:
     """✅ Teste le traitement d'une entrée normale avec respect de la casse."""
     assert process_input("Bonjour") == "Tu as dit : Bonjour"
 
 
-def test_chat_post(test_client: TestClient):
+def test_chat_post(test_client: TestClient) -> None:
     """Teste l'endpoint /chat avec une dépendance mockée."""
 
     def mock_query_ollama(msg: str, model: str = "mistral", temperature: float = 0.7) -> str:

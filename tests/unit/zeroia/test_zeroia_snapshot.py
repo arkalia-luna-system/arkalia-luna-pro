@@ -1,9 +1,11 @@
+from pathlib import Path
+
 import pytest
 import toml
 
 
 @pytest.fixture
-def sample_snapshot(tmp_path) -> None:
+def sample_snapshot(tmp_path: Path) -> Path:
     snapshot_content = """
     [snapshot_1]
     key1 = "value1"
@@ -18,7 +20,7 @@ def sample_snapshot(tmp_path) -> None:
     return snapshot_file
 
 
-def test_read_multi_section_snapshot(sample_snapshot) -> None:
+def test_read_multi_section_snapshot(sample_snapshot: Path) -> None:
     data = toml.load(sample_snapshot)
     assert "snapshot_1" in data
     assert "snapshot_2" in data
@@ -29,5 +31,5 @@ def test_read_multi_section_snapshot(sample_snapshot) -> None:
 def test_memory_link_previous_snapshot() -> None:
     # Assuming memory_link is a function or object that provides previous_snapshot
     # This is a placeholder for the actual implementation
-    memory_link = {"previous_snapshot": "snapshot_1"}
+    memory_link: dict[str, str] = {"previous_snapshot": "snapshot_1"}
     assert memory_link["previous_snapshot"] == "snapshot_1"

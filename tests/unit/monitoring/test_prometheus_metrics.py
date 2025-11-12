@@ -6,7 +6,7 @@ from prometheus_client import CollectorRegistry
 from modules.monitoring.prometheus_metrics import ArkaliaMetrics
 
 
-def test_metrics_initialization():
+def test_metrics_initialization() -> None:
     registry = CollectorRegistry()
     metrics = ArkaliaMetrics(registry=registry)
     assert metrics.arkalia_system_uptime._name == "arkalia_system_uptime_seconds"
@@ -17,7 +17,7 @@ def test_metrics_initialization():
     assert metrics.arkalia_request_duration._name == "arkalia_request_duration"
 
 
-def test_metrics_labels():
+def test_metrics_labels() -> None:
     registry = CollectorRegistry()
     metrics = ArkaliaMetrics(registry=registry)
 
@@ -30,14 +30,14 @@ def test_metrics_labels():
         pytest.fail(f"L'incrémentation de la métrique a échoué: {e}")
 
 
-def test_metrics_values():
+def test_metrics_values() -> None:
     registry = CollectorRegistry()
     metrics = ArkaliaMetrics(registry=registry)
     metrics.arkalia_system_uptime.set(123.45)
     assert registry.get_sample_value("arkalia_system_uptime_seconds") == 123.45
 
 
-def test_metrics_histogram():
+def test_metrics_histogram() -> None:
     registry = CollectorRegistry()
     metrics = ArkaliaMetrics(registry=registry)
     metrics.arkalia_request_duration.labels(method="GET", endpoint="/").observe(0.5)

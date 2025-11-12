@@ -10,7 +10,7 @@ class TestSystemLoadChaos:
     def teardown_method(self) -> None:
         self.chaos.cleanup()
 
-    def test_system_under_high_cpu_load(self):
+    def test_system_under_high_cpu_load(self) -> None:
         """Test système sous forte charge CPU"""
         process = self.chaos.simulate_high_load(duration=3)
         assert process is not None

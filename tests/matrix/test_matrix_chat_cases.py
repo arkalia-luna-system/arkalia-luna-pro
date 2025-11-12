@@ -10,7 +10,7 @@ from modules.assistantia.core import app
 client = TestClient(app)
 
 
-def test_debug_routes():
+def test_debug_routes() -> None:
     """Test de debug pour afficher les routes disponibles."""
     ark_logger.info("\n--- ROUTES DISPONIBLES ---", extra={"arkalia_module": "matrix"})
     for route in app.routes:
@@ -31,7 +31,7 @@ def test_debug_routes():
         "𐍈" * 50,
     ],
 )
-def test_chat_various_messages(msg):
+def test_chat_various_messages(msg: str) -> None:
     """Teste l'endpoint /api/v1/chat avec divers messages."""
     with (
         patch(

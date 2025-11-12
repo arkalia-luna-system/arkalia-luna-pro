@@ -14,7 +14,7 @@ from core.ark_logger import ark_logger
 
 
 @pytest.fixture
-def mock_metrics_server():
+def mock_metrics_server() -> object:
     """Mock du serveur de métriques pour les tests"""
     with patch("requests.get") as mock_get:
         # Réponse mock pour /metrics
@@ -44,7 +44,7 @@ class TestMetricsEndpoint:
 
     BASE_URL = "http://localhost:8000"
 
-    def test_metrics_endpoint_accessibility(self, mock_metrics_server):
+    def test_metrics_endpoint_accessibility(self, mock_metrics_server: object) -> None:
         """🌐 Test d'accessibilité de l'endpoint /metrics"""
         try:
             response = requests.get(f"{self.BASE_URL}/metrics", timeout=5)
@@ -60,7 +60,7 @@ class TestMetricsEndpoint:
         except requests.exceptions.ConnectionError:
             pytest.skip("Serveur API non démarré - normal en CI/CD")
 
-    def test_metrics_format_prometheus(self, mock_metrics_server):
+    def test_metrics_format_prometheus(self, mock_metrics_server: object) -> None:
         """📊 Test du format des métriques Prometheus"""
         try:
             response = requests.get(f"{self.BASE_URL}/metrics", timeout=5)
@@ -85,7 +85,7 @@ class TestMetricsEndpoint:
         except requests.exceptions.ConnectionError:
             pytest.skip("Serveur API non démarré")
 
-    def test_metrics_content_validation(self, mock_metrics_server):
+    def test_metrics_content_validation(self, mock_metrics_server: object) -> None:
         """🔍 Test du contenu et cohérence des métriques"""
         try:
             response = requests.get(f"{self.BASE_URL}/metrics", timeout=5)
@@ -126,7 +126,7 @@ class TestMetricsEndpoint:
 class TestFallbackMetrics:
     """Tests pour le système de métriques sans dépendances"""
 
-    def test_fallback_metrics_generation(self):
+    def test_fallback_metrics_generation(self) -> None:
         """🔧 Test génération métriques de secours"""
         from helloria.core import _get_fallback_metrics
 
@@ -148,7 +148,7 @@ class TestFallbackMetrics:
             assert metric in metrics, f"Métrique manquante: {metric}"
             assert isinstance(metrics[metric], int | float), f"Type invalide pour {metric}"
 
-    def test_fallback_metrics_values(self):
+    def test_fallback_metrics_values(self) -> None:
         """🎯 Test cohérence des valeurs de métriques"""
         from helloria.core import _get_fallback_metrics
 
@@ -161,7 +161,7 @@ class TestFallbackMetrics:
         assert metrics["arkalia_api_uptime_seconds"] > 0
         assert metrics["arkalia_endpoints_available"] >= 3
 
-    def test_prometheus_format_conversion(self):
+    def test_prometheus_format_conversion(self) -> None:
         """📝 Test conversion format Prometheus"""
         from helloria.core import _convert_to_prometheus_format
 
@@ -184,7 +184,7 @@ class TestFallbackMetrics:
 class TestMetricsIntegration:
     """Tests d'intégration avec les fichiers état"""
 
-    def test_zeroia_metrics_integration(self):
+    def test_zeroia_metrics_integration(self) -> None:
         """🔄 Test intégration métriques ZeroIA"""
         # Crée un fichier de test
         test_dashboard = {
@@ -221,7 +221,7 @@ class TestMetricsIntegration:
             elif dashboard_path.exists():
                 dashboard_path.unlink()
 
-    def test_reflexia_metrics_integration(self):
+    def test_reflexia_metrics_integration(self) -> None:
         """📊 Test intégration métriques ReflexIA"""
         test_state = {
             "metrics": {"cpu": 65.5, "ram": 45.2, "latency": 123.0},
@@ -261,7 +261,7 @@ class TestMetricsIntegration:
 class TestMetricsPerformance:
     """Tests de performance du système de métriques"""
 
-    def test_metrics_collection_speed(self):
+    def test_metrics_collection_speed(self) -> None:
         """⚡ Test vitesse de collecte des métriques"""
         from helloria.core import _get_fallback_metrics
 
@@ -284,7 +284,7 @@ class TestMetricsPerformance:
             extra={"arkalia_module": "integration"},
         )
 
-    def test_prometheus_format_speed(self):
+    def test_prometheus_format_speed(self) -> None:
         """📝 Test vitesse de formatage Prometheus"""
         from helloria.core import _convert_to_prometheus_format, _get_fallback_metrics
 
@@ -313,7 +313,7 @@ class TestMetricsPerformance:
 # === TESTS COMPLÉMENTAIRES ===
 
 
-def test_endpoint_error_handling():
+def test_endpoint_error_handling() -> None:
     """❌ Test gestion d'erreurs endpoint /metrics"""
     try:
         # Test avec timeout court
@@ -332,7 +332,7 @@ def test_endpoint_error_handling():
         pytest.skip("Serveur API non démarré")
 
 
-def test_metrics_consistency():
+def test_metrics_consistency() -> None:
     """🔄 Test consistance des métriques entre appels"""
     try:
         # Deux appels successifs

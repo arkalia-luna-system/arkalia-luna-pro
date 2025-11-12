@@ -7,18 +7,18 @@ from modules.assistantia.core import app, get_query_ollama
 
 
 @pytest.fixture(scope="module")
-def test_client():
+def test_client() -> TestClient:
     """Client de test FastAPI pour tous les tests du module."""
     return TestClient(app)
 
 
-def test_root_get(test_client):
+def test_root_get(test_client: TestClient) -> None:
     """Teste l'endpoint racine (GET /) — tolère 404 si non défini."""
     response = test_client.get("/")
     assert response.status_code in [200, 404]
 
 
-def test_chat_post(test_client):
+def test_chat_post(test_client: TestClient) -> None:
     """Teste l'endpoint POST /chat avec un message simple"""
 
     def mock_query_ollama(prompt: str, model: str = "mistral", temperature: float = 0.7) -> str:
@@ -38,7 +38,7 @@ def test_chat_post(test_client):
         assert "Tu as dit : Bonjour" in response_text
 
 
-def test_chat_post_empty_message(test_client: TestClient):
+def test_chat_post_empty_message(test_client: TestClient) -> None:
     """Teste l'endpoint /chat avec un message vide → 400 ou 422 attendu."""
     response = test_client.post("/api/v1/chat", json={"message": ""})
     assert response.status_code in [400, 422]
@@ -51,13 +51,13 @@ def test_chat_post_empty_message(test_client: TestClient):
         assert "message" in detail.lower()
 
 
-def test_chat_post_no_message_field(test_client: TestClient):
+def test_chat_post_no_message_field(test_client: TestClient) -> None:
     """Teste l'endpoint /chat sans champ message → 422 attendu."""
     response = test_client.post("/api/v1/chat", json={})
     assert response.status_code == 422  # Erreur de validation automatique FastAPI
 
 
-def test_chat_post_long_message(test_client):
+def test_chat_post_long_message(test_client: TestClient) -> None:
     """Teste l'endpoint POST /chat avec un message long"""
     long_msg = "A" * 1000
 

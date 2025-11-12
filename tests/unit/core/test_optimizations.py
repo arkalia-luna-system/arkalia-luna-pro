@@ -73,7 +73,7 @@ def test_load_balancer_basic():
     assert backend is not None
     assert backend.id in ["backend1", "backend2", "backend3"]
 
-    def test_request():
+    def test_request() -> None:
         time.sleep(0.01)
         return "success"
 

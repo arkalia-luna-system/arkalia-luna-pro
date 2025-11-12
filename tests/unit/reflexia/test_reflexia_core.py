@@ -1,4 +1,7 @@
+from typing import Any
 from unittest.mock import patch
+
+import pytest
 
 import modules.reflexia.core as reflexia_core
 from modules.reflexia.core import launch_reflexia_loop
@@ -19,16 +22,15 @@ def test_launch_reflexia_check_mocked() -> None:
                 mock_save.assert_called_once_with(mocked_metrics, mocked_status)
 
 
-def test_launch_reflexia_loop(monkeypatch) -> None:
+def test_launch_reflexia_loop(monkeypatch: pytest.MonkeyPatch) -> None:
     """
     🔁 Test isolé : vérifie que la fonction reflexia_loop est bien appelée via
     launch_reflexia_loop.
     """
     called = {}
 
-    def fake_loop(*args, **kwargs) -> None:
+    def fake_loop(*args: Any, **kwargs: Any) -> None:
         called["executed"] = True
-        return True
 
     monkeypatch.setattr(
         "modules.reflexia.logic.main_loop_enhanced.reflexia_loop_enhanced", fake_loop
@@ -44,7 +46,7 @@ def test_launch_reflexia_check_realistic() -> None:
     """
     state_log = []
 
-    def mock_save_snapshot(metrics, status) -> None:
+    def mock_save_snapshot(metrics: dict[str, Any], status: str) -> None:
         state_log.append({"metrics": metrics, "status": status})
 
     with patch("modules.reflexia.core.save_snapshot", new=mock_save_snapshot):

@@ -18,19 +18,21 @@ TMP_JSON = "tests/tmp/test_dashboard.json"
 
 def read_toml(path: str) -> dict[str, Any]:
     with open(path, encoding="utf-8") as f:
-        return toml.load(f)
+        data: dict[str, Any] = toml.load(f)
+        return data
 
 
 def read_json(path: str) -> dict[str, Any]:
     with open(path, encoding="utf-8") as f:
-        return json.load(f)
+        data: dict[str, Any] = json.load(f)
+        return data
 
 
-def setup_module(module) -> None:
+def setup_module(module: Any) -> None:
     Path("tests/tmp").mkdir(parents=True, exist_ok=True)
 
 
-def teardown_module(module) -> None:
+def teardown_module(module: Any) -> None:
     for path in [TMP_TOML, TMP_JSON]:
         if os.path.exists(path):
             os.remove(path)
@@ -82,10 +84,10 @@ def test_save_json_changes_written() -> None:
     assert modified["status"] == "updated", "Change should be written"
 
 
-def test_write_state_json(tmp_path) -> None:
+def test_write_state_json(tmp_path: Path) -> None:
     path = tmp_path / "test_state.json"
     data = {"status": "ok", "value": 42}
-    write_state_json(path, data)
+    write_state_json(str(path), data)
 
     with open(path) as f:
         loaded = json.load(f)

@@ -40,7 +40,7 @@ context = "reflexia"
         )
 
 
-def restore_snapshot_if_missing(snapshot_name):
+def restore_snapshot_if_missing(snapshot_name: str) -> None:
     """
     Restaure un snapshot JSON manquant depuis l'archive vers state/sandozia/.
     """

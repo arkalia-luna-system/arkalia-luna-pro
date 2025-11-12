@@ -21,7 +21,7 @@ from modules.utils.helpers.io_safe import (
 class TestAtomicWrite:
     """Tests pour l'écriture atomique"""
 
-    def test_atomic_write_string(self, tmp_path):
+    def test_atomic_write_string(self, tmp_path) -> None:
         """🧠 Test écriture atomique d'une chaîne"""
         test_file = tmp_path / "test.txt"
         test_data = "Hello Arkalia-LUNA!"
@@ -32,7 +32,7 @@ class TestAtomicWrite:
         assert test_file.exists()
         assert test_file.read_text() == test_data
 
-    def test_atomic_write_json(self, tmp_path):
+    def test_atomic_write_json(self, tmp_path) -> None:
         """🧠 Test écriture atomique JSON"""
         test_file = tmp_path / "test.json"
         test_data = {"status": "active", "modules": ["zeroia", "reflexia"]}
@@ -44,7 +44,7 @@ class TestAtomicWrite:
         loaded_data = json.loads(test_file.read_text())
         assert loaded_data == test_data
 
-    def test_atomic_write_toml(self, tmp_path):
+    def test_atomic_write_toml(self, tmp_path) -> None:
         """🧠 Test écriture atomique TOML"""
         test_file = tmp_path / "test.toml"
         test_data = {"arkalia": {"version": "2.5.0", "active": True}}
@@ -56,7 +56,7 @@ class TestAtomicWrite:
         loaded_data = toml.loads(test_file.read_text())
         assert loaded_data == test_data
 
-    def test_atomic_write_creates_parent_dirs(self, tmp_path):
+    def test_atomic_write_creates_parent_dirs(self, tmp_path) -> None:
         """🧠 Test création automatique des répertoires parents"""
         nested_file = tmp_path / "deep" / "nested" / "test.txt"
         test_data = "Arkalia creates dirs!"
@@ -67,7 +67,7 @@ class TestAtomicWrite:
         assert nested_file.exists()
         assert nested_file.read_text() == test_data
 
-    def test_atomic_write_concurrent_access(self, tmp_path):
+    def test_atomic_write_concurrent_access(self, tmp_path) -> None:
         """🧠 Test écriture concurrent (thread-safe)"""
         test_file = tmp_path / "concurrent.txt"
         results = []
@@ -93,7 +93,7 @@ class TestAtomicWrite:
         assert all(r is True for r in results)
         assert test_file.exists()
 
-    def test_atomic_write_error_handling(self, tmp_path):
+    def test_atomic_write_error_handling(self, tmp_path) -> None:
         """🧠 Test gestion d'erreurs"""
         # Fichier dans un répertoire sans permissions (simulation)
         with patch("tempfile.NamedTemporaryFile", side_effect=OSError("Permission denied")):
@@ -104,7 +104,7 @@ class TestAtomicWrite:
 class TestLockedRead:
     """Tests pour la lecture verrouillée"""
 
-    def test_locked_read_string(self, tmp_path):
+    def test_locked_read_string(self, tmp_path) -> None:
         """🧠 Test lecture verrouillée d'une chaîne"""
         test_file = tmp_path / "test.txt"
         test_data = "Arkalia-LUNA is secure!"
@@ -114,7 +114,7 @@ class TestLockedRead:
 
         assert result == test_data
 
-    def test_locked_read_json(self, tmp_path):
+    def test_locked_read_json(self, tmp_path) -> None:
         """🧠 Test lecture verrouillée JSON avec parsing automatique"""
         test_file = tmp_path / "test.json"
         test_data = {"security": "high", "version": "2.5.0"}
@@ -124,7 +124,7 @@ class TestLockedRead:
 
         assert result == test_data
 
-    def test_locked_read_toml(self, tmp_path):
+    def test_locked_read_toml(self, tmp_path) -> None:
         """🧠 Test lecture verrouillée TOML avec parsing automatique"""
         test_file = tmp_path / "test.toml"
         test_data = {"arkalia": {"secure": True}}
@@ -134,14 +134,14 @@ class TestLockedRead:
 
         assert result == test_data
 
-    def test_locked_read_nonexistent_file(self, tmp_path):
+    def test_locked_read_nonexistent_file(self, tmp_path) -> None:
         """🧠 Test lecture d'un fichier inexistant"""
         nonexistent = tmp_path / "nonexistent.txt"
 
         with pytest.raises(FileNotFoundError):
             locked_read(nonexistent)
 
-    def test_locked_read_concurrent_access(self, tmp_path):
+    def test_locked_read_concurrent_access(self, tmp_path) -> None:
         """🧠 Test lecture concurrent"""
         test_file = tmp_path / "concurrent.txt"
         test_data = "Concurrent reading test"
@@ -170,7 +170,7 @@ class TestLockedRead:
         assert all(r == test_data for r in results)
         assert len(results) == 10
 
-    def test_locked_read_timeout(self, tmp_path):
+    def test_locked_read_timeout(self, tmp_path) -> None:
         """🧠 Test timeout lors de l'acquisition du verrou"""
         test_file = tmp_path / "timeout.txt"
         test_file.write_text("test data")
@@ -193,7 +193,7 @@ class TestLockedRead:
 class TestSafeWrappers:
     """Tests pour les wrappers sécurisés"""
 
-    def test_save_toml_safe(self, tmp_path):
+    def test_save_toml_safe(self, tmp_path) -> None:
         """🧠 Test sauvegarde TOML sécurisée"""
         test_file = tmp_path / "test.toml"
         test_data = {"zeroia": {"active": True, "version": "1.0"}}
@@ -205,14 +205,14 @@ class TestSafeWrappers:
         loaded = toml.loads(test_file.read_text())
         assert loaded == test_data
 
-    def test_save_toml_safe_invalid_data(self, tmp_path):
+    def test_save_toml_safe_invalid_data(self, tmp_path) -> None:
         """🧠 Test sauvegarde TOML avec données invalides"""
         test_file = tmp_path / "invalid.toml"
 
         with pytest.raises(AtomicWriteError, match="Les données doivent être un dictionnaire"):
             save_toml_safe("not a dict", test_file)  # type: ignore
 
-    def test_save_json_safe(self, tmp_path):
+    def test_save_json_safe(self, tmp_path) -> None:
         """🧠 Test sauvegarde JSON sécurisée"""
         test_file = tmp_path / "test.json"
         test_data = {"assistantia": {"secure": True}}
@@ -224,7 +224,7 @@ class TestSafeWrappers:
         loaded = json.loads(test_file.read_text())
         assert loaded == test_data
 
-    def test_read_state_safe_existing_file(self, tmp_path):
+    def test_read_state_safe_existing_file(self, tmp_path) -> None:
         """🧠 Test lecture sécurisée d'état existant"""
         test_file = tmp_path / "state.json"
         test_data = {"status": "healthy", "modules": 4}
@@ -234,7 +234,7 @@ class TestSafeWrappers:
 
         assert result == test_data
 
-    def test_read_state_safe_nonexistent_file(self, tmp_path):
+    def test_read_state_safe_nonexistent_file(self, tmp_path) -> None:
         """🧠 Test lecture sécurisée d'état inexistant"""
         nonexistent = tmp_path / "nonexistent.json"
 
@@ -242,7 +242,7 @@ class TestSafeWrappers:
 
         assert result == {}
 
-    def test_read_state_safe_corrupted_file(self, tmp_path):
+    def test_read_state_safe_corrupted_file(self, tmp_path) -> None:
         """🧠 Test lecture sécurisée de fichier corrompu"""
         test_file = tmp_path / "corrupted.json"
         test_file.write_text("{invalid json content")
@@ -255,7 +255,7 @@ class TestSafeWrappers:
 class TestIntegration:
     """Tests d'intégration pour les opérations combinées"""
 
-    def test_write_read_cycle(self, tmp_path):
+    def test_write_read_cycle(self, tmp_path) -> None:
         """🧠 Test cycle complet écriture-lecture"""
         test_file = tmp_path / "cycle.json"
         original_data = {
@@ -274,7 +274,7 @@ class TestIntegration:
         read_result = locked_read(test_file)
         assert read_result == original_data
 
-    def test_concurrent_write_read_operations(self, tmp_path):
+    def test_concurrent_write_read_operations(self, tmp_path) -> None:
         """🧠 Test opérations concurrent écriture-lecture"""
         test_file = tmp_path / "concurrent_ops.json"
 
@@ -306,7 +306,7 @@ class TestIntegration:
         assert isinstance(final_data, dict)
         assert "thread_id" in final_data
 
-    def test_state_persistence(self, tmp_path):
+    def test_state_persistence(self, tmp_path) -> None:
         """🧠 Test persistance d'état robuste"""
         state_file = tmp_path / "arkalia_state.toml"
 

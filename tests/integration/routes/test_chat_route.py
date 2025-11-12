@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
@@ -11,17 +11,17 @@ def override_success(prompt: str) -> str:
     return prompt
 
 
-def override_timeout(*args, **kwargs) -> None:
+def override_timeout(*args: object, **kwargs: object) -> None:
     raise requests.exceptions.Timeout()
 
 
 @pytest.fixture
-def test_client():
+def test_client() -> TestClient:
     return TestClient(app)
 
 
 @patch("modules.assistantia.utils.ollama_connector.query_ollama")
-def test_chat_post_ok(mock_query_ollama, test_client) -> None:
+def test_chat_post_ok(mock_query_ollama: MagicMock, test_client: TestClient) -> None:
     # Mock simple qui retourne directement le message
     mock_query_ollama.return_value = "Réponse: Hello"
 
@@ -49,7 +49,7 @@ def test_chat_post_ok(mock_query_ollama, test_client) -> None:
             app.dependency_overrides = {}
 
 
-def test_chat_post_empty(test_client) -> None:
+def test_chat_post_empty(test_client: TestClient) -> None:
     with patch("modules.assistantia.core._check_ollama_health", return_value=True):
         res = test_client.post("/api/v1/chat", json={"message": ""})
         # nosec: assert_used
@@ -64,14 +64,14 @@ def test_chat_post_empty(test_client) -> None:
         ), f"Détail inattendu: {error_detail}"
 
 
-def test_chat_post_bad_payload(test_client) -> None:
+def test_chat_post_bad_payload(test_client: TestClient) -> None:
     with patch("modules.assistantia.core._check_ollama_health", return_value=True):
         res = test_client.post("/api/v1/chat", json={"msg": "Hello"})
         # nosec: assert_used
         assert res.status_code == 422, "Statut inattendu"  # nosec
 
 
-def test_chat_post_timeout(test_client) -> None:
+def test_chat_post_timeout(test_client: TestClient) -> None:
     app.dependency_overrides[get_query_ollama] = lambda: override_timeout
     try:
         with patch("modules.assistantia.core._check_ollama_health", return_value=True):

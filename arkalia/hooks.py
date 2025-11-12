@@ -1,8 +1,10 @@
+from typing import Any
+
 from core.ark_logger import ark_logger
 from scripts.sitemap_generator import generate_sitemap_from_site
 
 
-def generate_sitemap(config=None, **kwargs) -> None:
+def generate_sitemap(config: dict[str, Any] | None = None, **kwargs: Any) -> None:
     """
     Hook pour générer le sitemap.xml après la construction du site.
     """

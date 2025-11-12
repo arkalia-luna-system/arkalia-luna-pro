@@ -6,6 +6,7 @@ Couverture cible : 45% → 80%+
 import os
 import tempfile
 import time
+from typing import Any
 from unittest.mock import patch
 
 import pytest
@@ -16,25 +17,25 @@ from modules.cognitive_reactor.core import CognitiveReactor
 class TestCognitiveReactor:
     """Tests pour le réacteur cognitif"""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Configuration avant chaque test"""
         self.temp_dir = tempfile.mkdtemp()
         self.reactor = CognitiveReactor(mode="test")
 
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         """Nettoyage après chaque test"""
         import shutil
 
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         """Test d'initialisation du réacteur cognitif"""
         assert self.reactor is not None
         assert self.reactor.mode == "test"
         assert self.reactor.enabled is True
         assert self.reactor.reaction_count == 0
 
-    def test_cognitive_state_management(self):
+    def test_cognitive_state_management(self) -> None:
         """Test de gestion d'état cognitif"""
         # Test de sauvegarde
         result = self.reactor.save_cognitive_state()
@@ -46,7 +47,7 @@ class TestCognitiveReactor:
         loaded_state = self.reactor.load_cognitive_state()
         assert isinstance(loaded_state, dict)
 
-    def test_system_context_analysis(self):
+    def test_system_context_analysis(self) -> None:
         """Test d'analyse du contexte système"""
         context = self.reactor.analyze_system_context()
 
@@ -57,7 +58,7 @@ class TestCognitiveReactor:
         assert "assistantia_state" in context
         assert "system_metrics" in context
 
-    def test_module_state_loading(self):
+    def test_module_state_loading(self) -> None:
         """Test de chargement d'état de module"""
         # Test avec un module existant (peut retourner dict ou dict avec error)
         state = self.reactor._load_module_state("zeroia")
@@ -67,7 +68,7 @@ class TestCognitiveReactor:
         state = self.reactor._load_module_state("nonexistent_module")
         assert isinstance(state, dict)
 
-    def test_system_metrics_retrieval(self):
+    def test_system_metrics_retrieval(self) -> None:
         """Test de récupération des métriques système"""
         metrics = self.reactor._get_system_metrics()
 
@@ -76,7 +77,7 @@ class TestCognitiveReactor:
         assert "memory_percent" in metrics
         assert "disk_usage" in metrics
 
-    def test_cognitive_pattern_detection(self):
+    def test_cognitive_pattern_detection(self) -> None:
         """Test de détection de patterns cognitifs"""
         context = {
             "system_metrics": {"cpu_percent": 85},  # High CPU
@@ -98,7 +99,7 @@ class TestCognitiveReactor:
             assert "severity" in pattern
             assert "description" in pattern
 
-    def test_cognitive_reaction_generation(self):
+    def test_cognitive_reaction_generation(self) -> None:
         """Test de génération de réactions cognitives"""
         patterns = [
             {
@@ -117,7 +118,7 @@ class TestCognitiveReactor:
             assert "priority" in reaction
             assert "description" in reaction
 
-    def test_cognitive_reaction_execution(self):
+    def test_cognitive_reaction_execution(self) -> None:
         """Test d'exécution de réaction cognitive"""
         reaction = {
             "type": "adjust_threshold",
@@ -129,7 +130,7 @@ class TestCognitiveReactor:
         result = self.reactor.execute_cognitive_reaction(reaction)
         assert isinstance(result, bool)
 
-    def test_learning_from_reactions(self):
+    def test_learning_from_reactions(self) -> None:
         """Test d'apprentissage à partir des réactions"""
         reactions = [
             {"type": "adjust_threshold", "parameters": {"threshold": 0.8}},
@@ -143,7 +144,7 @@ class TestCognitiveReactor:
         # Vérifier que l'apprentissage a eu lieu
         assert len(self.reactor.learned_patterns) >= 0
 
-    def test_future_pattern_prediction(self):
+    def test_future_pattern_prediction(self) -> None:
         """Test de prédiction de patterns futurs"""
         predictions = self.reactor.predict_future_patterns()
 
@@ -154,7 +155,7 @@ class TestCognitiveReactor:
             assert "time_frame" in prediction
 
     @pytest.mark.asyncio
-    async def test_stimulus_processing(self):
+    async def test_stimulus_processing(self) -> None:
         """Test de traitement de stimulus"""
         stimulus = {
             "type": "system_alert",
@@ -169,7 +170,7 @@ class TestCognitiveReactor:
         assert "cognitive_score" in result
 
     @pytest.mark.asyncio
-    async def test_cognitive_response_generation(self):
+    async def test_cognitive_response_generation(self) -> None:
         """Test de génération de réponse cognitive"""
         context = {
             "current_state": "normal",
@@ -181,7 +182,7 @@ class TestCognitiveReactor:
         assert isinstance(response, dict)
 
     @pytest.mark.asyncio
-    async def test_multiple_stimuli_handling(self):
+    async def test_multiple_stimuli_handling(self) -> None:
         """Test de gestion de multiples stimuli"""
         stimuli = [
             {"type": "alert", "severity": "low", "source": "monitoring"},
@@ -193,7 +194,7 @@ class TestCognitiveReactor:
         assert isinstance(results, list)
         assert len(results) == len(stimuli)
 
-    def test_cognitive_metrics_retrieval(self):
+    def test_cognitive_metrics_retrieval(self) -> None:
         """Test de récupération des métriques cognitives"""
         metrics = self.reactor.get_cognitive_metrics()
 
@@ -202,7 +203,7 @@ class TestCognitiveReactor:
         assert "learning_rate" in metrics
         assert "adaptation_score" in metrics
 
-    def test_status_retrieval(self):
+    def test_status_retrieval(self) -> None:
         """Test de récupération du statut"""
         status = self.reactor.get_status()
 
@@ -211,7 +212,7 @@ class TestCognitiveReactor:
         assert "cognitive_state" in status
         assert "active" in status or "enabled" in status
 
-    def test_serialization(self):
+    def test_serialization(self) -> None:
         """Test de sérialisation"""
         # Modifier l'état pour le test
         self.reactor.reaction_count = 5
@@ -234,18 +235,18 @@ class TestCognitiveReactor:
 class TestCognitiveReactorIntegration:
     """Tests d'intégration pour le réacteur cognitif"""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Configuration avant chaque test"""
         self.temp_dir = tempfile.mkdtemp()
         self.reactor = CognitiveReactor(mode="integration_test")
 
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         """Nettoyage après chaque test"""
         import shutil
 
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    def test_full_cognitive_cycle(self):
+    def test_full_cognitive_cycle(self) -> None:
         """Test d'un cycle cognitif complet"""
         # 1. Analyser le contexte
         context = self.reactor.analyze_system_context()
@@ -266,7 +267,7 @@ class TestCognitiveReactorIntegration:
                 assert isinstance(result, bool)
 
     @pytest.mark.asyncio
-    async def test_stimulus_to_reaction_flow(self):
+    async def test_stimulus_to_reaction_flow(self) -> None:
         """Test du flux stimulus vers réaction"""
         stimulus = {
             "type": "performance_degradation",
@@ -286,18 +287,18 @@ class TestCognitiveReactorIntegration:
 class TestCognitiveReactorPerformance:
     """Tests de performance pour le réacteur cognitif"""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Configuration avant chaque test"""
         self.temp_dir = tempfile.mkdtemp()
         self.reactor = CognitiveReactor(mode="test")
 
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         """Nettoyage après chaque test"""
         import shutil
 
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    def test_pattern_detection_performance(self):
+    def test_pattern_detection_performance(self) -> None:
         """Test de performance de détection de patterns"""
         reactor = CognitiveReactor(mode="performance_test")
 
@@ -322,7 +323,7 @@ class TestCognitiveReactorPerformance:
         # La détection doit être rapide
         assert execution_time < 2.0
 
-    def test_reaction_generation_performance(self):
+    def test_reaction_generation_performance(self) -> None:
         """Test de performance de génération de réactions"""
         reactor = CognitiveReactor(mode="performance_test")
 
@@ -353,7 +354,7 @@ class TestCognitiveReactorPerformance:
 class TestCognitiveReactorRobustness:
     """Tests de robustesse pour le réacteur cognitif"""
 
-    def test_handling_invalid_context(self):
+    def test_handling_invalid_context(self) -> None:
         """Test de gestion de contexte invalide"""
         reactor = CognitiveReactor(mode="robustness_test")
 
@@ -366,7 +367,7 @@ class TestCognitiveReactorRobustness:
         patterns = reactor.detect_cognitive_patterns(invalid_context)
         assert isinstance(patterns, list)
 
-    def test_handling_reaction_failures(self):
+    def test_handling_reaction_failures(self) -> None:
         """Test de gestion d'échecs de réaction"""
         reactor = CognitiveReactor(mode="robustness_test")
 
@@ -376,12 +377,12 @@ class TestCognitiveReactorRobustness:
         assert isinstance(result, bool)
 
     @pytest.mark.asyncio
-    async def test_handling_invalid_stimuli(self):
+    async def test_handling_invalid_stimuli(self) -> None:
         """Test de gestion de stimuli invalides"""
         reactor = CognitiveReactor(mode="robustness_test")
 
         # Test avec stimulus invalide
-        invalid_stimulus = None
+        invalid_stimulus: dict[str, Any] = {}  # Utiliser un dict vide au lieu de None
         result = await reactor.process_stimulus(invalid_stimulus)
         assert isinstance(result, dict)
 
@@ -390,7 +391,7 @@ class TestCognitiveReactorRobustness:
         result = await reactor.process_stimulus(malformed_stimulus)
         assert isinstance(result, dict)
 
-    def test_state_persistence_robustness(self):
+    def test_state_persistence_robustness(self) -> None:
         """Test de robustesse de persistance d'état"""
         reactor = CognitiveReactor(mode="robustness_test")
 

@@ -14,7 +14,7 @@ from app.main import app, metrics, start_time
 client = TestClient(app)
 
 
-def test_root_endpoint():
+def test_root_endpoint() -> None:
     """Test de l'endpoint racine"""
     response = client.get("/")
     assert response.status_code == 200
@@ -29,7 +29,7 @@ def test_root_endpoint():
     assert datetime.fromisoformat(data["timestamp"])
 
 
-def test_health_endpoint():
+def test_health_endpoint() -> None:
     """Test de l'endpoint health"""
     response = client.get("/health")
     assert response.status_code == 200
@@ -39,7 +39,7 @@ def test_health_endpoint():
 @patch("psutil.cpu_percent")
 @patch("psutil.virtual_memory")
 @patch("psutil.disk_usage")
-def test_status_endpoint(mock_disk, mock_memory, mock_cpu):
+def test_status_endpoint(mock_disk: MagicMock, mock_memory: MagicMock, mock_cpu: MagicMock) -> None:
     """Test de l'endpoint status"""
     # Configuration des mocks
     mock_cpu.return_value = 45.2
@@ -63,7 +63,7 @@ def test_status_endpoint(mock_disk, mock_memory, mock_cpu):
 
 @patch("psutil.cpu_percent")
 @patch("psutil.virtual_memory")
-def test_metrics_endpoint(mock_memory, mock_cpu):
+def test_metrics_endpoint(mock_memory: MagicMock, mock_cpu: MagicMock) -> None:
     """Test de l'endpoint metrics"""
     # Configuration des mocks
     mock_cpu.return_value = 45.2
@@ -78,7 +78,7 @@ def test_metrics_endpoint(mock_memory, mock_cpu):
 
 
 @patch("psutil.cpu_percent", side_effect=Exception("Test error"))
-def test_metrics_endpoint_error(mock_cpu):
+def test_metrics_endpoint_error(mock_cpu: MagicMock) -> None:
     """Test de l'endpoint metrics avec erreur"""
     response = client.get("/metrics")
     assert response.status_code == 500
@@ -86,7 +86,7 @@ def test_metrics_endpoint_error(mock_cpu):
     assert "Test error" in response.json()["error"]
 
 
-def test_metrics_middleware():
+def test_metrics_middleware() -> None:
     """Test du middleware de métriques"""
     # Réinitialiser les compteurs
     metrics.arkalia_requests_total._metrics.clear()
@@ -101,7 +101,7 @@ def test_metrics_middleware():
     for metric in metrics.arkalia_requests_total._metrics.values():
         if metric._labelvalues == ("GET", "/", "200"):
             # Utiliser ._value.get() pour accéder à la valeur réelle
-            assert metric._value.get() == 1
+            assert metric._value.get() == 1  # type: ignore[attr-defined]
             found = True
             break
     if not found:
@@ -111,7 +111,7 @@ def test_metrics_middleware():
     assert len(metrics.arkalia_request_duration._metrics) > 0
 
 
-def test_cors_middleware():
+def test_cors_middleware() -> None:
     """Test de la configuration CORS"""
     # Test avec une requête GET avec Origin
     response = client.get("/", headers={"origin": "http://test.com"})
@@ -134,7 +134,7 @@ def test_cors_middleware():
     assert "content-type" in response.headers["access-control-allow-headers"].lower()
 
 
-def test_print_status(caplog):
+def test_print_status(caplog: pytest.LogCaptureFixture) -> None:
     """Test de la fonction print_status"""
     from app.main import print_status
 

@@ -25,7 +25,7 @@ class TestGenerateUpdatesPage(unittest.TestCase):
             self.assertIn("# 🔄 Dernières mises à jour", content)
             self.assertIn("abc123", content)
 
-    def test_run_failure(self):
+    def test_run_failure(self) -> None:
         """Teste la gestion d'erreur du script de génération des updates"""
         with patch("subprocess.run") as mock_run:
             # Mock le résultat avec les attributs nécessaires

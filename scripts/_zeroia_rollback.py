@@ -84,7 +84,7 @@ def backup_current_state(silent: bool = False) -> None:
     backup_file = current_dir / "modules" / "zeroia" / "state" / "zeroia_state_backup.toml"
 
     # Si STATE_FILE est un Path absolu (patché par les tests), l'utiliser tel quel
-    if STATE_FILE.is_absolute() and STATE_FILE.exists():
+    if STATE_FILE.is_absolute():
         state_file = STATE_FILE
         if BACKUP_FILE.is_absolute():
             backup_file = BACKUP_FILE

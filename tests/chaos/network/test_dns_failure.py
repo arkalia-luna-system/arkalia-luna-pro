@@ -10,7 +10,7 @@ class TestNetworkChaos:
     def teardown_method(self) -> None:
         self.chaos.cleanup()
 
-    def test_dns_failure_resilience(self):
+    def test_dns_failure_resilience(self) -> None:
         """Test résilience en cas d'échec DNS"""
         # Ici, on simule un échec DNS (exemple fictif)
         # À adapter selon l'implémentation réelle

@@ -15,22 +15,22 @@ sys.path.insert(0, str(project_root))
 class MockZeroIACore:
     """Mock pour ZeroIACore"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.version = "2.8.0"
         self.status = "active"
 
-    def get_status(self):
+    def get_status(self) -> dict[str, str]:
         return {"status": "active", "version": self.version}
 
 
 class MockSandoziaCore:
     """Mock pour SandoziaCore"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.version = "2.8.0"
         self.status = "active"
 
-    def get_status(self):
+    def get_status(self) -> dict[str, str]:
         return {"status": "active", "version": self.version}
 
 
@@ -40,7 +40,7 @@ sys.modules["modules.sandozia.core.cognitive_reactor"] = MagicMock()
 
 
 # Configuration pytest
-def pytest_configure(config):
+def pytest_configure(config: pytest.Config) -> None:
     """Configuration pytest"""
     config.addinivalue_line(
         "markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')"
@@ -52,7 +52,7 @@ def pytest_configure(config):
 
 
 @pytest.fixture(scope="session")
-def mock_modules():
+def mock_modules() -> dict[str, MockZeroIACore | MockSandoziaCore]:
     """Fixture pour mocker les modules manquants"""
     return {
         "zeroia_core": MockZeroIACore(),

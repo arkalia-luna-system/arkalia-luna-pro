@@ -17,7 +17,7 @@ class TestZeroIAPerformance:
     """Tests de performance pour ZeroIA"""
 
     @pytest.mark.performance
-    def test_decision_response_time_under_1s(self):
+    def test_decision_response_time_under_1s(self) -> None:
         """Test que les décisions sont prises en moins d'1 seconde"""
         start_time = time.time()
 
@@ -37,7 +37,7 @@ class TestZeroIAPerformance:
         assert status == "success", "La décision doit réussir"
 
     @pytest.mark.performance
-    def test_metrics_update_performance(self):
+    def test_metrics_update_performance(self) -> None:
         """Test que la mise à jour des métriques est rapide"""
         start_time = time.time()
 
@@ -51,7 +51,7 @@ class TestZeroIAPerformance:
         assert total_time < 1.0, f"Mise à jour métriques trop lente: {total_time:.2f}s"
 
     @pytest.mark.performance
-    def test_cognitive_score_update(self):
+    def test_cognitive_score_update(self) -> None:
         """Test que la mise à jour du score cognitif fonctionne"""
         start_time = time.time()
 
@@ -64,7 +64,7 @@ class TestZeroIAPerformance:
         assert duration < 0.5, f"Mise à jour score cognitif trop lente: {duration:.2f}s"
 
     @pytest.mark.performance
-    def test_error_handling_performance(self):
+    def test_error_handling_performance(self) -> None:
         """Test que la gestion d'erreur est rapide"""
         start_time = time.time()
 

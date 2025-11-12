@@ -17,7 +17,7 @@ class TestFileSystemChaos:
     def teardown_method(self) -> None:
         self.chaos.cleanup()
 
-    def test_atomic_write_resilience(self):
+    def test_atomic_write_resilience(self) -> None:
         """🔥 Test résilience écriture atomique sous charge"""
         test_file = Path("test_atomic_chaos.toml")
         try:
