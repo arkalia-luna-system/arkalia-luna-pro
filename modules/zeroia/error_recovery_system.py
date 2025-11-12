@@ -11,13 +11,14 @@ Fonctionnalités :
 """
 
 import asyncio
-import logging
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional, TypedDict
 
 import toml
+
+from core.ark_logger import ark_logger
 
 if TYPE_CHECKING:
     from .circuit_breaker import CircuitBreaker
@@ -30,8 +31,6 @@ else:
         CircuitBreaker = None  # type: ignore[assignment]
         EventStore = None  # type: ignore[assignment]
         EventType = None  # type: ignore[assignment]
-
-logger = logging.getLogger(__name__)
 
 
 # Définir nos propres exceptions pour éviter les conflits

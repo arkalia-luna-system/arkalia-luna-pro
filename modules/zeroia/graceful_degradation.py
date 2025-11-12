@@ -12,7 +12,6 @@ Fonctionnalités :
 
 import asyncio
 import json
-import logging
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -20,7 +19,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Optional
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class ServicePriority(Enum):
