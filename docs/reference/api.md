@@ -9,9 +9,13 @@
 - **Healthcheck optimisé** : Python urllib natif ✅
 - **Artefacts uploadés** : Conditionnel et robuste ✅
 
-Documentation complète de l'API REST d'Arkalia-LUNA Pro Enhanced avec les **nouveaux endpoints Framework Enhanced**.
+Documentation complète de l'API REST d'Arkalia-LUNA Pro Enhanced.
 
-**Version API** : `v2.8.0-enhanced` | **Base URL** : `http://localhost:8000`
+**Version API** : `v2.8.0` | **Base URL** : `http://localhost:8000`
+
+## ⚠️ **Note importante**
+
+Cette documentation inclut des endpoints **théoriques/en développement** et des endpoints **réellement implémentés**. Les endpoints réellement disponibles sont documentés dans [endpoints.md](endpoints.md). Les endpoints `/api/v1/zeroia/...` documentés ci-dessous sont des spécifications pour développement futur.
 
 ---
 
@@ -522,7 +526,7 @@ curl http://localhost:8000/api/v1/sandozia/validation/status
 curl http://localhost:8000/api/v1/sandozia/behavior/analysis
 
 # Conversation avec AssistantIA
-curl -X POST http://localhost:8000/api/v1/assistantia/chat \
+curl -X POST http://localhost:8001/api/v1/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "Status du système Enhanced ?", "include_metrics": true}'
 ```
@@ -572,4 +576,4 @@ L'**API Arkalia-LUNA Pro Enhanced v2.8.0** offre :
 
 **🌟 Une API enterprise-ready pour l'IA de nouvelle génération !**
 
-*Dernière mise à jour : novembre 2025
+*Dernière mise à jour : novembre 2025*

@@ -91,34 +91,45 @@ http://localhost:8000
 
 ### **Endpoints**
 
-#### **POST /api/v1/chat** - Interface de chat avec l'IA
+#### **POST /chat** - Interface de chat avec l'IA
 
-**Endpoint** : `POST /api/v1/chat`
+**Endpoint** : `POST /chat`
 
 **Description** : Interface de chat avec l'IA pour la prise de décision et l'assistance
 
-**Port** : 8001 (AssistantIA)
+**Port** : 8000 (Helloria) ou 8001 (AssistantIA)
 
-#### **GET /patterns** - Patterns comportementaux
+#### **GET /zeroia/status** - Statut ZeroIA
 
 ```http
-GET /patterns
+GET /zeroia/status
 ```
+
+**Description** : Retourne le statut et les métriques de ZeroIA
 
 **Réponse** :
 
 ```json
 {
-  "patterns": [
-    {
-      "id": "pattern_1",
-      "name": "High CPU Usage",
-      "confidence": 0.9,
-      "last_seen": "2025-06-30T21:10:00Z"
-    }
-  ]
+  "status": "active",
+  "confidence": 0.85,
+  "uptime": "2d 5h 30m"
 }
 ```
+
+#### **POST /zeroia/decision** - Prise de décision
+
+```http
+POST /zeroia/decision
+Content-Type: application/json
+
+{
+  "context": {},
+  "priority": "high"
+}
+```
+
+**Description** : Demande une décision au moteur ZeroIA
 
 ---
 
@@ -132,88 +143,74 @@ http://localhost:8002
 
 ### **Endpoints**
 
-#### **GET /monitor** - Monitoring système
+#### **GET /reflexia/check** - Vérification réflexive
 
 ```http
-GET /monitor
+GET /reflexia/check
 ```
+
+**Description** : Retourne l'état des métriques système (CPU, RAM, latence)
 
 **Réponse** :
 
 ```json
 {
-  "system": {
-    "cpu_usage": 45.2,
-    "memory_usage": 67.8,
-    "disk_usage": 23.1,
-    "network_io": {
-      "bytes_sent": 1024000,
-      "bytes_recv": 2048000
-    }
-  },
-  "timestamp": "2025-06-30T21:10:00Z"
+  "status": "ok",
+  "metrics": {
+    "cpu": 45.2,
+    "ram": 67.8,
+    "latency": 120.5
+  }
 }
 ```
 
-#### **GET /observations** - Observations cognitives
+#### **GET /reflexia/metrics** - Métriques Prometheus
 
 ```http
-GET /observations
+GET /reflexia/metrics
 ```
 
-**Réponse** :
+**Description** : Métriques au format Prometheus pour Reflexia
 
-```json
-{
-  "observations": [
-    {
-      "id": "obs_1",
-      "type": "anomaly",
-      "severity": "medium",
-      "description": "Unusual CPU pattern detected",
-      "timestamp": "2025-06-30T21:10:00Z"
-    }
-  ]
-}
+#### **GET /health** - Health Check
+
+```http
+GET /health
 ```
+
+**Description** : Vérification de l'état de santé de Reflexia
 
 ---
 
 ## 🔍 **Sandozia - Intelligence Croisée**
 
-### **Base URL**
+### **Note importante**
 
-```
-http://localhost:8003
-```
+Sandozia fonctionne en mode **daemon** (pas d'API HTTP publique directe). Toute interaction passe par `arkalia-api` (port 8000) ou les fichiers d'état internes.
 
-### **Endpoints**
+### **Accès via arkalia-api**
 
-#### **POST /analyze** - Analyse croisée
+Les métriques et fonctionnalités de Sandozia sont accessibles via l'API centrale :
 
 ```http
-POST /analyze
-Content-Type: application/json
-
-{
-  "data": "string",
-  "context": "string",
-  "analysis_type": "pattern"
-}
+GET http://localhost:8000/sandozia/health
 ```
 
 **Réponse** :
 
 ```json
 {
-  "analysis": {
-    "result": "string",
-    "confidence": 0.85,
-    "patterns_found": 3,
-    "recommendations": ["rec1", "rec2"]
-  },
-  "timestamp": "2025-06-30T21:10:00Z"
+  "status": "active",
+  "module": "sandozia"
 }
+```
+
+### **Métriques**
+
+Les métriques Sandozia sont exposées via Prometheus via `arkalia-api` :
+
+```http
+GET http://localhost:8000/metrics
 ```
 
 ---
@@ -236,10 +233,13 @@ Content-Type: application/json
 
 {
   "message": "string",
-  "context": "string",
-  "user_id": "string"
+  "model": "mistral:latest",
+  "temperature": 0.7,
+  "include_context": true
 }
 ```
+
+**Note** : AssistantIA utilise le prefix `/api/v1` sur le port 8001.
 
 **Réponse** :
 
@@ -252,17 +252,9 @@ Content-Type: application/json
 }
 ```
 
-#### **POST /api/v1/validate** - Validation de prompt
+#### **POST /chat** - Validation de prompt (intégrée)
 
-```http
-POST /api/v1/validate
-Content-Type: application/json
-
-{
-  "prompt": "string",
-  "user_id": "string"
-}
-```
+La validation de prompt est intégrée dans l'endpoint `/chat` via le module de sécurité.
 
 **Réponse** :
 
@@ -368,7 +360,7 @@ curl -X POST http://localhost:8000/zeroia/decision \
 ### **cURL - Chat AssistantIA**
 
 ```bash
-curl -X POST http://localhost:8001/api/v1/chat \
+curl -X POST http://localhost:8000/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "Analysez cette situation et prenez une décision"}'
 ```
@@ -384,4 +376,4 @@ curl -X POST http://localhost:8001/api/v1/chat \
 ---
 
 **Arkalia-LUNA Pro v2.8.0** - Documentation des endpoints API
-**Dernière mise à jour : novembre 2025
+**Dernière mise à jour : novembre 2025**

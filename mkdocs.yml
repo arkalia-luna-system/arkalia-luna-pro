@@ -117,13 +117,19 @@ nav:
   - Getting Started:
       - Quick Start: getting-started/quick-start.md
       - Cognitive Levels: getting-started/cognitive-levels.md
+      - Use Cases: getting-started/use-cases.md
   - Architecture:
-      - Overview: fonctionnement/structure.md
+      - Overview: architecture.md
+      - Structure: fonctionnement/structure.md
       - Components: fonctionnement/composants.md
       - Kernel: fonctionnement/kernel.md
       - Usage: fonctionnement/utilisation.md
+      - Containers: architecture/containers.md
       - Decision Flow: architecture/decision_flow.md
       - Cahier des Charges: architecture/cahier_des_charges_v4.0.md
+      - Monitoring Structure: architecture/structure_monitoring_consolidee.md
+      - Security Structure: architecture/structure_securite_consolidee.md
+      - Utils Structure: architecture/structure_utils_consolidee.md
   - Modules:
       - Overview: modules/zeroia.md
       - Core Modules:
@@ -138,12 +144,12 @@ nav:
       - Monitoring Modules:
           - Infrastructure Monitoring: devops/index.md
   - Infrastructure:
-      - Overview: devops/index.md
-      - Configuration: devops/index.md
-      - Deployment: devops/index.md
-      - Monitoring: devops/index.md
-      - CI/CD: devops/index.md
-      - Automation: devops/index.md
+      - Overview: infrastructure/index.md
+      - Configuration: infrastructure/configuration.md
+      - Deployment: infrastructure/deployment.md
+      - Monitoring: infrastructure/monitoring.md
+      - CI/CD: infrastructure/ci-cd.md
+      - Automation: infrastructure/automation.md
   - Security:
       - Overview: security/security.md
       - Architecture: security/architecture.md
@@ -177,6 +183,7 @@ nav:
   - Support:
       - FAQ: support/faqs.md
       - VSCode Setup: vscode-setup.md
+      - Documentation Status: rapport-documentation-etat.md
   - Legal:
       - License: legal/license.md
       - Contributing: credits/CONTRIBUTING.md

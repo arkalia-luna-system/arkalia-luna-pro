@@ -44,7 +44,7 @@ arkalia_uptime_seconds{module="helloria"} 172800
 ```prometheus
 # HTTP Requests
 arkalia_http_requests_total{module="helloria",method="GET",endpoint="/health"} 1234
-arkalia_http_requests_total{module="helloria",method="POST",endpoint="/api/chat"} 567
+arkalia_http_requests_total{module="helloria",method="POST",endpoint="/chat"} 567
 
 # Request Duration
 arkalia_http_request_duration_seconds{module="helloria",quantile="0.5"} 0.1

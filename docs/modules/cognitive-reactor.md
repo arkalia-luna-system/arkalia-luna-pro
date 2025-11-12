@@ -1,4 +1,4 @@
-# Cognitive Reactor — Orchestrateur central v2.7.0
+# Cognitive Reactor — Orchestrateur central v2.8.0
 
 Cognitive Reactor est le module d'orchestration avancée du kernel Arkalia-LUNA. Il fonctionne en mode daemon et prend en charge :
 
@@ -26,4 +26,4 @@ Cognitive Reactor est le module d'orchestration avancée du kernel Arkalia-LUNA.
 
 **Pas d'API HTTP publique** : toute interaction passe par arkalia-api (port 8000) ou les fichiers d'état internes.
 
-**Statut actuel** : ✅ Opérationnel avec v2.7.0
+**Statut actuel** : ✅ Opérationnel avec v2.8.0

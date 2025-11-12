@@ -1,6 +1,6 @@
 # 🎯 Cas d'Usage Métier - Arkalia-LUNA Pro
 
-**Dernière mise à jour : novembre 2025
+**Dernière mise à jour : novembre 2025**
 
 ---
 

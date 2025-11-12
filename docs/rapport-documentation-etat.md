@@ -178,7 +178,7 @@ Les points d'amélioration identifiés sont mineurs et n'affectent pas la qualit
 
 **Documentées** :
 - Intelligence Générative Avancée
-- Cognitive Reactor v2.7.0
+- Cognitive Reactor v2.8.0
 - Monitoring Complet Enterprise
 - Sécurité Enterprise Renforcée
 - Health Checks Automatiques

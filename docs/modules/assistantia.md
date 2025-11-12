@@ -1,6 +1,6 @@
 # 🧠 AssistantIA — Module Cognitif Intégré
 
-![Version](https://img.shields.io/badge/version-v3.0--phase1-blue)
+![Version](https://img.shields.io/badge/version-v2.8.0-blue)
 ![CI](https://github.com/athalia-siwek/arkalia-luna-pro/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 ![Coverage](https://img.shields.io/badge/coverage-59.25%25-brightgreen)
@@ -32,7 +32,7 @@ uvicorn modules.assistantia.core:app --port 8001
 
 | Méthode | URL    | Description                      |
 |---------|--------|----------------------------------|
-| POST    | /chat  | Envoie un message à l’IA locale  |
+| POST    | /api/v1/chat  | Envoie un message à l'IA locale  |
 | GET     | /status| État du module assistantia        |
 
 ---
@@ -88,7 +88,13 @@ L'AssistantIA est conçu pour offrir une interaction fluide et intelligente avec
 ## 🌐 Exemple d'Utilisation
 
 ```bash
+# Via Helloria (port 8000)
 curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Quelle est la philosophie d'Arkalia ?"}'
+
+# Via AssistantIA directement (port 8001)
+curl -X POST http://localhost:8001/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "Quelle est la philosophie d'Arkalia ?"}'
 ```
@@ -139,7 +145,7 @@ sequenceDiagram
     participant U as Utilisateur
     participant A as AssistantIA
     participant O as Ollama
-    U->>A: POST /chat (message)
+    U->>A: POST /chat { message }
     A->>O: Query modèle
     O-->>A: Réponse IA
     A-->>U: JSON { "réponse": "..." }

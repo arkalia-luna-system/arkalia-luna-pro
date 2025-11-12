@@ -19,7 +19,7 @@ from modules.cognitive_reactor.core import app as cognitive_app
 app = FastAPI(
     title="Cognitive Reactor API",
     description="API REST pour le module d'intelligence avancée d'Arkalia",
-    version="2.7.0",
+    version="2.8.0",
 )
 
 # Inclure les routes du Cognitive Reactor

@@ -1,6 +1,8 @@
 # 🐳 Architecture des Containers - Arkalia-LUNA Pro
 
-**Dernière mise à jour : novembre 2025
+## Dernière mise à jour
+
+novembre 2025
 
 ---
 
@@ -17,6 +19,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 **Rôle** : API centrale FastAPI (Helloria) - Point d'entrée principal du système
 
 **Caractéristiques** :
+
 - **Port** : 8000
 - **Image** : Construite depuis `Dockerfile.simple`
 - **Command** : `python run_arkalia_api.py`
@@ -25,6 +28,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 - **Healthcheck** : Socket TCP sur port 8000
 
 **Fonctionnalités** :
+
 - Endpoints REST pour tous les modules
 - Métriques Prometheus intégrées
 - Health checks automatiques
@@ -37,6 +41,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 **Rôle** : Interface IA conversationnelle avec intégration Ollama
 
 **Caractéristiques** :
+
 - **Port** : 8001
 - **Image** : `arkalia-luna-assistantia:production`
 - **Command** : `uvicorn modules.assistantia.core:app --host 0.0.0.0 --port 8001`
@@ -45,6 +50,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 - **Healthcheck** : Socket TCP sur port 8001
 
 **Fonctionnalités** :
+
 - Interface conversationnelle avec LLM local (Ollama)
 - Navigation contextuelle adaptative
 - API REST pour intégration externe
@@ -57,6 +63,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 **Rôle** : Observateur cognitif réflexif - Monitoring et analyse du système
 
 **Caractéristiques** :
+
 - **Port** : 8002
 - **Image** : Construite depuis `docker/Dockerfile.reflexia`
 - **Command** : `uvicorn run_reflexia_api:app --host 0.0.0.0 --port 8002`
@@ -65,6 +72,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 - **Healthcheck** : Socket TCP sur port 8002
 
 **Fonctionnalités** :
+
 - Monitoring temps réel des autres modules
 - Détection de contradictions avec ZeroIA
 - Analyse comportementale des décisions
@@ -77,6 +85,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 **Rôle** : Intelligence croisée - Validation inter-modules et consensus
 
 **Caractéristiques** :
+
 - **Port** : Aucun (daemon interne)
 - **Image** : `arkalia-luna-sandozia:optimized`
 - **Command** : `python -m modules.sandozia.core.sandozia_core --start`
@@ -85,6 +94,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 - **Healthcheck** : Import Python du module
 
 **Fonctionnalités** :
+
 - Intelligence collaborative entre modules
 - Validation croisée des décisions
 - Analyse comportementale avancée
@@ -97,6 +107,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 **Rôle** : Intelligence avancée (Cognitive Reactor) - Réactions automatiques intelligentes
 
 **Caractéristiques** :
+
 - **Port** : 8003
 - **Image** : Construite depuis `docker/Dockerfile.cognitive-reactor`
 - **Command** : `uvicorn run_cognitive_api:app --host 0.0.0.0 --port 8003`
@@ -105,6 +116,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 - **Healthcheck** : Socket TCP sur port 8003
 
 **Fonctionnalités** :
+
 - Détection automatique de patterns cognitifs
 - Génération de réactions automatiques intelligentes
 - Apprentissage continu et prédictions
@@ -230,12 +242,11 @@ curl http://localhost:8003/health
 
 ## 📚 Ressources Complémentaires
 
-- [Docker Compose Configuration](../../docker-compose.yml)
+- [Docker Compose Configuration](https://github.com/arkalia-luna-system/arkalia-luna-pro/blob/main/docker-compose.yml)
 - [Guide de démarrage rapide](../getting-started/quick-start.md)
 - [Documentation API](../reference/api.md)
 - [Guide de monitoring](../infrastructure/monitoring.md)
 
 ---
 
-**Dernière mise à jour : novembre 2025
-
+**Dernière mise à jour : novembre 2025**
