@@ -12,11 +12,12 @@ from typing import Any
 import aiohttp
 import httpx
 import pytest
+import pytest_asyncio
 import requests
 
 
-@pytest.fixture
-async def api_client():
+@pytest_asyncio.fixture
+async def api_client() -> Any:
     """Client HTTP pour les tests API - Mock si l'API n'est pas disponible"""
     try:
         async with httpx.AsyncClient(base_url="http://localhost:8000", timeout=30.0) as client:
@@ -26,12 +27,12 @@ async def api_client():
     except Exception:
         # Si l'API n'est pas disponible, on retourne un mock
         class MockAPIClient:
-            async def get(self, url, **kwargs):
+            async def get(self, url: str, **kwargs: Any) -> Any:
                 return type(
                     "MockResponse", (), {"status_code": 200, "json": lambda: {"status": "ok"}}
                 )()
 
-            async def post(self, url, **kwargs):
+            async def post(self, url: str, **kwargs: Any) -> Any:
                 return type(
                     "MockResponse", (), {"status_code": 200, "json": lambda: {"status": "ok"}}
                 )()
@@ -43,11 +44,11 @@ class TestAPIPerformance:
     """Tests de performance pour l'API"""
 
     @pytest.mark.benchmark
-    def test_health_endpoint_response_time(self, benchmark):
+    def test_health_endpoint_response_time(self, benchmark: Any) -> None:
         """Test du temps de réponse du endpoint health"""
         try:
 
-            def health_check():
+            def health_check() -> int:
                 import requests
 
                 response = requests.get("http://localhost:8000/health", timeout=5)
@@ -59,11 +60,11 @@ class TestAPIPerformance:
             pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.benchmark
-    def test_zeroia_decision_response_time(self, benchmark):
+    def test_zeroia_decision_response_time(self, benchmark: Any) -> None:
         """Test du temps de réponse du endpoint de décision ZeroIA"""
         try:
 
-            def zeroia_decision():
+            def zeroia_decision() -> int:
                 import requests
 
                 payload = {
@@ -81,11 +82,11 @@ class TestAPIPerformance:
             pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.benchmark
-    def test_reflexia_check_response_time(self, benchmark):
+    def test_reflexia_check_response_time(self, benchmark: Any) -> None:
         """Test du temps de réponse du endpoint ReflexIA"""
         try:
 
-            def reflexia_check():
+            def reflexia_check() -> int:
                 import requests
 
                 payload = {"module": "zeroia", "check_type": "health"}
@@ -100,11 +101,11 @@ class TestAPIPerformance:
             pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.benchmark
-    def test_sandozia_analyze_response_time(self, benchmark):
+    def test_sandozia_analyze_response_time(self, benchmark: Any) -> None:
         """Test du temps de réponse du endpoint Sandozia"""
         try:
 
-            def sandozia_analyze():
+            def sandozia_analyze() -> int:
                 import requests
 
                 payload = {
@@ -124,11 +125,11 @@ class TestAPIPerformance:
             pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.benchmark
-    def test_metrics_endpoint_response_time(self, benchmark):
+    def test_metrics_endpoint_response_time(self, benchmark: Any) -> None:
         """Test du temps de réponse du endpoint metrics"""
         try:
 
-            def metrics_check():
+            def metrics_check() -> int:
                 import requests
 
                 response = requests.get("http://localhost:8000/metrics", timeout=5)
@@ -140,10 +141,10 @@ class TestAPIPerformance:
             pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_concurrent_api_requests(self, api_client):
+    async def test_concurrent_api_requests(self, api_client: Any) -> None:
         """Test de requêtes API concurrentes"""
 
-        async def make_request(request_id):
+        async def make_request(request_id: int) -> dict[str, Any]:
             # Mock de la réponse pour éviter les erreurs de connexion
             return {"id": request_id, "status": 200}
 
@@ -159,10 +160,10 @@ class TestAPIPerformance:
         assert all(result["status"] == 200 for result in results)
 
     @pytest.mark.asyncio
-    async def test_api_throughput(self, api_client):
+    async def test_api_throughput(self, api_client: Any) -> None:
         """Test du débit de l'API"""
 
-        async def health_request():
+        async def health_request() -> dict[str, int]:
             # Mock de la réponse pour éviter les erreurs de connexion
             return {"status": 200}
 
@@ -179,7 +180,7 @@ class TestAPIPerformance:
         assert throughput > 10  # Au moins 10 requêtes par seconde
 
     @pytest.mark.asyncio
-    async def test_api_latency_distribution(self, api_client):
+    async def test_api_latency_distribution(self, api_client: Any) -> None:
         """Test de la distribution de latence de l'API"""
         latencies = []
 
@@ -200,10 +201,10 @@ class TestAPIPerformance:
         assert min_latency > 0  # Latence min > 0
 
     @pytest.mark.asyncio
-    async def test_api_error_handling_performance(self, api_client):
+    async def test_api_error_handling_performance(self, api_client: Any) -> None:
         """Test de performance de la gestion d'erreurs"""
 
-        async def invalid_request():
+        async def invalid_request() -> None:
             try:
                 # Mock de la requête pour éviter les erreurs de connexion
                 await asyncio.sleep(0.001)  # Simulation d'une requête rapide
@@ -224,11 +225,11 @@ class TestAPILoadPerformance:
     """Tests de performance sous charge pour l'API"""
 
     @pytest.mark.asyncio
-    async def test_high_load_zeroia_decisions(self, api_client):
+    async def test_high_load_zeroia_decisions(self, api_client: Any) -> None:
         """Test de charge élevée sur les décisions ZeroIA"""
         try:
             # Test avec mock pour éviter les erreurs de connexion
-            async def make_decision(decision_id):
+            async def make_decision(decision_id: int) -> dict[str, Any]:
                 payload = {
                     "context": {
                         "cpu_usage": 50.0 + (decision_id % 30),
@@ -256,19 +257,19 @@ class TestAPILoadPerformance:
             pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_mixed_workload_performance(self, api_client):
+    async def test_mixed_workload_performance(self, api_client: Any) -> None:
         """Test de performance avec charge mixte"""
         try:
             # Test avec mocks pour éviter les erreurs de connexion
-            async def health_check():
+            async def health_check() -> dict[str, Any]:
                 await asyncio.sleep(0.001)  # Simulation de latence
                 return {"status": "ok", "response_time": 0.001}
 
-            async def zeroia_decision():
+            async def zeroia_decision() -> dict[str, Any]:
                 await asyncio.sleep(0.002)  # Simulation de latence
                 return {"status": "ok", "decision": "monitor"}
 
-            async def reflexia_check():
+            async def reflexia_check() -> dict[str, Any]:
                 await asyncio.sleep(0.001)  # Simulation de latence
                 return {"status": "ok", "health": "good"}
 
@@ -298,7 +299,7 @@ class TestAPILoadPerformance:
 class TestAPIMemoryPerformance:
     """Tests de performance mémoire pour l'API"""
 
-    def test_api_memory_usage_under_load(self):
+    def test_api_memory_usage_under_load(self) -> None:
         """Test de l'utilisation mémoire de l'API sous charge"""
         import threading
         import time
@@ -306,7 +307,7 @@ class TestAPIMemoryPerformance:
         import psutil
         import requests
 
-        def make_requests():
+        def make_requests() -> None:
             for _ in range(100):
                 try:
                     requests.get("http://localhost:8000/health", timeout=5)
@@ -340,7 +341,7 @@ class TestAPISecurityPerformance:
     """Tests de performance de sécurité pour l'API"""
 
     @pytest.mark.asyncio
-    async def test_rate_limiting_performance(self, api_client):
+    async def test_rate_limiting_performance(self, api_client: Any) -> None:
         """Test de performance du rate limiting"""
         try:
             # Test avec simulation pour éviter les erreurs de connexion
@@ -364,7 +365,7 @@ class TestAPISecurityPerformance:
             pytest.skip("Service API non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_cors_performance(self, api_client):
+    async def test_cors_performance(self, api_client: Any) -> None:
         """Test de performance CORS"""
         try:
             # Test avec simulation pour éviter les erreurs de connexion

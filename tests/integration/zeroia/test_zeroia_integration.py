@@ -7,7 +7,8 @@ import pytest
 from modules.zeroia import ZeroIACoordinator
 
 
-def test_zeroia_integration_basic():
+@pytest.mark.asyncio
+async def test_zeroia_integration_basic() -> None:
     zeroia = ZeroIACoordinator()
-    status = zeroia.get_status()
+    status = await zeroia.get_status()
     assert status is not None

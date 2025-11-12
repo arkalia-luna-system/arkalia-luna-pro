@@ -7,8 +7,6 @@ from fastapi.testclient import TestClient
 from core.ark_logger import ark_logger
 from modules.assistantia.core import app
 
-pytestmark = pytest.mark.asyncio
-
 
 def test_print_routes():
     """Affiche les routes disponibles pour debug."""

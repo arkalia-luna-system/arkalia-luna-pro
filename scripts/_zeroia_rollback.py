@@ -77,20 +77,27 @@ def backup_current_state(silent: bool = False) -> None:
         silent: Mode silencieux (défaut: False).
     """
     # Résoudre les chemins dynamiquement depuis le répertoire de travail courant
+    # Toujours utiliser les fonctions de résolution pour garantir le bon chemin
+    # Utiliser Path.cwd() pour résoudre depuis le répertoire de travail actuel
+    current_dir = Path.cwd()
+    state_file = current_dir / "modules" / "zeroia" / "state" / "zeroia_state.toml"
+    backup_file = current_dir / "modules" / "zeroia" / "state" / "zeroia_state_backup.toml"
+
     # Si STATE_FILE est un Path absolu (patché par les tests), l'utiliser tel quel
-    # Sinon, résoudre depuis le répertoire de travail courant
-    if STATE_FILE.is_absolute():
+    if STATE_FILE.is_absolute() and STATE_FILE.exists():
         state_file = STATE_FILE
-        backup_file = BACKUP_FILE if BACKUP_FILE.is_absolute() else get_backup_file()
-    else:
-        state_file = get_state_file()
-        backup_file = get_backup_file()
+        if BACKUP_FILE.is_absolute():
+            backup_file = BACKUP_FILE
 
     if state_file.exists():
         # Créer le répertoire parent si nécessaire
         backup_file.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(state_file, backup_file)
-        log(f"🗄️  Backup du fichier actuel effectué : {backup_file}", silent)
+        try:
+            shutil.copy2(state_file, backup_file)
+            log(f"🗄️  Backup du fichier actuel effectué : {backup_file}", silent)
+        except Exception as e:
+            log(f"❌ Erreur lors de la création du backup : {e}", silent)
+            raise
     else:
         log(f"⚠️  Fichier d'état introuvable : {state_file}", silent)
 
