@@ -243,7 +243,7 @@ class StateManager:
                     "timestamp": datetime.now().isoformat(),
                 }
         except Exception as e:
-            logger.error(f"Erreur chargement état: {e}")
+            ark_logger.error(f"Erreur chargement état: {e}", extra={"arkalia_module": "zeroia"})
             return {
                 "last_decision": "error",
                 "confidence_score": 0.0,
