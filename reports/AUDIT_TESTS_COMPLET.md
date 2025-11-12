@@ -50,7 +50,7 @@ pytest tests/ -v                      # Script de test principal
 ./scripts/check_skipped_tests.py      # Vérification tests
 ./scripts/clean-tests.sh              # Nettoyage tests
 ./scripts/fail2ban/fail2ban_test.sh   # Test fail2ban
-./pytest.ini                          # Configuration pytest
+./config/pytest/pytest.ini                          # Configuration pytest
 ./pytest-*.ini                        # Configurations spécialisées
 ./docs/chaos/chaos_test_suite.md      # Documentation tests chaos
 ./docs/security/penetration-testing.md # Documentation tests sécurité
@@ -79,7 +79,7 @@ pytest tests/ -v                      # Script de test principal
 - **Tests de développement**: Tests temporaires non nettoyés
 
 ### 4. **Configuration Problématique**
-- **pytest.ini multiples**: Configurations dispersées
+- **pytest.ini multiples**: Configurations dispersées (maintenant dans `config/pytest/`)
 - **Environnements de test**: Variables d'environnement manquantes
 - **Fixtures cassées**: Fixtures qui ne fonctionnent plus
 
@@ -90,7 +90,7 @@ pytest tests/ -v                      # Script de test principal
 ### Phase 1 : Nettoyage Immédiat
 1. **Supprimer les tests cassés** : Tests avec imports impossibles
 2. **Archiver les tests obsolètes** : Tests des anciennes phases
-3. **Consolider les configurations** : Unifier pytest.ini
+3. **Consolider les configurations** : Unifier pytest.ini (✅ Fait : dans `config/pytest/`)
 
 ### Phase 2 : Réorganisation
 1. **Déplacer les tests éparpillés** vers /tests/

@@ -88,7 +88,7 @@ make test-integration
 - 🎯 Couverture tests à 59% (cible: 65%+)
 - ⚡ Optimisation mémoire en cours (forte consommation)
 - 🔧 Dépendance Ollama locale requise
-- 📊 Métriques Prometheus basiques (non enterprise)
+- 📊 Métriques Prometheus basiques (non production-ready)
 
 **Non recommandé pour** :
 

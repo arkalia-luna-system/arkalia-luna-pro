@@ -118,11 +118,11 @@ python test_ameliorations_finales.py
 ✅ Tous les tests passent (325 lignes de validation)
 
 # Test de la démonstration globale
-python demo_global.py
+python scripts/demo/demo_global.py
 ✅ Démonstration fonctionnelle (495 lignes)
 
 # Test du score cognitif
-python arkalia_score.py
+python scripts/tools/arkalia_score.py
 ✅ Score généré avec succès (431 lignes)
 
 # Test d'intégration inter-modules
@@ -241,8 +241,8 @@ services:
 
 ### 🧪 Scripts de Test
 - **`test_ameliorations_finales.py`** - Tests de validation finale
-- **`demo_global.py`** - Démonstration globale
-- **`arkalia_score.py`** - Générateur de score cognitif
+- **`scripts/demo/demo_global.py`** - Démonstration globale
+- **`scripts/tools/arkalia_score.py`** - Générateur de score cognitif
 - **`arkalia-launch-optimized.sh`** - Script de lancement optimisé
 
 ---

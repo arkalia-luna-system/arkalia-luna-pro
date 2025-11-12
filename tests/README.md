@@ -32,7 +32,7 @@ tests/
 
 - **Tous les tests** : `pytest tests/`
 - **Unitaires** : `pytest tests/unit/`
-- **Intégration** : `pytest -c pytest-integration.ini`
+- **Intégration** : `pytest -c config/pytest/pytest-integration.ini`
 - **Performance** : `pytest -c pytest-performance.ini`
 - **Chaos** : `pytest -c pytest-chaos.ini`
 - **Sécurité** : `pytest -c pytest-security.ini`

@@ -123,7 +123,7 @@ grep -i "codecov" README.md
   ```markdown
   [![Coverage](https://img.shields.io/badge/coverage-59.25%25-orange.svg)]
   ```
-- ✅ **codecov.yml** existe et est configuré
+- ✅ **codecov.yml** existe et est configuré (dans `config/security/`)
 - ❌ **Aucun badge Codecov officiel** dans README :
   - Pas de `[![codecov](https://codecov.io/gh/athalia-siwek/arkalia-luna-pro/branch/develop/graph/badge.svg)]`
   - Le badge custom n'est pas lié à Codecov (statique, pas dynamique)
@@ -233,7 +233,7 @@ grep -i "codecov" README.md
 ```
 
 **Détails** :
-- ✅ **codecov.yml** existe et est configuré
+- ✅ **codecov.yml** existe et est configuré (dans `config/security/`)
 - ❌ **Aucun badge Codecov** dans README.md (0 mention)
 - ❌ **Recherche** : `grep -i "codecov" README.md` → **0 résultat**
 - ✅ **Badge custom** existe mais n'est pas lié à Codecov

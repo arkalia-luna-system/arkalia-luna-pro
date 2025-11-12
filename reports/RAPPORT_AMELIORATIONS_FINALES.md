@@ -80,7 +80,7 @@ Toutes les améliorations demandées ont été **implémentées avec succès** e
 
 **Statut:** ✅ IMPLÉMENTÉ
 **Fichiers:**
-- `arkalia_score.py`
+- `scripts/tools/arkalia_score.py`
 - `arkalia_score.toml`
 - `config/arkalia_score.toml`
 

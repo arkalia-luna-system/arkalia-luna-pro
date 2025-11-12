@@ -49,7 +49,7 @@ Consultez notre [Guide de Contribution](../credits/CONTRIBUTING.md) et soumettez
 
 ### 6. Où puis-je trouver la documentation technique ?
 
-Documentation complète disponible sur [GitHub Pages](https://arkalia-luna-system.github.io/arkalia-luna-pro/) avec guides architecture enterprise, API REST, et tutoriels Sandozia Intelligence Croisée.
+Documentation complète disponible sur [GitHub Pages](https://arkalia-luna-system.github.io/arkalia-luna-pro/) avec guides architecture production-ready, API REST, et tutoriels Sandozia Intelligence Croisée.
 
 ### 7. Comment puis-je signaler un bug ou vulnérabilité ?
 
@@ -80,16 +80,16 @@ python scripts/ark-validate-performance.py
 
 ---
 
-## 🚀 Support Enterprise v2.8.0
+## 🚀 Support Production-Ready v2.8.0
 
 - **📖 Documentation :** [Documentation Interactive](https://arkalia-luna-system.github.io/arkalia-luna-pro/)
 - **💬 Support 24/7 :** <arkalia.luna.system@gmail.com>
 - **🎓 Formation :** Certification développeurs Sandozia
-- **🔧 Consulting :** Architecture et intégration enterprise
+- **🔧 Consulting :** Architecture et intégration production-ready
 
 ---
 
-**© 2025 Arkalia-LUNA Pro Team** — FAQ Enterprise v2.8.0
+**© 2025 Arkalia-LUNA Pro Team** — FAQ Production-Ready v2.8.0
 🧠 *Powered by Sandozia Intelligence Croisée*
 
 ### Dernière mise à jour
