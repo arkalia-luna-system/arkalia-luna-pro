@@ -557,7 +557,10 @@ def reason_loop_enhanced_with_recovery(
                     else:
                         decision, score = "monitor", 0.1
 
-                    ark_logger.info(f"✅ Error Recovery appliqué: {decision} (score={score}, extra={"arkalia_module": "zeroia"})")
+                    ark_logger.info(
+                        f"✅ Error Recovery appliqué: {decision} (score={score})",
+                        extra={"arkalia_module": "zeroia"},
+                    )
 
                     # Enregistrer la récupération
                     es.add_event(
@@ -576,7 +579,10 @@ def reason_loop_enhanced_with_recovery(
 
         # Anti-répétition
         if not should_process_decision(decision):
-            ark_logger.info(f"🔄 Décision ignorée (répétition, extra={"arkalia_module": "zeroia"}): {decision}")
+            ark_logger.info(
+                f"🔄 Décision ignorée (répétition): {decision}",
+                extra={"arkalia_module": "zeroia"},
+            )
             return decision, score
 
         # 🔥 NOUVELLE INTÉGRATION COGNITIVE REACTOR
