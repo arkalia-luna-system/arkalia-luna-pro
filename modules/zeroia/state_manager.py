@@ -27,7 +27,7 @@ DEFAULT_CONTRADICTION_LOG = Path("logs/zeroia_contradictions.log")
 class StateManager:
     """Gestionnaire d'état pour ZeroIA"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.state_path = STATE_PATH
         self.dashboard_path = DASHBOARD_PATH
         self.contradiction_log_path = DEFAULT_CONTRADICTION_LOG
@@ -91,7 +91,10 @@ class StateManager:
             except Exception as e:
                 ark_logger.warning(f"Backup échoué: {e}", extra={"arkalia_module": "zeroia"})
 
-            ark_logger.info(f"✅ État persisté: {decision} (score: {score:.2f})", extra={"arkalia_module": "zeroia"})
+            ark_logger.info(
+                f"✅ État persisté: {decision} (score: {score:.2f})",
+                extra={"arkalia_module": "zeroia"},
+            )
 
         except Exception as e:
             ark_logger.error(f"❌ Erreur persistance état: {e}", extra={"arkalia_module": "zeroia"})
@@ -158,10 +161,14 @@ class StateManager:
             # Sauvegarder
             save_json_if_changed(dashboard, str(dashboard_path))
 
-            ark_logger.debug(f"📊 Dashboard mis à jour: {decision}", extra={"arkalia_module": "zeroia"})
+            ark_logger.debug(
+                f"📊 Dashboard mis à jour: {decision}", extra={"arkalia_module": "zeroia"}
+            )
 
         except Exception as e:
-            ark_logger.error(f"❌ Erreur mise à jour dashboard: {e}", extra={"arkalia_module": "zeroia"})
+            ark_logger.error(
+                f"❌ Erreur mise à jour dashboard: {e}", extra={"arkalia_module": "zeroia"}
+            )
             # Ne pas faire échouer le processus principal
 
     def check_for_ia_conflict_enhanced(
@@ -217,7 +224,10 @@ class StateManager:
                     with open(log_path, "a", encoding="utf-8") as f:
                         f.write(json.dumps(conflict_log) + "\n")
 
-                    ark_logger.warning(f"⚠️ Conflit IA détecté: {contradictions}", extra={"arkalia_module": "zeroia"})
+                    ark_logger.warning(
+                        f"⚠️ Conflit IA détecté: {contradictions}",
+                        extra={"arkalia_module": "zeroia"},
+                    )
                     return True
 
                 except Exception as e:
@@ -226,7 +236,9 @@ class StateManager:
             return False
 
         except Exception as e:
-            ark_logger.error(f"❌ Erreur vérification conflit: {e}", extra={"arkalia_module": "zeroia"})
+            ark_logger.error(
+                f"❌ Erreur vérification conflit: {e}", extra={"arkalia_module": "zeroia"}
+            )
             return False
 
     def load_current_state(self) -> dict:
@@ -236,7 +248,9 @@ class StateManager:
                 with open(self.state_path, encoding="utf-8") as f:
                     return toml.load(f)
             else:
-                ark_logger.warning(f"État ZeroIA non trouvé: {self.state_path}", extra={"arkalia_module": "zeroia"})
+                ark_logger.warning(
+                    f"État ZeroIA non trouvé: {self.state_path}", extra={"arkalia_module": "zeroia"}
+                )
                 return {
                     "last_decision": "unknown",
                     "confidence_score": 0.0,
@@ -303,7 +317,10 @@ class StateManager:
             with open(self.contradiction_log_path, "w", encoding="utf-8") as f:
                 f.writelines(recent_lines)
 
-            ark_logger.info(f"🧹 Logs nettoyés: {len(lines) - len(recent_lines)} entrées supprimées", extra={"arkalia_module": "zeroia"})
+            ark_logger.info(
+                f"🧹 Logs nettoyés: {len(lines) - len(recent_lines)} entrées supprimées",
+                extra={"arkalia_module": "zeroia"},
+            )
 
         except Exception as e:
             ark_logger.error(f"Erreur nettoyage logs: {e}", extra={"arkalia_module": "zeroia"})
