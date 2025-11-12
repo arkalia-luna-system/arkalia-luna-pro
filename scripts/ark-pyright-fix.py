@@ -28,8 +28,8 @@ def ensure_init_py() -> None:
 
 
 def ensure_env_py_path() -> None:
-    """Configure le chemin Python dans le fichier .env."""
-    """
+    """Configure le chemin Python dans le fichier .env.
+
     Vérifie et ajoute PYTHONPATH dans .env si nécessaire.
     """
     if ENV_FILE.exists():
@@ -45,9 +45,9 @@ def ensure_env_py_path() -> None:
 
 
 def main() -> None:
-    """Fonction principale du script de correction Pyright."""
-    """
-    Fonction principale exécutant les corrections Pyright.
+    """Fonction principale du script de correction Pyright.
+
+    Exécute les corrections Pyright en créant les fichiers nécessaires.
     """
     ark_logger.info("🔧 Patch Pyright / Cursor en cours…", extra={"arkalia_module": "scripts"})
     ensure_init_py()
