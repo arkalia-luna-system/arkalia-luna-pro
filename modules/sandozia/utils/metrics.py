@@ -66,7 +66,14 @@ class SandoziaMetrics:
         self.correlations_cache: dict[str, float] = {}
         logger.info("📊 SandoziaMetrics initialized")
 
-    def add_metric(self, name: str, value: float, labels: dict[str, str] | None = None):
+    def add_metric(self, name: str, value: float, labels: dict[str, str] | None = None) -> None:
+        """Ajoute une métrique au store.
+
+        Args:
+            name: Nom de la métrique.
+            value: Valeur de la métrique.
+            labels: Labels optionnels pour la métrique.
+        """
         labels = labels or {}
         timestamp = datetime.now()
         metric_point = MetricPoint(timestamp=timestamp, value=value, labels=labels)
@@ -81,6 +88,15 @@ class SandoziaMetrics:
         ]
 
     def get_metric_values(self, name: str, time_window_minutes: int | None = None) -> list[float]:
+        """Récupère les valeurs d'une métrique.
+
+        Args:
+            name: Nom de la métrique.
+            time_window_minutes: Fenêtre temporelle en minutes (optionnel).
+
+        Returns:
+            list: Liste des valeurs de la métrique.
+        """
         if name not in self.metrics_store:
             return []
         points = self.metrics_store[name]
@@ -117,6 +133,14 @@ class SandoziaMetrics:
             return None
 
     def get_metric_summary(self, name: str) -> dict[str, Any] | None:
+        """Récupère un résumé statistique d'une métrique.
+
+        Args:
+            name: Nom de la métrique.
+
+        Returns:
+            dict: Résumé statistique (moyenne, médiane, min, max, etc.) ou None.
+        """
         values = self.get_metric_values(name)
         if not values:
             return None
@@ -141,6 +165,11 @@ class SandoziaMetrics:
         }
 
     def export_prometheus_format(self) -> str:
+        """Exporte les métriques au format Prometheus.
+
+        Returns:
+            str: Métriques au format texte Prometheus.
+        """
         lines: list[Any] = []
         for metric_name, points in self.metrics_store.items():
             if not points:
@@ -155,6 +184,11 @@ class SandoziaMetrics:
         return "\n".join(lines)
 
     def export_grafana_json(self) -> dict[str, Any]:
+        """Exporte les métriques au format JSON pour Grafana.
+
+        Returns:
+            dict: Métriques au format JSON Grafana.
+        """
         series: list[Any] = []
         for metric_name, points in self.metrics_store.items():
             if not points:
@@ -171,6 +205,11 @@ class SandoziaMetrics:
         }
 
     def get_cross_module_health(self) -> dict[str, Any]:
+        """Récupère la santé croisée de tous les modules.
+
+        Returns:
+            dict: Santé des modules avec score de cohérence.
+        """
         health_metrics: dict[str, Any] = {}
         modules = ["reflexia", "zeroia", "assistantia"]
         base_metrics = ["confidence_score", "response_time", "success_rate"]
@@ -215,6 +254,11 @@ class SandoziaMetrics:
         }
 
     def get_all_metrics(self) -> dict[str, Any]:
+        """Récupère un résumé de toutes les métriques.
+
+        Returns:
+            dict: Résumé global des métriques collectées.
+        """
         return {
             "metrics_count": len(self.metrics_store),
             "metrics_names": list(self.metrics_store.keys()),
@@ -233,10 +277,16 @@ class SandoziaMetrics:
 
 # Fonctions helper
 def create_sandozia_metrics() -> SandoziaMetrics:
+    """Crée une instance de SandoziaMetrics avec rétention par défaut.
+
+    Returns:
+        SandoziaMetrics: Instance configurée avec 24h de rétention.
+    """
     return SandoziaMetrics(retention_hours=24)
 
 
-def demo_metrics():
+def demo_metrics() -> None:
+    """Génère des métriques de démonstration pour les tests."""
     import random
     import time
 

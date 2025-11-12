@@ -6,7 +6,7 @@ Ce module expose l'API REST principale avec les endpoints pour tous les modules
 
 import logging
 import time
-from collections.abc import AsyncGenerator, Callable
+from collections.abc import AsyncGenerator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Union
@@ -73,7 +73,7 @@ app.add_middleware(
 # Middleware pour les métriques
 @app.middleware("http")
 async def metrics_middleware(
-    request: Request, call_next: Callable[[Request], Response]
+    request: Request, call_next: Callable[[Request], Awaitable[Response]]
 ) -> Response:
     start_time = time.time()
 

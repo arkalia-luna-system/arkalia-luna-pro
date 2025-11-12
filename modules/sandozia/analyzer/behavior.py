@@ -105,7 +105,7 @@ class BehaviorAnalyzer:
         metric_name: str,
         value: float,
         timestamp: datetime | None = None,
-    ):
+    ) -> None:
         """Ajoute un échantillon de métrique pour analyse"""
         timestamp = timestamp or datetime.now()
 
@@ -130,7 +130,7 @@ class BehaviorAnalyzer:
         }
         self.decision_history.append(decision_event)
 
-    def _update_baseline_stats(self, metric_key: str):
+    def _update_baseline_stats(self, metric_key: str) -> None:
         samples = self.metrics_buffer[metric_key]
         values = [s["value"] for s in samples]
 
