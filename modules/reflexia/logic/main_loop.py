@@ -6,7 +6,6 @@ avec monitoring continu et prise de décision.
 """
 
 import time
-from typing import Optional
 
 from core.ark_logger import ark_logger
 from modules.reflexia.logic.decision import monitor_status
@@ -14,7 +13,7 @@ from modules.reflexia.logic.metrics import read_metrics
 from modules.reflexia.logic.snapshot import save_snapshot
 
 
-def reflexia_loop(max_iterations: int | None = None, sleep_seconds: float = 5.0) -> None:
+def reflexia_loop(max_iterations: int | None = None, sleep_seconds: float = 10.0) -> None:
     """
     🔁 Boucle réflexive principale de ReflexIA.
 

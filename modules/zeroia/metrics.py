@@ -5,12 +5,10 @@
 Responsabilité : Collecte et exposition des métriques Prometheus.
 """
 
-import logging
 import time
 from datetime import datetime
-from typing import Optional
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 # === Métriques globales ===
 _zeroia_metrics = {
@@ -68,10 +66,12 @@ def update_zeroia_metrics(
                 _zeroia_metrics["decision_types"].get(decision_type, 0) + 1
             )
 
-        logger.debug(f"📊 Métriques mises à jour: {operation} ({status})")
+        ark_logger.debug(
+            f"📊 Métriques mises à jour: {operation} ({status})", extra={"arkalia_module": "zeroia"}
+        )
 
     except Exception as e:
-        logger.error(f"Erreur mise à jour métriques: {e}")
+        ark_logger.error(f"Erreur mise à jour métriques: {e}", extra={"arkalia_module": "zeroia"})
 
 
 def get_zeroia_metrics() -> dict:
@@ -107,7 +107,7 @@ def get_zeroia_metrics() -> dict:
         }
 
     except Exception as e:
-        logger.error(f"Erreur récupération métriques: {e}")
+        ark_logger.error(f"Erreur récupération métriques: {e}", extra={"arkalia_module": "zeroia"})
         return {
             "arkalia_module_name": "zeroia",
             "uptime_seconds": 0,
@@ -157,7 +157,8 @@ def generate_prometheus_metrics() -> str:
         for decision_type, count in metrics["decision_types"].items():
             prometheus_lines.extend(
                 [
-                    f"# HELP zeroia_decision_type_{decision_type} Décisions de type {decision_type}",
+                    f"# HELP zeroia_decision_type_{decision_type} "
+                    f"Décisions de type {decision_type}",
                     f"# TYPE zeroia_decision_type_{decision_type} counter",
                     f"zeroia_decision_type_{decision_type} {count}",
                     "",
@@ -167,7 +168,9 @@ def generate_prometheus_metrics() -> str:
         return "\n".join(prometheus_lines)
 
     except Exception as e:
-        logger.error(f"Erreur génération métriques Prometheus: {e}")
+        ark_logger.error(
+            f"Erreur génération métriques Prometheus: {e}", extra={"arkalia_module": "zeroia"}
+        )
         return "# Erreur génération métriques"
 
 
@@ -185,7 +188,7 @@ def reset_metrics() -> None:
         "decision_types": {},
     }
 
-    logger.info("🔄 Métriques remises à zéro")
+    ark_logger.info("🔄 Métriques remises à zéro", extra={"arkalia_module": "zeroia"})
 
 
 def get_metrics_summary() -> dict:
@@ -205,7 +208,7 @@ def get_metrics_summary() -> dict:
         }
 
     except Exception as e:
-        logger.error(f"Erreur résumé métriques: {e}")
+        ark_logger.error(f"Erreur résumé métriques: {e}", extra={"arkalia_module": "zeroia"})
         return {
             "module": "zeroia",
             "status": "error",

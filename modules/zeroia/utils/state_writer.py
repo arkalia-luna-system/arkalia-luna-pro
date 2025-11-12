@@ -17,11 +17,9 @@ Auteur: Arkalia-LUNA Project
 
 import hashlib
 import os
-from typing import Any, Optional
+from typing import Any
 
 import toml
-
-from core.ark_logger import ark_logger
 
 
 def file_hash(path: str) -> str:
@@ -66,7 +64,8 @@ def check_health(path: str) -> bool:
 
     Example:
         >>> is_healthy = check_health("modules/zeroia/state/zeroia_state.toml")
-        >>> ark_logger.info(f"ZeroIA status: {'OK' if is_healthy else 'DOWN'}", extra={"module": "utils"})
+        >>> status = "OK" if is_healthy else "DOWN"
+        >>> ark_logger.info(f"ZeroIA status: {status}", extra={"module": "utils"})
     """
     try:
         data = toml.load(path)

@@ -14,14 +14,12 @@ __author__ = "Athalia"
 try:
     from arkalia.core.ark_logger import ark_logger
 
-    from .core import HelloriaAPI, get_helloria_status
+    from .core import HelloriaAPI, get_helloria_status  # noqa: F401
 except ImportError:
     pass
 
 # Configuration du logging
-import logging
 
-logger = logging.getLogger("arkalia.helloria")
 logger.setLevel(logging.INFO)
 
 
@@ -39,7 +37,7 @@ def health_check():
 # Fonction d'initialisation
 def initialize() -> bool:
     """Initialisation du module"""
-    logger.info("🌕 helloria initialisé")
+    ark_logger.info("🌕 helloria initialisé", extra={"arkalia_module": "helloria"})
     return True
 
 

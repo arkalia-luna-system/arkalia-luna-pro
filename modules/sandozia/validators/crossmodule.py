@@ -18,18 +18,15 @@ Détecte :
 """
 
 import json
-import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import toml
 
 from core.ark_logger import ark_logger
-
-logger = logging.getLogger(__name__)
 
 
 class ValidationLevel(Enum):
@@ -112,7 +109,7 @@ class CrossModuleValidator:
         self.known_issues: dict[str, list] = {}
         self.state_paths: dict[str, Path] = {}
         self.state_cache: dict[str, dict] = {}
-        logger.info("🔍 CrossModuleValidator initialized")
+        ark_logger.info("🔍 CrossModuleValidator initialized", extra={"arkalia_module": "sandozia"})
 
     def validate_module_interfaces(self, modules_data: dict[str, dict]) -> dict[str, Any]:
         """
@@ -124,7 +121,9 @@ class CrossModuleValidator:
         Returns:
             dict: Résultats de validation
         """
-        logger.info("🔍 Starting cross-module interface validation...")
+        ark_logger.info(
+            "🔍 Starting cross-module interface validation...", extra={"arkalia_module": "sandozia"}
+        )
 
         validation_result = {
             "status": "completed",
@@ -153,7 +152,10 @@ class CrossModuleValidator:
         if len(self.validation_history) > 50:
             self.validation_history = self.validation_history[-50:]
 
-        logger.info(f"✅ Cross-module validation completed: {validation_result['passed']}")
+        ark_logger.info(
+            f"✅ Cross-module validation completed: {validation_result['passed']}",
+            extra={"arkalia_module": "sandozia"},
+        )
         return validation_result
 
     def _validate_interface(
@@ -220,7 +222,9 @@ class CrossModuleValidator:
         Returns:
             dict: Résultats de validation
         """
-        logger.info("🔍 Starting data consistency validation...")
+        ark_logger.info(
+            "🔍 Starting data consistency validation...", extra={"arkalia_module": "sandozia"}
+        )
 
         consistency_result: dict[str, Any] = {
             "status": "completed",
@@ -251,8 +255,10 @@ class CrossModuleValidator:
         if total_checks > 0:
             consistency_result["consistency_score"] = 1.0 - (failed_checks / total_checks)
 
-        logger.info(
-            f"✅ Data consistency validation completed: {consistency_result['consistency_score']:.2f}"
+        score = consistency_result["consistency_score"]
+        ark_logger.info(
+            f"✅ Data consistency validation completed: {score:.2f}",
+            extra={"arkalia_module": "sandozia"},
         )
         return consistency_result
 
@@ -339,7 +345,7 @@ class CrossModuleValidator:
         Nettoie l'historique de validation
         """
         self.validation_history.clear()
-        logger.info("🧹 Validation history cleared")
+        ark_logger.info("🧹 Validation history cleared", extra={"arkalia_module": "sandozia"})
 
     def load_module_states(self) -> dict[str, dict]:
         """Charge les états de tous les modules depuis les fichiers TOML.
@@ -354,12 +360,20 @@ class CrossModuleValidator:
                 if state_path.exists():
                     with open(state_path) as f:
                         states[module_name] = toml.load(f)
-                    logger.debug(f"✅ Loaded {module_name} state")
+                    ark_logger.debug(
+                        f"✅ Loaded {module_name} state", extra={"arkalia_module": "sandozia"}
+                    )
                 else:
                     states[module_name] = {}
-                    logger.warning(f"⚠️ {module_name} state file not found: {state_path}")
+                    ark_logger.warning(
+                        f"⚠️ {module_name} state file not found: {state_path}",
+                        extra={"arkalia_module": "sandozia"},
+                    )
             except Exception as e:
-                logger.error(f"❌ Error loading {module_name} state: {e}")
+                ark_logger.error(
+                    f"❌ Error loading {module_name} state: {e}",
+                    extra={"arkalia_module": "sandozia"},
+                )
                 states[module_name] = {}
 
         # Cache pour comparaisons futures
@@ -619,7 +633,9 @@ class CrossModuleValidator:
         Returns:
             dict: Résumé de la validation avec score de cohérence.
         """
-        logger.info("🔍 Starting cross-module validation...")
+        ark_logger.info(
+            "🔍 Starting cross-module validation...", extra={"arkalia_module": "sandozia"}
+        )
 
         # Charger les états
         states = self.load_module_states()
@@ -670,7 +686,10 @@ class CrossModuleValidator:
             ),
         }
 
-        logger.info(f"✅ Cross-module validation complete - Score: {coherence_score:.3f}")
+        ark_logger.info(
+            f"✅ Cross-module validation complete - Score: {coherence_score:.3f}",
+            extra={"arkalia_module": "sandozia"},
+        )
         return summary
 
     def validate_cross_modules(self, active_modules: list[str] | None = None) -> dict[str, Any]:
@@ -689,7 +708,7 @@ class CrossModuleValidator:
 
             # Adapter la validation selon les modules actifs
             if active_modules:
-                logger.info(
+                ark_logger.info(
                     f"🔍 Validating cross-module coherence for: {', '.join(active_modules)}"
                 )
 
@@ -719,7 +738,9 @@ class CrossModuleValidator:
                 "details": validation_results,
             }
         except Exception as e:
-            logger.error(f"❌ CrossModule validation error: {e}")
+            ark_logger.error(
+                f"❌ CrossModule validation error: {e}", extra={"arkalia_module": "sandozia"}
+            )
             return {"status": "error", "error": str(e), "coherence_score": 0.0}
 
     def get_validation_report(self) -> dict[str, Any]:

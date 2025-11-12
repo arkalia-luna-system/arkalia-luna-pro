@@ -14,10 +14,6 @@ from typing import Any
 from modules.taskia.core_refactored import TaskIACore
 from modules.taskia.factories.formatter_factory import FormatterFactory
 from modules.taskia.factories.service_factory import ServiceFactory
-from modules.taskia.formatters.html_formatter import HtmlFormatter
-from modules.taskia.formatters.json_formatter import JsonFormatter
-from modules.taskia.formatters.markdown_formatter import MarkdownFormatter
-from modules.taskia.formatters.summary_formatter import SummaryFormatter
 from modules.taskia.interfaces.formatter_interface import IFormatter
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))

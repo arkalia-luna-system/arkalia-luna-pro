@@ -7,10 +7,8 @@ Responsabilité : Persistance et gestion des états.
 """
 
 import json
-import textwrap
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
 
 import toml
 

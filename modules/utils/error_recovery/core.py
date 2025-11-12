@@ -11,16 +11,11 @@ Architecture SOLID :
 """
 
 import asyncio
-import logging
 from datetime import datetime
 from enum import Enum
-from pathlib import Path
-from typing import Any, Optional, TypedDict
+from typing import Any, TypedDict
 
-import toml
-
-logger = logging.getLogger(__name__)
-
+from core.ark_logger import ark_logger
 
 # ============================================================================
 # INTERFACES SOLID
@@ -198,7 +193,10 @@ class ImmediateRetryStrategy(IRecoveryStrategy):
     """Stratégie : Retry immédiat"""
 
     async def execute(self, error_context: ErrorContext) -> dict[str, Any]:
-        logger.info(f"🔄 Retry immédiat pour: {error_context.error_message}")
+        ark_logger.info(
+            f"🔄 Retry immédiat pour: {error_context.error_message}",
+            extra={"arkalia_module": "utils"},
+        )
         await asyncio.sleep(1)  # Petit délai
         return {"status": "retry_completed", "strategy": "immediate_retry"}
 
@@ -208,7 +206,10 @@ class ExponentialBackoffStrategy(IRecoveryStrategy):
 
     async def execute(self, error_context: ErrorContext) -> dict[str, Any]:
         delay = 2**error_context.attempt_count
-        logger.info(f"⏳ Backoff {delay}s pour {error_context.error_message}")
+        ark_logger.info(
+            f"⏳ Backoff {delay}s pour {error_context.error_message}",
+            extra={"arkalia_module": "utils"},
+        )
         await asyncio.sleep(delay)
         return {"status": "backoff_completed", "delay": delay}
 
@@ -217,7 +218,10 @@ class CircuitBreakStrategy(IRecoveryStrategy):
     """Stratégie : Circuit breaker"""
 
     async def execute(self, error_context: ErrorContext) -> dict[str, Any]:
-        logger.info(f"🔌 Circuit break pour: {error_context.error_message}")
+        ark_logger.info(
+            f"🔌 Circuit break pour: {error_context.error_message}",
+            extra={"arkalia_module": "utils"},
+        )
         await asyncio.sleep(5)  # Délai circuit breaker
         return {"status": "circuit_break_completed"}
 
@@ -226,7 +230,10 @@ class GracefulDegradationStrategy(IRecoveryStrategy):
     """Stratégie : Dégradation gracieuse"""
 
     async def execute(self, error_context: ErrorContext) -> dict[str, Any]:
-        logger.info(f"📉 Dégradation gracieuse pour: {error_context.error_message}")
+        ark_logger.info(
+            f"📉 Dégradation gracieuse pour: {error_context.error_message}",
+            extra={"arkalia_module": "utils"},
+        )
         await asyncio.sleep(2)
         return {"status": "degradation_completed", "mode": "graceful"}
 
@@ -235,7 +242,10 @@ class SystemRestartStrategy(IRecoveryStrategy):
     """Stratégie : Redémarrage système"""
 
     async def execute(self, error_context: ErrorContext) -> dict[str, Any]:
-        logger.info(f"🔄 Redémarrage système pour: {error_context.error_message}")
+        ark_logger.info(
+            f"🔄 Redémarrage système pour: {error_context.error_message}",
+            extra={"arkalia_module": "utils"},
+        )
         await asyncio.sleep(10)  # Simuler redémarrage
         return {"status": "system_restart_completed"}
 
@@ -244,7 +254,9 @@ class ReconnectStrategy(IRecoveryStrategy):
     """Stratégie : Reconnexion"""
 
     async def execute(self, error_context: ErrorContext) -> dict[str, Any]:
-        logger.info(f"🔗 Reconnexion pour: {error_context.error_message}")
+        ark_logger.info(
+            f"🔗 Reconnexion pour: {error_context.error_message}", extra={"arkalia_module": "utils"}
+        )
         await asyncio.sleep(2)  # Simuler reconnexion
         return {"status": "reconnect_completed"}
 
@@ -253,7 +265,10 @@ class RestoreStateStrategy(IRecoveryStrategy):
     """Stratégie : Restauration d'état"""
 
     async def execute(self, error_context: ErrorContext) -> dict[str, Any]:
-        logger.info(f"💾 Restauration d'état pour: {error_context.error_message}")
+        ark_logger.info(
+            f"💾 Restauration d'état pour: {error_context.error_message}",
+            extra={"arkalia_module": "utils"},
+        )
         await asyncio.sleep(3)  # Simuler restauration
         return {"status": "state_restored"}
 
@@ -326,7 +341,7 @@ class ErrorRecoverySystem:
         # Configuration des stratégies par type d'erreur
         self.error_strategies = self._load_error_strategies()
 
-        logger.info("🔄 ErrorRecoverySystem initialisé")
+        ark_logger.info("🔄 ErrorRecoverySystem initialisé", extra={"arkalia_module": "utils"})
 
     def _load_error_strategies(self) -> dict[str, dict]:
         """Charge la configuration des stratégies d'erreur"""
@@ -416,7 +431,10 @@ class ErrorRecoverySystem:
 
     async def execute_recovery(self, action: RecoveryAction) -> RecoveryResult:
         """Exécute une action de récupération"""
-        logger.info(f"🔄 Exécution récupération: {action.module_name} - {action.action_type}")
+        ark_logger.info(
+            f"🔄 Exécution récupération: {action.module_name} - {action.action_type}",
+            extra={"arkalia_module": "utils"},
+        )
 
         try:
             # Créer le contexte d'erreur
@@ -456,7 +474,7 @@ class ErrorRecoverySystem:
             return recovery_result
 
         except Exception as e:
-            logger.error(f"❌ Erreur récupération: {e}")
+            ark_logger.error(f"❌ Erreur récupération: {e}", extra={"arkalia_module": "utils"})
             self.metrics["failed_recoveries"] += 1
 
             return RecoveryResult(
@@ -486,14 +504,14 @@ class ErrorRecoverySystem:
     def handle_contradiction(self, zeroia_state: str, reflexia_state: str) -> None:
         """Gère les contradictions entre modules"""
         self.metrics["contradiction_count"] += 1
-        logger.warning(
+        ark_logger.warning(
             f"⚠️ Contradiction détectée: ZeroIA={zeroia_state}, ReflexIA={reflexia_state}"
         )
 
     async def run_recovery_loop(self):
         """Boucle principale de récupération"""
         self.is_running = True
-        logger.info("💥 Démarrage boucle de récupération")
+        ark_logger.info("💥 Démarrage boucle de récupération", extra={"arkalia_module": "utils"})
 
         while self.is_running:
             try:
@@ -507,7 +525,9 @@ class ErrorRecoverySystem:
                 await asyncio.sleep(10)  # Intervalle de vérification
 
             except Exception as e:
-                logger.error(f"❌ Erreur boucle récupération: {e}")
+                ark_logger.error(
+                    f"❌ Erreur boucle récupération: {e}", extra={"arkalia_module": "utils"}
+                )
                 await asyncio.sleep(5)
 
     def get_recovery_status(self) -> dict[str, Any]:

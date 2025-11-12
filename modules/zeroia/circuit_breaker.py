@@ -13,20 +13,17 @@ Fonctionnalités :
 - Gestion d'erreurs spécialisées IA
 """
 
-import logging
-import time
 from collections.abc import Callable
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
-from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import toml
 
-from .event_store import EventStore, EventType
+from core.ark_logger import ark_logger
 
-logger = logging.getLogger(__name__)
+from .event_store import EventStore, EventType
 
 
 class CircuitState(Enum):
@@ -111,7 +108,10 @@ class CircuitBreaker:
         self.event_store = EventStore()
         self.metrics = CircuitMetrics()
 
-        logger.info(f"🔄 CircuitBreaker initialisé: seuil={failure_threshold}, timeout={timeout}s")
+        ark_logger.info(
+            f"🔄 CircuitBreaker initialisé: seuil={failure_threshold}, timeout={timeout}s",
+            extra={"arkalia_module": "zeroia"},
+        )
 
     def load_state(self) -> None:
         """Charge l'état du circuit breaker depuis le fichier."""
@@ -153,7 +153,10 @@ class CircuitBreaker:
         if contradiction_key not in self.contradiction_pairs:
             self.contradiction_pairs.add(contradiction_key)
             self.metrics.total_trips += 1
-            logger.warning(f"⚠️ Circuit ouvert après {len(self.contradiction_pairs)} contradictions")
+            ark_logger.warning(
+                f"⚠️ Circuit ouvert après {len(self.contradiction_pairs)} contradictions",
+                extra={"arkalia_module": "zeroia"},
+            )
             return True
 
         return False
@@ -241,7 +244,7 @@ class CircuitBreaker:
 
         self.save_state()
 
-        logger.warning(
+        ark_logger.warning(
             f"🚨 CircuitBreaker échec: {exception} "
             f"(consécutif: {self.metrics.consecutive_failures})"
         )
@@ -259,7 +262,9 @@ class CircuitBreaker:
 
     def _on_unexpected_error(self, exception: Exception) -> None:
         """Gère une erreur inattendue"""
-        logger.error(f"💥 CircuitBreaker erreur inattendue: {exception}")
+        ark_logger.error(
+            f"💥 CircuitBreaker erreur inattendue: {exception}", extra={"arkalia_module": "zeroia"}
+        )
         self.metrics.failed_calls += 1
 
         # Event sourcing pour erreur critique
@@ -285,7 +290,9 @@ class CircuitBreaker:
         old_state = self.state
         self.state = "CLOSED"
         self.metrics.state_changes += 1
-        logger.info(f"🔄 CircuitBreaker: {old_state} → {self.state}")
+        ark_logger.info(
+            f"🔄 CircuitBreaker: {old_state} → {self.state}", extra={"arkalia_module": "zeroia"}
+        )
 
         self.event_store.add_event(
             EventType.STATE_CHANGE,
@@ -302,7 +309,10 @@ class CircuitBreaker:
         self.state = "OPEN"
         self.last_failure_time = datetime.now()
         self.metrics.state_changes += 1
-        logger.error(f"🚨 CircuitBreaker: {old_state} → {self.state} (seuil atteint)")
+        ark_logger.error(
+            f"🚨 CircuitBreaker: {old_state} → {self.state} (seuil atteint)",
+            extra={"arkalia_module": "zeroia"},
+        )
 
         self.event_store.add_event(
             EventType.STATE_CHANGE,
@@ -319,7 +329,10 @@ class CircuitBreaker:
         old_state = self.state
         self.state = "HALF_OPEN"
         self.metrics.state_changes += 1
-        logger.info(f"🔄 CircuitBreaker: {old_state} → {self.state} (test recovery)")
+        ark_logger.info(
+            f"🔄 CircuitBreaker: {old_state} → {self.state} (test recovery)",
+            extra={"arkalia_module": "zeroia"},
+        )
 
         self.event_store.add_event(
             EventType.STATE_CHANGE,
@@ -332,7 +345,10 @@ class CircuitBreaker:
 
     def _log_blocked_call(self) -> None:
         """Log d'un appel bloqué"""
-        logger.warning(f"🛑 CircuitBreaker bloque un appel (état: {self.state})")
+        ark_logger.warning(
+            f"🛑 CircuitBreaker bloque un appel (état: {self.state})",
+            extra={"arkalia_module": "zeroia"},
+        )
 
         self.event_store.add_event(
             EventType.CALL_BLOCKED,
@@ -357,7 +373,10 @@ class CircuitBreaker:
         self.metrics.state_changes += 1
         self.save_state()
 
-        logger.info(f"🔄 CircuitBreaker réinitialisé manuellement: {old_state} → {self.state}")
+        ark_logger.info(
+            f"🔄 CircuitBreaker réinitialisé manuellement: {old_state} → {self.state}",
+            extra={"arkalia_module": "zeroia"},
+        )
 
         self.event_store.add_event(
             EventType.MANUAL_RESET,
@@ -392,7 +411,7 @@ class CircuitBreaker:
         """Déclenche le circuit breaker"""
         self.state = "OPEN"
         self.last_failure_time = datetime.now()
-        logger.warning("🔌 Circuit breaker déclenché")
+        ark_logger.warning("🔌 Circuit breaker déclenché", extra={"arkalia_module": "zeroia"})
 
         if self.event_store:
             self.event_store.store_event(
@@ -416,7 +435,9 @@ class CircuitBreaker:
                 and (now - self.last_failure_time).total_seconds() >= self.timeout
             ):
                 self.state = "HALF_OPEN"
-                logger.info("🔌 Circuit breaker en mode semi-ouvert")
+                ark_logger.info(
+                    "🔌 Circuit breaker en mode semi-ouvert", extra={"arkalia_module": "zeroia"}
+                )
                 return True
             return False
 
@@ -449,7 +470,9 @@ class CircuitBreaker:
 
     def _handle_unexpected_error(self, error: Exception) -> None:
         """Gère les erreurs inattendues"""
-        logger.warning(f"Erreur inattendue dans Circuit Breaker: {error}")
+        ark_logger.warning(
+            f"Erreur inattendue dans Circuit Breaker: {error}", extra={"arkalia_module": "zeroia"}
+        )
         self.metrics.unexpected_errors += 1
 
         # Enregistrer l'événement
@@ -464,7 +487,10 @@ class CircuitBreaker:
                     },
                 )
             except Exception as e:
-                logger.error(f"Erreur lors de l'enregistrement de l'événement: {e}")
+                ark_logger.error(
+                    f"Erreur lors de l'enregistrement de l'événement: {e}",
+                    extra={"arkalia_module": "zeroia"},
+                )
 
     def detect_contradictions(self, decisions: list[dict[str, Any]]) -> list[str]:
         """Détecte les contradictions dans les décisions."""

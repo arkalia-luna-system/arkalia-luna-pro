@@ -8,7 +8,6 @@
 Updated: 2025-11-12 - Unifié avec ark_logger
 """
 
-from typing import Optional
 
 from core.ark_logger import ark_logger
 

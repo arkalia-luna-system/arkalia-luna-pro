@@ -14,11 +14,10 @@ Coordonne l'intelligence collaborative entre les modules IA :
 
 import asyncio
 import json
-import logging
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import diskcache  # type: ignore
 import toml
@@ -34,8 +33,6 @@ from core.ark_logger import ark_logger
 from ...reflexia.core import get_metrics as reflexia_get_metrics
 from ...reflexia.core import launch_reflexia_check
 from ...zeroia.reason_loop_enhanced import load_context, load_reflexia_state
-
-logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -166,7 +163,10 @@ class SandoziaCore:
         self.is_running = False
         self.monitoring_task = None
 
-        logger.info("🧠 SandoziaCore initialized - Intelligence Croisée ready")
+        ark_logger.info(
+            "🧠 SandoziaCore initialized - Intelligence Croisée ready",
+            extra={"arkalia_module": "sandozia"},
+        )
 
     def _load_config(self) -> dict:
         default_config = {
@@ -196,28 +196,40 @@ class SandoziaCore:
                 # Merge avec defaults
                 default_config.update(loaded_config)
             except Exception as e:
-                logger.warning(f"⚠️ Error loading config, using defaults: {e}")
+                ark_logger.warning(
+                    f"⚠️ Error loading config, using defaults: {e}",
+                    extra={"arkalia_module": "sandozia"},
+                )
         else:
             # Créer config par défaut
             self.config_path.parent.mkdir(parents=True, exist_ok=True)
             with open(self.config_path, "w") as f:
                 toml.dump(default_config, f)
-            logger.info(f"📝 Created default config: {self.config_path}")
+            ark_logger.info(
+                f"📝 Created default config: {self.config_path}",
+                extra={"arkalia_module": "sandozia"},
+            )
 
         return default_config
 
     async def initialize_modules(self):
         """Initialise les connexions aux modules IA"""
-        logger.info("🔌 Initializing IA modules connections...")
+        ark_logger.info(
+            "🔌 Initializing IA modules connections...", extra={"arkalia_module": "sandozia"}
+        )
 
         # Reflexia - test fonction
         if self.config["modules"]["reflexia_enabled"]:
             try:
                 reflexia_get_metrics()
                 self.reflexia_available = True
-                logger.info("✅ Reflexia functions available")
+                ark_logger.info(
+                    "✅ Reflexia functions available", extra={"arkalia_module": "sandozia"}
+                )
             except Exception as e:
-                logger.warning(f"⚠️ Reflexia connection failed: {e}")
+                ark_logger.warning(
+                    f"⚠️ Reflexia connection failed: {e}", extra={"arkalia_module": "sandozia"}
+                )
                 self.reflexia_available = False
 
         # ZeroIA - test fonction
@@ -226,12 +238,18 @@ class SandoziaCore:
                 # Test de chargement du contexte
                 load_context()
                 self.zeroia_available = True
-                logger.info("✅ ZeroIA functions available")
+                ark_logger.info(
+                    "✅ ZeroIA functions available", extra={"arkalia_module": "sandozia"}
+                )
             except Exception as e:
-                logger.warning(f"⚠️ ZeroIA connection failed: {e}")
+                ark_logger.warning(
+                    f"⚠️ ZeroIA connection failed: {e}", extra={"arkalia_module": "sandozia"}
+                )
                 self.zeroia_available = False
 
-        logger.info("🧠 Sandozia modules initialization complete")
+        ark_logger.info(
+            "🧠 Sandozia modules initialization complete", extra={"arkalia_module": "sandozia"}
+        )
 
     async def collect_intelligence_snapshot(self) -> IntelligenceSnapshot:
         """Collecte un snapshot complet de l'état d'intelligence"""
@@ -250,7 +268,9 @@ class SandoziaCore:
                     "confidence_level": 0.85,  # Calculé depuis les métriques
                 }
             except Exception as e:
-                logger.warning(f"⚠️ Reflexia state collection failed: {e}")
+                ark_logger.warning(
+                    f"⚠️ Reflexia state collection failed: {e}", extra={"arkalia_module": "sandozia"}
+                )
                 reflexia_state = {"active": False}
 
         # État ZeroIA
@@ -265,7 +285,9 @@ class SandoziaCore:
                 context = load_context()
                 zeroia_state["context"] = context
             except Exception as e:
-                logger.warning(f"⚠️ ZeroIA state collection failed: {e}")
+                ark_logger.warning(
+                    f"⚠️ ZeroIA state collection failed: {e}", extra={"arkalia_module": "sandozia"}
+                )
                 zeroia_state = {"active": False, "last_check": None}
 
         # État AssistantIA (placeholder pour l'instant)
@@ -399,7 +421,9 @@ class SandoziaCore:
                             }
                         )
         except Exception as e:
-            logger.warning(f"⚠️ Error analyzing patterns: {e}")
+            ark_logger.warning(
+                f"⚠️ Error analyzing patterns: {e}", extra={"arkalia_module": "sandozia"}
+            )
 
         return patterns
 
@@ -429,7 +453,7 @@ class SandoziaCore:
     async def start_monitoring(self):
         """Démarre le monitoring en continu"""
         if self.is_running:
-            logger.warning("⚠️ Monitoring already running")
+            ark_logger.warning("⚠️ Monitoring already running", extra={"arkalia_module": "sandozia"})
             return
 
         await self.initialize_modules()
@@ -437,7 +461,7 @@ class SandoziaCore:
         self.is_running = True
         self.monitoring_task = asyncio.create_task(self._monitoring_loop())
 
-        logger.info("🚀 Sandozia monitoring started")
+        ark_logger.info("🚀 Sandozia monitoring started", extra={"arkalia_module": "sandozia"})
 
     async def stop_monitoring(self):
         """Arrête le monitoring"""
@@ -450,7 +474,7 @@ class SandoziaCore:
             except asyncio.CancelledError:
                 pass
 
-        logger.info("🛑 Sandozia monitoring stopped")
+        ark_logger.info("🛑 Sandozia monitoring stopped", extra={"arkalia_module": "sandozia"})
 
     async def _monitoring_loop(self):
         """Boucle principale de monitoring"""
@@ -483,12 +507,14 @@ class SandoziaCore:
                 # Sauvegarder état
                 await self._save_state(snapshot, metrics)
 
-                logger.debug(
+                ark_logger.debug(
                     f"📊 Sandozia cycle complete - Coherence: {metrics.coherence_score:.2f}"
                 )
 
             except Exception as e:
-                logger.error(f"❌ Monitoring loop error: {e}")
+                ark_logger.error(
+                    f"❌ Monitoring loop error: {e}", extra={"arkalia_module": "sandozia"}
+                )
 
             await asyncio.sleep(interval)
 

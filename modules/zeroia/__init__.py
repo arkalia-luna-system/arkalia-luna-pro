@@ -24,7 +24,7 @@ from .state_manager import StateManager  # noqa: F401
 # Configuration par défaut
 DEFAULT_CONFIG = {
     "max_loops": 100,
-    "interval_seconds": 2.0,
+    "interval_seconds": 10.0,
     "circuit_failure_threshold": 8,
     "timeout": 45,
     "confidence_threshold": 0.7,
@@ -59,7 +59,7 @@ def get_zeroia_status():
         # Test imports critiques
         from .coordinator import get_coordinator
 
-        coordinator = get_coordinator()
+        get_coordinator()
 
         return {
             "status": "✅ HEALTHY",
@@ -106,7 +106,7 @@ def health_check() -> dict:
         # Test imports critiques
         from .coordinator import get_coordinator
 
-        coordinator = get_coordinator()
+        get_coordinator()
 
         return {
             "status": "healthy",

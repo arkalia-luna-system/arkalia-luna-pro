@@ -1,15 +1,13 @@
 """Module de métriques Prometheus pour Arkalia-LUNA"""
 
-import json
-import logging
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import (
+from core.ark_logger import ark_logger
     CONTENT_TYPE_LATEST,
     CollectorRegistry,
     Counter,
@@ -18,7 +16,6 @@ from prometheus_client import (
     generate_latest,
 )
 
-logger = logging.getLogger(__name__)
 
 
 class ArkaliaMetrics:
@@ -125,14 +122,14 @@ class ArkaliaMetrics:
             self.arkalia_performance_score.set(85.0)  # Score simulé
 
         except Exception as e:
-            logger.error(f"Erreur mise à jour métriques système: {e}")
+            ark_logger.error(f"Erreur mise à jour métriques système: {e}", extra={"arkalia_module": "monitoring"})
 
     def update_module_status(self, module_name: str, is_active: bool) -> None:
         """Met à jour le statut d'un module"""
         try:
             self.arkalia_modules_status.labels(module_name=module_name).set(1 if is_active else 0)
         except Exception as e:
-            logger.error(f"Erreur mise à jour statut module {module_name}: {e}")
+            ark_logger.error(f"Erreur mise à jour statut module {module_name}: {e}", extra={"arkalia_module": "monitoring"})
 
     def record_request(self, method: str, endpoint: str, status: int, duration: float) -> None:
         """Enregistre une requête"""
@@ -142,14 +139,14 @@ class ArkaliaMetrics:
             ).inc()
             self.arkalia_request_duration.labels(method=method, endpoint=endpoint).observe(duration)
         except Exception as e:
-            logger.error(f"Erreur enregistrement requête: {e}")
+            ark_logger.error(f"Erreur enregistrement requête: {e}", extra={"arkalia_module": "monitoring"})
 
     def record_security_event(self, event_type: str, severity: str) -> None:
         """Enregistre un événement de sécurité"""
         try:
             self.arkalia_security_events.labels(event_type=event_type, severity=severity).inc()
         except Exception as e:
-            logger.error(f"Erreur enregistrement événement sécurité: {e}")
+            ark_logger.error(f"Erreur enregistrement événement sécurité: {e}", extra={"arkalia_module": "monitoring"})
 
     def get_registry(self) -> CollectorRegistry:
         """Retourne le registre de métriques"""
@@ -167,7 +164,7 @@ class ArkaliaMetrics:
             # Générer le format Prometheus
             return generate_latest(self._registry).decode("utf-8")
         except Exception as e:
-            logger.error(f"Erreur génération métriques: {e}")
+            ark_logger.error(f"Erreur génération métriques: {e}", extra={"arkalia_module": "monitoring"})
             return ""
 
     def _update_module_statuses(self) -> None:
@@ -211,7 +208,7 @@ class ArkaliaMetrics:
                 self.arkalia_cognitive_score.labels(module=module_name).set(score)
 
             except Exception as e:
-                logger.warning(f"Erreur vérification module {module_name}: {e}")
+                ark_logger.warning(f"Erreur vérification module {module_name}: {e}", extra={"arkalia_module": "monitoring"})
                 self.update_module_status(module_name, False)
 
 
@@ -231,7 +228,7 @@ async def get_metrics():
         prometheus_data = metrics.generate_metrics()
         return PlainTextResponse(content=prometheus_data, media_type=CONTENT_TYPE_LATEST)
     except Exception as e:
-        logger.error(f"Erreur endpoint métriques: {e}")
+        ark_logger.error(f"Erreur endpoint métriques: {e}", extra={"arkalia_module": "monitoring"})
         return JSONResponse(
             status_code=500,
             content={"error": f"Erreur métriques : {str(e)}"},
@@ -251,5 +248,5 @@ async def health_check():
             "modules_monitored": 7,
         }
     except Exception as e:
-        logger.error(f"Erreur health check: {e}")
+        ark_logger.error(f"Erreur health check: {e}", extra={"arkalia_module": "monitoring"})
         return JSONResponse(status_code=500, content={"status": "unhealthy", "error": str(e)})

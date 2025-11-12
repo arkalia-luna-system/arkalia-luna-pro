@@ -6,17 +6,14 @@ Extrait de reason_loop_enhanced.py pour simplifier la maintenance.
 Responsabilité : Analyse du contexte et prise de décision.
 """
 
-import logging
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
 
 import toml
 
+from core.ark_logger import ark_logger
 from modules.zeroia.metrics import update_zeroia_metrics
-
-logger = logging.getLogger(__name__)
 
 # === Chemins par défaut ===
 CTX_PATH = Path("state/global_context.toml")
@@ -111,10 +108,13 @@ class DecisionEngine:
                 with open(path, encoding="utf-8") as f:
                     return toml.load(f)
             else:
-                logger.warning(f"Contexte non trouvé: {path}, création par défaut")
+                ark_logger.warning(
+                    f"Contexte non trouvé: {path}, création par défaut",
+                    extra={"arkalia_module": "zeroia"},
+                )
                 return self.create_default_context_enhanced()
         except Exception as e:
-            logger.error(f"Erreur chargement contexte: {e}")
+            ark_logger.error(f"Erreur chargement contexte: {e}", extra={"arkalia_module": "zeroia"})
             return self.create_default_context_enhanced()
 
     def load_reflexia_state(self, path: Path = REFLEXIA_STATE) -> dict:
@@ -124,10 +124,12 @@ class DecisionEngine:
                 with open(path, encoding="utf-8") as f:
                     return toml.load(f)
             else:
-                logger.warning(f"État Reflexia non trouvé: {path}")
+                ark_logger.warning(
+                    f"État Reflexia non trouvé: {path}", extra={"arkalia_module": "zeroia"}
+                )
                 return {"status": "unknown", "last_decision": "unknown"}
         except Exception as e:
-            logger.error(f"Erreur chargement Reflexia: {e}")
+            ark_logger.error(f"Erreur chargement Reflexia: {e}", extra={"arkalia_module": "zeroia"})
             return {"status": "error", "last_decision": "error"}
 
     def analyze_context(self, context: dict) -> dict:
@@ -188,7 +190,7 @@ class DecisionEngine:
             return decision, score
 
         except Exception as e:
-            logger.error(f"Erreur génération décision: {e}")
+            ark_logger.error(f"Erreur génération décision: {e}", extra={"arkalia_module": "zeroia"})
             duration = time.time() - start_time
             update_zeroia_metrics("context_analysis", "error", duration)
             return "error", 0.0
@@ -252,19 +254,29 @@ class DecisionEngine:
 
             # Valider la décision
             if not self.validate_decision(decision, score):
-                logger.warning(f"Décision invalide: {decision} (score: {score})")
+                ark_logger.warning(
+                    f"Décision invalide: {decision} (score: {score})",
+                    extra={"arkalia_module": "zeroia"},
+                )
                 return "error", 0.0
 
             # Vérifier si on doit traiter
             if not self.should_process_decision(decision):
-                logger.debug(f"Décision ignorée (répétition): {decision}")
+                ark_logger.debug(
+                    f"Décision ignorée (répétition): {decision}", extra={"arkalia_module": "zeroia"}
+                )
                 return decision, score
 
-            logger.info(f"✅ Décision prise: {decision} (score: {score:.2f})")
+            ark_logger.info(
+                f"✅ Décision prise: {decision} (score: {score:.2f})",
+                extra={"arkalia_module": "zeroia"},
+            )
             return decision, score
 
         except Exception as e:
-            logger.error(f"❌ Erreur prise de décision: {e}")
+            ark_logger.error(
+                f"❌ Erreur prise de décision: {e}", extra={"arkalia_module": "zeroia"}
+            )
             update_zeroia_metrics("decision_making", "error", 0.0)
             return "error", 0.0
 

@@ -74,7 +74,8 @@ class HtmlFormatter(IFormatter):
                     html_parts.append(self._format_list_html(value))
                 else:
                     html_parts.append(
-                        f"            <div class='item'><span class='key'>{key}:</span> {value}</div>"
+                        f"            <div class='item'>"
+                        f"<span class='key'>{key}:</span> {value}</div>"
                     )
 
                 html_parts.append("        </div>")

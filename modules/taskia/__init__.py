@@ -7,6 +7,8 @@
 📅 Created: 2025-06-29
 """
 
+from typing import Any
+
 __version__ = "1.0.0"
 __author__ = "Athalia"
 
@@ -14,19 +16,17 @@ __author__ = "Athalia"
 try:
     from core.ark_logger import ark_logger
 
-    from .core import format_summary, taskia_main
+    from .core import format_summary, taskia_main  # noqa: F401
 except ImportError:
     pass
 
 # Configuration du logging
-import logging
 
-logger = logging.getLogger("arkalia.taskia")
 logger.setLevel(logging.INFO)
 
 
 # Fonction de santé
-def health_check():
+def health_check() -> dict[str, Any]:
     """Vérification de santé du module"""
     return {
         "module": "taskia",
@@ -39,7 +39,7 @@ def health_check():
 # Fonction d'initialisation
 def initialize() -> bool:
     """Initialisation du module"""
-    logger.info("🌕 taskia initialisé")
+    ark_logger.info("🌕 taskia initialisé", extra={"arkalia_module": "taskia"})
     return True
 
 

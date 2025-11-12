@@ -19,16 +19,13 @@ Signale :
 """
 
 import json
-import logging
 import statistics
 from collections import defaultdict, deque
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Any
 
 from core.ark_logger import ark_logger
-
-logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -97,7 +94,7 @@ class BehaviorAnalyzer:
         self.baseline_stats: dict[str, dict] = {}
         self.anomaly_counters: dict[str, int] = defaultdict(int)
 
-        logger.info("🧠 BehaviorAnalyzer initialized")
+        ark_logger.info("🧠 BehaviorAnalyzer initialized", extra={"arkalia_module": "sandozia"})
 
     def add_metric_sample(
         self,
@@ -423,7 +420,7 @@ class BehaviorAnalyzer:
         Returns:
             dict: Résumé de l'analyse avec score de santé comportementale.
         """
-        logger.info("🔍 Starting behavior analysis...")
+        ark_logger.info("🔍 Starting behavior analysis...", extra={"arkalia_module": "sandozia"})
 
         # Exécuter toutes les analyses
         all_patterns: list[Any] = []
@@ -471,7 +468,10 @@ class BehaviorAnalyzer:
             "baseline_stats_available": len(self.baseline_stats),
         }
 
-        logger.info(f"✅ Behavior analysis complete - Health score: {health_score:.3f}")
+        ark_logger.info(
+            f"✅ Behavior analysis complete - Health score: {health_score:.3f}",
+            extra={"arkalia_module": "sandozia"},
+        )
         return summary
 
     def get_pattern_history(self, limit: int | None = None) -> list[dict]:

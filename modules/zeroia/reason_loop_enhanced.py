@@ -16,9 +16,9 @@ Améliorations v3.x :
 import sys
 import textwrap
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import toml
 

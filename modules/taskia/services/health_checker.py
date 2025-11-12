@@ -7,10 +7,10 @@
 📅 Created: 2025-01-27
 """
 
-import logging
 from datetime import datetime
 from typing import Any
 
+from core.ark_logger import ark_logger
 from modules.taskia.interfaces.health_check_interface import IHealthChecker
 
 

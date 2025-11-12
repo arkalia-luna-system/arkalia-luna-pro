@@ -14,16 +14,15 @@ Fonctionnalités :
 """
 
 import json
-import logging
 import sqlite3
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class EventType(Enum):
@@ -92,7 +91,10 @@ class EventStore:
         self.event_counter = 0
         self._load_events()
 
-        logger.info(f"🗄️ EventStore initialisé: {self.cache_dir}, compteur: {self.event_counter}")
+        ark_logger.info(
+            f"🗄️ EventStore initialisé: {self.cache_dir}, compteur: {self.event_counter}",
+            extra={"arkalia_module": "zeroia"},
+        )
 
     def _load_events(self) -> None:
         """Charge les événements depuis le stockage"""
@@ -103,7 +105,10 @@ class EventStore:
                     self.events = data.get("events", {})
                     self.event_counter = data.get("counter", 0)
         except Exception as e:
-            logger.error(f"❌ Erreur lors du chargement des événements: {e}")
+            ark_logger.error(
+                f"❌ Erreur lors du chargement des événements: {e}",
+                extra={"arkalia_module": "zeroia"},
+            )
             self.events = {}
             self.event_counter = 0
 
@@ -113,7 +118,10 @@ class EventStore:
             with open(self.cache_dir, "w") as f:
                 json.dump({"events": self.events, "counter": self.event_counter}, f, indent=2)
         except Exception as e:
-            logger.error(f"❌ Erreur lors de la sauvegarde des événements: {e}")
+            ark_logger.error(
+                f"❌ Erreur lors de la sauvegarde des événements: {e}",
+                extra={"arkalia_module": "zeroia"},
+            )
 
     def store_event(self, event_type: str, event_data: dict[str, Any]) -> None:
         """Stocke un nouvel événement"""
@@ -190,7 +198,9 @@ class EventStore:
         try:
             self.events[event_id] = event.to_dict()
         except (sqlite3.OperationalError, sqlite3.DatabaseError) as e:
-            logger.warning(f"⚠️ Erreur cache événement {event_id}: {e}")
+            ark_logger.warning(
+                f"⚠️ Erreur cache événement {event_id}: {e}", extra={"arkalia_module": "zeroia"}
+            )
             # Continuer sans stocker - l'événement sera perdu mais le système continue
             return event_id
 
@@ -198,7 +208,9 @@ class EventStore:
         try:
             self._save_events()
         except Exception as e:
-            logger.warning(f"⚠️ Erreur sauvegarde compteur: {e}")
+            ark_logger.warning(
+                f"⚠️ Erreur sauvegarde compteur: {e}", extra={"arkalia_module": "zeroia"}
+            )
 
         return event_id
 
@@ -209,7 +221,9 @@ class EventStore:
             if event_data and isinstance(event_data, dict):
                 return Event.from_dict(event_data)
         except Exception as e:
-            logger.warning(f"Erreur récupération événement {event_id}: {e}")
+            ark_logger.warning(
+                f"Erreur récupération événement {event_id}: {e}", extra={"arkalia_module": "zeroia"}
+            )
         return None
 
     def get_events_by_type(
@@ -239,7 +253,10 @@ class EventStore:
             events.sort(key=lambda x: x.timestamp, reverse=True)
             return events[:limit]
         except Exception as e:
-            logger.warning(f"Erreur récupération événements par type {event_type}: {e}")
+            ark_logger.warning(
+                f"Erreur récupération événements par type {event_type}: {e}",
+                extra={"arkalia_module": "zeroia"},
+            )
             return []
 
     def get_recent_events(self, limit: int = 50) -> list[Event]:
@@ -264,10 +281,12 @@ class EventStore:
                         all_events.append(event)
                     except Exception as e:
                         # Ignorer les événements corrompus
-                        logger.warning(f"Event corrompu ignoré {key}: {e}")
+                        ark_logger.warning(
+                            f"Event corrompu ignoré {key}: {e}", extra={"arkalia_module": "zeroia"}
+                        )
                         continue
         except Exception as e:
-            logger.error(f"Erreur accès cache events: {e}")
+            ark_logger.error(f"Erreur accès cache events: {e}", extra={"arkalia_module": "zeroia"})
             return []
 
         # Trier par timestamp décroissant et limiter
@@ -285,7 +304,10 @@ class EventStore:
                     if event and len(events) < limit:
                         events.append(event)
         except Exception as e:
-            logger.warning(f"Erreur récupération événements module {module}: {e}")
+            ark_logger.warning(
+                f"Erreur récupération événements module {module}: {e}",
+                extra={"arkalia_module": "zeroia"},
+            )
 
         # Trier par timestamp décroissant
         events.sort(key=lambda x: x.timestamp, reverse=True)
@@ -444,9 +466,11 @@ class EventStore:
                     except Exception:
                         continue
         except Exception as e:
-            logger.warning(f"Erreur nettoyage événements: {e}")
+            ark_logger.warning(
+                f"Erreur nettoyage événements: {e}", extra={"arkalia_module": "zeroia"}
+            )
 
-        logger.info(
+        ark_logger.info(
             f"📋 Nettoyage EventStore: {deleted_count} événements supprimés "
             f"(> {days_to_keep} jours)"
         )
@@ -479,5 +503,8 @@ class EventStore:
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(export_data, f, indent=2, ensure_ascii=False)
 
-        logger.info(f"📋 Export EventStore: {len(events)} événements → {filepath}")
+        ark_logger.info(
+            f"📋 Export EventStore: {len(events)} événements → {filepath}",
+            extra={"arkalia_module": "zeroia"},
+        )
         return len(events)

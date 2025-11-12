@@ -13,13 +13,12 @@ Implémente exactement tes recommandations :
 """
 
 import json
-import logging
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 @dataclass
@@ -78,13 +77,18 @@ class Chronalia:
         self.recent_cycles: list[CognitiveCycle] = []
         self.current_cycle_start: datetime | None = None
 
-        logger.info(f"🕰️ Chronalia initialized - Timeline: {timeline_dir}")
+        ark_logger.info(
+            f"🕰️ Chronalia initialized - Timeline: {timeline_dir}",
+            extra={"arkalia_module": "sandozia"},
+        )
 
     def start_cycle(self) -> str:
         """🔄 Démarre un nouveau cycle cognitif"""
         self.current_cycle_start = datetime.now()
         cycle_id = f"cycle_{self.current_cycle_start.strftime('%Y%m%d_%H%M%S_%f')}"
-        logger.debug(f"🔄 Cycle cognitif démarré: {cycle_id}")
+        ark_logger.debug(
+            f"🔄 Cycle cognitif démarré: {cycle_id}", extra={"arkalia_module": "sandozia"}
+        )
         return cycle_id
 
     def complete_cycle(
@@ -93,7 +97,10 @@ class Chronalia:
         """✅ Complète et persiste un cycle cognitif"""
 
         if not self.current_cycle_start:
-            logger.warning("⚠️ Aucun cycle en cours - création automatique")
+            ark_logger.warning(
+                "⚠️ Aucun cycle en cours - création automatique",
+                extra={"arkalia_module": "sandozia"},
+            )
             self.start_cycle()
 
         # Calcul durée cycle
@@ -138,7 +145,10 @@ class Chronalia:
         # Reset état
         self.current_cycle_start = None
 
-        logger.info(f"✅ Cycle cognitif complété - Durée: {cycle_duration_ms}ms")
+        ark_logger.info(
+            f"✅ Cycle cognitif complété - Durée: {cycle_duration_ms}ms",
+            extra={"arkalia_module": "sandozia"},
+        )
         return cycle
 
     def get_heatmap_data(self, hours_back: int = 24) -> dict[str, Any]:
@@ -282,7 +292,10 @@ class Chronalia:
             for cycle in cycles:
                 f.write(json.dumps(asdict(cycle), ensure_ascii=False) + "\n")
 
-        logger.info(f"📤 Timeline exportée: {export_file} ({len(cycles)} cycles)")
+        ark_logger.info(
+            f"📤 Timeline exportée: {export_file} ({len(cycles)} cycles)",
+            extra={"arkalia_module": "sandozia"},
+        )
         return export_file
 
     def _persist_cycle(self, cycle: CognitiveCycle) -> None:
@@ -311,7 +324,9 @@ class Chronalia:
                     if cycle_time >= since:
                         cycles.append(CognitiveCycle(**cycle_data))
         except Exception as e:
-            logger.error(f"❌ Erreur chargement cycles: {e}")
+            ark_logger.error(
+                f"❌ Erreur chargement cycles: {e}", extra={"arkalia_module": "sandozia"}
+            )
 
         return cycles
 

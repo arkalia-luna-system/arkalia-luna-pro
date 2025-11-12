@@ -13,18 +13,15 @@ Fonctionnalités automatiques :
 """
 
 import asyncio
-import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from core.ark_logger import ark_logger
 from modules.sandozia.analyzer.behavior import BehaviorAnalyzer
 from modules.zeroia.event_store import EventStore, EventType
-
-logger = logging.getLogger(__name__)
 
 
 class ReactionSeverity(Enum):
@@ -123,7 +120,10 @@ class CognitiveReactor:
         self.stimuli_queue: list[dict[str, Any]] = []
         self.cognitive_state: dict[str, Any] = {}
 
-        logger.info("🔥 CognitiveReactor initialized - Réactions automatiques activées")
+        ark_logger.info(
+            "🔥 CognitiveReactor initialized - Réactions automatiques activées",
+            extra={"arkalia_module": "sandozia"},
+        )
 
     # === Méthodes minimales pour compatibilité tests unitaires ===
     async def process_stimulus(self, stimulus):
@@ -262,7 +262,9 @@ class CognitiveReactor:
             return reactions
 
         except Exception as e:
-            logger.error(f"❌ Erreur CognitiveReactor: {e}")
+            ark_logger.error(
+                f"❌ Erreur CognitiveReactor: {e}", extra={"arkalia_module": "sandozia"}
+            )
             return []
 
     async def _trigger_cognitive_pause(self, repetition_count: int) -> CognitiveReaction | None:
@@ -289,7 +291,10 @@ class CognitiveReactor:
             reaction.executed_at = datetime.now()
             reaction.success = True
 
-            logger.warning(f"⏸️ PAUSE COGNITIVE ACTIVÉE - {repetition_count} répétitions détectées")
+            ark_logger.warning(
+                f"⏸️ PAUSE COGNITIVE ACTIVÉE - {repetition_count} répétitions détectées",
+                extra={"arkalia_module": "sandozia"},
+            )
 
             # Auto-cleanup après 60 secondes
             asyncio.create_task(self._cleanup_pause_marker(pause_file, 60))
@@ -298,7 +303,7 @@ class CognitiveReactor:
 
         except Exception as e:
             reaction.success = False
-            logger.error(f"❌ Échec pause cognitive: {e}")
+            ark_logger.error(f"❌ Échec pause cognitive: {e}", extra={"arkalia_module": "sandozia"})
             return reaction
 
     async def _check_berserk_mode(self, context: dict) -> CognitiveReaction | None:
@@ -343,11 +348,16 @@ class CognitiveReactor:
                 reaction.executed_at = datetime.now()
                 reaction.success = True
 
-                logger.critical(f"🚨 MODE BERSERK ACTIVÉ - Score global: {global_score}")
+                ark_logger.critical(
+                    f"🚨 MODE BERSERK ACTIVÉ - Score global: {global_score}",
+                    extra={"arkalia_module": "sandozia"},
+                )
 
             except Exception as e:
                 reaction.success = False
-                logger.error(f"❌ Échec mode berserk: {e}")
+                ark_logger.error(
+                    f"❌ Échec mode berserk: {e}", extra={"arkalia_module": "sandozia"}
+                )
 
             return reaction
 
@@ -392,7 +402,7 @@ class CognitiveReactor:
         quarantine_file = Path(f"state/{module_name}_quarantined.marker")
         quarantine_file.write_text(f"quarantine:{reason.value}:{until.isoformat()}")
 
-        logger.warning(
+        ark_logger.warning(
             f"🔒 MODULE EN QUARANTINE: {module_name} - Raison: {reason.value} - {duration}min"
         )
 
@@ -449,7 +459,9 @@ class CognitiveReactor:
             return sum(factors) / len(factors) if factors else 0.5
 
         except Exception as e:
-            logger.error(f"❌ Erreur calcul score global: {e}")
+            ark_logger.error(
+                f"❌ Erreur calcul score global: {e}", extra={"arkalia_module": "sandozia"}
+            )
             return 0.5
 
     def _cleanup_expired_quarantines(self):
@@ -486,7 +498,10 @@ class CognitiveReactor:
             if quarantine_file.exists():
                 quarantine_file.unlink()
 
-            logger.info(f"🔓 MODULE LIBÉRÉ: {module_name} - Quarantine terminée")
+            ark_logger.info(
+                f"🔓 MODULE LIBÉRÉ: {module_name} - Quarantine terminée",
+                extra={"arkalia_module": "sandozia"},
+            )
 
     async def _log_reaction(self, reaction: CognitiveReaction):
         """Enregistre une réaction dans l'historique et Event Store"""
@@ -516,7 +531,9 @@ class CognitiveReactor:
         await asyncio.sleep(delay_seconds)
         if pause_file.exists():
             pause_file.unlink()
-            logger.info("⏸️ Pause cognitive terminée automatiquement")
+            ark_logger.info(
+                "⏸️ Pause cognitive terminée automatiquement", extra={"arkalia_module": "sandozia"}
+            )
 
     async def _check_module_health(self, context: dict) -> list[CognitiveReaction]:
         """Vérifie la santé des modules et déclenche des quarantines si nécessaire"""
@@ -570,14 +587,14 @@ def trigger_cognitive_reaction(context: dict, decision_pattern_count: int = 0) -
     if decision_pattern_count >= 7:
         reactions = trigger_cognitive_reaction(context, decision_pattern_count)
         for reaction in reactions:
-            logger.info(f"🔥 Réaction automatique: {reaction}")
+            ark_logger.info(f"🔥 Réaction automatique: {reaction}", extra={"arkalia_module": "sandozia"})
     """
     reactor = create_cognitive_reactor()
 
     try:
         # Vérifier si une boucle d'événements est déjà en cours
         try:
-            loop = asyncio.get_running_loop()
+            asyncio.get_running_loop()
             # Si on est dans une boucle, créer une tâche
             import concurrent.futures
 
@@ -593,7 +610,9 @@ def trigger_cognitive_reaction(context: dict, decision_pattern_count: int = 0) -
         return [f"{r.action}:{r.severity.value}" for r in reactions]
 
     except Exception as e:
-        logger.error(f"❌ Erreur trigger_cognitive_reaction: {e}")
+        ark_logger.error(
+            f"❌ Erreur trigger_cognitive_reaction: {e}", extra={"arkalia_module": "sandozia"}
+        )
         return []
 
 
@@ -616,7 +635,7 @@ async def run_daemon():
         sys.exit(1)
 
     reactor = create_cognitive_reactor()
-    logger.info("🔥 CognitiveReactor daemon démarré")
+    ark_logger.info("🔥 CognitiveReactor daemon démarré", extra={"arkalia_module": "sandozia"})
 
     # Gestion signal d'arrêt
     def signal_handler(signum, frame) -> None:
@@ -627,7 +646,7 @@ async def run_daemon():
             signum: Numéro du signal reçu.
             frame: Frame d'exécution actuel.
         """
-        logger.info("🛑 Arrêt du daemon CognitiveReactor")
+        ark_logger.info("🛑 Arrêt du daemon CognitiveReactor", extra={"arkalia_module": "sandozia"})
         sys.exit(0)
 
     signal.signal(signal.SIGINT, signal_handler)
@@ -647,14 +666,17 @@ async def run_daemon():
 
             reactions = await reactor.check_and_react(context, 0)
             if reactions:
-                logger.info(f"🔥 {len(reactions)} réactions déclenchées")
+                ark_logger.info(
+                    f"🔥 {len(reactions)} réactions déclenchées",
+                    extra={"arkalia_module": "sandozia"},
+                )
 
             await asyncio.sleep(30)
 
     except KeyboardInterrupt:
-        logger.info("🛑 Daemon arrêté par l'utilisateur")
+        ark_logger.info("🛑 Daemon arrêté par l'utilisateur", extra={"arkalia_module": "sandozia"})
     except Exception as e:
-        logger.error(f"❌ Erreur daemon: {e}")
+        ark_logger.error(f"❌ Erreur daemon: {e}", extra={"arkalia_module": "sandozia"})
         sys.exit(1)
 
 

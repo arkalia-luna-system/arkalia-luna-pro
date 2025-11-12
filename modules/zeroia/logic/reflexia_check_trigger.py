@@ -5,7 +5,7 @@ Ce module gère les déclencheurs pour activer les vérifications Reflexia
 en fonction de l'état du système.
 """
 
-from typing import Any, Optional
+from typing import Any
 
 import requests
 

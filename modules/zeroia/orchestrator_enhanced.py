@@ -9,15 +9,14 @@ CHANGEMENTS v2.6.0:
 - Monitoring et métriques temps réel
 """
 
-import logging
 import time
-from typing import Any, Optional
+from typing import Any
+
+from core.ark_logger import ark_logger
 
 from .circuit_breaker import CognitiveOverloadError, DecisionIntegrityError, SystemRebootRequired
 from .event_store import EventType
 from .reason_loop_enhanced import cleanup_components, initialize_components, reason_loop_enhanced
-
-logger = logging.getLogger(__name__)
 
 
 class ZeroIAOrchestrator:
@@ -34,7 +33,7 @@ class ZeroIAOrchestrator:
     def __init__(
         self,
         max_loops: int | None = None,
-        interval_seconds: float = 2.5,
+        interval_seconds: float = 10.0,
         circuit_failure_threshold: int = 10,
         timeout: int = 60,
     ):
@@ -59,11 +58,16 @@ class ZeroIAOrchestrator:
             "start_time": self.start_time,
         }
 
-        logger.info("🚀 ZeroIA Orchestrator Enhanced initialisé")
+        ark_logger.info(
+            "🚀 ZeroIA Orchestrator Enhanced initialisé", extra={"arkalia_module": "zeroia"}
+        )
 
     def run(self) -> None:
         """Exécute la boucle orchestrée avec resilience patterns"""
-        logger.info(f"🎯 Démarrage orchestration (max_loops={self.max_loops})")
+        ark_logger.info(
+            f"🎯 Démarrage orchestration (max_loops={self.max_loops})",
+            extra={"arkalia_module": "zeroia"},
+        )
 
         try:
             while self._should_continue():
@@ -71,11 +75,15 @@ class ZeroIAOrchestrator:
                 time.sleep(self.interval_seconds)
 
         except KeyboardInterrupt:
-            logger.info("⏹️ Arrêt orchestration (Ctrl+C)")
+            ark_logger.info("⏹️ Arrêt orchestration (Ctrl+C)", extra={"arkalia_module": "zeroia"})
         except SystemExit:
-            logger.info("⏹️ Arrêt orchestration (SystemExit)")
+            ark_logger.info(
+                "⏹️ Arrêt orchestration (SystemExit)", extra={"arkalia_module": "zeroia"}
+            )
         except Exception as e:
-            logger.error(f"💥 Erreur fatale orchestration: {e}")
+            ark_logger.error(
+                f"💥 Erreur fatale orchestration: {e}", extra={"arkalia_module": "zeroia"}
+            )
             self.event_store.add_event(
                 EventType.SYSTEM_ERROR,
                 {"error": str(e), "error_type": type(e).__name__},
@@ -87,14 +95,16 @@ class ZeroIAOrchestrator:
     def _execute_single_loop(self) -> None:
         """Exécute une seule itération de la boucle avec protection"""
         self.loop_count += 1
-        logger.debug(f"🔄 Loop #{self.loop_count}")
+        ark_logger.debug(f"🔄 Loop #{self.loop_count}", extra={"arkalia_module": "zeroia"})
 
         try:
             # Exécuter decision via Circuit Breaker
             decision, score = self.circuit_breaker.call(reason_loop_enhanced)
 
             # Log succès
-            logger.info(f"✅ Décision: {decision} | Score: {score:.3f}")
+            ark_logger.info(
+                f"✅ Décision: {decision} | Score: {score:.3f}", extra={"arkalia_module": "zeroia"}
+            )
             self.session_stats["successful_decisions"] += 1
 
             # Event Sourcing
@@ -110,16 +120,19 @@ class ZeroIAOrchestrator:
             )
 
         except SystemRebootRequired as e:
-            logger.warning(f"🔄 System reboot requis: {e}")
+            ark_logger.warning(f"🔄 System reboot requis: {e}", extra={"arkalia_module": "zeroia"})
             self.session_stats["circuit_openings"] += 1
             self._handle_system_reboot()
 
         except (CognitiveOverloadError, DecisionIntegrityError) as e:
-            logger.warning(f"⚠️ Erreur gérée: {e}")
+            ark_logger.warning(f"⚠️ Erreur gérée: {e}", extra={"arkalia_module": "zeroia"})
             self.session_stats["failed_decisions"] += 1
 
         except Exception as e:
-            logger.error(f"💥 Erreur inattendue loop #{self.loop_count}: {e}")
+            ark_logger.error(
+                f"💥 Erreur inattendue loop #{self.loop_count}: {e}",
+                extra={"arkalia_module": "zeroia"},
+            )
             self.session_stats["failed_decisions"] += 1
 
         finally:
@@ -128,13 +141,17 @@ class ZeroIAOrchestrator:
     def _should_continue(self) -> bool:
         """Vérifie si l'orchestration doit continuer"""
         if self.max_loops and self.loop_count >= self.max_loops:
-            logger.info(f"⏹️ Max loops atteint ({self.max_loops})")
+            ark_logger.info(
+                f"⏹️ Max loops atteint ({self.max_loops})", extra={"arkalia_module": "zeroia"}
+            )
             return False
         return True
 
     def _handle_system_reboot(self) -> None:
         """Gère la procédure de reboot système"""
-        logger.warning("🔄 Procédure reboot système en cours...")
+        ark_logger.warning(
+            "🔄 Procédure reboot système en cours...", extra={"arkalia_module": "zeroia"}
+        )
 
         # Attendre recovery du circuit breaker
         time.sleep(self.circuit_breaker.timeout)
@@ -175,20 +192,31 @@ class ZeroIAOrchestrator:
         uptime = time.time() - self.start_time
 
         # Rapport final
-        logger.info("=" * 60)
-        logger.info("🎯 RAPPORT FINAL ORCHESTRATION")
-        logger.info("=" * 60)
-        logger.info(f"⏱️ Durée: {uptime:.1f}s")
-        logger.info(f"🔄 Loops: {self.loop_count}")
-        logger.info(f"✅ Succès: {self.session_stats['successful_decisions']}")
-        logger.info(f"❌ Échecs: {self.session_stats['failed_decisions']}")
-        logger.info(f"🔄 Circuit ouvertures: {self.session_stats['circuit_openings']}")
+        ark_logger.info("=" * 60, extra={"arkalia_module": "zeroia"})
+        ark_logger.info("🎯 RAPPORT FINAL ORCHESTRATION", extra={"arkalia_module": "zeroia"})
+        ark_logger.info("=" * 60, extra={"arkalia_module": "zeroia"})
+        ark_logger.info(f"⏱️ Durée: {uptime:.1f}s", extra={"arkalia_module": "zeroia"})
+        ark_logger.info(f"🔄 Loops: {self.loop_count}", extra={"arkalia_module": "zeroia"})
+        ark_logger.info(
+            f"✅ Succès: {self.session_stats['successful_decisions']}",
+            extra={"arkalia_module": "zeroia"},
+        )
+        ark_logger.info(
+            f"❌ Échecs: {self.session_stats['failed_decisions']}",
+            extra={"arkalia_module": "zeroia"},
+        )
+        ark_logger.info(
+            f"🔄 Circuit ouvertures: {self.session_stats['circuit_openings']}",
+            extra={"arkalia_module": "zeroia"},
+        )
 
         if self.session_stats["total_decisions"] > 0:
             success_rate = (
                 self.session_stats["successful_decisions"] / self.session_stats["total_decisions"]
             ) * 100
-            logger.info(f"📊 Taux succès: {success_rate:.1f}%")
+            ark_logger.info(
+                f"📊 Taux succès: {success_rate:.1f}%", extra={"arkalia_module": "zeroia"}
+            )
 
         # Event final
         self.event_store.add_event(
@@ -203,12 +231,12 @@ class ZeroIAOrchestrator:
 
         # Cleanup
         cleanup_components(self.circuit_breaker, self.event_store)
-        logger.info("🧹 Cleanup terminé")
+        ark_logger.info("🧹 Cleanup terminé", extra={"arkalia_module": "zeroia"})
 
 
 def orchestrate_zeroia_enhanced(
     max_loops: int | None = None,
-    interval_seconds: float = 1.5,
+    interval_seconds: float = 10.0,
     circuit_failure_threshold: int = 5,
     timeout: int = 30,
 ) -> None:

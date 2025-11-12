@@ -13,16 +13,13 @@ Collecte et traite les métriques d'intelligence croisée :
 """
 
 import json
-import logging
 import statistics
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Any
 
 from core.ark_logger import ark_logger
-
-logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -66,7 +63,7 @@ class SandoziaMetrics:
         self.retention_hours = retention_hours
         self.metrics_store: dict[str, list[MetricPoint]] = defaultdict(list)
         self.correlations_cache: dict[str, float] = {}
-        logger.info("📊 SandoziaMetrics initialized")
+        ark_logger.info("📊 SandoziaMetrics initialized", extra={"arkalia_module": "sandozia"})
 
     def add_metric(self, name: str, value: float, labels: dict[str, str] | None = None) -> None:
         """Ajoute une métrique au store.
@@ -131,7 +128,9 @@ class SandoziaMetrics:
             self.correlations_cache[cache_key] = correlation
             return correlation
         except Exception as e:
-            logger.warning(f"⚠️ Correlation calculation failed: {e}")
+            ark_logger.warning(
+                f"⚠️ Correlation calculation failed: {e}", extra={"arkalia_module": "sandozia"}
+            )
             return None
 
     def get_metric_summary(self, name: str) -> dict[str, Any] | None:
@@ -386,7 +385,7 @@ class MetricsCollector:
         }
         self.metrics_buffer: dict[str, list[dict]] = {}
         self.alerts: list[dict] = []
-        logger.info("📊 MetricsCollector initialized")
+        ark_logger.info("📊 MetricsCollector initialized", extra={"arkalia_module": "sandozia"})
 
     def collect_module_metrics(self, module_name: str, metrics: dict) -> None:
         """
@@ -440,7 +439,10 @@ class MetricsCollector:
                         "severity": "warning",
                     }
                     self.alerts.append(alert)
-                    logger.warning(f"⚠️ Alert: {module_name}.{metric_name} = {value} > {threshold}")
+                    ark_logger.warning(
+                        f"⚠️ Alert: {module_name}.{metric_name} = {value} > {threshold}",
+                        extra={"arkalia_module": "sandozia"},
+                    )
 
     def get_module_metrics(self, module_name: str, hours: int = 24) -> list[dict]:
         """
@@ -536,7 +538,9 @@ class MetricsCollector:
         # Nettoyer les alertes
         self.alerts = [alert for alert in self.alerts if alert["timestamp"] > cutoff_time]
 
-        logger.info(f"🧹 Cleaned data older than {days} days")
+        ark_logger.info(
+            f"🧹 Cleaned data older than {days} days", extra={"arkalia_module": "sandozia"}
+        )
 
     def export_metrics(self, format_type: str = "json") -> str:
         """

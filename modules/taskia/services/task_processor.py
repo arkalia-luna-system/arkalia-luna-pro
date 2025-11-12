@@ -7,9 +7,9 @@
 📅 Created: 2025-01-27
 """
 
-import logging
 from typing import Any
 
+from core.ark_logger import ark_logger
 from modules.taskia.interfaces.formatter_interface import IFormatter
 from modules.taskia.interfaces.task_processor_interface import ITaskProcessor
 

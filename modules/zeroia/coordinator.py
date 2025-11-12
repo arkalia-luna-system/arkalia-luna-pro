@@ -12,11 +12,11 @@ INTÉGRATIONS ENHANCED v2.8.0:
 """
 
 import asyncio
-import logging
 import time
 from datetime import datetime
-from pathlib import Path
-from typing import Any, Optional
+from typing import Any
+
+from core.ark_logger import ark_logger
 
 from .confidence_score import ConfidenceScorer
 from .decision_engine import DecisionEngine
@@ -25,8 +25,6 @@ from .graceful_degradation import DegradationLevel, GracefulDegradationSystem
 from .metrics import get_zeroia_metrics, update_zeroia_metrics
 from .orchestrator_enhanced import ZeroIAOrchestrator
 from .state_manager import StateManager
-
-logger = logging.getLogger(__name__)
 
 
 class ZeroIACoordinator:
@@ -44,7 +42,9 @@ class ZeroIACoordinator:
 
     def __init__(self):
         """Initialise le coordinateur avec tous les systèmes"""
-        logger.info("🚀 Initialisation ZeroIA Coordinator Enhanced")
+        ark_logger.info(
+            "🚀 Initialisation ZeroIA Coordinator Enhanced", extra={"arkalia_module": "zeroia"}
+        )
 
         # Composants principaux
         self.decision_engine = DecisionEngine()
@@ -55,7 +55,7 @@ class ZeroIACoordinator:
         self.graceful_degradation = GracefulDegradationSystem()
         self.error_recovery = ErrorRecoverySystem()
         self.orchestrator = ZeroIAOrchestrator(
-            max_loops=None, interval_seconds=2.0, circuit_failure_threshold=8, timeout=45
+            max_loops=None, interval_seconds=10.0, circuit_failure_threshold=8, timeout=45
         )
 
         # État du coordinateur
@@ -70,11 +70,14 @@ class ZeroIACoordinator:
             "confidence_average": 0.0,
         }
 
-        logger.info("✅ ZeroIA Coordinator initialisé avec tous les systèmes")
+        ark_logger.info(
+            "✅ ZeroIA Coordinator initialisé avec tous les systèmes",
+            extra={"arkalia_module": "zeroia"},
+        )
 
     async def start(self) -> None:
         """Démarre le coordinateur avec tous les systèmes"""
-        logger.info("🎯 Démarrage ZeroIA Coordinator")
+        ark_logger.info("🎯 Démarrage ZeroIA Coordinator", extra={"arkalia_module": "zeroia"})
 
         self.is_running = True
         self.start_time = datetime.now()
@@ -87,19 +90,24 @@ class ZeroIACoordinator:
             await self._start_orchestrator()
 
         except Exception as e:
-            logger.error(f"💥 Erreur démarrage coordinateur: {e}")
+            ark_logger.error(
+                f"💥 Erreur démarrage coordinateur: {e}", extra={"arkalia_module": "zeroia"}
+            )
             await self.error_recovery.handle_error(ErrorType.UNKNOWN, str(e))
             raise
 
     async def _initialize_systems(self) -> None:
         """Initialise tous les systèmes de manière sécurisée"""
-        logger.info("🔧 Initialisation des systèmes")
+        ark_logger.info("🔧 Initialisation des systèmes", extra={"arkalia_module": "zeroia"})
 
         # Vérifier la santé système
         health_score = await self.graceful_degradation.assess_system_health()
 
         if health_score < 0.7:
-            logger.warning(f"⚠️ Santé système faible ({health_score:.2f}), activation dégradation")
+            ark_logger.warning(
+                f"⚠️ Santé système faible ({health_score:.2f}), activation dégradation",
+                extra={"arkalia_module": "zeroia"},
+            )
             await self.graceful_degradation.trigger_degradation(
                 DegradationLevel.LIGHT_DEGRADATION, "Santé système faible au démarrage"
             )
@@ -107,19 +115,19 @@ class ZeroIACoordinator:
         # Initialiser le scoring de confiance
         self.confidence_scorer.load_config()
 
-        logger.info("✅ Tous les systèmes initialisés")
+        ark_logger.info("✅ Tous les systèmes initialisés", extra={"arkalia_module": "zeroia"})
 
     async def _start_orchestrator(self) -> None:
         """Démarre l'orchestrateur enhanced"""
-        logger.info("🎼 Démarrage orchestrateur enhanced")
+        ark_logger.info("🎼 Démarrage orchestrateur enhanced", extra={"arkalia_module": "zeroia"})
 
         # Lancer l'orchestrateur en arrière-plan
-        orchestrator_task = asyncio.create_task(self._run_orchestrator())
+        asyncio.create_task(self._run_orchestrator())
 
         # Attendre que l'orchestrateur soit prêt
         await asyncio.sleep(2)
 
-        logger.info("✅ Orchestrateur démarré")
+        ark_logger.info("✅ Orchestrateur démarré", extra={"arkalia_module": "zeroia"})
 
     async def _run_orchestrator(self) -> None:
         """Exécute l'orchestrateur avec monitoring"""
@@ -127,7 +135,7 @@ class ZeroIACoordinator:
             # Utiliser l'orchestrateur enhanced existant
             self.orchestrator.run()
         except Exception as e:
-            logger.error(f"💥 Erreur orchestrateur: {e}")
+            ark_logger.error(f"💥 Erreur orchestrateur: {e}", extra={"arkalia_module": "zeroia"})
             await self.error_recovery.handle_error(ErrorType.UNKNOWN, str(e))
 
     async def make_decision(self, context: dict) -> dict[str, Any]:
@@ -190,7 +198,7 @@ class ZeroIACoordinator:
             }
 
         except Exception as e:
-            logger.error(f"💥 Erreur décision: {e}")
+            ark_logger.error(f"💥 Erreur décision: {e}", extra={"arkalia_module": "zeroia"})
 
             # Gérer l'erreur
             await self.error_recovery.handle_error(ErrorType.UNKNOWN, str(e))
@@ -229,14 +237,14 @@ class ZeroIACoordinator:
 
     async def stop(self) -> None:
         """Arrête le coordinateur proprement"""
-        logger.info("⏹️ Arrêt ZeroIA Coordinator")
+        ark_logger.info("⏹️ Arrêt ZeroIA Coordinator", extra={"arkalia_module": "zeroia"})
 
         self.is_running = False
 
         # Arrêter l'orchestrateur
         # (l'orchestrateur enhanced gère son propre arrêt)
 
-        logger.info("✅ ZeroIA Coordinator arrêté")
+        ark_logger.info("✅ ZeroIA Coordinator arrêté", extra={"arkalia_module": "zeroia"})
 
     async def health_check(self) -> dict[str, Any]:
         """Vérification de santé complète"""
@@ -260,7 +268,7 @@ class ZeroIACoordinator:
             }
 
         except Exception as e:
-            logger.error(f"💥 Erreur health check: {e}")
+            ark_logger.error(f"💥 Erreur health check: {e}", extra={"arkalia_module": "zeroia"})
             return {"is_healthy": False, "error": str(e), "timestamp": datetime.now().isoformat()}
 
 
@@ -288,9 +296,9 @@ async def main():
             await asyncio.sleep(1)
 
     except KeyboardInterrupt:
-        logger.info("⏹️ Arrêt demandé (Ctrl+C)")
+        ark_logger.info("⏹️ Arrêt demandé (Ctrl+C)", extra={"arkalia_module": "zeroia"})
     except Exception as e:
-        logger.error(f"💥 Erreur fatale: {e}")
+        ark_logger.error(f"💥 Erreur fatale: {e}", extra={"arkalia_module": "zeroia"})
     finally:
         await coordinator.stop()
 

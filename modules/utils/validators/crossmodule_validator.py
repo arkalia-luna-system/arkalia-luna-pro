@@ -5,16 +5,16 @@ Assure la cohérence entre les différents modules du système
 """
 
 import asyncio
-import logging
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from core.ark_logger import ark_logger
+
 # Configuration logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 
 class ModuleState(BaseModel):
@@ -136,18 +136,18 @@ class CrossModuleValidator:
     async def run_validation_loop(self):
         """Boucle principale de validation"""
         self.is_running = True
-        logger.info("🔍 Démarrage boucle de validation")
+        ark_logger.info("🔍 Démarrage boucle de validation", extra={"arkalia_module": "utils"})
 
         while self.is_running:
             try:
                 validation = await self.validate_states()
-                logger.info(
+                ark_logger.info(
                     f"✅ Validation: score={validation.coherence_score:.2f}, "
                     f"conflits={len(validation.conflicts)}"
                 )
                 await asyncio.sleep(30)  # Validation toutes les 30 secondes
             except Exception as e:
-                logger.error(f"❌ Erreur validation: {e}")
+                ark_logger.error(f"❌ Erreur validation: {e}", extra={"arkalia_module": "utils"})
                 await asyncio.sleep(5)
 
 

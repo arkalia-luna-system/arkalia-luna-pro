@@ -13,14 +13,11 @@ Coordonne le raisonnement entre modules IA :
 """
 
 import json
-import logging
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from core.ark_logger import ark_logger
-
-logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -74,7 +71,9 @@ class CollaborativeReasoning:
         }
         self.reasoning_history: list[dict] = []
         self.consensus_cache: dict[str, dict] = {}
-        logger.info("🤝 CollaborativeReasoning initialized")
+        ark_logger.info(
+            "🤝 CollaborativeReasoning initialized", extra={"arkalia_module": "sandozia"}
+        )
 
     def coordinate_reasoning(
         self, module_insights: dict[str, dict], context: dict | None = None
@@ -89,7 +88,9 @@ class CollaborativeReasoning:
         Returns:
             dict: Synthèse collaborative
         """
-        logger.info("🤝 Starting collaborative reasoning...")
+        ark_logger.info(
+            "🤝 Starting collaborative reasoning...", extra={"arkalia_module": "sandozia"}
+        )
 
         # Analyser les insights
         analysis = self._analyze_insights(module_insights)
@@ -329,7 +330,10 @@ class CollaborativeReasoning:
         if len(self.reasoning_history) > 100:  # Limiter l'historique
             self.reasoning_history = self.reasoning_history[-100:]
 
-        logger.info(f"🤝 Collaborative reasoning completed: {synthesis['final_decision']}")
+        ark_logger.info(
+            f"🤝 Collaborative reasoning completed: {synthesis['final_decision']}",
+            extra={"arkalia_module": "sandozia"},
+        )
         return synthesis
 
     def get_reasoning_history(self, limit: int | None = None) -> list[dict]:
@@ -351,7 +355,9 @@ class CollaborativeReasoning:
         Nettoie le cache de consensus
         """
         self.consensus_cache.clear()
-        logger.info("🧹 Collaborative reasoning cache cleared")
+        ark_logger.info(
+            "🧹 Collaborative reasoning cache cleared", extra={"arkalia_module": "sandozia"}
+        )
 
 
 # CLI pour test

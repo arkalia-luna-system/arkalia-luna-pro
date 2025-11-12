@@ -10,18 +10,15 @@ Boucle principale améliorée avec :
 - Logs structurés
 """
 
-import logging
 import time
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from core.ark_logger import ark_logger
 
 from .decision import monitor_status
 from .metrics_enhanced import read_metrics, read_metrics_enhanced
 from .snapshot import save_snapshot
-
-logger = logging.getLogger(__name__)
 
 
 def analyze_system_health(metrics: dict[str, Any]) -> dict[str, str]:
@@ -196,7 +193,9 @@ def reflexia_loop_enhanced(
     start_time = datetime.now()
 
     if verbose:
-        logger.info("🧠 Reflexia Enhanced Loop v2.6.0 started")
+        ark_logger.info(
+            "🧠 Reflexia Enhanced Loop v2.6.0 started", extra={"arkalia_module": "reflexia"}
+        )
         ark_logger.info("🧠 Reflexia Enhanced Loop v2.6.0 started", extra={"module": "logic"})
 
     while True:
@@ -244,12 +243,17 @@ def reflexia_loop_enhanced(
                     ark_logger.info(f"      • {rec}", extra={"module": "logic"})
 
                 ark_logger.info(f"   ⏱️ Cycle time: {cycle_time:.2f}s", extra={"module": "logic"})
-                ark_logger.info("")
+                ark_logger.info("", extra={"arkalia_module": "reflexia"})
 
-            logger.info(f"Reflexia cycle #{iteration + 1} completed - Status: {status}")
+            ark_logger.info(
+                f"Reflexia cycle #{iteration + 1} completed - Status: {status}",
+                extra={"arkalia_module": "reflexia"},
+            )
 
         except Exception as e:
-            logger.error(f"Reflexia enhanced cycle error: {e}")
+            ark_logger.error(
+                f"Reflexia enhanced cycle error: {e}", extra={"arkalia_module": "reflexia"}
+            )
             if verbose:
                 ark_logger.info(f"❌ Erreur cycle Reflexia: {e}", extra={"module": "logic"})
 
@@ -259,7 +263,7 @@ def reflexia_loop_enhanced(
         if max_iterations is not None and iteration >= max_iterations:
             total_time = (datetime.now() - start_time).total_seconds()
             if verbose:
-                logger.info(
+                ark_logger.info(
                     f"Reflexia Enhanced completed - {iteration} cycles in {total_time:.1f}s"
                 )
                 ark_logger.info(
