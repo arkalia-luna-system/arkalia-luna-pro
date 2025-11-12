@@ -95,7 +95,7 @@ extend-exclude = '''
 [tool.isort]
 profile = "black"
 line_length = 100
-known_first_party = ["modules", "scripts"]
+known_first_party = ["modules", "scripts", "demo_global"]
 skip_glob = [
     "*/generated/*",
     "*/venv/*",
