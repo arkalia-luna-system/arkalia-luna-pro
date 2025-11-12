@@ -6,11 +6,39 @@ import shutil
 from datetime import datetime
 from pathlib import Path
 
-STATE_FILE = Path("modules/zeroia/state/zeroia_state.toml")
-SNAPSHOT_FILE = Path("modules/zeroia/state/zeroia_state_snapshot.toml")
-BACKUP_FILE = Path("modules/zeroia/state/zeroia_state_backup.toml")
-LOG_FILE = Path("logs/zeroia_rollback.log")
-FAILURE_LOG = Path("logs/failure_analysis.md")
+
+# Résoudre les chemins depuis le répertoire de travail courant
+def get_state_file() -> Path:
+    """Retourne le chemin du fichier d'état, résolu depuis le répertoire de travail courant."""
+    return Path.cwd() / "modules" / "zeroia" / "state" / "zeroia_state.toml"
+
+
+def get_snapshot_file() -> Path:
+    """Retourne le chemin du fichier snapshot, résolu depuis le répertoire de travail courant."""
+    return Path.cwd() / "modules" / "zeroia" / "state" / "zeroia_state_snapshot.toml"
+
+
+def get_backup_file() -> Path:
+    """Retourne le chemin du fichier backup, résolu depuis le répertoire de travail courant."""
+    return Path.cwd() / "modules" / "zeroia" / "state" / "zeroia_state_backup.toml"
+
+
+def get_log_file() -> Path:
+    """Retourne le chemin du fichier de log, résolu depuis le répertoire de travail courant."""
+    return Path.cwd() / "logs" / "zeroia_rollback.log"
+
+
+def get_failure_log() -> Path:
+    """Retourne le chemin du fichier de log d'échec, résolu depuis le répertoire de travail courant."""
+    return Path.cwd() / "logs" / "failure_analysis.md"
+
+
+# Pour compatibilité avec les tests qui patch ces variables
+STATE_FILE = get_state_file()
+SNAPSHOT_FILE = get_snapshot_file()
+BACKUP_FILE = get_backup_file()
+LOG_FILE = get_log_file()
+FAILURE_LOG = get_failure_log()
 
 __all__ = [
     "backup_current_state",
@@ -26,7 +54,14 @@ __all__ = [
 def log(msg: str, silent: bool = False) -> None:
     """Log message to rollback.log and print if not silent."""
     try:
-        with LOG_FILE.open("a", encoding="utf-8") as f:
+        # Résoudre le chemin dynamiquement
+        if LOG_FILE.is_absolute():
+            log_file = LOG_FILE
+        else:
+            log_file = get_log_file()
+        # Créer le répertoire parent si nécessaire
+        log_file.parent.mkdir(parents=True, exist_ok=True)
+        with log_file.open("a", encoding="utf-8") as f:
             f.write(f"[rollback] {msg}\n")
     except Exception as e:
         print(f"[rollback] Erreur : {e}")
@@ -40,9 +75,23 @@ def backup_current_state(silent: bool = False) -> None:
     Args:
         silent: Mode silencieux (défaut: False).
     """
-    if STATE_FILE.exists():
-        shutil.copy2(STATE_FILE, BACKUP_FILE)
-        log(f"🗄️  Backup du fichier actuel effectué : {BACKUP_FILE}", silent)
+    # Résoudre les chemins dynamiquement depuis le répertoire de travail courant
+    # Si STATE_FILE est un Path absolu (patché par les tests), l'utiliser tel quel
+    # Sinon, résoudre depuis le répertoire de travail courant
+    if STATE_FILE.is_absolute():
+        state_file = STATE_FILE
+        backup_file = BACKUP_FILE if BACKUP_FILE.is_absolute() else Path.cwd() / BACKUP_FILE
+    else:
+        state_file = Path.cwd() / STATE_FILE
+        backup_file = Path.cwd() / BACKUP_FILE
+
+    if state_file.exists():
+        # Créer le répertoire parent si nécessaire
+        backup_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(state_file, backup_file)
+        log(f"🗄️  Backup du fichier actuel effectué : {backup_file}", silent)
+    else:
+        log(f"⚠️  Fichier d'état introuvable : {state_file}", silent)
 
 
 def restore_snapshot(silent: bool = False) -> bool:
@@ -54,19 +103,35 @@ def restore_snapshot(silent: bool = False) -> bool:
     Returns:
         bool: True si la restauration a réussi, False sinon.
     """
-    if not SNAPSHOT_FILE.exists():
+    # Résoudre les chemins dynamiquement
+    if SNAPSHOT_FILE.is_absolute():
+        snapshot_file = SNAPSHOT_FILE
+        state_file = STATE_FILE if STATE_FILE.is_absolute() else Path.cwd() / STATE_FILE
+    else:
+        snapshot_file = Path.cwd() / SNAPSHOT_FILE
+        state_file = Path.cwd() / STATE_FILE
+
+    if not snapshot_file.exists():
         log("❌ Aucun fichier snapshot à restaurer.", silent)
         return False
-    shutil.copy2(SNAPSHOT_FILE, STATE_FILE)
+    # Créer le répertoire parent si nécessaire
+    state_file.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(snapshot_file, state_file)
     log("✅ Snapshot restauré dans zeroia_state.toml", silent)
     return True
 
 
 def log_failure() -> None:
     """Enregistre un échec dans le log de failures."""
-    FAILURE_LOG.parent.mkdir(parents=True, exist_ok=True)
+    # Résoudre le chemin dynamiquement
+    if FAILURE_LOG.is_absolute():
+        failure_log = FAILURE_LOG
+    else:
+        failure_log = Path.cwd() / FAILURE_LOG
+
+    failure_log.parent.mkdir(parents=True, exist_ok=True)
     try:
-        with FAILURE_LOG.open("a", encoding="utf-8") as f:
+        with failure_log.open("a", encoding="utf-8") as f:
             f.write("\n")
             f.write(f"## 🛑 Échec détecté : {datetime.now().isoformat()}\n")
             f.write("**Raison :** Restauration du snapshot ZeroIA exécutée manuellement.\n")
@@ -80,11 +145,21 @@ def rollback_from_backup(silent: bool = False) -> None:
     Args:
         silent: Mode silencieux (défaut: False).
     """
-    if not BACKUP_FILE.exists():
+    # Résoudre les chemins dynamiquement
+    if BACKUP_FILE.is_absolute():
+        backup_file = BACKUP_FILE
+        state_file = STATE_FILE if STATE_FILE.is_absolute() else Path.cwd() / STATE_FILE
+    else:
+        backup_file = Path.cwd() / BACKUP_FILE
+        state_file = Path.cwd() / STATE_FILE
+
+    if not backup_file.exists():
         log("❌ Rollback impossible : aucun backup trouvé.", silent)
         return
     try:
-        shutil.copy2(BACKUP_FILE, STATE_FILE)
+        # Créer le répertoire parent si nécessaire
+        state_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(backup_file, state_file)
         log("✅ Rollback effectué depuis backup.", silent)
     except Exception as e:
         log(f"❌ Erreur lors du rollback : {e}", silent)
