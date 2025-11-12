@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "arkalia-luna-pro"
 version = "2.8.0"
 description = "Arkalia-LUNA Pro - Kernel IA Ultra-Protection"
-authors = [{ name = "Athalia", email = "athalia@arkalia-luna.com" }]
+authors = [{ name = "Athalia", email = "arkalia.luna.system@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

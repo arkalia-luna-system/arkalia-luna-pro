@@ -111,7 +111,7 @@ Arkalia-LUNA Pro intègre :
 
 ## 🐞 Signalement de Bug
 
-Si vous rencontrez un bug ou une vulnérabilité, veuillez le signaler immédiatement à l'équipe de développement via notre [dépôt GitHub](https://github.com/arkalia-luna-system/arkalia-luna-pro/issues) ou par email à support@arkalia-luna.com.
+Si vous rencontrez un bug ou une vulnérabilité, veuillez le signaler immédiatement à l'équipe de développement via notre [dépôt GitHub](https://github.com/arkalia-luna-system/arkalia-luna-pro/issues) ou par email à arkalia.luna.system@gmail.com.
 
 ---
 

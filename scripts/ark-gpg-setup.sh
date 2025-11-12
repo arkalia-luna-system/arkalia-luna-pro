@@ -1,7 +1,7 @@
 #!/bin/bash
 # 🛡️ Arkalia GPG Setup v1.0 — by Athalia 🌙
 
-KEY_EMAIL="siwekathalia@gmail.com"
+KEY_EMAIL="arkalia.luna.system@gmail.com"
 KEY_ID=$(gpg --list-secret-keys --keyid-format=long "$KEY_EMAIL" | grep '^sec' | awk '{print $2}' | cut -d'/' -f2)
 
 if [ -z "$KEY_ID" ]; then

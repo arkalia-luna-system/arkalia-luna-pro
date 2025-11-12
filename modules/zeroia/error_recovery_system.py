@@ -238,7 +238,7 @@ class ErrorRecoverySystem:
         return {
             "status": "manual_intervention_required",
             "incident_id": incident_id,
-            "contact": "admin@arkalia-luna.com",
+            "contact": "arkalia.luna.system@gmail.com",
         }
 
     async def handle_error(self, error_type: ErrorType, error_message: str) -> Any | None:

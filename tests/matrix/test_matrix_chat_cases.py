@@ -42,7 +42,7 @@ def test_chat_various_messages(msg):
         patch("modules.assistantia.core._check_ollama_health", return_value=True),
     ):
         response = client.post("/api/v1/chat", json={"message": msg})
-        assert response.status_code == 200, (
-            f"Statut inattendu: {response.status_code} {response.text}"
-        )
+        assert (
+            response.status_code == 200
+        ), f"Statut inattendu: {response.status_code} {response.text}"
         assert "response" in response.json(), "Réponse manquante"

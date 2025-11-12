@@ -146,7 +146,7 @@ find "$BACKUP_ROOT" -name "arkalia_*" -type d -mtime +30 -exec rm -rf {} \;
 #!/bin/bash
 # scripts/ark_encrypted_backup.sh
 
-GPG_RECIPIENT="arkalia-backup@system.local"
+GPG_RECIPIENT="arkalia.luna.system@gmail.com"
 ENCRYPTED_DIR="/backup/encrypted"
 
 # Fonction chiffrement GPG
@@ -594,14 +594,14 @@ groups:
 ## 📞 Contacts Backup d'Urgence
 
 ### **Récupération Critique**
-- 🚨 **Backup Emergency** : backup-emergency@arkalia-luna.system
-- 💾 **Storage Admin** : storage@arkalia-luna.system
-- 🔐 **Crypto Key Manager** : keymaster@arkalia-luna.system
+- 🚨 **Backup Emergency** : arkalia.luna.system@gmail.com
+- 💾 **Storage Admin** : arkalia.luna.system@gmail.com
+- 🔐 **Crypto Key Manager** : arkalia.luna.system@gmail.com
 
 ### **Fournisseurs Externes**
-- ☁️ **Cloud Backup Provider** : support@backup-provider.com
-- 🏢 **Data Center Contact** : noc@datacenter.com
-- 🛠️ **Hardware Support** : hardware@vendor.com
+- ☁️ **Cloud Backup Provider** : arkalia.luna.system@gmail.com
+- 🏢 **Data Center Contact** : arkalia.luna.system@gmail.com
+- 🛠️ **Hardware Support** : arkalia.luna.system@gmail.com
 
 ---
 

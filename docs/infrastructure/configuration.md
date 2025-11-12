@@ -43,7 +43,7 @@ PROMETHEUS_SCRAPE_INTERVAL=15s
 # AlertManager
 ALERTMANAGER_SMTP_HOST=smtp.gmail.com
 ALERTMANAGER_SMTP_PORT=587
-ALERTMANAGER_SMTP_USER=alerts@arkalia-luna.com
+ALERTMANAGER_SMTP_USER=arkalia.luna.system@gmail.com
 ALERTMANAGER_SMTP_PASSWORD=secure-password
 ```
 
@@ -114,8 +114,8 @@ scrape_configs:
 # alertmanager.yml
 global:
   smtp_smarthost: 'smtp.gmail.com:587'
-  smtp_from: 'alerts@arkalia-luna.com'
-  smtp_auth_username: 'alerts@arkalia-luna.com'
+  smtp_from: 'arkalia.luna.system@gmail.com'
+  smtp_auth_username: 'arkalia.luna.system@gmail.com'
   smtp_auth_password: 'secure-password'
 
 route:
@@ -128,7 +128,7 @@ route:
 receivers:
   - name: 'arkalia-alerts'
     email_configs:
-      - to: 'admin@arkalia-luna.com'
+      - to: 'arkalia.luna.system@gmail.com'
 ```
 
 ### 🚀 Optimisations recommandées

@@ -330,7 +330,7 @@ INCIDENT_TYPE="$1"
 SEVERITY="$2"
 DETAILS="$3"
 
-cat << EOF | mail -s "[ARKALIA URGENT] $INCIDENT_TYPE - $SEVERITY" security@arkalia-luna.system
+cat << EOF | mail -s "[ARKALIA URGENT] $INCIDENT_TYPE - $SEVERITY" arkalia.luna.system@gmail.com
 🚨 INCIDENT ARKALIA-LUNA DÉTECTÉ
 
 Severité: $SEVERITY
@@ -434,13 +434,13 @@ def simulate_state_corruption():
 
 ### **Escalade Immediate**
 - 🚨 **Incident CRITIQUE** : +33-XXX-XXX-XXX (24h/7j)
-- 📧 **Email sécurisé** : security@arkalia-luna.system
+- 📧 **Email sécurisé** : arkalia.luna.system@gmail.com
 - 💬 **Slack d'urgence** : #arkalia-security-emergency
 
 ### **Support Technique**
-- 🔧 **DevOps On-Call** : devops@arkalia-luna.system
-- 🧠 **Expert IA** : ai-lead@arkalia-luna.system
-- 🐳 **Infrastructure** : infra@arkalia-luna.system
+- 🔧 **DevOps On-Call** : arkalia.luna.system@gmail.com
+- 🧠 **Expert IA** : arkalia.luna.system@gmail.com
+- 🐳 **Infrastructure** : arkalia.luna.system@gmail.com
 
 ---
 

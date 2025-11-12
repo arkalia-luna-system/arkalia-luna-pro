@@ -196,7 +196,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "🚀 Déploiement de la documentation..."
-          git config --global user.email "ci@arkalia.ai"
+          git config --global user.email "arkalia.luna.system@gmail.com"
           git config --global user.name "arkalia-bot"
           if mkdocs gh-deploy --force --remote-branch gh-pages --remote-name origin; then
             echo "✅ Déploiement réussi"

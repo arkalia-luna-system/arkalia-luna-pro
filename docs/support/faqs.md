@@ -58,7 +58,7 @@ Documentation complète disponible sur [GitHub Pages](https://arkalia-luna-syste
 
 <details>
 <summary>### 7. Comment puis-je signaler un bug ou vulnérabilité ?</summary>
-Signalez via notre [Issue Tracker GitHub](https://github.com/arkalia-luna-system/arkalia-luna-pro/issues) avec template security. Pour vulnérabilités critiques : enterprise@arkalia-luna.com avec chiffrement GPG.
+Signalez via notre [Issue Tracker GitHub](https://github.com/arkalia-luna-system/arkalia-luna-pro/issues) avec template security. Pour vulnérabilités critiques : arkalia.luna.system@gmail.com avec chiffrement GPG.
 </details>
 
 <details>
@@ -92,7 +92,7 @@ python scripts/ark-validate-performance.py
 ## 🚀 Support Enterprise v2.8.0
 
 - **📖 Documentation :** [Documentation Interactive](https://arkalia-luna-system.github.io/arkalia-luna-pro/)
-- **💬 Support 24/7 :** enterprise@arkalia-luna.com
+- **💬 Support 24/7 :** arkalia.luna.system@gmail.com
 - **🎓 Formation :** Certification développeurs Sandozia
 - **🔧 Consulting :** Architecture et intégration enterprise
 

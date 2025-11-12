@@ -307,10 +307,10 @@ compliance_dashboard:
 ## 📞 Contacts Compliance
 
 ### **Équipe Conformité**
-- 📋 **DPO (RGPD)** : dpo@arkalia-luna.system
-- 🏆 **ISO 27001 Lead** : iso27001@arkalia-luna.system
-- 🤖 **AI Governance** : ai-ethics@arkalia-luna.system
-- ⚖️ **Legal Counsel** : legal@arkalia-luna.system
+- 📋 **DPO (RGPD)** : arkalia.luna.system@gmail.com
+- 🏆 **ISO 27001 Lead** : arkalia.luna.system@gmail.com
+- 🤖 **AI Governance** : arkalia.luna.system@gmail.com
+- ⚖️ **Legal Counsel** : arkalia.luna.system@gmail.com
 
 ### **Organismes Certification**
 - 🏢 **ISO 27001 Certifier** : À sélectionner

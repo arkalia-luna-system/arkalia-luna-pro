@@ -150,7 +150,7 @@ Enterprise Readiness:
 ## 📞 Support Enterprise
 
 - **📖 Documentation :** [arkalia-luna-docs](https://arkalia-luna-system.github.io/arkalia-luna-pro/)
-- **💬 Support 24/7 :** enterprise@arkalia-luna.com
+- **💬 Support 24/7 :** arkalia.luna.system@gmail.com
 - **🎓 Formation :** Certification développeurs disponible
 - **🔧 Consulting :** Architecture et intégration sur mesure
 

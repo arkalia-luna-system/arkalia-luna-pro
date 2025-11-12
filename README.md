@@ -1,12 +1,12 @@
-# 🌕🤖🚀 **Arkalia-LUNA Pro** - Orchestrateur IA Enterprise
+# 🌕🤖🚀 **Arkalia-LUNA Pro** - Orchestrateur IA Production-Ready
 
-> **🌍 English**: Enterprise AI orchestration platform with FastAPI, advanced monitoring, security, deployment, cognitive modules - reference open-source for production.
+> **🌍 English**: Production-ready AI orchestration platform with FastAPI, advanced monitoring, security, deployment, cognitive modules - reference open-source for production.
 
-> **🇫🇷 Français**: Plateforme d'orchestration IA d'entreprise avec FastAPI, monitoring avancé, sécurité, déploiement, modules cognitifs - référence open-source pour production.
+> **🇫🇷 Français**: Plateforme d'orchestration IA prête pour la production avec FastAPI, monitoring avancé, sécurité, déploiement, modules cognitifs - référence open-source pour production.
 
 [![Release](https://img.shields.io/github/v/tag/athalia-siwek/arkalia-luna-pro?label=release)](https://github.com/athalia-siwek/arkalia-luna-pro/releases)
 [![Status](https://img.shields.io/badge/status-production%20ready-brightgreen.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
-[![Docker](https://img.shields.io/badge/containers-7%20healthy-success.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
+[![Docker](https://img.shields.io/badge/containers-5%20active-success.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
 [![Tests](https://img.shields.io/badge/test%20files-100-success.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
 [![Coverage](https://img.shields.io/badge/coverage-59.25%25-orange.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
 [![Workflows](https://img.shields.io/badge/CI%2FCD-8%20workflows-blue.svg)](https://github.com/athalia-siwek/arkalia-luna-pro/.github/workflows)
