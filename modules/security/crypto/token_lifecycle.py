@@ -244,7 +244,7 @@ class TokenManager:
                     self.token_metadata[token_id] = TokenMetadata.from_dict(meta_dict)
 
                 ark_logger.info(
-                    f"📊 Loaded metadata for {len(self.token_metadat)} tokens",
+                    f"📊 Loaded metadata for {len(self.token_metadata)} tokens",
                     extra={"arkalia_module": "security"},
                 )
         except Exception as e:

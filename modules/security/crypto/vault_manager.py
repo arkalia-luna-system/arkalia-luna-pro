@@ -15,8 +15,9 @@ from typing import Any, Optional
 
 from cryptography.fernet import Fernet
 
-from .checksum_validator import BuildIntegrityValidator, SecurityError
 from core.ark_logger import ark_logger
+
+from .checksum_validator import BuildIntegrityValidator, SecurityError
 
 
 class VaultError(SecurityError):
@@ -364,7 +365,7 @@ class ArkaliaVault(BuildIntegrityValidator):
             self.delete_secret(name)
 
         ark_logger.info(
-            f"🧹 Cleaned up {len(expired_secret)} expired secrets",
+            f"🧹 Cleaned up {len(expired_secrets)} expired secrets",
             extra={"arkalia_module": "security"},
         )
         return len(expired_secrets)
