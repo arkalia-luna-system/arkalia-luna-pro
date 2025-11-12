@@ -99,7 +99,7 @@ modules/core/optimizations/
 └── advanced_metrics.py     # Métriques avancées
 ```
 
-### 🔗 Intégration (3 couches)
+### Intégration (3 couches)
 ```
 modules/core/
 ├── optimization_integrator.py  # Intégrateur d'optimisations
@@ -109,60 +109,60 @@ modules/core/
 
 ---
 
-## ✅ VALIDATIONS FINALES
+## VALIDATIONS FINALES
 
-### 🧪 Tests de Fonctionnement
+### Tests de Fonctionnement
 ```bash
 # Test des améliorations finales
 python test_ameliorations_finales.py
-✅ Tous les tests passent (325 lignes de validation)
+# Tous les tests passent (325 lignes de validation)
 
 # Test de la démonstration globale
 python scripts/demo/demo_global.py
-✅ Démonstration fonctionnelle (495 lignes)
+# Démonstration fonctionnelle (495 lignes)
 
 # Test du score cognitif
 python scripts/tools/arkalia_score.py
-✅ Score généré avec succès (431 lignes)
+# Score généré avec succès (431 lignes)
 
 # Test d'intégration inter-modules
 python -m pytest tests/integration/
-✅ Tests d'intégration validés
+# Tests d'intégration validés
 ```
 
-### 🔧 Corrections d'Erreurs Finales
+### Corrections d'Erreurs Finales
 ```bash
 # Erreur CoreOrchestrator corrigée
-✅ Constructeur CoreOrchestrator ajusté (1 paramètre au lieu de 3)
+# Constructeur CoreOrchestrator ajusté (1 paramètre au lieu de 3)
 
 # Erreur EventStore corrigée
-✅ Chemin cache/zeroia_events.json (fichier au lieu de répertoire)
+# Chemin cache/zeroia_events.json (fichier au lieu de répertoire)
 
 # Erreurs d'import corrigées
-✅ Imports modules validés
-✅ Wrappers créés pour compatibilité
+# Imports modules validés
+# Wrappers créés pour compatibilité
 ```
 
-### 🧹 Nettoyage Complet
+### Nettoyage Complet
 ```bash
 # Archivage sécurisé des obsolètes
-✅ 35 fichiers archivés
-✅ 11 dossiers archivés
-✅ 0 erreur d'archivage
-✅ Archive: archive/obsolete_manual_YYYYMMDD_HHMMSS/
+# 35 fichiers archivés
+# 11 dossiers archivés
+# 0 erreur d'archivage
+# Archive: archive/obsolete_manual_YYYYMMDD_HHMMSS/
 
 # Modules conservés (8 modules utiles)
-✅ core, zeroia, reflexia, sandozia, assistantia, helloria, security, taskia
+# core, zeroia, reflexia, sandozia, assistantia, helloria, security, taskia
 
 # Tests conservés (tests validés uniquement)
-✅ integration/, unit/ (modules utiles), performance/, security/, chaos/
+# integration/, unit/ (modules utiles), performance/, security/, chaos/
 ```
 
 ---
 
-## 📊 MÉTRIQUES DE PERFORMANCE FINALES
+## MÉTRIQUES DE PERFORMANCE FINALES
 
-### ⚡ Performance Système
+### Performance Système
 | Métrique | Avant | Après | Amélioration |
 |----------|-------|-------|--------------|
 | **Temps de décision** | 500ms | 150ms | **+70%** |
@@ -171,7 +171,7 @@ python -m pytest tests/integration/
 | **Modules actifs** | 17 | 8 | **+53%** |
 | **I/O Storage** | Manuel | Abstraction | **+80%** |
 
-### 🎯 Score Cognitif Global
+### Score Cognitif Global
 ```bash
 🌍 Score Global: 0.654
 📈 Statut: good
@@ -184,7 +184,7 @@ python -m pytest tests/integration/
   - Santé système: 0.6 (seuil: 0.8) ⚠️
 ```
 
-### 🚀 Démonstration Globale
+### Démonstration Globale
 ```bash
 🎯 Scénarios exécutés: 3
 ⏱️  Durée totale: 0.54s
@@ -195,7 +195,7 @@ python -m pytest tests/integration/
 
 ---
 
-## 🐳 CONTAINERISATION OPTIMISÉE
+## CONTAINERISATION OPTIMISÉE
 
 ### Docker Compose Final
 ```yaml
