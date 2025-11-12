@@ -70,7 +70,9 @@ jobs:
       - name: 🎨 Check code formatting
         run: |
           echo "🔍 Vérification formatage avec black..."
-          black --check --diff . --exclude archive/ || (echo "❌ Formatage incorrect. Exécutez: black ." && exit 1)
+          # Nettoyer les fichiers macOS avant
+          find . -name "._*.py" -type f -delete || true
+          black --check --diff . --exclude archive/ --exclude "._*" || (echo "❌ Formatage incorrect. Exécutez: black ." && exit 1)
 
       - name: 🔍 Run enhanced linting
         run: |

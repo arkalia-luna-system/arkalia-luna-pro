@@ -89,6 +89,7 @@ extend-exclude = '''
   | htmlcov
   | benchmark_results
   | archive
+  | \._.*
 )/
 '''
 
