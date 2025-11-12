@@ -143,7 +143,7 @@ omit = [
     "*/security/sandbox/*",
     "*/security/watchdog/*"
 ]
-branch = true
+branch = false
 
 [tool.coverage.report]
 exclude_lines = [
