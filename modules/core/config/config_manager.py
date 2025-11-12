@@ -274,5 +274,24 @@ class ConfigManager:
         return env_config
 
 
-# Instance par défaut
-default_config_manager = ConfigManager()
+# Instance par défaut (lazy loading pour économiser la RAM)
+_default_config_manager: ConfigManager | None = None
+
+
+def get_default_config_manager() -> ConfigManager:
+    """Récupère l'instance par défaut du ConfigManager (lazy loading)"""
+    global _default_config_manager
+    if _default_config_manager is None:
+        _default_config_manager = ConfigManager()
+    return _default_config_manager
+
+
+# Alias pour compatibilité (lazy)
+class _LazyConfigManager:
+    """Wrapper lazy pour default_config_manager"""
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(get_default_config_manager(), name)
+
+
+default_config_manager = _LazyConfigManager()

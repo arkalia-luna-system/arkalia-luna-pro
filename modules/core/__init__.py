@@ -132,8 +132,16 @@ class CoreManager:
         }
 
 
-# Instance globale du Core Manager
-_core_manager = CoreManager()
+# Instance globale du Core Manager (lazy loading pour économiser la RAM)
+_core_manager: CoreManager | None = None
+
+
+def _get_core_manager() -> CoreManager:
+    """Récupère l'instance du Core Manager (lazy loading)"""
+    global _core_manager
+    if _core_manager is None:
+        _core_manager = CoreManager()
+    return _core_manager
 
 
 def create_core() -> Any:
@@ -141,21 +149,22 @@ def create_core() -> Any:
     🏭 Factory pour créer le core avec configuration optimale
     🛡️ Préservation des mécanismes de sécurité
     """
-    if not _core_manager._initialized:
-        if not _core_manager.initialize():
+    core_mgr = _get_core_manager()
+    if not core_mgr._initialized:
+        if not core_mgr.initialize():
             raise RuntimeError("Impossible d'initialiser le Core SOLID")
 
-    return _core_manager.get_orchestrator()
+    return core_mgr.get_orchestrator()
 
 
 def get_core_manager() -> CoreManager:
     """Récupération du gestionnaire Core"""
-    return _core_manager
+    return _get_core_manager()
 
 
 def health_check() -> dict[str, Any]:
     """Vérification de santé publique"""
-    return _core_manager.health_check()
+    return _get_core_manager().health_check()
 
 
 # Interface publique simplifiée
@@ -179,24 +188,47 @@ def launch_core() -> bool:
         return False
 
 
-# Instance par défaut (pour compatibilité)
-try:
-    default_core = create_core()
-except Exception:
-    default_core = None
-    ark_logger.warning(
-        "⚠️ Core par défaut non disponible (composants en cours de développement)",
-        extra={"arkalia_module": "core"},
-    )
+# Instance par défaut (lazy loading pour économiser la RAM)
+_default_core: Any | None = None
+
+
+def get_default_core() -> Any | None:
+    """Récupère l'instance par défaut du core (lazy loading)"""
+    global _default_core
+    if _default_core is None:
+        try:
+            _default_core = create_core()
+        except Exception:
+            ark_logger.warning(
+                "⚠️ Core par défaut non disponible (composants en cours de développement)",
+                extra={"arkalia_module": "core"},
+            )
+            _default_core = False  # Marqueur pour éviter de réessayer
+    return _default_core if _default_core is not False else None
+
+
+# Alias pour compatibilité (lazy)
+class _LazyCore:
+    """Wrapper lazy pour default_core"""
+
+    def __getattr__(self, name: str) -> Any:
+        core = get_default_core()
+        if core is None:
+            raise AttributeError(f"default_core n'est pas disponible: {name}")
+        return getattr(core, name)
+
+
+default_core = _LazyCore()
 
 
 # Interface de compatibilité avec l'ancien arkalia_master
 def get_core_status() -> dict[str, Any]:
     """Interface de compatibilité pour l'ancien arkalia_master"""
+    core_mgr = _get_core_manager()
     return {
         "status": "core_solid_v1.0.0",
         "health": health_check(),
-        "ready": _core_manager._initialized,
+        "ready": core_mgr._initialized,
     }
 
 

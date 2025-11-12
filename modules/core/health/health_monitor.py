@@ -412,5 +412,24 @@ class HealthMonitor:
         }
 
 
-# Instance par défaut
-default_health_monitor = HealthMonitor()
+# Instance par défaut (lazy loading pour économiser la RAM)
+_default_health_monitor: HealthMonitor | None = None
+
+
+def get_default_health_monitor() -> HealthMonitor:
+    """Récupère l'instance par défaut du HealthMonitor (lazy loading)"""
+    global _default_health_monitor
+    if _default_health_monitor is None:
+        _default_health_monitor = HealthMonitor()
+    return _default_health_monitor
+
+
+# Alias pour compatibilité (lazy)
+class _LazyHealthMonitor:
+    """Wrapper lazy pour default_health_monitor"""
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(get_default_health_monitor(), name)
+
+
+default_health_monitor = _LazyHealthMonitor()

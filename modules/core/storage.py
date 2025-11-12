@@ -414,13 +414,27 @@ class StorageManager:
         return self.save_state("helloria", state, "state")
 
 
-# Global storage instance
-storage = StorageManager()
+# Global storage instance (lazy loading pour économiser la RAM)
+_storage: StorageManager | None = None
 
 
 def get_storage() -> StorageManager:
-    """Get global storage instance"""
-    return storage
+    """Récupère l'instance globale du StorageManager (lazy loading)"""
+    global _storage
+    if _storage is None:
+        _storage = StorageManager()
+    return _storage
+
+
+# Alias pour compatibilité (lazy)
+class _LazyStorage:
+    """Wrapper lazy pour storage"""
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(get_storage(), name)
+
+
+storage = _LazyStorage()
 
 
 def set_storage_backend(backend: str, **kwargs: Any) -> None:
