@@ -190,7 +190,10 @@ markers = [
     "unit: tests unitaires",
     "performance: tests de performance",
     "security: tests de sécurité",
-    "chaos: tests de chaos"
+    "chaos: tests de chaos",
+    "e2e: tests end-to-end (E2E)",
+    "smoke: tests de fumée",
+    "benchmark: tests de benchmark"
 ]
 
 [tool.mypy]
