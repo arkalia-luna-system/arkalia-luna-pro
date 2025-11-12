@@ -244,12 +244,12 @@ class ConfigManager:
             "watchdogs_configured": len(self.get_config("watchdogs")),
         }
 
-    def get_environment_config(self) -> dict[str, str]:
+    def get_environment_config(self) -> dict[str, Any]:
         """
         🌍 Configuration depuis les variables d'environnement
         :return: Configuration environnement
         """
-        env_config = {}
+        env_config: dict[str, Any] = {}
         env_mappings = {
             "ARKALIA_DEBUG": "core.debug_mode",
             "ARKALIA_LOG_LEVEL": "core.log_level",
@@ -262,7 +262,7 @@ class ConfigManager:
                 value_str = os.environ[env_var]
                 # Conversion des types
                 if config_path.endswith("debug_mode"):
-                    value: bool | str = value_str.lower() in ("true", "1", "yes")
+                    value: Any = value_str.lower() in ("true", "1", "yes")
                 elif config_path.endswith(("max_retries", "timeout")):
                     value = float(value_str) if "." in value_str else int(value_str)
                 else:
