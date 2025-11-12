@@ -7,30 +7,64 @@ from datetime import datetime
 from pathlib import Path
 
 
-# Résoudre les chemins depuis le répertoire de travail courant
+# Résoudre les chemins depuis le répertoire de travail courant ou le répertoire du script
+def _get_project_root() -> Path:
+    """Retourne la racine du projet en cherchant depuis le répertoire courant ou le script."""
+    # Marqueurs de la racine du projet
+    markers = [
+        "modules/zeroia/state",
+        "pyproject.toml",
+        ".git",
+        "docker-compose.yml",
+    ]
+
+    # Essayer depuis le répertoire courant (cas CI)
+    cwd = Path.cwd()
+    for marker in markers:
+        if (cwd / marker).exists():
+            return cwd
+
+    # Essayer depuis le répertoire du script
+    script_dir = Path(__file__).resolve().parent.parent
+    for marker in markers:
+        if (script_dir / marker).exists():
+            return script_dir
+
+    # Remonter depuis le script jusqu'à trouver un marqueur
+    current = Path(__file__).resolve().parent
+    for _ in range(5):  # Limiter à 5 niveaux
+        current = current.parent
+        for marker in markers:
+            if (current / marker).exists():
+                return current
+
+    # Fallback : utiliser le répertoire courant
+    return cwd
+
+
 def get_state_file() -> Path:
-    """Retourne le chemin du fichier d'état, résolu depuis le répertoire de travail courant."""
-    return Path.cwd() / "modules" / "zeroia" / "state" / "zeroia_state.toml"
+    """Retourne le chemin du fichier d'état, résolu depuis la racine du projet."""
+    return _get_project_root() / "modules" / "zeroia" / "state" / "zeroia_state.toml"
 
 
 def get_snapshot_file() -> Path:
-    """Retourne le chemin du fichier snapshot, résolu depuis le répertoire de travail courant."""
-    return Path.cwd() / "modules" / "zeroia" / "state" / "zeroia_state_snapshot.toml"
+    """Retourne le chemin du fichier snapshot, résolu depuis la racine du projet."""
+    return _get_project_root() / "modules" / "zeroia" / "state" / "zeroia_state_snapshot.toml"
 
 
 def get_backup_file() -> Path:
-    """Retourne le chemin du fichier backup, résolu depuis le répertoire de travail courant."""
-    return Path.cwd() / "modules" / "zeroia" / "state" / "zeroia_state_backup.toml"
+    """Retourne le chemin du fichier backup, résolu depuis la racine du projet."""
+    return _get_project_root() / "modules" / "zeroia" / "state" / "zeroia_state_backup.toml"
 
 
 def get_log_file() -> Path:
-    """Retourne le chemin du fichier de log, résolu depuis le répertoire de travail courant."""
-    return Path.cwd() / "logs" / "zeroia_rollback.log"
+    """Retourne le chemin du fichier de log, résolu depuis la racine du projet."""
+    return _get_project_root() / "logs" / "zeroia_rollback.log"
 
 
 def get_failure_log() -> Path:
-    """Retourne le chemin du fichier de log d'échec, résolu depuis le répertoire de travail courant."""
-    return Path.cwd() / "logs" / "failure_analysis.md"
+    """Retourne le chemin du fichier de log d'échec, résolu depuis la racine du projet."""
+    return _get_project_root() / "logs" / "failure_analysis.md"
 
 
 # Pour compatibilité avec les tests qui patch ces variables
