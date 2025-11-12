@@ -171,7 +171,6 @@ python_functions = ["test_*"]
 addopts = [
     "--strict-markers",
     "--strict-config",
-    "--verbose",
     "--tb=short",
     "--cov=modules",
     "--cov=scripts",
@@ -182,7 +181,10 @@ addopts = [
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-fail-under=15",
-    "--ignore=modules/generative_ai/generated/"
+    "--ignore=modules/generative_ai/generated/",
+    "-x",
+    "--maxfail=5",
+    "-q"
 ]
 markers = [
     "slow: tests lents",
