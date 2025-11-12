@@ -1,13 +1,13 @@
-# 🌐 API Arkalia-LUNA Pro Enhanced v2.8.0
+# API Arkalia-LUNA Pro Enhanced v2.8.0
 
-## 📊 **ÉTAT ACTUEL DU SYSTÈME (Mise à jour novembre 2025)**
+## État Actuel du Système (Mise à jour novembre 2025)
 
-### ✅ **SUCCÈS MAJEUR - CI/CD 100% Verte !**
-- **671 tests passés** (642 unitaires + 29 intégration) ✅
-- **Couverture : 59.25%** (bien au-dessus du seuil de 28%) ✅
-- **Temps d'exécution : 31.73s** ✅
-- **Healthcheck optimisé** : Python urllib natif ✅
-- **Artefacts uploadés** : Conditionnel et robuste ✅
+### CI/CD
+- 671 tests passés (642 unitaires + 29 intégration)
+- Couverture : 59.25% (seuil requis : 28%)
+- Temps d'exécution : 31.73s
+- Healthcheck optimisé : Python urllib natif
+- Artefacts uploadés : Conditionnel et robuste
 
 Documentation complète de l'API REST d'Arkalia-LUNA Pro Enhanced.
 
@@ -19,36 +19,36 @@ Cette documentation inclut des endpoints **théoriques/en développement** et de
 
 ---
 
-## 🚀 **Nouveautés Enhanced v2.8.0**
+## Nouveautés Enhanced v2.8.0
 
-### ✅ **Endpoints Framework Enhanced**
+### Endpoints Framework Enhanced
 
-#### 🎯 **Orchestrator Enhanced**
+#### Orchestrator Enhanced
 - `GET /api/v1/zeroia/orchestrator/status` - Status Orchestrator Enhanced
 - `POST /api/v1/zeroia/orchestrator/run` - Exécution boucle Enhanced
 - `GET /api/v1/zeroia/orchestrator/metrics` - Métriques performance
 
-#### 🔒 **Circuit Breaker**
+#### Circuit Breaker
 - `GET /api/v1/zeroia/circuit-breaker/status` - État circuit breaker
 - `POST /api/v1/zeroia/circuit-breaker/reset` - Reset circuit breaker
 - `GET /api/v1/zeroia/circuit-breaker/metrics` - Métriques protection
 
-#### 📊 **Event Store Enhanced**
+#### Event Store Enhanced
 - `GET /api/v1/zeroia/events` - Liste événements récents
 - `POST /api/v1/zeroia/events` - Ajout nouvel événement
 - `GET /api/v1/zeroia/events/analytics` - Analytics Event Store
 - `GET /api/v1/zeroia/events/recovery-status` - Status auto-recovery
 
-#### 🛡️ **Error Recovery**
+#### Error Recovery
 - `GET /api/v1/zeroia/error-recovery/status` - Status Error Recovery
 - `POST /api/v1/zeroia/error-recovery/test` - Test récupération
 - `GET /api/v1/zeroia/graceful-degradation/status` - Status degradation
 
 ---
 
-## 🧪 **ZeroIA Enhanced API**
+## ZeroIA Enhanced API
 
-### 🚀 **Orchestrator Enhanced**
+### Orchestrator Enhanced
 
 #### `GET /api/v1/zeroia/orchestrator/status`
 Status détaillé de l'Orchestrator Enhanced.
@@ -112,7 +112,7 @@ Exécution de la boucle Orchestrator Enhanced.
 }
 ```
 
-### 🔒 **Circuit Breaker API**
+### Circuit Breaker API
 
 #### `GET /api/v1/zeroia/circuit-breaker/status`
 État détaillé du Circuit Breaker.
@@ -134,7 +134,7 @@ Exécution de la boucle Orchestrator Enhanced.
 }
 ```
 
-### 📊 **Event Store Enhanced API**
+### Event Store Enhanced API
 
 #### `GET /api/v1/zeroia/events`
 Liste des événements récents avec auto-recovery.
@@ -204,7 +204,7 @@ Analytics avancées de l'Event Store.
 }
 ```
 
-### 🛡️ **Error Recovery API**
+### Error Recovery API
 
 #### `GET /api/v1/zeroia/error-recovery/status`
 Status complet du système Error Recovery.
@@ -285,9 +285,9 @@ Status détaillé du Graceful Degradation.
 
 ---
 
-## 🧠 **Sandozia Intelligence API**
+## Sandozia Intelligence API
 
-### 🔍 **CrossModule Validation**
+### CrossModule Validation
 
 #### `GET /api/v1/sandozia/validation/status`
 Status validation croisée inter-modules.
@@ -307,7 +307,7 @@ Status validation croisée inter-modules.
 }
 ```
 
-### 📈 **Behavior Analysis**
+### Behavior Analysis
 
 #### `GET /api/v1/sandozia/behavior/analysis`
 Analyse comportementale avancée.
@@ -328,9 +328,9 @@ Analyse comportementale avancée.
 
 ---
 
-## 🔄 **Reflexia Decision API**
+## Reflexia Decision API
 
-### 🎯 **Decision Engine**
+### Decision Engine
 
 #### `POST /api/v1/reflexia/decision`
 Demande de décision au moteur Reflexia.
@@ -364,9 +364,9 @@ Demande de décision au moteur Reflexia.
 
 ---
 
-## 🤖 **AssistantIA Conversation API**
+## AssistantIA Conversation API
 
-### 💬 **Chat Interface**
+### Chat Interface
 
 #### `POST /api/v1/assistantia/chat`
 Interface de conversation avec l'assistant IA.
@@ -402,9 +402,9 @@ Interface de conversation avec l'assistant IA.
 
 ---
 
-## 📊 **Monitoring & Metrics API**
+## Monitoring & Metrics API
 
-### 🎯 **Global Health Check**
+### Global Health Check
 
 #### `GET /api/v1/health`
 Health check global du système Enhanced.
@@ -436,7 +436,7 @@ Health check global du système Enhanced.
 }
 ```
 
-### 📈 **Performance Metrics**
+### Performance Metrics
 
 #### `GET /api/v1/metrics/performance`
 Métriques de performance détaillées.
@@ -473,9 +473,9 @@ Métriques de performance détaillées.
 
 ---
 
-## 🔐 **Authentication & Security**
+## Authentication & Security
 
-### 🛡️ **API Key Authentication**
+### API Key Authentication
 
 Toutes les requêtes API Enhanced nécessitent une authentification :
 
@@ -488,7 +488,7 @@ curl -H "Authorization: Bearer ark_enhanced_v271_key" \
      http://localhost:8000/api/v1/zeroia/orchestrator/status
 ```
 
-### 🔒 **Rate Limiting**
+### Rate Limiting
 
 - **Standard** : 1000 req/min
 - **Enhanced** : 5000 req/min
@@ -496,9 +496,9 @@ curl -H "Authorization: Bearer ark_enhanced_v271_key" \
 
 ---
 
-## 🚀 **Exemples d'Utilisation**
+## Exemples d'Utilisation
 
-### 🎯 **Test Complet Enhanced**
+### Test Complet Enhanced
 
 ```bash
 # Status global
@@ -516,7 +516,7 @@ curl http://localhost:8000/api/v1/zeroia/circuit-breaker/status
 curl http://localhost:8000/api/v1/zeroia/events/analytics
 ```
 
-### 🧠 **Intelligence Croisée**
+### Intelligence Croisée
 
 ```bash
 # Validation cross-module
@@ -533,16 +533,16 @@ curl -X POST http://localhost:8001/api/v1/chat \
 
 ---
 
-## 📚 **Documentation Interactive**
+## Documentation Interactive
 
-### 🌐 **OpenAPI/Swagger**
+### OpenAPI/Swagger
 
 Documentation interactive disponible :
 - **Swagger UI** : `http://localhost:8000/docs`
 - **ReDoc** : `http://localhost:8000/redoc`
 - **OpenAPI JSON** : `http://localhost:8000/openapi.json`
 
-### 🔗 **Liens Utiles**
+### Liens Utiles
 
 - **API Locale** : `http://localhost:8000`
 - **Health Check** : `http://localhost:8000/api/v1/health`
@@ -551,11 +551,11 @@ Documentation interactive disponible :
 
 ---
 
-## 🎯 **Métriques de Performance Actuelles**
+## Métriques de Performance Actuelles
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests passés** | 671/671 | ✅ 100% |
+| **Tests collectés** | 671 | ✅ |
 | **Couverture** | 59.25% | ✅ >28% |
 | **Temps CI** | 31.73s | ✅ Optimal |
 | **Modules critiques** | 15/15 | ✅ Opérationnels |

@@ -28,7 +28,7 @@ Pour évoluer vers une IA auto-réparatrice dans la version 3.0, ZeroIA devra in
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests passés** | 671/671 | ✅ 100% |
+| **Tests collectés** | 671 | ✅ |
 | **Couverture** | 59.25% | ✅ >28% |
 | **Temps CI** | 31.73s | ✅ Optimal |
 | **Modules critiques** | 15/15 | ✅ Opérationnels |

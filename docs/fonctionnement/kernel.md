@@ -80,7 +80,7 @@ arkalia-luna-pro/
 
 ### Tests et Qualité
 - **Couverture globale** : 59.25% (bien au-dessus du seuil de 28%)
-- **Tests passés** : 671/671 (100%)
+- **Tests collectés** : 671
 - **Tests unitaires** : 642
 - **Tests d'intégration** : 29
 - **Pipeline CI** : 100% verte
@@ -106,7 +106,7 @@ arkalia-luna-pro/
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests passés** | 671/671 | ✅ 100% |
+| **Tests collectés** | 671 | ✅ |
 | **Couverture** | 59.25% | ✅ >28% |
 | **Temps CI** | 31.73s | ✅ Optimal |
 | **Modules critiques** | 15/15 | ✅ Opérationnels |
@@ -147,7 +147,7 @@ arkalia-luna-pro/
 
 ## 📊 KPIs
 - Couverture : 59.25% (objectif 65%+)
-- Tests : 671/671 passés
+- Tests : 671 collectés
 - CI/CD : 100% verte
 - Sécurité : validée, scan Bandit OK
 - Monitoring : complet, alertes opérationnelles

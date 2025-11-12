@@ -223,7 +223,7 @@ pytest tests/security/ -v
 - **Temps de réponse API** : < 2s (P95)
 - **Disponibilité système** : 99.9%+
 - **Couverture de tests** : 59.25%
-- **Tests passés** : 671/671 (100%)
+- **Tests collectés** : 671
 - **Métriques exposées** : 34
 
 ### Métriques de Qualité

@@ -251,7 +251,7 @@ pytest tests/chaos/test_system_recovery.py -v
 ### **Métriques Globales**
 - **Total Tests** : 737 (671 unitaires, 66 intégration)
 - **Couverture Globale** : 59.25% (seuil requis : 28%)
-- **Tests Critiques** : 100% passants
+- **Tests Critiques** : Collectés et validés
 - **CI/CD** : 100% verte
 
 ---

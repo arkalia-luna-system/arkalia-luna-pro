@@ -11,20 +11,20 @@
 [![codecov](https://codecov.io/gh/athalia-siwek/arkalia-luna-pro/branch/develop/graph/badge.svg)](https://codecov.io/gh/athalia-siwek/arkalia-luna-pro)
 [![Workflows](https://img.shields.io/badge/CI%2FCD-8%20workflows-blue.svg)](https://github.com/athalia-siwek/arkalia-luna-pro/.github/workflows)
 
-## 🚀 Déploiement Express (10 secondes)
+## 🚀 Déploiement Rapide
 
 ```bash
-# 1. Clone et setup (3 sec)
+# 1. Clone et setup
 git clone https://github.com/athalia-siwek/arkalia-luna-pro.git && cd arkalia-luna-pro
 
-# 2. Lancement stack complète (5 sec)
+# 2. Lancement stack complète
 make docker-build && docker-compose up -d
 
-# 3. Vérification santé (2 sec)
+# 3. Vérification santé
 make test-integration
 ```
 
-**Accès immédiat** :
+**Accès aux services** :
 
 - 🌐 API principale : <http://localhost:8000/health>
 - 📊 Grafana : <http://localhost:3000> (admin/admin)
@@ -71,7 +71,7 @@ make test-integration
 - **Tests exécutés** : 671 tests collectés ✅
 - **Couverture globale** : 59.25% (objectif: 65%) 🎯
 - **Workflows CI/CD** : 8 workflows actifs ✅
-- **CI/CD** : 100% verte, artefacts uploadés, sécurité validée
+- **CI/CD** : Stable, artefacts uploadés, sécurité validée
 - **Stabilité** : Tous les conteneurs healthy et opérationnels
 
 ## ⚠️ Limitations & Contexte d'Usage
