@@ -31,6 +31,15 @@ class TokenType(Enum):
 
 
 class TokenStatus(Enum):
+    """Statuts possibles d'un token.
+
+    Attributes:
+        ACTIVE: Token actif et utilisable.
+        EXPIRED: Token expiré.
+        REVOKED: Token révoqué.
+        SUSPENDED: Token suspendu temporairement.
+    """
+
     ACTIVE = "active"
     EXPIRED = "expired"
     REVOKED = "revoked"
@@ -39,6 +48,24 @@ class TokenStatus(Enum):
 
 @dataclass
 class TokenMetadata:
+    """Métadonnées d'un token.
+
+    Attributes:
+        token_id: Identifiant unique du token.
+        token_type: Type du token.
+        status: Statut actuel du token.
+        created_at: Date de création.
+        expires_at: Date d'expiration (optionnel).
+        last_used_at: Date du dernier usage (optionnel).
+        usage_count: Nombre d'utilisations.
+        max_usage_count: Nombre maximum d'utilisations (optionnel).
+        associated_user: Utilisateur associé (optionnel).
+        associated_service: Service associé (optionnel).
+        permissions: Liste des permissions.
+        client_info: Informations du client (IP, User-Agent, etc.).
+        tags: Tags associés au token.
+    """
+
     token_id: str
     token_type: TokenType
     status: TokenStatus
@@ -54,6 +81,11 @@ class TokenMetadata:
     tags: list[str]
 
     def to_dict(self) -> dict:
+        """Convertit les métadonnées en dictionnaire.
+
+        Returns:
+            dict: Métadonnées sous forme de dictionnaire.
+        """
         data = asdict(self)
         # Convertir les enums en strings
         data["token_type"] = self.token_type.value
@@ -511,6 +543,11 @@ class TokenManager:
         return new_token_id, new_token_value
 
     def get_token_stats(self) -> dict[str, Any]:
+        """Récupère les statistiques des tokens.
+
+        Returns:
+            dict: Statistiques des tokens (total, actifs, expirés, etc.).
+        """
         stats: dict[str, Any] = {
             "total_tokens": len(self.token_metadata),
             "active_tokens": 0,

@@ -30,6 +30,20 @@ class RotationStrategy(Enum):
 
 @dataclass
 class RotationPolicy:
+    """Politique de rotation pour un secret.
+
+    Attributes:
+        name: Nom de la politique.
+        strategy: Stratégie de rotation à utiliser.
+        interval_days: Intervalle en jours pour TIME_BASED.
+        max_access_count: Nombre maximum d'accès pour ACCESS_COUNT.
+        condition_callback: Fonction de condition pour CONDITIONAL.
+        auto_generate: Génération automatique du nouveau secret.
+        generation_pattern: Pattern de génération.
+        custom_generator: Générateur personnalisé.
+        notification_callback: Callback de notification.
+    """
+
     name: str
     strategy: RotationStrategy
     interval_days: int | None = None
@@ -42,23 +56,58 @@ class RotationPolicy:
 
 
 class SecretGenerator:
+    """Générateur de secrets sécurisés pour la rotation."""
+
     @staticmethod
     def generate_secure_random(length: int = 32) -> str:
+        """Génère un secret aléatoire sécurisé.
+
+        Args:
+            length: Longueur du secret (défaut: 32).
+
+        Returns:
+            str: Secret généré.
+        """
         alphabet = string.ascii_letters + string.digits + "!@#$%^&*"
         return "".join(secrets.choice(alphabet) for _ in range(length))
 
     @staticmethod
     def generate_alphanumeric(length: int = 24) -> str:
+        """Génère un secret alphanumérique.
+
+        Args:
+            length: Longueur du secret (défaut: 24).
+
+        Returns:
+            str: Secret alphanumérique généré.
+        """
         alphabet = string.ascii_letters + string.digits
         return "".join(secrets.choice(alphabet) for _ in range(length))
 
     @staticmethod
     def generate_api_key(prefix: str = "ak", length: int = 40) -> str:
+        """Génère une clé API avec préfixe.
+
+        Args:
+            prefix: Préfixe de la clé (défaut: "ak").
+            length: Longueur totale de la clé (défaut: 40).
+
+        Returns:
+            str: Clé API générée.
+        """
         suffix = SecretGenerator.generate_alphanumeric(length - len(prefix) - 1)
         return f"{prefix}_{suffix}"
 
     @staticmethod
     def generate_jwt_secret(length: int = 64) -> str:
+        """Génère un secret JWT sécurisé.
+
+        Args:
+            length: Longueur du secret (défaut: 64).
+
+        Returns:
+            str: Secret JWT généré.
+        """
         return secrets.token_urlsafe(length)
 
 
@@ -84,11 +133,21 @@ class RotationManager:
         self.policies: dict[str, RotationPolicy] = {}
         self.rotation_history: list[dict] = []
 
-    def add_policy(self, policy: RotationPolicy):
+    def add_policy(self, policy: RotationPolicy) -> None:
+        """Ajoute une politique de rotation.
+
+        Args:
+            policy: Politique de rotation à ajouter.
+        """
         self.policies[policy.name] = policy
         logger.info(f"📋 Rotation policy added for: {policy.name}")
 
-    def remove_policy(self, secret_name: str):
+    def remove_policy(self, secret_name: str) -> None:
+        """Supprime une politique de rotation.
+
+        Args:
+            secret_name: Nom du secret dont la politique doit être supprimée.
+        """
         if secret_name in self.policies:
             del self.policies[secret_name]
             logger.info(f"🗑️ Rotation policy removed for: {secret_name}")
@@ -360,6 +419,17 @@ class RotationManager:
         return deleted_count
 
     def get_rotation_stats(self) -> dict:
+        """
+        Récupère les statistiques de rotation.
+
+        Returns:
+            dict: Dictionnaire contenant :
+                - total_policies: Nombre total de politiques
+                - total_rotations: Nombre total de rotations effectuées
+                - recent_rotations_7d: Rotations des 7 derniers jours
+                - strategy_distribution: Distribution par stratégie
+                - last_rotation: Dernière rotation effectuée
+        """
         total_policies = len(self.policies)
         total_rotations = len(self.rotation_history)
 
@@ -388,6 +458,15 @@ class RotationManager:
 
 # Fonctions de politiques prédéfinies
 def create_daily_rotation_policy(secret_name: str) -> RotationPolicy:
+    """
+    Crée une politique de rotation quotidienne.
+
+    Args:
+        secret_name: Nom du secret pour lequel créer la politique.
+
+    Returns:
+        RotationPolicy: Politique configurée pour rotation quotidienne.
+    """
     return RotationPolicy(
         name=secret_name,
         strategy=RotationStrategy.TIME_BASED,
@@ -398,6 +477,15 @@ def create_daily_rotation_policy(secret_name: str) -> RotationPolicy:
 
 
 def create_weekly_rotation_policy(secret_name: str) -> RotationPolicy:
+    """
+    Crée une politique de rotation hebdomadaire.
+
+    Args:
+        secret_name: Nom du secret pour lequel créer la politique.
+
+    Returns:
+        RotationPolicy: Politique configurée pour rotation hebdomadaire.
+    """
     return RotationPolicy(
         name=secret_name,
         strategy=RotationStrategy.TIME_BASED,
@@ -408,6 +496,23 @@ def create_weekly_rotation_policy(secret_name: str) -> RotationPolicy:
 
 
 def create_monthly_rotation_policy(secret_name: str) -> RotationPolicy:
+    """
+    Crée une politique de rotation mensuelle.
+
+    Args:
+        secret_name: Nom du secret pour lequel créer la politique.
+
+    Returns:
+        RotationPolicy: Politique configurée pour rotation mensuelle.
+    """
+    """Crée une politique de rotation mensuelle.
+
+    Args:
+        secret_name: Nom du secret.
+
+    Returns:
+        RotationPolicy: Politique de rotation mensuelle.
+    """
     return RotationPolicy(
         name=secret_name,
         strategy=RotationStrategy.TIME_BASED,
@@ -418,6 +523,25 @@ def create_monthly_rotation_policy(secret_name: str) -> RotationPolicy:
 
 
 def create_access_based_policy(secret_name: str, max_accesses: int = 100) -> RotationPolicy:
+    """
+    Crée une politique de rotation basée sur le nombre d'accès.
+
+    Args:
+        secret_name: Nom du secret pour lequel créer la politique.
+        max_accesses: Nombre maximum d'accès avant rotation (défaut: 100).
+
+    Returns:
+        RotationPolicy: Politique configurée pour rotation basée sur l'accès.
+    """
+    """Crée une politique de rotation basée sur le nombre d'accès.
+
+    Args:
+        secret_name: Nom du secret.
+        max_accesses: Nombre maximum d'accès avant rotation (défaut: 100).
+
+    Returns:
+        RotationPolicy: Politique de rotation basée sur l'accès.
+    """
     return RotationPolicy(
         name=secret_name,
         strategy=RotationStrategy.ACCESS_COUNT,

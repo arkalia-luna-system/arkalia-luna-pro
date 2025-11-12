@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 
 
 class SecurityError(Exception):
+    """Exception levée lors d'une violation de sécurité ou d'intégrité."""
+
     pass
 
 
@@ -273,6 +275,16 @@ class BuildIntegrityValidator:
 
 # Fonctions utilitaires
 def generate_build_manifest(output_path: Path | None = None) -> Path:
+    """
+    Génère un manifest de build avec les checksums de tous les artefacts critiques.
+
+    Args:
+        output_path: Chemin optionnel pour sauvegarder le manifest.
+                    Si None, utilise le chemin par défaut du validateur.
+
+    Returns:
+        Path: Chemin du fichier manifest généré.
+    """
     validator = BuildIntegrityValidator()
     checksums = validator.generate_checksums()
 
@@ -287,6 +299,15 @@ def generate_build_manifest(output_path: Path | None = None) -> Path:
 
 
 def validate_production_integrity() -> bool:
+    """
+    Valide l'intégrité de tous les artefacts en production.
+
+    Vérifie que tous les fichiers critiques correspondent aux checksums
+    enregistrés dans le manifest de référence.
+
+    Returns:
+        bool: True si l'intégrité est validée, False sinon.
+    """
     try:
         validator = BuildIntegrityValidator()
         return validator.validate_integrity()

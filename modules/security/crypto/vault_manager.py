@@ -22,10 +22,14 @@ logger = logging.getLogger(__name__)
 
 
 class VaultError(SecurityError):
+    """Exception levée lors d'une erreur dans la gestion du vault de secrets."""
+
     pass
 
 
 class SecretMetadata:
+    """Métadonnées associées à un secret stocké dans le vault."""
+
     def __init__(
         self,
         name: str,
@@ -464,6 +468,18 @@ class ArkaliaVault(BuildIntegrityValidator):
         return True
 
     def get_vault_stats(self) -> dict:
+        """
+        Récupère les statistiques du vault.
+
+        Returns:
+            dict: Dictionnaire contenant les statistiques du vault :
+                - total_secrets: Nombre total de secrets
+                - active_secrets: Nombre de secrets actifs (non expirés)
+                - expired_secrets: Nombre de secrets expirés
+                - vault_size_bytes: Taille du fichier vault en octets
+                - last_key_rotation: Date de la dernière rotation de clé
+                - audit_log_size: Nombre d'entrées dans le log d'audit
+        """
         secrets = self.list_secrets(include_expired=True)
         expired_count = len([s for s in secrets if s.expires_at and datetime.now() > s.expires_at])
 
@@ -589,4 +605,13 @@ def migrate_from_env_file(
 
 
 def create_arkalia_vault(base_dir: Path | None = None) -> ArkaliaVault:
+    """
+    Crée une nouvelle instance d'ArkaliaVault.
+
+    Args:
+        base_dir: Répertoire de base pour le vault. Si None, utilise le répertoire courant.
+
+    Returns:
+        ArkaliaVault: Instance du vault créé.
+    """
     return ArkaliaVault(base_dir)
