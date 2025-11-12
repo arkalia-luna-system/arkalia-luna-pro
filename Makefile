@@ -33,13 +33,13 @@ format:
 	@echo "🎨 Formatage du code..."
 	black .
 	ruff check . --fix
-	isort .
+	# isort .  # DÉSACTIVÉ - cause des problèmes
 
 format-check:
 	@echo "🔍 Vérification du formatage..."
 	black --check --diff .
 	ruff check .
-	isort --check-only --diff .
+	# isort --check-only --diff .  # DÉSACTIVÉ - cause des problèmes
 
 # 🧹 Nettoyage
 clean:

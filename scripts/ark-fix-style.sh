@@ -40,11 +40,12 @@ echo "🔧 Correction directives noqa..."
 find . -name "*.py" -not -path "./venv/*" -not -path "./.venv/*" -not -path "./generated/*" -not -path "./__pycache__/*" -exec sed -i '' 's/# noqa: .*/# noqa: F401/' {} \;
 echo "✅ Directives noqa corrigées"
 
-# 5. Formatage final avec black et isort
+# 5. Formatage final avec black (isort désactivé)
 echo ""
 echo "🎨 Formatage final..."
 black . --exclude "/(generated|venv|\.venv|__pycache__)/" || true
-isort . --profile black --skip-glob "*/generated/*" --skip-glob "*/venv/*" || true
+# isort . --profile black --skip-glob "*/generated/*" --skip-glob "*/venv/*" || true
+# DÉSACTIVÉ - isort cause des problèmes de performance
 
 echo ""
 echo "✅ === CORRECTION STYLE TERMINÉE ==="

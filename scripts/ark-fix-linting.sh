@@ -27,10 +27,11 @@ if ! command -v ruff &> /dev/null; then
     pip install ruff
 fi
 
-if ! command -v isort &> /dev/null; then
-    echo "❌ isort non trouvé. Installation..."
-    pip install isort
-fi
+# if ! command -v isort &> /dev/null; then
+#     echo "❌ isort non trouvé. Installation..."
+#     pip install isort
+# fi
+# DÉSACTIVÉ - isort cause des problèmes
 
 echo "✅ Outils de linting disponibles"
 
@@ -49,12 +50,13 @@ find . -name "*.pyc" -delete 2>/dev/null || true
 find . -name "*.pyo" -delete 2>/dev/null || true
 echo "✅ Caches Python supprimés"
 
-# 3. Formatage avec isort
-echo ""
-echo "📝 Tri des imports avec isort..."
-isort . --profile black --skip-glob "*/generated/*" --skip-glob "*/venv/*" || {
-    echo "⚠️ Erreur isort, continuation..."
-}
+# 3. Formatage avec isort - DÉSACTIVÉ
+# echo ""
+# echo "📝 Tri des imports avec isort..."
+# isort . --profile black --skip-glob "*/generated/*" --skip-glob "*/venv/*" || {
+#     echo "⚠️ Erreur isort, continuation..."
+# }
+# DÉSACTIVÉ - isort cause des problèmes de performance
 
 # 4. Formatage avec black
 echo ""

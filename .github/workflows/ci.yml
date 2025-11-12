@@ -77,7 +77,9 @@ jobs:
       - name: 🔍 Run enhanced linting
         run: |
           echo "🔍 Linting avec ruff..."
-          ruff check . --output-format=github --exclude archive/ || exit 1
+          # Nettoyer les fichiers macOS avant
+          find . -name "._*.py" -type f -delete || true
+          ruff check . --output-format=github --exclude archive/ --exclude "._*" || exit 1
 
           echo "🔍 Type checking avec mypy..."
           mypy modules/ --ignore-missing-imports --no-strict-optional || echo "⚠️ Type checking terminé avec avertissements"
