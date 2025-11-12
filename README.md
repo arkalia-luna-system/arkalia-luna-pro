@@ -114,7 +114,7 @@ graph TB
         ZE[Error Recovery<br/>Récupération auto]
     end
 
-    subgraph "🔍 Intelligence Croisée"
+    subgraph "Intelligence Croisée"
         S[Sandozia v2.8.0<br/>Intelligence Croisée]
         SA[Behavior Analyzer<br/>Analyse comportementale]
         SV[Cross Validator<br/>Validation inter-modules]
@@ -180,7 +180,7 @@ graph TB
     V --> ST
 ```
 
-### 🔄 Flux de Données Principal
+### Flux de Données Principal
 
 ```mermaid
 sequenceDiagram
@@ -205,7 +205,7 @@ sequenceDiagram
     Helloria-->>Client: Réponse enrichie
 ```
 
-## 🐳 Architecture des Containers
+## Architecture des Containers
 
 Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose :
 
@@ -267,7 +267,7 @@ python scripts/launch_demo_scenario.py --scenario security
 
 ---
 
-### 2. ⚡ Optimisation Automatique de Performance
+### 2. Optimisation Automatique de Performance
 
 **Scénario** : Détection de lenteur ou de dégradation de performance système.
 
@@ -288,14 +288,14 @@ python scripts/launch_demo_scenario.py --scenario performance
 
 **Résultat attendu** :
 
-- ⏱️ Temps de traitement : ~500ms
-- ✅ Amélioration mesurée et validée
-- 📈 Métriques de performance mises à jour
-- 🔄 Circuit breaker activé si nécessaire
+- Temps de traitement : ~500ms
+- Amélioration mesurée et validée
+- Métriques de performance mises à jour
+- Circuit breaker activé si nécessaire
 
 ---
 
-### 3. 🧠 Apprentissage Adaptatif et Détection de Patterns
+### 3. Apprentissage Adaptatif et Détection de Patterns
 
 **Scénario** : Apprentissage continu à partir des données système et détection de patterns comportementaux.
 

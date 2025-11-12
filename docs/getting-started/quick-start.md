@@ -42,7 +42,7 @@ pytest tests/ -v  # 671 tests PASSED (59.25% couverture)
 ark-status
 ```
 
-## 🚀 Démarrage Rapide
+## Démarrage Rapide
 
 ### 1. **Tests et Validation**
 ```bash
@@ -71,7 +71,7 @@ python scripts/ark-validate-performance.py
 python scripts/ark-monitor.py
 ```
 
-## 📊 Services Monitoring
+## Services Monitoring
 
 Une fois le monitoring démarré, accédez aux services :
 
@@ -96,14 +96,14 @@ docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml ps
 curl http://localhost:8000/metrics
 ```
 
-## 📚 Ressources Essentielles
+## Ressources Essentielles
 
-- **📖 Documentation** : [Modules Overview](../modules/zeroia.md)
-- **🧠 Architecture** : [Structure du Système](../fonctionnement/structure.md)
-- **🔧 API** : [Guide API](../reference/api.md)
-- **📊 Monitoring** : [Guide Monitoring](../devops/index.md)
+- Documentation : [Modules Overview](../modules/zeroia.md)
+- Architecture : [Structure du Système](../fonctionnement/structure.md)
+- API : [Guide API](../reference/api.md)
+- Monitoring : [Guide Monitoring](../devops/index.md)
 
-## 🆘 Aide Rapide
+## Aide Rapide
 
 ### Commandes Essentielles
 ```bash
@@ -149,7 +149,7 @@ docker-compose -f docker-compose.monitoring.yml down
 docker-compose -f docker-compose.monitoring.yml up -d
 ```
 
-## 🎯 Prochaines Étapes
+## Prochaines Étapes
 
 1. **Explorer les modules** : [Modules détaillés](../modules/zeroia.md)
 2. **Configurer l'API** : [Configuration](../devops/index.md)
@@ -157,7 +157,7 @@ docker-compose -f docker-compose.monitoring.yml up -d
 4. **Monitoring** : [Guide Monitoring](../devops/index.md)
 5. **Contribuer** : [Guide de contribution](../credits/CONTRIBUTING.md)
 
-## 📊 Métriques Disponibles
+## Métriques Disponibles
 
 Le monitoring expose **34 métriques Arkalia** :
 
@@ -175,19 +175,19 @@ Le monitoring expose **34 métriques Arkalia** :
 - **Refresh** : 30 secondes
 - **Thème** : Dark mode
 
-## 🎯 **Métriques de Performance Actuelles**
+## Métriques de Performance Actuelles
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests collectés** | 671 | ✅ |
-| **Couverture** | 59.25% | ✅ >28% |
-| **Temps CI** | 31.73s | ✅ Optimal |
-| **Modules critiques** | 15/15 | ✅ Opérationnels |
-| **Healthcheck** | Python urllib | ✅ Natif |
-| **Artefacts** | Upload conditionnel | ✅ Robuste |
+| Tests collectés | 671 |
+| Couverture | 59.25% | >28% |
+| Temps CI | 31.73s | Optimal |
+| Modules critiques | 15/15 | Opérationnels |
+| Healthcheck | Python urllib | Natif |
+| Artefacts | Upload conditionnel | Robuste |
 
 ---
 
-> 💡 **Astuce** : Commencez par Grafana pour visualiser l'état complet du système ! 📊
+> Astuce : Commencez par Grafana pour visualiser l'état complet du système.
 
 *Dernière mise à jour : novembre 2025
