@@ -28,7 +28,7 @@ logging.basicConfig(
 
 
 # 🎯 Endpoint principal IA
-@router.post("/chat", tags=["IA"])
+@router.post("/chat", tags=["IA"], response_model=None)
 async def chat(request: Request) -> dict[str, Any] | JSONResponse:
     try:
         data = await request.json()
