@@ -15,20 +15,20 @@ class TestRotationManager:
     """Tests pour le gestionnaire de rotation"""
 
     @pytest.fixture
-    def temp_vault_dir(self) -> None:
+    def temp_vault_dir(self) -> Path:
         temp_dir = tempfile.mkdtemp()
         yield Path(temp_dir)
         shutil.rmtree(temp_dir)
 
     @pytest.fixture
-    def vault(self, temp_vault_dir) -> None:
+    def vault(self, temp_vault_dir: Path) -> ArkaliaVault:
         return ArkaliaVault(base_dir=temp_vault_dir)
 
     @pytest.fixture
-    def rotation_manager(self, vault) -> None:
+    def rotation_manager(self, vault: ArkaliaVault) -> RotationManager:
         return RotationManager(vault)
 
-    def test_add_rotation_policy(self, rotation_manager) -> None:
+    def test_add_rotation_policy(self, rotation_manager: RotationManager) -> None:
         policy = RotationPolicy(
             name="test_secret", strategy=RotationStrategy.TIME_BASED, interval_days=7
         )
@@ -36,7 +36,9 @@ class TestRotationManager:
         assert "test_secret" in rotation_manager.policies
         assert rotation_manager.policies["test_secret"].interval_days == 7
 
-    def test_time_based_rotation_check(self, rotation_manager, vault) -> None:
+    def test_time_based_rotation_check(
+        self, rotation_manager: RotationManager, vault: ArkaliaVault
+    ) -> None:
         vault.store_secret("time_test", "old_value")
         policy = RotationPolicy(
             name="time_test", strategy=RotationStrategy.TIME_BASED, interval_days=1
@@ -49,7 +51,9 @@ class TestRotationManager:
         assert needs_rotation is True
         assert "Time-based rotation needed" in reason
 
-    def test_access_count_rotation_check(self, rotation_manager, vault) -> None:
+    def test_access_count_rotation_check(
+        self, rotation_manager: RotationManager, vault: ArkaliaVault
+    ) -> None:
         vault.store_secret("access_test", "value")
         policy = RotationPolicy(
             name="access_test",
@@ -64,7 +68,7 @@ class TestRotationManager:
         assert needs_rotation is True
         assert "Access count rotation needed" in reason
 
-    def test_secret_rotation(self, rotation_manager, vault) -> None:
+    def test_secret_rotation(self, rotation_manager: RotationManager, vault: ArkaliaVault) -> None:
         vault.store_secret("rotate_me", "old_value")
         policy = RotationPolicy(
             name="rotate_me", strategy=RotationStrategy.MANUAL, auto_generate=True
@@ -78,7 +82,9 @@ class TestRotationManager:
         backup_secrets = [s for s in vault.list_secrets() if "backup" in s.name]
         assert len(backup_secrets) > 0
 
-    def test_bulk_rotation_check(self, rotation_manager, vault) -> None:
+    def test_bulk_rotation_check(
+        self, rotation_manager: RotationManager, vault: ArkaliaVault
+    ) -> None:
         for i in range(3):
             secret_name = f"bulk_test_{i}"
             vault.store_secret(secret_name, f"value_{i}")

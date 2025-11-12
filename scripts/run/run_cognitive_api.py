@@ -34,6 +34,9 @@ async def health_check() -> dict:
 
 if __name__ == "__main__":
     # Démarrer le serveur FastAPI
-    uvicorn.run(
-        app, host="0.0.0.0", port=8003
-    )  # Interface accessible depuis l'extérieur du conteneur
+    # Utiliser variable d'environnement pour le host, avec "127.0.0.1" par défaut
+    import os
+
+    host = os.getenv("HOST", "127.0.0.1")
+    # En production Docker, définir HOST=0.0.0.0 explicitement
+    uvicorn.run(app, host=host, port=8003)

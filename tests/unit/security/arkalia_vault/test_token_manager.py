@@ -14,20 +14,20 @@ class TestTokenManager:
     """Tests pour le gestionnaire de tokens"""
 
     @pytest.fixture
-    def temp_vault_dir(self) -> None:
+    def temp_vault_dir(self) -> Path:
         temp_dir = tempfile.mkdtemp()
         yield Path(temp_dir)
         shutil.rmtree(temp_dir)
 
     @pytest.fixture
-    def vault(self, temp_vault_dir) -> None:
+    def vault(self, temp_vault_dir: Path) -> ArkaliaVault:
         return ArkaliaVault(base_dir=temp_vault_dir)
 
     @pytest.fixture
-    def token_manager(self, vault) -> None:
+    def token_manager(self, vault: ArkaliaVault) -> TokenManager:
         return TokenManager(vault)
 
-    def test_generate_session_token(self, token_manager) -> None:
+    def test_generate_session_token(self, token_manager: TokenManager) -> None:
         token_id, token_value = token_manager.generate_token(
             token_type=TokenType.SESSION,
             user_id="user123",
@@ -41,7 +41,7 @@ class TestTokenManager:
         assert metadata.associated_user == "user123"
         assert metadata.permissions == ["read", "write"]
 
-    def test_generate_api_key(self, token_manager) -> None:
+    def test_generate_api_key(self, token_manager: TokenManager) -> None:
         token_id, token_value = token_manager.generate_token(
             token_type=TokenType.API_KEY,
             service_id="service123",
@@ -52,7 +52,7 @@ class TestTokenManager:
         metadata = token_manager.token_metadata[token_id]
         assert metadata.associated_service == "service123"
 
-    def test_validate_token(self, token_manager) -> None:
+    def test_validate_token(self, token_manager: TokenManager) -> None:
         token_id, token_value = token_manager.generate_token(
             token_type=TokenType.API_KEY,
             service_id="test_service",
@@ -64,7 +64,7 @@ class TestTokenManager:
         assert metadata.token_id == token_id
         assert reason == "Valid"
 
-    def test_revoke_token(self, token_manager) -> None:
+    def test_revoke_token(self, token_manager: TokenManager) -> None:
         token_id, token_value = token_manager.generate_token(
             token_type=TokenType.SESSION, user_id="test_user"
         )
@@ -74,7 +74,7 @@ class TestTokenManager:
         assert is_valid is False
         assert "revoked" in reason.lower()
 
-    def test_cleanup_expired_tokens(self, token_manager) -> None:
+    def test_cleanup_expired_tokens(self, token_manager: TokenManager) -> None:
         token_id, token_value = token_manager.generate_token(
             token_type=TokenType.SESSION,
             user_id="test_user",

@@ -4,6 +4,7 @@ Script de validation CI pour Arkalia-LUNA
 Vérifie les points critiques sans échouer sur les erreurs mineures
 """
 
+import importlib
 import os
 import subprocess
 import sys
@@ -39,20 +40,20 @@ def check_imports() -> bool:
         "🔍 Vérification des imports principaux...", extra={"arkalia_module": "scripts"}
     )
 
-    test_imports = [
-        "import modules.zeroia.core",
-        "import modules.reflexia.core",
-        "import modules.assistantia.core",
-        "import modules.helloria.core",
-        "import modules.security.core",
+    test_modules = [
+        "modules.zeroia.core",
+        "modules.reflexia.core",
+        "modules.assistantia.core",
+        "modules.helloria.core",
+        "modules.security.core",
     ]
 
-    for import_stmt in test_imports:
+    for module_name in test_modules:
         try:
-            exec(import_stmt)
-            ark_logger.info(f"✅ {import_stmt}", extra={"arkalia_module": "scripts"})
+            importlib.import_module(module_name)
+            ark_logger.info(f"✅ import {module_name}", extra={"arkalia_module": "scripts"})
         except Exception as e:
-            ark_logger.info(f"❌ {import_stmt} - {e}", extra={"arkalia_module": "scripts"})
+            ark_logger.info(f"❌ import {module_name} - {e}", extra={"arkalia_module": "scripts"})
             return False
 
     return True

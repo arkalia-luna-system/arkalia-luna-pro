@@ -16,7 +16,7 @@ import pytest_asyncio
 import requests
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture  # type: ignore[misc]
 async def api_client() -> Any:
     """Client HTTP pour les tests API - Mock si l'API n'est pas disponible"""
     try:

@@ -17,7 +17,7 @@ import pytest
 
 
 @pytest.fixture
-def api_client():
+def api_client() -> httpx.AsyncClient:
     return httpx.AsyncClient(base_url="http://localhost:8000", timeout=30.0)
 
 
@@ -25,7 +25,7 @@ class TestAPIEndpointsE2E:
     """Tests E2E pour les endpoints API"""
 
     @pytest.mark.asyncio
-    async def test_health_endpoint(self, api_client):
+    async def test_health_endpoint(self, api_client: httpx.AsyncClient) -> None:
         """Test du endpoint de santé principal"""
         try:
             response = await api_client.get("/health")
@@ -37,7 +37,7 @@ class TestAPIEndpointsE2E:
             pytest.skip("API non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_zeroia_health(self, api_client):
+    async def test_zeroia_health(self, api_client: httpx.AsyncClient) -> None:
         """Test du endpoint de santé ZeroIA"""
         try:
             response = await api_client.get("/zeroia/health")
@@ -51,7 +51,7 @@ class TestAPIEndpointsE2E:
             pytest.skip("ZeroIA non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_reflexia_health(self, api_client):
+    async def test_reflexia_health(self, api_client: httpx.AsyncClient) -> None:
         """Test du endpoint de santé ReflexIA"""
         try:
             response = await api_client.get("/reflexia/health")
@@ -64,7 +64,7 @@ class TestAPIEndpointsE2E:
             pytest.skip("Reflexia non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_sandozia_health(self, api_client):
+    async def test_sandozia_health(self, api_client: httpx.AsyncClient) -> None:
         """Test du endpoint de santé Sandozia"""
         try:
             response = await api_client.get("/sandozia/health")
@@ -77,7 +77,7 @@ class TestAPIEndpointsE2E:
             pytest.skip("Sandozia non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_zeroia_decision(self, api_client):
+    async def test_zeroia_decision(self, api_client: httpx.AsyncClient) -> None:
         """Test du endpoint de décision ZeroIA"""
         try:
             payload = {
@@ -96,7 +96,7 @@ class TestAPIEndpointsE2E:
             pytest.skip("ZeroIA decision non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_reflexia_check(self, api_client):
+    async def test_reflexia_check(self, api_client: httpx.AsyncClient) -> None:
         """Test du endpoint de vérification ReflexIA"""
         try:
             payload = {"module": "zeroia", "check_type": "health"}
@@ -110,7 +110,7 @@ class TestAPIEndpointsE2E:
             pytest.skip("Reflexia check non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_sandozia_analyze(self, api_client):
+    async def test_sandozia_analyze(self, api_client: httpx.AsyncClient) -> None:
         """Test du endpoint d'analyse Sandozia"""
         try:
             payload = {
@@ -129,7 +129,7 @@ class TestAPIEndpointsE2E:
             pytest.skip("Sandozia analyze non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_metrics_endpoint(self, api_client):
+    async def test_metrics_endpoint(self, api_client: httpx.AsyncClient) -> None:
         """Test du endpoint de métriques Prometheus"""
         try:
             response = await api_client.get("/metrics")
@@ -143,7 +143,7 @@ class TestAPIEndpointsE2E:
             pytest.skip("Metrics non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_api_documentation(self, api_client):
+    async def test_api_documentation(self, api_client: httpx.AsyncClient) -> None:
         """Test de la documentation API (OpenAPI/Swagger)"""
         try:
             response = await api_client.get("/docs")
@@ -155,7 +155,7 @@ class TestAPIEndpointsE2E:
             pytest.skip("Documentation non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_openapi_schema(self, api_client):
+    async def test_openapi_schema(self, api_client: httpx.AsyncClient) -> None:
         """Test du schéma OpenAPI"""
         try:
             response = await api_client.get("/openapi.json")
@@ -173,7 +173,7 @@ class TestAPIPerformanceE2E:
     """Tests de performance E2E pour l'API"""
 
     @pytest.mark.asyncio
-    async def test_api_response_time(self):
+    async def test_api_response_time(self) -> None:
         """Test du temps de réponse de l'API"""
         try:
             async with httpx.AsyncClient(base_url="http://localhost:8000", timeout=30.0) as client:
@@ -188,7 +188,7 @@ class TestAPIPerformanceE2E:
             pytest.skip("API non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_concurrent_requests(self):
+    async def test_concurrent_requests(self) -> None:
         """Test de requêtes concurrentes"""
         try:
             async with httpx.AsyncClient(base_url="http://localhost:8000", timeout=30.0) as client:
@@ -202,7 +202,7 @@ class TestAPIPerformanceE2E:
             pytest.skip("API non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_zeroia_decision_performance(self):
+    async def test_zeroia_decision_performance(self) -> None:
         """Test de performance du endpoint de décision ZeroIA"""
         try:
             async with httpx.AsyncClient(base_url="http://localhost:8000", timeout=30.0) as client:
@@ -225,7 +225,7 @@ class TestAPISecurityE2E:
     """Tests de sécurité E2E pour l'API"""
 
     @pytest.mark.asyncio
-    async def test_cors_headers(self, api_client):
+    async def test_cors_headers(self, api_client: httpx.AsyncClient) -> None:
         """Test des en-têtes CORS"""
         try:
             response = await api_client.options("/health")
@@ -235,7 +235,7 @@ class TestAPISecurityE2E:
             pytest.skip("CORS non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_rate_limiting(self, api_client):
+    async def test_rate_limiting(self, api_client: httpx.AsyncClient) -> None:
         """Test de limitation de débit"""
         try:
             # Envoi de nombreuses requêtes pour tester la limitation
@@ -251,7 +251,7 @@ class TestAPISecurityE2E:
             pytest.skip("Rate limiting non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_invalid_payload_handling(self, api_client):
+    async def test_invalid_payload_handling(self, api_client: httpx.AsyncClient) -> None:
         """Test de gestion des payloads invalides"""
         try:
             invalid_payloads = [

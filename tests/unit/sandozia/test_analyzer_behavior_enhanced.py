@@ -25,7 +25,7 @@ else:
     )
 
 
-def test_behavior_pattern_creation():
+def test_behavior_pattern_creation() -> None:
     timestamp = datetime.now()
     pattern = BehaviorPattern(
         pattern_type="test_pattern",
@@ -45,7 +45,7 @@ def test_behavior_pattern_creation():
     assert len(pattern.affected_modules) == 2
 
 
-def test_behavior_pattern_to_dict():
+def test_behavior_pattern_to_dict() -> None:
     timestamp = datetime.now()
     pattern = BehaviorPattern(
         pattern_type="test_pattern",
@@ -66,7 +66,7 @@ def test_behavior_pattern_to_dict():
     assert data["occurrences"] == 3
 
 
-def test_behavior_analyzer_initialization():
+def test_behavior_analyzer_initialization() -> None:
     analyzer = BehaviorAnalyzer()
     assert analyzer.config is not None
     assert "window_size_minutes" in analyzer.config
@@ -74,7 +74,7 @@ def test_behavior_analyzer_initialization():
     assert len(analyzer.pattern_history) == 0
 
 
-def test_behavior_analyzer_custom_config():
+def test_behavior_analyzer_custom_config() -> None:
     custom_config = {
         "window_size_minutes": 120,
         "anomaly_threshold": 3.0,
@@ -86,7 +86,7 @@ def test_behavior_analyzer_custom_config():
     assert analyzer.config == custom_config
 
 
-def test_add_metric_sample():
+def test_add_metric_sample() -> None:
     analyzer = BehaviorAnalyzer()
     timestamp = datetime.now()
 
@@ -98,7 +98,7 @@ def test_add_metric_sample():
     assert analyzer.metrics_buffer[key][0]["value"] == 75.5
 
 
-def test_add_decision_event():
+def test_add_decision_event() -> None:
     analyzer = BehaviorAnalyzer()
     decision_data = {"action": "monitor", "confidence": 0.8}
 
@@ -110,19 +110,19 @@ def test_add_decision_event():
     assert event["data"] == decision_data
 
 
-def test_detect_statistical_anomalies_empty():
+def test_detect_statistical_anomalies_empty() -> None:
     analyzer = BehaviorAnalyzer()
     anomalies = analyzer.detect_statistical_anomalies()
     assert len(anomalies) == 0
 
 
-def test_detect_performance_regression_empty():
+def test_detect_performance_regression_empty() -> None:
     analyzer = BehaviorAnalyzer()
     regressions = analyzer.detect_performance_regression()
     assert len(regressions) == 0
 
 
-def test_analyze_behavior():
+def test_analyze_behavior() -> None:
     analyzer = BehaviorAnalyzer()
     analysis = analyzer.analyze_behavior()
 
@@ -138,13 +138,13 @@ def test_analyze_behavior():
     assert "timestamp" in analysis
 
 
-def test_get_pattern_history():
+def test_get_pattern_history() -> None:
     analyzer = BehaviorAnalyzer()
     history = analyzer.get_pattern_history()
     assert isinstance(history, list)
 
 
-def test_get_metrics_summary():
+def test_get_metrics_summary() -> None:
     analyzer = BehaviorAnalyzer()
     summary = analyzer.get_metrics_summary()
     assert isinstance(summary, dict)

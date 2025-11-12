@@ -79,15 +79,17 @@ def backup_current_state(silent: bool = False) -> None:
     # Résoudre les chemins dynamiquement depuis le répertoire de travail courant
     # Toujours utiliser les fonctions de résolution pour garantir le bon chemin
     # Utiliser Path.cwd() pour résoudre depuis le répertoire de travail actuel
-    current_dir = Path.cwd()
-    state_file = current_dir / "modules" / "zeroia" / "state" / "zeroia_state.toml"
-    backup_file = current_dir / "modules" / "zeroia" / "state" / "zeroia_state_backup.toml"
-
     # Si STATE_FILE est un Path absolu (patché par les tests), l'utiliser tel quel
     if STATE_FILE.is_absolute():
         state_file = STATE_FILE
         if BACKUP_FILE.is_absolute():
             backup_file = BACKUP_FILE
+        else:
+            backup_file = get_backup_file()
+    else:
+        # Utiliser les fonctions de résolution pour obtenir les chemins dynamiques
+        state_file = get_state_file()
+        backup_file = get_backup_file()
 
     if state_file.exists():
         # Créer le répertoire parent si nécessaire

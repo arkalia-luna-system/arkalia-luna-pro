@@ -3,6 +3,8 @@
 # Tests unitaires SandoziaCore
 
 import asyncio
+from pathlib import Path
+from typing import Any
 from unittest.mock import patch
 
 import pytest
@@ -14,7 +16,7 @@ class TestSandoziaCore:
     """Tests pour SandoziaCore"""
 
     @pytest.fixture
-    def sandozia_core(self, tmp_path: pytest.TempPathFactory) -> SandoziaCore:
+    def sandozia_core(self, tmp_path: Path) -> SandoziaCore:
         """Fixture SandoziaCore avec répertoire temporaire"""
         config_path = tmp_path / "test_config.toml"
         core = SandoziaCore(config_path=config_path)
@@ -121,7 +123,7 @@ class TestSandoziaCore:
     async def test_generate_recommendations(self, sandozia_core: SandoziaCore) -> None:
         """Test génération recommandations"""
         coherence_analysis = {"coherence_score": 0.9, "issues": []}
-        patterns = []
+        patterns: list[Any] = []
 
         recommendations = await sandozia_core._generate_recommendations(
             coherence_analysis, patterns
@@ -240,7 +242,7 @@ class TestSandoziaCoreIntegration:
     """Tests d'intégration SandoziaCore"""
 
     @pytest.mark.asyncio
-    async def test_full_sandozia_cycle(self, tmp_path: pytest.TempPathFactory) -> None:
+    async def test_full_sandozia_cycle(self, tmp_path: Path) -> None:
         """Test cycle complet Sandozia"""
         config_path = tmp_path / "integration_config.toml"
 

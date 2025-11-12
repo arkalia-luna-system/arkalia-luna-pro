@@ -15,16 +15,25 @@ from typing import Any
 import httpx
 import pytest
 
-import docker
+try:
+    from docker.client import DockerClient
+
+    docker_available = True
+except (ImportError, AttributeError):
+    docker_available = False
 
 
 @pytest.fixture(scope="session")
-def docker_client():
-    return docker.from_env()
+def docker_client() -> Any:
+    if not docker_available:
+        pytest.skip("Docker SDK non disponible")
+    import docker
+
+    return docker.from_env()  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="session")
-def services_running():
+def services_running() -> bool:
     # Ici, on suppose que les services sont déjà up via docker-compose
     # On pourrait ajouter un check ici si besoin
     return True
@@ -34,7 +43,7 @@ class TestDockerServicesE2E:
     """Tests E2E pour les services Docker"""
 
     @pytest.mark.asyncio
-    async def test_all_services_running(self, docker_client, services_running):
+    async def test_all_services_running(self, docker_client: Any, services_running: bool) -> None:
         """Test que tous les services sont en cours d'exécution"""
         try:
             containers = docker_client.containers.list()
@@ -46,7 +55,7 @@ class TestDockerServicesE2E:
             pytest.skip("Impossible de vérifier les services Docker - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_service_health_checks(self, services_running):
+    async def test_service_health_checks(self, services_running: bool) -> None:
         """Test des health checks des services"""
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
@@ -71,7 +80,7 @@ class TestDockerServicesE2E:
             pytest.skip("Services non disponibles - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_service_logs(self, docker_client, services_running):
+    async def test_service_logs(self, docker_client: Any, services_running: bool) -> None:
         """Test que les services génèrent des logs"""
         try:
             containers = docker_client.containers.list()
@@ -82,7 +91,7 @@ class TestDockerServicesE2E:
             pytest.skip("Impossible de vérifier les logs - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_service_communication(self, services_running):
+    async def test_service_communication(self, services_running: bool) -> None:
         """Test de la communication entre services"""
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
@@ -100,7 +109,7 @@ class TestDockerServicesE2E:
             pytest.skip("Services non disponibles - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_service_restart(self, docker_client, services_running):
+    async def test_service_restart(self, docker_client: Any, services_running: bool) -> None:
         """Test du redémarrage des services"""
         containers = docker_client.containers.list()
         for c in containers:
@@ -119,7 +128,7 @@ class TestDockerNetworkingE2E:
     """Tests E2E pour le networking Docker"""
 
     @pytest.mark.asyncio
-    async def test_internal_communication(self, services_running):
+    async def test_internal_communication(self, services_running: bool) -> None:
         """Test de la communication interne entre conteneurs"""
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
@@ -137,7 +146,7 @@ class TestDockerNetworkingE2E:
             pytest.skip("Services non disponibles - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_port_exposure(self, services_running):
+    async def test_port_exposure(self, services_running: bool) -> None:
         """Test de l'exposition des ports"""
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
@@ -148,7 +157,7 @@ class TestDockerNetworkingE2E:
             pytest.skip("Services non disponibles - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_network_isolation(self, services_running):
+    async def test_network_isolation(self, services_running: bool) -> None:
         """Test de l'isolation réseau"""
         pass
 
@@ -157,7 +166,7 @@ class TestDockerVolumesE2E:
     """Tests E2E pour les volumes Docker"""
 
     @pytest.mark.asyncio
-    async def test_persistent_storage(self, services_running):
+    async def test_persistent_storage(self, services_running: bool) -> None:
         """Test du stockage persistant"""
         async with httpx.AsyncClient(timeout=30.0) as client:
             try:
@@ -172,7 +181,7 @@ class TestDockerVolumesE2E:
                 pytest.skip("Endpoint ZeroIA decision non disponible - test ignoré")
 
     @pytest.mark.asyncio
-    async def test_volume_permissions(self, services_running):
+    async def test_volume_permissions(self, services_running: bool) -> None:
         """Test des permissions des volumes"""
         pass
 
@@ -181,7 +190,7 @@ class TestDockerResourceLimitsE2E:
     """Tests E2E pour les limites de ressources"""
 
     @pytest.mark.asyncio
-    async def test_memory_limits(self, docker_client, services_running):
+    async def test_memory_limits(self, docker_client: Any, services_running: bool) -> None:
         """Test des limites de mémoire"""
         containers = docker_client.containers.list()
         for container in containers:
@@ -193,7 +202,7 @@ class TestDockerResourceLimitsE2E:
                 assert memory_percentage < 80, f"Container {container.name} utilise trop de mémoire"
 
     @pytest.mark.asyncio
-    async def test_cpu_limits(self, docker_client, services_running):
+    async def test_cpu_limits(self, docker_client: Any, services_running: bool) -> None:
         """Test des limites CPU"""
         containers = docker_client.containers.list()
         for container in containers:
@@ -207,7 +216,7 @@ class TestDockerSecurityE2E:
     """Tests E2E pour la sécurité Docker"""
 
     @pytest.mark.asyncio
-    async def test_non_root_containers(self, docker_client, services_running):
+    async def test_non_root_containers(self, docker_client: Any, services_running: bool) -> None:
         """Test que les conteneurs ne tournent pas en tant que root"""
         containers = docker_client.containers.list()
         for container in containers:
@@ -217,7 +226,7 @@ class TestDockerSecurityE2E:
                 assert user != "root", f"Container {container.name} tourne en tant que root"
 
     @pytest.mark.asyncio
-    async def test_security_scan(self, services_running):
+    async def test_security_scan(self, services_running: bool) -> None:
         """Test de scan de sécurité basique"""
         async with httpx.AsyncClient(timeout=30.0) as client:
             # Test endpoint admin (doit être protégé)

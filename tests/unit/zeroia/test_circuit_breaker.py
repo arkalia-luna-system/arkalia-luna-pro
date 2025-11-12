@@ -30,14 +30,14 @@ from modules.zeroia.event_store import EventStore, EventType
 
 
 @pytest.fixture
-def mock_event_store():
+def mock_event_store() -> MagicMock:
     """Mock EventStore pour les tests"""
     event_store = MagicMock(spec=EventStore)
     return event_store
 
 
 @pytest.fixture
-def circuit_breaker(mock_event_store):
+def circuit_breaker(mock_event_store: MagicMock) -> CircuitBreaker:
     """Fixture pour un circuit breaker de test (état vierge)"""
     state_file = "state/circuit_breaker_test.toml"
     if os.path.exists(state_file):
@@ -45,7 +45,9 @@ def circuit_breaker(mock_event_store):
     return CircuitBreaker(name="test", failure_threshold=3, timeout=30)
 
 
-def test_circuit_breaker_initialization(circuit_breaker, mock_event_store):
+def test_circuit_breaker_initialization(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test initialisation circuit breaker"""
     assert circuit_breaker.name == "test"
     assert circuit_breaker.failure_threshold == 3
@@ -55,10 +57,10 @@ def test_circuit_breaker_initialization(circuit_breaker, mock_event_store):
     assert circuit_breaker.metrics.consecutive_failures == 0
 
 
-def test_successful_call(circuit_breaker, mock_event_store):
+def test_successful_call(circuit_breaker: CircuitBreaker, mock_event_store: MagicMock) -> None:
     """🧪 Test appel réussi"""
 
-    def dummy_function(x, y) -> None:
+    def dummy_function(x: int, y: int) -> int:
         return x + y
 
     result = circuit_breaker.call(dummy_function, 2, 3)
@@ -73,7 +75,7 @@ def test_successful_call(circuit_breaker, mock_event_store):
     # donc on ne vérifie plus les appels au mock
 
 
-def test_failure_handling(circuit_breaker, mock_event_store):
+def test_failure_handling(circuit_breaker: CircuitBreaker, mock_event_store: MagicMock) -> None:
     """🧪 Test gestion échec"""
 
     def failing_function() -> None:
@@ -90,7 +92,9 @@ def test_failure_handling(circuit_breaker, mock_event_store):
     # donc on ne vérifie plus les appels au mock
 
 
-def test_circuit_opens_after_threshold(circuit_breaker, mock_event_store):
+def test_circuit_opens_after_threshold(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test ouverture circuit après seuil d'échecs"""
 
     def failing_function() -> None:
@@ -111,7 +115,9 @@ def test_circuit_opens_after_threshold(circuit_breaker, mock_event_store):
     # donc on ne vérifie plus les appels au mock
 
 
-def test_circuit_blocks_calls_when_open(circuit_breaker, mock_event_store):
+def test_circuit_blocks_calls_when_open(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test blocage appels quand circuit ouvert"""
 
     def failing_function() -> None:
@@ -132,7 +138,9 @@ def test_circuit_blocks_calls_when_open(circuit_breaker, mock_event_store):
     # donc on ne vérifie plus les appels au mock
 
 
-def test_circuit_transitions_to_half_open(circuit_breaker, mock_event_store):
+def test_circuit_transitions_to_half_open(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test transition vers HALF_OPEN après timeout"""
 
     def failing_function() -> None:
@@ -157,7 +165,9 @@ def test_circuit_transitions_to_half_open(circuit_breaker, mock_event_store):
     assert circuit_breaker.state == "CLOSED"  # Retour à CLOSED après succès
 
 
-def test_half_open_to_closed_on_success(circuit_breaker, mock_event_store):
+def test_half_open_to_closed_on_success(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test transition HALF_OPEN → CLOSED sur succès"""
     # Forcer l'état HALF_OPEN
     circuit_breaker.state = "HALF_OPEN"
@@ -173,7 +183,9 @@ def test_half_open_to_closed_on_success(circuit_breaker, mock_event_store):
     assert circuit_breaker.metrics.consecutive_failures == 0
 
 
-def test_half_open_to_open_on_failure(circuit_breaker, mock_event_store):
+def test_half_open_to_open_on_failure(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test transition HALF_OPEN → OPEN sur échec"""
     # Forcer l'état HALF_OPEN avec 2 échecs consécutifs
     circuit_breaker.state = "HALF_OPEN"
@@ -190,7 +202,9 @@ def test_half_open_to_open_on_failure(circuit_breaker, mock_event_store):
     assert circuit_breaker.metrics.consecutive_failures == 3
 
 
-def test_unexpected_error_handling(circuit_breaker, mock_event_store):
+def test_unexpected_error_handling(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test gestion erreurs inattendues"""
 
     def unexpected_error_function() -> None:
@@ -205,7 +219,7 @@ def test_unexpected_error_handling(circuit_breaker, mock_event_store):
     assert circuit_breaker.metrics.consecutive_failures > 0
 
 
-def test_manual_reset(circuit_breaker, mock_event_store):
+def test_manual_reset(circuit_breaker: CircuitBreaker, mock_event_store: MagicMock) -> None:
     """🧪 Test réinitialisation manuelle"""
 
     def failing_function() -> None:
@@ -229,11 +243,13 @@ def test_manual_reset(circuit_breaker, mock_event_store):
     # donc on ne vérifie plus les appels au mock
 
 
-def test_retry_mechanism_with_tenacity(circuit_breaker, mock_event_store):
+def test_retry_mechanism_with_tenacity(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test mécanisme de retry avec tenacity"""
     call_count = 0
 
-    def flaky_function() -> None:
+    def flaky_function() -> str:
         nonlocal call_count
         call_count += 1
         if call_count <= 2:
@@ -249,7 +265,7 @@ def test_retry_mechanism_with_tenacity(circuit_breaker, mock_event_store):
     assert circuit_breaker.failure_count > 0
 
 
-def test_metrics_calculation(circuit_breaker, mock_event_store):
+def test_metrics_calculation(circuit_breaker: CircuitBreaker, mock_event_store: MagicMock) -> None:
     """🧪 Test calcul des métriques"""
 
     def successful_function() -> str:
@@ -273,7 +289,7 @@ def test_metrics_calculation(circuit_breaker, mock_event_store):
     assert circuit_breaker.metrics.success_rate == 0.6
 
 
-def test_get_status(circuit_breaker, mock_event_store):
+def test_get_status(circuit_breaker: CircuitBreaker, mock_event_store: MagicMock) -> None:
     """🧪 Test récupération du statut complet"""
     # Quelques appels pour avoir des métriques
     circuit_breaker.call(lambda: "success")
@@ -289,7 +305,9 @@ def test_get_status(circuit_breaker, mock_event_store):
     assert status["config"]["timeout"] == 30
 
 
-def test_different_exception_types(circuit_breaker, mock_event_store):
+def test_different_exception_types(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test gestion différents types d'exceptions"""
 
     def integrity_error_function() -> None:
@@ -311,10 +329,12 @@ def test_different_exception_types(circuit_breaker, mock_event_store):
 
 
 @pytest.mark.asyncio
-async def test_concurrent_calls(circuit_breaker, mock_event_store):
+async def test_concurrent_calls(
+    circuit_breaker: CircuitBreaker, mock_event_store: MagicMock
+) -> None:
     """🧪 Test appels concurrents (simulation)"""
 
-    def test_function(value) -> None:
+    def test_function(value: int) -> str:
         if value % 2 == 0:
             raise CognitiveOverloadError(f"Even number {value}")
         return f"Odd number {value}"

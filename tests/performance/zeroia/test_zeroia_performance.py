@@ -15,6 +15,7 @@ Benchmarks couverts :
 
 import os
 import time
+from pathlib import Path
 from typing import Any
 from unittest.mock import patch
 
@@ -37,18 +38,18 @@ class PerformanceMetrics:
     """Collecteur de métriques de performance"""
 
     def __init__(self) -> None:
-        self.start_time = None
-        self.end_time = None
-        self.memory_start = None
-        self.memory_end = None
+        self.start_time: float | None = None
+        self.end_time: float | None = None
+        self.memory_start: float | None = None
+        self.memory_end: float | None = None
 
-    def start_monitoring(self):
+    def start_monitoring(self) -> None:
         """Démarre la collecte de métriques"""
         self.start_time = time.perf_counter()
         process = psutil.Process()
         self.memory_start = process.memory_info().rss / 1024 / 1024  # MB
 
-    def stop_monitoring(self):
+    def stop_monitoring(self) -> None:
         """Arrête la collecte de métriques"""
         self.end_time = time.perf_counter()
         process = psutil.Process()
@@ -65,19 +66,18 @@ class PerformanceMetrics:
     def memory_delta(self) -> float | None:
         """Différence mémoire en MB"""
         if self.memory_end is not None and self.memory_start is not None:
-            # Type assertion pour rassurer le type checker
             return float(self.memory_end) - float(self.memory_start)
         return None
 
 
 @pytest.fixture
-def performance_metrics():
+def performance_metrics() -> PerformanceMetrics:
     """Fixture pour métriques de performance"""
     return PerformanceMetrics()
 
 
 @pytest.fixture
-def temp_paths(tmp_path):
+def temp_paths(tmp_path: Path) -> dict[str, Path]:
     """Chemins temporaires pour les tests"""
     return {
         "context": tmp_path / "context.toml",
@@ -90,7 +90,9 @@ def temp_paths(tmp_path):
 @pytest.mark.performance
 @pytest.mark.slow
 @pytest.mark.skipif(os.getenv("CI") == "true", reason="Ignoré en CI")
-def test_zeroia_decision_time_under_2s(performance_metrics, temp_paths):
+def test_zeroia_decision_time_under_2s(
+    performance_metrics: PerformanceMetrics, temp_paths: dict[str, Path]
+) -> None:
     """
     🎯 Test : ZeroIA Enhanced prend une décision en < 2s
 
@@ -120,9 +122,9 @@ def test_zeroia_decision_time_under_2s(performance_metrics, temp_paths):
 
     # Vérifications performance
     elapsed = performance_metrics.elapsed_time
-    threshold = float(os.getenv("ZEROIA_DECISION_THRESHOLD", "2.0"))
-
-    assert elapsed < threshold, f"❌ ZeroIA trop lent : {elapsed:.3f}s (limite : {threshold}s)"
+    if elapsed is not None:
+        threshold = float(os.getenv("ZEROIA_DECISION_THRESHOLD", "2.0"))
+        assert elapsed < threshold, f"❌ ZeroIA trop lent : {elapsed:.3f}s (limite : {threshold}s)"
 
     ark_logger.info(
         f"✅ ZeroIA décision en {elapsed:.3f}s (objectif < {threshold}s)",
@@ -137,7 +139,7 @@ def test_zeroia_decision_time_under_2s(performance_metrics, temp_paths):
 
 @pytest.mark.performance
 @pytest.mark.slow
-def test_circuit_breaker_latency_under_10ms(performance_metrics):
+def test_circuit_breaker_latency_under_10ms(performance_metrics: PerformanceMetrics) -> None:
     """
     ⚡ Test : Circuit Breaker latence < 10ms
 
@@ -146,7 +148,7 @@ def test_circuit_breaker_latency_under_10ms(performance_metrics):
     """
     circuit_breaker = CircuitBreaker(failure_threshold=5, timeout=60)
 
-    def fast_function() -> None:
+    def fast_function() -> str:
         return "success"
 
     # Mesure de 100 appels pour moyenne fiable
@@ -180,7 +182,9 @@ def test_circuit_breaker_latency_under_10ms(performance_metrics):
 @pytest.mark.performance
 @pytest.mark.slow
 @pytest.mark.xfail(reason="EventStore adapter not yet stable")
-def test_event_store_write_performance(performance_metrics, tmp_path):
+def test_event_store_write_performance(
+    performance_metrics: PerformanceMetrics, tmp_path: Path
+) -> None:
     """
     💾 Test : Event Store écriture < 50ms par événement
 
@@ -234,15 +238,17 @@ def test_event_store_write_performance(performance_metrics, tmp_path):
         f"📊 Moyenne: {avg_write_ms:.2f}ms | Max: {max_write_ms:.2f}ms",
         extra={"arkalia_module": "zeroia"},
     )
-    ark_logger.info(
-        f"🚀 Throughput: {events_count / performance_metrics.elapsed_time:.0f} events/sec",
-        extra={"arkalia_module": "zeroia"},
-    )
+    elapsed = performance_metrics.elapsed_time
+    if elapsed is not None and elapsed > 0:
+        ark_logger.info(
+            f"🚀 Throughput: {events_count / elapsed:.0f} events/sec",
+            extra={"arkalia_module": "zeroia"},
+        )
 
 
 @pytest.mark.performance
 @pytest.mark.benchmark
-def test_performance_regression_detection():
+def test_performance_regression_detection() -> None:
     """
     📊 Test : Détection régression performance
 

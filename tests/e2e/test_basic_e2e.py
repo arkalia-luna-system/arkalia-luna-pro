@@ -13,14 +13,14 @@ import requests
 
 
 @pytest.fixture(scope="session")
-def base_url():
+def base_url() -> str:
     return "http://localhost:8000"
 
 
 class TestBasicE2E:
     """Tests E2E de base"""
 
-    def test_api_health_endpoint(self, base_url) -> None:
+    def test_api_health_endpoint(self, base_url: str) -> None:
         """Test de l'endpoint de santé de l'API"""
         try:
             response = requests.get(f"{base_url}/health", timeout=5)
@@ -30,7 +30,7 @@ class TestBasicE2E:
         except requests.exceptions.RequestException:
             pytest.skip("API non disponible - test ignoré")
 
-    def test_zeroia_health_endpoint(self, base_url) -> None:
+    def test_zeroia_health_endpoint(self, base_url: str) -> None:
         """Test de l'endpoint de santé ZeroIA"""
         try:
             response = requests.get(f"{base_url}/zeroia/health", timeout=5)
@@ -42,7 +42,7 @@ class TestBasicE2E:
         except requests.exceptions.RequestException:
             pytest.skip("ZeroIA non disponible - test ignoré")
 
-    def test_reflexia_health_endpoint(self, base_url) -> None:
+    def test_reflexia_health_endpoint(self, base_url: str) -> None:
         """Test de l'endpoint de santé ReflexIA"""
         try:
             response = requests.get(f"{base_url}/reflexia/health", timeout=5)
@@ -54,7 +54,7 @@ class TestBasicE2E:
         except requests.exceptions.RequestException:
             pytest.skip("Reflexia non disponible - test ignoré")
 
-    def test_zeroia_decision_endpoint(self, base_url) -> None:
+    def test_zeroia_decision_endpoint(self, base_url: str) -> None:
         """Test de l'endpoint de décision ZeroIA"""
         try:
             response = requests.post(
@@ -130,7 +130,7 @@ class TestBasicE2E:
 class TestE2EIntegration:
     """Tests d'intégration E2E"""
 
-    def test_full_system_workflow(self, base_url) -> None:
+    def test_full_system_workflow(self, base_url: str) -> None:
         """Test d'un workflow complet du système"""
         try:
             # 1. Vérifier la santé du système
@@ -155,7 +155,7 @@ class TestE2EIntegration:
         except requests.exceptions.RequestException:
             pytest.skip("Système non disponible - test ignoré")
 
-    def test_error_handling(self, base_url) -> None:
+    def test_error_handling(self, base_url: str) -> None:
         """Test de la gestion d'erreur"""
         try:
             # Test avec des données invalides

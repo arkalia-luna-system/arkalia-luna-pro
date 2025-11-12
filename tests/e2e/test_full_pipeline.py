@@ -5,7 +5,7 @@ API_URL = "http://localhost:8000"
 
 
 @pytest.mark.e2e
-def test_full_pipeline():
+def test_full_pipeline() -> None:
     """
     Test E2E complet :
     - Vérifie que l'API principale fonctionne

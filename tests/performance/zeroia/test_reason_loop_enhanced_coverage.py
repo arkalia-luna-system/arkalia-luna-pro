@@ -28,14 +28,14 @@ from modules.zeroia.reason_loop_enhanced import (
 class TestReasonLoopEnhanced:
     """Tests pour la boucle de raisonnement améliorée"""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Configuration avant chaque test"""
         self.temp_dir = tempfile.mkdtemp()
         self.reason_loop = ReasonLoopEnhanced(
             config_path=os.path.join(self.temp_dir, "config.toml")
         )
 
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         """Nettoyage après chaque test"""
         import shutil
 
@@ -153,14 +153,14 @@ class TestReasonLoopEnhancedFunctions:
 class TestReasonLoopEnhancedIntegration:
     """Tests d'intégration pour la boucle de raisonnement améliorée"""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Configuration avant chaque test"""
         self.temp_dir = tempfile.mkdtemp()
         self.reason_loop = ReasonLoopEnhanced(
             config_path=os.path.join(self.temp_dir, "integration_config.toml")
         )
 
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         """Nettoyage après chaque test"""
         import shutil
 
@@ -275,7 +275,8 @@ class TestReasonLoopEnhancedRobustness:
         threshold = reason_loop.config["contradiction_threshold"]
 
         # Déclencher des contradictions jusqu'au seuil
-        for _ in range(threshold - 1):
+        threshold_int = int(threshold) if isinstance(threshold, (int, float)) else 10
+        for _ in range(threshold_int - 1):
             reason_loop.handle_contradiction("normal", "warning")
 
         # Vérifier que nous n'avons pas encore déclenché la récupération

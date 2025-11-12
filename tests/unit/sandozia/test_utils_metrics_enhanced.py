@@ -25,7 +25,7 @@ else:
     )
 
 
-def test_metric_point_creation():
+def test_metric_point_creation() -> None:
     timestamp = datetime.now()
     labels = {"module": "test", "version": "1.0"}
     point = MetricPoint(timestamp=timestamp, value=42.5, labels=labels)
@@ -35,7 +35,7 @@ def test_metric_point_creation():
     assert point.labels == labels
 
 
-def test_metric_point_to_dict():
+def test_metric_point_to_dict() -> None:
     timestamp = datetime.now()
     labels = {"module": "test"}
     point = MetricPoint(timestamp=timestamp, value=100.0, labels=labels)
@@ -46,14 +46,14 @@ def test_metric_point_to_dict():
     assert data["labels"] == labels
 
 
-def test_sandozia_metrics_initialization():
+def test_sandozia_metrics_initialization() -> None:
     metrics = SandoziaMetrics(retention_hours=48)
     assert metrics.retention_hours == 48
     assert len(metrics.metrics_store) == 0
     assert len(metrics.correlations_cache) == 0
 
 
-def test_add_metric():
+def test_add_metric() -> None:
     metrics = SandoziaMetrics()
     metrics.add_metric("cpu_usage", 75.5, {"module": "zeroia"})
 
@@ -62,7 +62,7 @@ def test_add_metric():
     assert metrics.metrics_store["cpu_usage"][0].value == 75.5
 
 
-def test_get_metric_values():
+def test_get_metric_values() -> None:
     metrics = SandoziaMetrics()
     metrics.add_metric("test_metric", 10.0)
     metrics.add_metric("test_metric", 20.0)
@@ -72,7 +72,7 @@ def test_get_metric_values():
     assert values == [10.0, 20.0, 30.0]
 
 
-def test_get_metric_summary():
+def test_get_metric_summary() -> None:
     metrics = SandoziaMetrics()
     metrics.add_metric("test_metric", 10.0)
     metrics.add_metric("test_metric", 20.0)
@@ -86,7 +86,7 @@ def test_get_metric_summary():
     assert summary["max"] == 30.0
 
 
-def test_export_prometheus_format():
+def test_export_prometheus_format() -> None:
     metrics = SandoziaMetrics()
     metrics.add_metric("cpu_usage", 75.5, {"module": "zeroia"})
 
@@ -95,7 +95,7 @@ def test_export_prometheus_format():
     assert "75.5" in prometheus_data
 
 
-def test_export_grafana_json():
+def test_export_grafana_json() -> None:
     metrics = SandoziaMetrics()
     metrics.add_metric("cpu_usage", 75.5)
 
@@ -105,12 +105,12 @@ def test_export_grafana_json():
     assert "retention_hours" in grafana_data
 
 
-def test_create_sandozia_metrics():
+def test_create_sandozia_metrics() -> None:
     metrics = create_sandozia_metrics()
     assert isinstance(metrics, SandoziaMetrics)
 
 
-def test_demo_metrics():
+def test_demo_metrics() -> None:
     # Test que demo_metrics() s'exécute sans erreur
     demo_metrics()
     assert True  # Si on arrive ici, pas d'exception

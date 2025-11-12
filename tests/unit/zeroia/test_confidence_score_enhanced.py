@@ -13,7 +13,7 @@ from modules.zeroia.confidence_score import ConfidenceScorer
 class TestConfidenceScoreEnhanced:
     """Tests étendus pour le système de scoring de confiance"""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Configuration avant chaque test"""
         self.temp_dir = tempfile.mkdtemp()
         self.state_file = Path(self.temp_dir) / "confidence_memory.toml"

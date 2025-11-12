@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 from unittest.mock import patch
 
 import pytest
@@ -12,7 +13,7 @@ from modules.zeroia.utils.state_writer import check_health
 STATE_PATH = Path("modules/zeroia/state/zeroia_state.toml")
 
 
-def test_healthcheck_active(tmp_path) -> None:
+def test_healthcheck_active(tmp_path: Path) -> None:
     path = tmp_path / "zeroia_state.toml"
     path.write_text(
         """
@@ -39,7 +40,7 @@ timestamp = "2024-01-01T00:00:00"
     assert "✅" in result.stdout
 
 
-def test_healthcheck_inactive(tmp_path) -> None:
+def test_healthcheck_inactive(tmp_path: Path) -> None:
     path = tmp_path / "zeroia_state.toml"
     path.write_text(
         """
@@ -66,9 +67,17 @@ timestamp = "2024-01-01T00:00:00"
     assert "✅" in result.stdout
 
 
-def test_healthcheck_missing(tmp_path) -> None:
-    # Utiliser un chemin qui n'existe vraiment pas
-    non_existent_path = "/tmp/non_existent_zeroia_state.toml"
+def test_healthcheck_missing(tmp_path: Path) -> None:
+    # Utiliser un chemin temporaire sécurisé au lieu de /tmp
+    import tempfile
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".toml") as tmp_file:
+        non_existent_path = tmp_file.name
+    # Supprimer le fichier pour simuler un chemin inexistant
+    import os
+
+    if os.path.exists(non_existent_path):
+        os.unlink(non_existent_path)
 
     result = subprocess.run(
         [sys.executable, "scripts/healthcheck_zeroia.py"],
@@ -92,7 +101,9 @@ def test_healthcheck_missing(tmp_path) -> None:
         ({"decision": {}}, False),
     ],
 )
-def test_check_health_various_states(tmp_path, state_data, expected) -> None:
+def test_check_health_various_states(
+    tmp_path: Path, state_data: dict[str, Any], expected: bool
+) -> None:
     file = tmp_path / "state.toml"
     file.write_text(toml.dumps(state_data), encoding="utf-8")
     assert check_health(str(file)) == expected

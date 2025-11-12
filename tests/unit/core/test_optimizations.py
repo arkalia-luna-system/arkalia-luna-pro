@@ -33,7 +33,7 @@ from modules.core.optimizations import (
 )
 
 
-def test_cache_manager_basic():
+def test_cache_manager_basic() -> None:
     cache_manager = get_cache_manager()
     cache_manager.clear()
     cache_manager.set("test_key_1", "test_value_1", ttl=60, level=CacheLevel.L1)
@@ -46,12 +46,12 @@ def test_cache_manager_basic():
     assert value == "default_value"
 
 
-def test_cache_manager_decorator():
+def test_cache_manager_decorator() -> None:
     cache_manager = get_cache_manager()
     cache_manager.clear()
 
-    @cache_result(ttl=30, level=CacheLevel.L1)
-    def expensive_function(x, y):
+    @cache_result(ttl=30, level=CacheLevel.L1)  # type: ignore[misc]
+    def expensive_function(x: int, y: int) -> int:
         time.sleep(0.05)
         return x + y
 
@@ -60,7 +60,7 @@ def test_cache_manager_decorator():
     assert result1 == result2 == 8
 
 
-def test_load_balancer_basic():
+def test_load_balancer_basic() -> None:
     load_balancer = get_load_balancer()
     load_balancer.backends.clear()
     backend1 = BackendNode("backend1", "Test Backend 1", weight=2, max_connections=10)
@@ -73,19 +73,20 @@ def test_load_balancer_basic():
     assert backend is not None
     assert backend.id in ["backend1", "backend2", "backend3"]
 
-    def test_request() -> None:
+    def test_request() -> str:
         time.sleep(0.01)
         return "success"
 
     result = load_balancer.execute_request(test_request)
     assert result == "success"
+    # Supprimer le return implicite
 
 
-def test_load_balancer_decorator():
+def test_load_balancer_decorator() -> None:
     load_balancer = get_load_balancer()
 
-    @load_balanced_request()
-    def balanced_function():
+    @load_balanced_request()  # type: ignore[misc]
+    def balanced_function() -> str:
         time.sleep(0.01)
         return "balanced_success"
 
@@ -93,7 +94,7 @@ def test_load_balancer_decorator():
     assert result == "balanced_success"
 
 
-def test_circuit_breaker_basic():
+def test_circuit_breaker_basic() -> None:
     registry = get_circuit_breaker_registry()
     config = CircuitBreakerConfig(
         failure_threshold=2, recovery_timeout=2, success_threshold=1, timeout=1.0
@@ -101,14 +102,14 @@ def test_circuit_breaker_basic():
     circuit = registry.get_or_create("test_circuit", config)
     assert circuit.get_state() == CircuitState.CLOSED
 
-    def success_function():
+    def success_function() -> str:
         return "success"
 
     result = circuit.call(success_function)
     assert result == "success"
     failure_count = 0
 
-    def failure_function():
+    def failure_function() -> None:
         nonlocal failure_count
         failure_count += 1
         raise Exception(f"Erreur test {failure_count}")
@@ -123,13 +124,13 @@ def test_circuit_breaker_basic():
     assert circuit.get_state() == CircuitState.CLOSED
 
 
-def test_circuit_breaker_decorator():
+def test_circuit_breaker_decorator() -> None:
     config = CircuitBreakerConfig(
         failure_threshold=2, recovery_timeout=2, success_threshold=1, timeout=1.0
     )
 
-    @circuit_breaker("decorated_circuit", config)
-    def decorated_function():
+    @circuit_breaker("decorated_circuit", config)  # type: ignore[misc]
+    def decorated_function() -> str:
         time.sleep(0.01)
         return "decorated_success"
 
@@ -137,7 +138,7 @@ def test_circuit_breaker_decorator():
     assert result == "decorated_success"
 
 
-def test_advanced_metrics_basic():
+def test_advanced_metrics_basic() -> None:
     metrics_manager = get_metrics_manager()
     metric = metrics_manager.create_metric("test_metric", MetricType.GAUGE, "Métrique de test")
     for i in range(5):
@@ -151,9 +152,9 @@ def test_advanced_metrics_basic():
     assert "direction" in trend
 
 
-def test_advanced_metrics_decorator():
-    @record_metric("decorated_metric")
-    def metric_function():
+def test_advanced_metrics_decorator() -> None:
+    @record_metric("decorated_metric")  # type: ignore[misc]
+    def metric_function() -> str:
         time.sleep(0.01)
         return "metric_success"
 

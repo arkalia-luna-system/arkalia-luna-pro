@@ -24,14 +24,14 @@ from modules.zeroia.graceful_degradation import (
 class TestGracefulDegradationSystem:
     """Tests pour le système de dégradation gracieuse"""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Configuration avant chaque test"""
         self.temp_dir = tempfile.mkdtemp()
         self.system = GracefulDegradationSystem(
             config_path=os.path.join(self.temp_dir, "degradation_config.toml")
         )
 
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         """Nettoyage après chaque test"""
         import shutil
 
@@ -54,20 +54,20 @@ class TestGracefulDegradationSystem:
         assert self.system.services["test_service"].priority == ServicePriority.HIGH
 
     @pytest.mark.asyncio
-    async def test_health_assessment(self):
+    async def test_health_assessment(self) -> None:
         """Test d'évaluation de santé"""
         health_score = await self.system.assess_system_health()
         assert isinstance(health_score, float)
         assert 0.0 <= health_score <= 100.0
 
     @pytest.mark.asyncio
-    async def test_degradation_trigger(self):
+    async def test_degradation_trigger(self) -> None:
         """Test de déclenchement de dégradation"""
         await self.system.trigger_degradation(DegradationLevel.MODERATE_DEGRADATION, "Test trigger")
         assert self.system.current_level == DegradationLevel.MODERATE_DEGRADATION
 
     @pytest.mark.asyncio
-    async def test_recovery_attempt(self):
+    async def test_recovery_attempt(self) -> None:
         """Test de tentative de récupération"""
         # Déclencher une dégradation
         await self.system.trigger_degradation(
@@ -85,7 +85,7 @@ class TestGracefulDegradationSystem:
         assert isinstance(status, dict)
 
     @pytest.mark.asyncio
-    async def test_health_check(self):
+    async def test_health_check(self) -> None:
         """Test de vérification de santé"""
         health_result = await self.system.health_check()
         assert isinstance(health_result, dict)
@@ -133,21 +133,21 @@ class TestGracefulDegradationSystem:
 class TestGracefulDegradationIntegration:
     """Tests d'intégration pour la dégradation gracieuse"""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Configuration avant chaque test"""
         self.temp_dir = tempfile.mkdtemp()
         self.system = GracefulDegradationSystem(
             config_path=os.path.join(self.temp_dir, "integration_config.toml")
         )
 
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         """Nettoyage après chaque test"""
         import shutil
 
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
     @pytest.mark.asyncio
-    async def test_full_degradation_cycle(self):
+    async def test_full_degradation_cycle(self) -> None:
         """Test du cycle complet de dégradation"""
         # 1. État initial normal
         assert self.system.current_level == DegradationLevel.NORMAL
@@ -157,7 +157,7 @@ class TestGracefulDegradationIntegration:
         assert self.system.current_level == DegradationLevel.MODERATE_DEGRADATION
 
         # 3. Tentative de récupération
-        recovery_success = await self.system.attempt_recovery()
+        recovery_success = await self.system.attempt_recovery()  # type: ignore[unreachable]
         assert isinstance(recovery_success, bool)
 
 
@@ -166,12 +166,12 @@ class TestGracefulDegradationIntegration:
 class TestGracefulDegradationPerformance:
     """Tests de performance pour la dégradation gracieuse"""
 
-    def setup_method(self):
+    def setup_method(self) -> None:
         """Configuration avant chaque test"""
         self.temp_dir = tempfile.mkdtemp()
         self.degradation = GracefulDegradationSystem()
 
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         """Nettoyage après chaque test"""
         import shutil
 
@@ -203,11 +203,8 @@ class TestGracefulDegradationRobustness:
     def test_handling_invalid_config(self) -> None:
         """Test de gestion de configuration invalide"""
         # Test avec un chemin de config inexistant
-        try:
-            system = GracefulDegradationSystem(config_path="/path/that/does/not/exist")
-            assert system is not None
-        except Exception:
-            raise AssertionError("Le système n'a pas géré la configuration invalide") from None
+        system = GracefulDegradationSystem(config_path="/path/that/does/not/exist")
+        assert system is not None
 
     def test_initialization_limits(self) -> None:
         """Test des limites d'initialisation"""

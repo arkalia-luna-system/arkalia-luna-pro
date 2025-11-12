@@ -19,7 +19,7 @@ from modules.core.optimizations import (
 )
 
 
-def test_core_optimizations_performance():
+def test_core_optimizations_performance() -> None:
     cache_manager = get_cache_manager()
     cache_manager.clear()
     load_balancer = get_load_balancer()
@@ -27,15 +27,15 @@ def test_core_optimizations_performance():
     backend = BackendNode("perf_backend", "Perf Backend")
     load_balancer.add_backend(backend)
 
-    @cache_result(ttl=30)
-    @load_balanced_request()
-    def perf_function(x):
+    @cache_result(ttl=30)  # type: ignore[misc]
+    @load_balanced_request()  # type: ignore[misc]
+    def perf_function(x: int) -> int:
         time.sleep(0.005)
         return x * 2
 
-    @circuit_breaker("perf_circuit", CircuitBreakerConfig(failure_threshold=3, recovery_timeout=2))
-    @record_metric("perf_metric")
-    def perf_metric_function():
+    @circuit_breaker("perf_circuit", CircuitBreakerConfig(failure_threshold=3, recovery_timeout=2))  # type: ignore[misc]
+    @record_metric("perf_metric")  # type: ignore[misc]
+    def perf_metric_function() -> str:
         time.sleep(0.005)
         return "perf_success"
 

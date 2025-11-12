@@ -24,7 +24,7 @@ else:
     raise ImportError(f"Impossible d'importer le module security.core depuis {core_path}")
 
 
-def test_usecurity_config_default_values():
+def test_usecurity_config_default_values() -> None:
     config = UsecurityConfig()
     assert config.enabled is True
     assert config.debug_mode is False
@@ -32,7 +32,7 @@ def test_usecurity_config_default_values():
     assert config.timeout == 30.0
 
 
-def test_usecurity_config_custom_values():
+def test_usecurity_config_custom_values() -> None:
     config = UsecurityConfig(enabled=False, debug_mode=True, max_retries=5, timeout=60.0)
     assert config.enabled is False
     assert config.debug_mode is True
@@ -40,14 +40,14 @@ def test_usecurity_config_custom_values():
     assert config.timeout == 60.0
 
 
-def test_usecurity_core_initialization():
+def test_usecurity_core_initialization() -> None:
     config = UsecurityConfig()
     core = UsecurityCore(config)
     assert core.config is config
     assert hasattr(core, "logger")
 
 
-def test_usecurity_core_health_check():
+def test_usecurity_core_health_check() -> None:
     config = UsecurityConfig()
     core = UsecurityCore(config)
     health = core.health_check()
@@ -57,7 +57,7 @@ def test_usecurity_core_health_check():
 
 
 @pytest.mark.asyncio
-async def test_usecurity_core_process():
+async def test_usecurity_core_process() -> None:
     config = UsecurityConfig()
     core = UsecurityCore(config)
     data = {"test": "data"}
@@ -67,13 +67,13 @@ async def test_usecurity_core_process():
     assert result["module"] == "security"
 
 
-def test_default_config_and_core():
+def test_default_config_and_core() -> None:
     assert isinstance(default_config, UsecurityConfig)
     assert isinstance(default_core, UsecurityCore)
 
 
 @pytest.mark.asyncio
-async def test_main_function(monkeypatch):
+async def test_main_function(monkeypatch: pytest.MonkeyPatch) -> None:
     # On vérifie que main() s'exécute sans erreur
     monkeypatch.setattr("builtins.print", lambda *a, **k: None)
     await main()
