@@ -7,13 +7,9 @@
 👤 Author : Athalia
 """
 
-# Configuration du logging
-import logging
 from typing import Any, Optional
 
 from core.ark_logger import ark_logger
-
-logging.basicConfig(level=logging.INFO)
 
 # Import des composants principaux
 try:
@@ -55,9 +51,7 @@ class CoreManager:
         🛡️ Préservation des watchdogs
         """
         try:
-            self.ark_logger.info(
-                "🧠 Initialisation Core SOLID...", extra={"arkalia_module": "core"}
-            )
+            ark_logger.info("🧠 Initialisation Core SOLID...", extra={"arkalia_module": "core"})
             if ConfigManager is not None:
                 self.config_manager = ConfigManager()
             if HealthMonitor is not None:
@@ -70,12 +64,12 @@ class CoreManager:
             # Validation de l'initialisation
             self._validate_initialization()
             self._initialized = True
-            self.ark_logger.info(
+            ark_logger.info(
                 "✅ Core SOLID initialisé avec succès", extra={"arkalia_module": "core"}
             )
             return True
         except Exception as e:
-            self.ark_logger.error(
+            ark_logger.error(
                 f"❌ Erreur initialisation Core : {e}", extra={"arkalia_module": "core"}
             )
             return False
@@ -92,7 +86,7 @@ class CoreManager:
     def get_orchestrator(self):
         """Récupération de l'orchestrateur"""
         if not self._initialized:
-            self.ark_logger.warning(
+            ark_logger.warning(
                 "⚠️ Core non initialisé, initialisation automatique...",
                 extra={"arkalia_module": "core"},
             )
