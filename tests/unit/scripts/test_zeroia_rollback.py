@@ -2,7 +2,9 @@ import os
 import subprocess
 import sys
 import tempfile
+from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
 import pytest
 import toml
@@ -14,7 +16,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 # 📁 Setup de répertoires temporaires pour simuler l'état ZeroIA
 @pytest.fixture
-def temp_env(monkeypatch):
+def temp_env(monkeypatch: pytest.MonkeyPatch) -> Iterator[dict[str, Path]]:
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
 
@@ -44,35 +46,37 @@ def temp_env(monkeypatch):
         }
 
 
-def test_backup_current_state(temp_env) -> None:
+def test_backup_current_state(temp_env: dict[str, Path]) -> None:
     zeroia_rollback.backup_current_state()
     assert temp_env["backup_file"].exists()
     assert "timestamp" in temp_env["backup_file"].read_text()
 
 
-def test_restore_snapshot_success(temp_env) -> None:
+def test_restore_snapshot_success(temp_env: dict[str, Path]) -> None:
     assert zeroia_rollback.restore_snapshot() is True
     assert temp_env["state_file"].read_text().find("snapshot") != -1
 
 
-def test_restore_snapshot_failure(monkeypatch, temp_env) -> None:
+def test_restore_snapshot_failure(
+    monkeypatch: pytest.MonkeyPatch, temp_env: dict[str, Path]
+) -> None:
     monkeypatch.setattr(zeroia_rollback, "SNAPSHOT_FILE", Path("nonexistent.toml"))
     assert zeroia_rollback.restore_snapshot() is False
 
 
-def test_log_failure(temp_env) -> None:
+def test_log_failure(temp_env: dict[str, Path]) -> None:
     zeroia_rollback.log_failure()
     assert temp_env["failure_log"].exists()
     assert "Échec détecté" in temp_env["failure_log"].read_text()
 
 
-def test_log(temp_env) -> None:
+def test_log(temp_env: dict[str, Path]) -> None:
     zeroia_rollback.log("test log line")
     content = temp_env["log_file"].read_text()
     assert "[rollback] test log line" in content
 
 
-def test_rollback_success(temp_env) -> None:
+def test_rollback_success(temp_env: dict[str, Path]) -> None:
     temp_env["backup_file"].write_text(
         'timestamp = "BACKUP"\n[decision]\nlast_decision = "rollback"\n'
     )
@@ -80,7 +84,7 @@ def test_rollback_success(temp_env) -> None:
     assert "rollback" in temp_env["state_file"].read_text()
 
 
-def test_rollback_failure(monkeypatch) -> None:
+def test_rollback_failure(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(zeroia_rollback, "BACKUP_FILE", Path("nonexistent.toml"))
     monkeypatch.setattr(zeroia_rollback, "STATE_FILE", Path("state/zeroia_state.toml"))
     zeroia_rollback.rollback_from_backup()
@@ -89,16 +93,19 @@ def test_rollback_failure(monkeypatch) -> None:
 def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
     """Test que le script de rollback s'exécute correctement."""
 
-    # Créer un état de test
-    state_dir = Path("data/zeroia")
+    # Créer les répertoires nécessaires
+    state_dir = Path("modules/zeroia/state")
     state_dir.mkdir(parents=True, exist_ok=True)
+    logs_dir = Path("logs")
+    logs_dir.mkdir(parents=True, exist_ok=True)
 
+    # Créer un fichier d'état de test
     test_state = {
         "status": {"active": True, "last_check": "2024-03-20T12:00:00", "decision": "continue"},
         "metrics": {"cpu_usage": 45.2, "memory_usage": 68.7, "response_time": 0.123},
     }
 
-    state_file = state_dir / "state.toml"
+    state_file = state_dir / "zeroia_state.toml"
     with open(state_file, "w", encoding="utf-8") as f:
         toml.dump(test_state, f)
 
@@ -106,9 +113,9 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
     env = os.environ.copy()
     env["PYTHONPATH"] = str(PROJECT_ROOT) + ":" + env.get("PYTHONPATH", "")
 
-    # Exécuter le script avec --force
+    # Exécuter le script avec --silent
     result = subprocess.run(
-        ["python", "scripts/_zeroia_rollback.py", "--force", "--silent"],
+        ["python", "scripts/_zeroia_rollback.py", "--silent"],
         capture_output=True,
         text=True,
         env=env,
@@ -120,7 +127,6 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
         result.returncode == 0
     ), f"Script a échoué avec code {result.returncode}\nstdout: {result.stdout}\nstderr: {result.stderr}"
 
-    # Vérifier qu'un backup a été créé
-    backup_dir = Path("data/backups")
-    assert backup_dir.exists(), "Le répertoire de backup n'a pas été créé"
-    assert any(backup_dir.iterdir()), "Aucun fichier de backup n'a été créé"
+    # Vérifier qu'un backup a été créé dans le bon emplacement
+    backup_file = state_dir / "zeroia_state_backup.toml"
+    assert backup_file.exists(), f"Le fichier de backup n'a pas été créé à {backup_file}"
