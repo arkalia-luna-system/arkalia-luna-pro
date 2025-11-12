@@ -13,14 +13,14 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from core.ark_logger import ark_logger
 
 from ..config import ConfigManager
 from ..factories import ModuleFactory, ServiceFactory
 from ..health import HealthMonitor
-from ..interfaces import IHealthCheck, IModule, IOrchestrator
+from ..interfaces import IModule, IOrchestrator
 
 
 class CycleMode(Enum):
@@ -558,7 +558,7 @@ async def run_core_orchestrator(
                 break
 
             # Exécuter un cycle
-            results = await orchestrator.execute_cycle()
+            await orchestrator.execute_cycle()
             cycle_count += 1
 
             # Attendre selon le mode de cycle

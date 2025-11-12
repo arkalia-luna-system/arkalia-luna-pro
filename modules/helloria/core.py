@@ -8,10 +8,10 @@ pour tous les modules IA (ZeroIA, Reflexia, Sandozia).
 import json
 import time
 from pathlib import Path
-from typing import Any, Union
+from typing import Any
 
 import psutil
-from fastapi import APIRouter, FastAPI, Request, Response
+from fastapi import APIRouter, FastAPI, Request
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 from core.ark_logger import ark_logger
@@ -19,7 +19,8 @@ from core.ark_logger import ark_logger
 # 📦 Import des routes externes (modules IA)
 from modules.reflexia.core_api import router as reflexia_router
 
-# from modules.zeroia.core import router as zeroia_router  # Module supprimé lors de la refactorisation
+# from modules.zeroia.core import router as zeroia_router
+# Module supprimé lors de la refactorisation
 
 # from modules.monitoring.prometheus_metrics import get_metrics_summary  # Module supprimé
 

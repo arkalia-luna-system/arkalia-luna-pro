@@ -7,11 +7,27 @@
 👤 Author : Athalia
 """
 
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from core.ark_logger import ark_logger
 
 # Import des composants principaux
+if TYPE_CHECKING:
+    from .config import ConfigManager as _ConfigManager
+    from .factories import ModuleFactory as _ModuleFactory
+    from .factories import ServiceFactory as _ServiceFactory
+    from .health import HealthMonitor as _HealthMonitor
+    from .interfaces import (
+        IHealthCheck as _IHealthCheck,
+    )
+    from .interfaces import (
+        IModule as _IModule,
+    )
+    from .interfaces import (
+        IOrchestrator as _IOrchestrator,
+    )
+    from .orchestrator import CoreOrchestrator as _CoreOrchestrator
+
 try:
     from .config import ConfigManager
     from .factories import ModuleFactory, ServiceFactory
@@ -22,14 +38,15 @@ except ImportError as e:
     ark_logger.warning(
         f"⚠️ Composants core non encore implémentés : {e}", extra={"arkalia_module": "core"}
     )
-    CoreOrchestrator = None
-    HealthMonitor = None
-    ConfigManager = None
-    IModule = None
-    IOrchestrator = None
-    IHealthCheck = None
-    ModuleFactory = None
-    ServiceFactory = None
+    # Utiliser Any pour éviter les erreurs de type
+    CoreOrchestrator = None  # type: ignore[assignment, misc]
+    HealthMonitor = None  # type: ignore[assignment, misc]
+    ConfigManager = None  # type: ignore[assignment, misc]
+    IModule = None  # type: ignore[assignment, misc]
+    IOrchestrator = None  # type: ignore[assignment, misc]
+    IHealthCheck = None  # type: ignore[assignment, misc]
+    ModuleFactory = None  # type: ignore[assignment, misc]
+    ServiceFactory = None  # type: ignore[assignment, misc]
 
 
 class CoreManager:
@@ -38,10 +55,10 @@ class CoreManager:
     🛡️ Préservation des mécanismes de sécurité
     """
 
-    def __init__(self):
-        self.orchestrator = None
-        self.health_monitor = None
-        self.config_manager = None
+    def __init__(self) -> None:
+        self.orchestrator: Any = None
+        self.health_monitor: Any = None
+        self.config_manager: Any = None
         self._initialized = False
 
     def initialize(self) -> bool:
@@ -83,7 +100,7 @@ class CoreManager:
         if CoreOrchestrator is not None and not self.orchestrator:
             raise ValueError("CoreOrchestrator non initialisé")
 
-    def get_orchestrator(self):
+    def get_orchestrator(self) -> Any:
         """Récupération de l'orchestrateur"""
         if not self._initialized:
             ark_logger.warning(
@@ -94,7 +111,7 @@ class CoreManager:
                 return None
         return self.orchestrator
 
-    def get_health_monitor(self):
+    def get_health_monitor(self) -> Any:
         """Récupération du moniteur de santé"""
         if not self._initialized:
             if not self.initialize():
@@ -119,7 +136,7 @@ class CoreManager:
 _core_manager = CoreManager()
 
 
-def create_core():
+def create_core() -> Any:
     """
     🏭 Factory pour créer le core avec configuration optimale
     🛡️ Préservation des mécanismes de sécurité

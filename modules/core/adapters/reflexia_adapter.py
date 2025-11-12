@@ -5,11 +5,11 @@
 """
 
 import time
-from typing import Any, Optional
+from typing import Any
 
 from core.ark_logger import ark_logger
 
-from ..interfaces.module_interface import IModule, IModuleWithMonitoring, IModuleWithProcessing
+from ..interfaces.module_interface import IModuleWithMonitoring, IModuleWithProcessing
 
 
 class ReflexiaAdapter(IModuleWithProcessing, IModuleWithMonitoring):

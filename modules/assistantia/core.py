@@ -9,7 +9,6 @@ import json
 from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
 
 import requests
 from fastapi import APIRouter, BackgroundTasks, Depends, FastAPI, HTTPException

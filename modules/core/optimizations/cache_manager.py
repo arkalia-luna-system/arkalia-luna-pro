@@ -4,11 +4,10 @@
 🎯 Optimisation des performances avec cache multi-niveaux
 """
 
-import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any, Optional, Union
+from typing import Any
 
 from core.ark_logger import ark_logger
 

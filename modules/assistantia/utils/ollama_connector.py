@@ -9,7 +9,7 @@ de modèles de langage.
 
 import json
 import os
-from typing import Any, Optional
+from typing import Any
 
 import requests
 
@@ -36,8 +36,9 @@ def query_ollama(prompt: str, model: str = "llama2", temperature: float = 0.7) -
                 base_model = model.split(":")[0]
                 matching_models = [m for m in model_names if m.startswith(f"{base_model}:")]
                 if not matching_models:
+                    available = ", ".join(model_names)
                     raise ValueError(
-                        f"Modèle '{model}' non disponible. Modèles disponibles: {', '.join(model_names)}"
+                        f"Modèle '{model}' non disponible. Modèles disponibles: {available}"
                     )
                 # Utiliser le premier modèle trouvé avec le bon préfixe
                 model = matching_models[0]

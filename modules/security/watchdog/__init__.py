@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 # 🛡️ modules/security/watchdog/__init__.py
 # Surveillance cognitive et auto-healing

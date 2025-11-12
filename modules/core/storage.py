@@ -14,6 +14,7 @@ import tomli
 import tomli_w
 
 from core.ark_logger import ark_logger
+from modules.utils.helpers.io_safe import read_state_safe, save_toml_safe
 
 
 class StorageBackend(ABC):
@@ -192,7 +193,7 @@ class SQLiteBackend(StorageBackend):
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         self._init_db()
 
-    def _init_db(self):
+    def _init_db(self) -> None:
         """Initialize SQLite database"""
         with self._get_connection() as conn:
             conn.execute(
@@ -208,7 +209,7 @@ class SQLiteBackend(StorageBackend):
             conn.commit()
 
     @contextmanager
-    def _get_connection(self):
+    def _get_connection(self) -> Any:
         """Get database connection"""
         conn = sqlite3.connect(self.db_path)
         try:
@@ -290,10 +291,10 @@ class SQLiteBackend(StorageBackend):
 class StorageManager:
     """Centralized storage manager for Arkalia-LUNA"""
 
-    def __init__(self, backend: str = "json", **kwargs):
+    def __init__(self, backend: str = "json", **kwargs: Any):
         self.backend_type = backend
         if backend == "sqlite":
-            self.backend = SQLiteBackend(**kwargs)
+            self.backend: StorageBackend = SQLiteBackend(**kwargs)
         elif backend == "toml":
             self.backend = TOMLFileBackend(**kwargs)
         else:
@@ -325,7 +326,8 @@ class StorageManager:
 
     def get_config(self, module: str) -> dict[str, Any]:
         """Get module configuration"""
-        return self.backend.get(f"{module}.config", {})
+        result = self.backend.get(f"{module}.config", {})
+        return result if isinstance(result, dict) else {}
 
     def save_config(self, module: str, config: dict[str, Any]) -> bool:
         """Save module configuration"""
@@ -333,7 +335,8 @@ class StorageManager:
 
     def get_metrics(self, module: str) -> dict[str, Any]:
         """Get module metrics"""
-        return self.backend.get(f"{module}.metrics", {})
+        result = self.backend.get(f"{module}.metrics", {})
+        return result if isinstance(result, dict) else {}
 
     def save_metrics(self, module: str, metrics: dict[str, Any]) -> bool:
         """Save module metrics"""
@@ -406,7 +409,8 @@ class StorageManager:
 
     def get_helloria_state(self) -> dict[str, Any]:
         """Get Helloria state (compatibilité avec HelloriaStateManager)"""
-        return self.get_state("helloria", "state", {"status": "inactive"})
+        result = self.get_state("helloria", "state", {"status": "inactive"})
+        return result if isinstance(result, dict) else {"status": "inactive"}
 
     def save_helloria_state(self, state: dict[str, Any]) -> bool:
         """Save Helloria state (compatibilité avec HelloriaStateManager)"""
@@ -422,7 +426,7 @@ def get_storage() -> StorageManager:
     return storage
 
 
-def set_storage_backend(backend: str, **kwargs):
+def set_storage_backend(backend: str, **kwargs: Any) -> None:
     """Set storage backend globally"""
     global storage
     storage = StorageManager(backend, **kwargs)

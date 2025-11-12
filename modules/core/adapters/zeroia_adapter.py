@@ -8,7 +8,7 @@ from typing import Any
 
 from core.ark_logger import ark_logger
 
-from ..interfaces.module_interface import IModule, IModuleWithProcessing
+from ..interfaces.module_interface import IModuleWithProcessing
 
 
 class ZeroIAAdapter(IModuleWithProcessing):
@@ -43,7 +43,6 @@ class ZeroIAAdapter(IModuleWithProcessing):
             # self._zeroia_core = get_zeroia_core()
 
             # Utilisation de l'interface existante
-            from modules.zeroia import get_zeroia_status
 
             self._zeroia_core = {"status": "active"}  # Mock pour compatibilité
 

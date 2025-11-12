@@ -9,11 +9,9 @@
 
 import asyncio
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 
 from core.ark_logger import ark_logger
 

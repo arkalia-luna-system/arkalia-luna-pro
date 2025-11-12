@@ -8,7 +8,7 @@ from typing import Any
 
 from core.ark_logger import ark_logger
 
-from ..interfaces.module_interface import IModule, IModuleWithProcessing
+from ..interfaces.module_interface import IModuleWithProcessing
 
 
 class TaskIAAdapter(IModuleWithProcessing):

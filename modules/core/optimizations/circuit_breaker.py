@@ -8,10 +8,10 @@ import asyncio
 import threading
 import time
 from collections.abc import Callable
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from core.ark_logger import ark_logger
 
@@ -89,8 +89,7 @@ class CircuitBreaker:
                     raise Exception(f"Circuit '{self.name}' ouvert - requête rejetée")
 
             # Exécuter la fonction
-            start_time = time.time()
-            success = False
+            time.time()
 
             try:
                 # Exécuter avec timeout si configuré
@@ -99,7 +98,6 @@ class CircuitBreaker:
                 else:
                     result = func(*args, **kwargs)
 
-                success = True
                 self._on_success()
                 return result
 
@@ -122,8 +120,7 @@ class CircuitBreaker:
                     raise Exception(f"Circuit '{self.name}' ouvert - requête rejetée")
 
             # Exécuter la fonction
-            start_time = time.time()
-            success = False
+            time.time()
 
             try:
                 # Exécuter avec timeout si configuré
@@ -132,7 +129,6 @@ class CircuitBreaker:
                 else:
                     result = await func(*args, **kwargs)
 
-                success = True
                 self._on_success()
                 return result
 

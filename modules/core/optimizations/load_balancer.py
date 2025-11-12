@@ -4,14 +4,12 @@
 🎯 Distribution optimale des requêtes entre les modules
 """
 
-import random
 import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
-from statistics import mean, median
-from typing import Any, Optional
+from typing import Any
 
 from core.ark_logger import ark_logger
 
@@ -305,7 +303,7 @@ class LoadBalancer:
     def _weighted_round_robin(self, backends: list[BackendNode]) -> BackendNode:
         """Sélection round-robin pondérée"""
         # Calculer le poids total
-        total_weight = sum(b.weight for b in backends)
+        sum(b.weight for b in backends)
 
         # Sélectionner selon les poids
         current_weight = 0

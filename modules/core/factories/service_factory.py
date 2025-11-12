@@ -4,9 +4,7 @@
 🎯 Injection de dépendances et création de services
 """
 
-from typing import Any, Optional
-
-from core.ark_logger import ark_logger
+from typing import Any
 
 
 class ServiceFactory:

@@ -12,9 +12,9 @@ Connecte toutes les optimisations de la Phase 7 :
 
 import asyncio
 import threading
-from typing import Any, Optional
+from typing import Any
 
-from prometheus_client import CollectorRegistry, Counter, Gauge, generate_latest, start_http_server
+from prometheus_client import CollectorRegistry, Counter, Gauge, start_http_server
 
 from core.ark_logger import ark_logger
 

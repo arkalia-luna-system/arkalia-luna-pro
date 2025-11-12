@@ -20,9 +20,7 @@ try:
 except ImportError:
     pass
 
-# Configuration du logging
-
-logger.setLevel(logging.INFO)
+# Configuration du logging (utilise ark_logger)
 
 
 # Fonction de santé

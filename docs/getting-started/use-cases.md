@@ -80,7 +80,7 @@ Orchestration de tâches complexes avec validation croisée entre modules pour g
 ```python
 # Workflow automatisé avec validation
 from modules.zeroia.orchestrator_enhanced import EnhancedOrchestrator
-from modules.sandozia.validators.crossmodule import CrossModuleValidator
+from modules.utils.validators.crossmodule_validator import CrossModuleValidator
 
 orchestrator = EnhancedOrchestrator()
 validator = CrossModuleValidator()
