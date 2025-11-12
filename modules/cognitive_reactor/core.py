@@ -29,14 +29,7 @@ from core.ark_logger import ark_logger
 from modules.utils.helpers import read_state_safe, save_json_safe
 
 # === Configuration du logging ===
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler("logs/cognitive_reactor.log"),
-        logging.StreamHandler(sys.stdout),
-    ],
-)
+# Utilise ark_logger (déjà importé)
 
 
 # === Métriques Prometheus pour Cognitive Reactor ===
