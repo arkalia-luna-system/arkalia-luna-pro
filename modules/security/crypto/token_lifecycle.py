@@ -23,6 +23,8 @@ logger = logging.getLogger(__name__)
 
 
 class TokenType(Enum):
+    """Types de tokens gérés par le système."""
+
     SESSION = "session"
     API_KEY = "api_key"
     ACCESS_TOKEN = "access_token"  # nosec B105
@@ -192,7 +194,7 @@ class TokenManager:
 
         logger.info("🎫 TokenManager initialized")
 
-    def _ensure_jwt_secret(self):
+    def _ensure_jwt_secret(self) -> None:
         """
         Fonction _ensure_jwt_secret.
 
@@ -225,7 +227,7 @@ class TokenManager:
             raise VaultError("JWT secret not found in vault")
         return jwt_secret
 
-    def _load_token_metadata(self):
+    def _load_token_metadata(self) -> None:
         """
         Fonction _load_token_metadata.
 
@@ -242,7 +244,7 @@ class TokenManager:
         except Exception as e:
             logger.warning(f"⚠️ Could not load token metadata: {e}")
 
-    def _save_token_metadata(self):
+    def _save_token_metadata(self) -> None:
         """
         Fonction _save_token_metadata.
 

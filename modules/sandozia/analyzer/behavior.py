@@ -116,7 +116,13 @@ class BehaviorAnalyzer:
         if len(self.metrics_buffer[key]) >= 30:
             self._update_baseline_stats(key)
 
-    def add_decision_event(self, module_name: str, decision_data: dict):
+    def add_decision_event(self, module_name: str, decision_data: dict) -> None:
+        """Ajoute un événement de décision à l'historique.
+
+        Args:
+            module_name: Nom du module ayant pris la décision.
+            decision_data: Données de la décision.
+        """
         decision_event = {
             "module": module_name,
             "timestamp": datetime.now(),

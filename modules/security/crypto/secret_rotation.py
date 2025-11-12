@@ -289,7 +289,10 @@ class RotationManager:
 
     def _generate_new_value(self, policy: RotationPolicy) -> str:
         if policy.custom_generator:
-            return policy.custom_generator()
+            result = policy.custom_generator()
+            if not isinstance(result, str):
+                raise ValueError("Custom generator must return a string")
+            return result
 
         if policy.generation_pattern == "secure_random":
             return SecretGenerator.generate_secure_random()

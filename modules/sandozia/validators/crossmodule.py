@@ -33,6 +33,15 @@ logger = logging.getLogger(__name__)
 
 
 class ValidationLevel(Enum):
+    """Niveaux de validation pour les résultats de validation croisée.
+
+    Attributes:
+        CRITICAL: Problème critique détecté.
+        WARNING: Avertissement détecté.
+        INFO: Information détectée.
+        OK: Validation réussie.
+    """
+
     CRITICAL = "critical"
     WARNING = "warning"
     INFO = "info"
@@ -41,6 +50,17 @@ class ValidationLevel(Enum):
 
 @dataclass
 class ValidationResult:
+    """Résultat d'une validation croisée entre modules.
+
+    Attributes:
+        level: Niveau de validation.
+        module_source: Module source de la validation.
+        module_target: Module cible de la validation.
+        message: Message de validation.
+        details: Détails supplémentaires.
+        timestamp: Horodatage de la validation.
+    """
+
     level: ValidationLevel
     module_source: str
     module_target: str

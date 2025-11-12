@@ -151,7 +151,7 @@ class ArkaliaVault(BuildIntegrityValidator):
             logger.error(f"❌ Error loading metadata: {e}")
             return {}
 
-    def _save_metadata(self):
+    def _save_metadata(self) -> None:
         data = {name: meta.to_dict() for name, meta in self.secrets_metadata.items()}
 
         with open(self.metadata_file, "w") as f:
@@ -164,12 +164,13 @@ class ArkaliaVault(BuildIntegrityValidator):
         try:
             encrypted_data = self.secrets_file.read_bytes()
             decrypted_data = self.cipher_suite.decrypt(encrypted_data)
-            return json.loads(decrypted_data.decode())
+            secrets_dict: dict[str, str] = json.loads(decrypted_data.decode())
+            return secrets_dict
         except Exception as e:
             logger.error(f"❌ Error loading secrets: {e}")
             raise VaultError(f"Failed to decrypt vault: {e}") from e
 
-    def _save_secrets(self, secrets: dict[str, str]):
+    def _save_secrets(self, secrets: dict[str, str]) -> None:
         try:
             json_data = json.dumps(secrets, indent=2).encode()
             encrypted_data = self.cipher_suite.encrypt(json_data)
@@ -179,7 +180,7 @@ class ArkaliaVault(BuildIntegrityValidator):
             logger.error(f"❌ Error saving secrets: {e}")
             raise VaultError(f"Failed to encrypt vault: {e}") from e
 
-    def _audit_log_entry(self, action: str, secret_name: str, details: str = ""):
+    def _audit_log_entry(self, action: str, secret_name: str, details: str = "") -> None:
         timestamp = datetime.now().isoformat()
         log_entry = f"{timestamp} | {action} | {secret_name} | {details}\n"
 
