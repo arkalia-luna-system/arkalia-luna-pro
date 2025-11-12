@@ -1,42 +1,41 @@
-# 🏗️ Architecture v2.8.0 — Arkalia-LUNA Pro
+# Architecture v2.8.0 — Arkalia-LUNA Pro
 
-## 📊 **ÉTAT ACTUEL DU SYSTÈME (Mise à jour novembre 2025)**
+**Dernière mise à jour** : novembre 2025
 
-### ✅ **SUCCÈS MAJEUR - CI/CD 100% Verte !**
-- **671 tests passés** (642 unitaires + 29 intégration) ✅
-- **Couverture : 59.25%** (bien au-dessus du seuil de 28%) ✅
-- **Temps d'exécution : 31.73s** ✅
-- **Healthcheck optimisé** : Python urllib natif ✅
-- **Artefacts uploadés** : Conditionnel et robuste ✅
+## État Actuel du Système
 
-> Arkalia-LUNA Pro v2.8.0 est conçu comme un **système IA production-ready** avec intelligence croisée, validation inter-modules, auto-réflexion continue, CI/CD robuste et monitoring complet. Architecture **modulaire, scalable, sécurisée**.
+- 671 tests passés (642 unitaires + 29 intégration)
+- Couverture : 59.25% (seuil requis : 28%)
+- Temps d'exécution : 31.73s
+- Healthcheck optimisé : Python urllib natif
+- Artefacts uploadés : Conditionnel et robuste
 
----
+Arkalia-LUNA Pro v2.8.0 est conçu comme un système IA avec intelligence croisée, validation inter-modules, auto-réflexion continue, CI/CD robuste et monitoring complet. Architecture modulaire, scalable, sécurisée.
 
-## 📊 Vue d'Ensemble Architecture
+## Vue d'Ensemble Architecture
 
 ```mermaid
 graph TB
     subgraph "Intelligence Croisée"
-        SC[SandoziaCore\n🧠 Orchestrateur]
-        CMV[CrossModuleValidator\n🔍 Validation]
-        BA[BehaviorAnalyzer\n📈 Patterns]
-        CR[CollaborativeReasoning\n🤝 Consensus]
-        SM[SandoziaMetrics\n📊 Métriques]
+        SC[SandoziaCore<br/>Orchestrateur]
+        CMV[CrossModuleValidator<br/>Validation]
+        BA[BehaviorAnalyzer<br/>Patterns]
+        CR[CollaborativeReasoning<br/>Consensus]
+        SM[SandoziaMetrics<br/>Métriques]
     end
 
     subgraph "Modules IA"
-        R[Reflexia\n🔄 Décisions]
-        Z[ZeroIA\n🧪 Anomalies]
-        A[AssistantIA\n🤖 Chat]
-        COG[CognitiveReactor\n🎯 Orchestration]
-        SEC[Security\n🔐 Vault]
+        R[Reflexia<br/>Décisions]
+        Z[ZeroIA<br/>Anomalies]
+        A[AssistantIA<br/>Chat]
+        COG[CognitiveReactor<br/>Orchestration]
+        SEC[Security<br/>Vault]
     end
 
     subgraph "Infrastructure"
-        H[arkalia-api\n🎮 API REST]
-        MON[Monitoring\n📊 Metrics]
-        GS[GlobalState\n🌍 Sync]
+        H[arkalia-api<br/>API REST]
+        MON[Monitoring<br/>Metrics]
+        GS[GlobalState<br/>Sync]
     end
 
     SC --> CMV
@@ -57,17 +56,31 @@ graph TB
     MON --> GS
 ```
 
----
+## Structure Projet v2.8.0
 
-## 📂 Structure Projet v2.8.0
+### Modules Critiques
 
-- Modules critiques : ZeroIA, ReflexIA, Sandozia, Cognitive Reactor, AssistantIA, Security, Monitoring
-- Couverture globale : 59.25% (671 tests passés)
-- CI/CD : 100% verte, artefacts uploadés, healthcheck Python natif
-- Sécurité : vault, sandbox, scan Bandit, tokens, audit automatisé
-- Monitoring : 34 métriques, 8 dashboards, 15 alertes
+| Module | Rôle | Statut |
+|--------|------|--------|
+| ZeroIA | Décision autonome | Opérationnel |
+| ReflexIA | Surveillance cognitive | Opérationnel |
+| Sandozia | Intelligence croisée | Opérationnel |
+| Cognitive Reactor | Intelligence avancée | Opérationnel |
+| AssistantIA | Interface conversationnelle | Opérationnel |
+| Security | Protection et audit | Opérationnel |
+| Monitoring | Observabilité | Opérationnel |
 
-## 📊 KPIs
+### Métriques Globales
+
+| Métrique | Valeur |
+|----------|--------|
+| Couverture globale | 59.25% (671 tests passés) |
+| CI/CD | 100% verte, artefacts uploadés |
+| Healthcheck | Python natif |
+| Sécurité | vault, sandbox, scan Bandit, tokens, audit automatisé |
+| Monitoring | 34 métriques, 8 dashboards, 15 alertes |
+
+## KPIs
 - Couverture : 59.25%
 - Tests : 671 collectés
 - CI/CD : 100% verte

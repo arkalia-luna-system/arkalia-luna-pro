@@ -25,4 +25,4 @@ Reflexia est le module de monitoring cognitif du kernel Arkalia-LUNA. Il fonctio
 
 **API HTTP publique** : http://localhost:8002/metrics
 
-**Statut actuel** : ✅ Opérationnel avec Enhanced v2.8.0
+**Statut actuel** : Opérationnel avec Enhanced v2.8.0

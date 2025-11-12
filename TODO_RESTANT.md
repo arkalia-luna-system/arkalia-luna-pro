@@ -1,6 +1,6 @@
 # 📋 TODO Restant - Corrections Luna Pro
 
-**Date** : novembre 2025  
+**Date** : novembre 2025
 **Basé sur** : Audit V2 (AUDIT_VERIFICATION_PLAN_ACTION_V2.md)
 
 ---
@@ -77,11 +77,11 @@
    ```bash
    # Démarrer tous les services
    docker-compose up -d
-   
+
    # Démarrer monitoring
    cd infrastructure/monitoring
    docker-compose -f docker-compose.monitoring.yml up -d
-   
+
    # Vérifier que tout est opérationnel
    docker ps
    curl http://localhost:8000/health
@@ -112,5 +112,5 @@
 
 ---
 
-**Dernière mise à jour** : novembre 2025  
+**Dernière mise à jour** : novembre 2025
 **Basé sur** : AUDIT_VERIFICATION_PLAN_ACTION_V2.md

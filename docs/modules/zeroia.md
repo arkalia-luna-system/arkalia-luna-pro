@@ -27,4 +27,4 @@ ZeroIA est le module de décision autonome du kernel Arkalia-LUNA. Il fonctionne
 
 **Pas d'API HTTP publique** : toute interaction passe par arkalia-api (port 8000) ou les fichiers d'état internes.
 
-**Statut actuel** : ✅ Opérationnel avec Error Recovery System v2.8.0
+**Statut actuel** : Opérationnel avec Error Recovery System v2.8.0

@@ -1,6 +1,6 @@
 # Arkalia-LUNA Pro - Orchestrateur IA
 
-> **English**: AI orchestration platform with FastAPI, advanced monitoring, security, deployment, cognitive modules - reference open-source for production.  
+> **English**: AI orchestration platform with FastAPI, advanced monitoring, security, deployment, cognitive modules - reference open-source for production.
 > **Français**: Plateforme d'orchestration IA avec FastAPI, monitoring avancé, sécurité, déploiement, modules cognitifs - référence open-source pour production.
 
 [![Release](https://img.shields.io/github/v/tag/athalia-siwek/arkalia-luna-pro?label=release)](https://github.com/athalia-siwek/arkalia-luna-pro/releases)

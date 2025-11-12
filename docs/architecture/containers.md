@@ -1,20 +1,14 @@
-# 🐳 Architecture des Containers - Arkalia-LUNA Pro
+# Architecture des Containers - Arkalia-LUNA Pro
 
-## Dernière mise à jour
-
-novembre 2025
-
----
+**Dernière mise à jour** : novembre 2025
 
 ## Vue d'Ensemble
 
-Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose pour une architecture modulaire et scalable.
+Arkalia-LUNA Pro utilise 5 containers actifs orchestrés avec Docker Compose pour une architecture modulaire et scalable.
 
----
+## Liste des Containers
 
-## 📋 Liste des Containers
-
-### 1. 🚀 arkalia-api (Port 8000)
+### 1. arkalia-api (Port 8000)
 
 **Rôle** : API centrale FastAPI (Helloria) - Point d'entrée principal du système
 
@@ -36,7 +30,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 
 ---
 
-### 2. 🤖 arkalia-assistantia (Port 8001)
+### 2. arkalia-assistantia (Port 8001)
 
 **Rôle** : Interface IA conversationnelle avec intégration Ollama
 
@@ -58,7 +52,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 
 ---
 
-### 3. 🔁 reflexia (Port 8002)
+### 3. reflexia (Port 8002)
 
 **Rôle** : Observateur cognitif réflexif - Monitoring et analyse du système
 
@@ -80,7 +74,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 
 ---
 
-### 4. 🧠 arkalia-sandozia
+### 4. arkalia-sandozia
 
 **Rôle** : Intelligence croisée - Validation inter-modules et consensus
 
@@ -102,7 +96,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 
 ---
 
-### 5. 🧠 cognitive (Port 8003)
+### 5. cognitive (Port 8003)
 
 **Rôle** : Intelligence avancée (Cognitive Reactor) - Réactions automatiques intelligentes
 
@@ -122,9 +116,17 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 - Apprentissage continu et prédictions
 - Ajustement automatique de seuils et paramètres
 
----
+## Tableau Récapitulatif des Containers
 
-## 🔄 Diagramme d'Interactions
+| Container | Port | Rôle | Dépendances | Ressources |
+|-----------|------|------|-------------|------------|
+| arkalia-api | 8000 | API centrale FastAPI | Aucune | 512M RAM, 1 CPU |
+| arkalia-assistantia | 8001 | Interface IA conversationnelle | arkalia-api | 512M RAM, 1 CPU |
+| reflexia | 8002 | Observateur cognitif | arkalia-api | 512M RAM |
+| arkalia-sandozia | - | Intelligence croisée | reflexia | 1G RAM, 1.5 CPU |
+| cognitive | 8003 | Intelligence avancée | reflexia | 512M RAM |
+
+## Diagramme d'Interactions
 
 ```mermaid
 graph TD
@@ -143,9 +145,7 @@ graph TD
     style F fill:#607D8B,color:#fff
 ```
 
----
-
-## 📊 Flux de Données
+## Flux de Données
 
 ### Flux Principal
 
@@ -164,9 +164,7 @@ graph TD
 4. **Alertes** → Prometheus + AlertManager
 5. **Visualisation** → Grafana dashboards
 
----
-
-## 🔧 Configuration
+## Configuration
 
 ### Variables d'Environnement Principales
 
@@ -196,9 +194,7 @@ COGNITIVE_REACTOR_ENV=production
 
 Tous les containers sont sur le réseau `arkalia_network` (bridge) pour communication interne.
 
----
-
-## 🚀 Déploiement
+## Déploiement
 
 ### Démarrage Rapide
 
@@ -229,18 +225,16 @@ curl http://localhost:8002/health
 curl http://localhost:8003/health
 ```
 
----
+## Notes Importantes
 
-## 📝 Notes
+| Point | Description |
+|-------|-------------|
+| Container commenté | `generative-ai` est présent dans `docker-compose.yml` mais commenté (non actif) |
+| Ports exposés | Seuls les containers avec API REST exposent des ports |
+| Healthchecks | Tous les containers ont des healthchecks Python natifs |
+| Ressources | Limites configurées pour éviter la surconsommation |
 
-- **Container commenté** : `generative-ai` est présent dans `docker-compose.yml` mais commenté (non actif)
-- **Ports exposés** : Seuls les containers avec API REST exposent des ports
-- **Healthchecks** : Tous les containers ont des healthchecks Python natifs
-- **Ressources** : Limites configurées pour éviter la surconsommation
-
----
-
-## 📚 Ressources Complémentaires
+## Ressources Complémentaires
 
 - [Docker Compose Configuration](https://github.com/arkalia-luna-system/arkalia-luna-pro/blob/main/docker-compose.yml)
 - [Guide de démarrage rapide](../getting-started/quick-start.md)
@@ -249,6 +243,4 @@ curl http://localhost:8003/health
 
 ---
 
-### Mise à jour
-
-Novembre 2025
+**Mise à jour** : Novembre 2025

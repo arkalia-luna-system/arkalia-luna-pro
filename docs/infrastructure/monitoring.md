@@ -1,23 +1,19 @@
-# 📊 Monitoring Complet - Arkalia-LUNA v2.8.0
+# Monitoring Complet - Arkalia-LUNA v2.8.0
 
-> Guide complet pour l'infrastructure de monitoring d'Arkalia-LUNA avec observabilité totale, métriques avancées et alertes intelligentes.
+Guide complet pour l'infrastructure de monitoring d'Arkalia-LUNA avec observabilité totale, métriques avancées et alertes intelligentes.
 
----
+## Vue d'ensemble
 
-## 🎯 Vue d'ensemble
+Arkalia-LUNA v2.8.0 intègre une infrastructure de monitoring complète :
 
-Arkalia-LUNA v2.8.0 intègre une infrastructure de monitoring complète et professionnelle :
+- Grafana : Dashboards temps réel avec 8 panels spécialisés
+- Prometheus : Collecte et stockage de 34 métriques Arkalia
+- AlertManager : 15 règles d'alertes intelligentes
+- Loki : Centralisation des logs système
+- cAdvisor : Métriques des conteneurs Docker
+- Arkalia API : Endpoints métriques intégrés
 
-- **📊 Grafana** : Dashboards temps réel avec 8 panels spécialisés
-- **📈 Prometheus** : Collecte et stockage de 34 métriques Arkalia
-- **🚨 AlertManager** : 15 règles d'alertes intelligentes
-- **📝 Loki** : Centralisation des logs système
-- **🐳 cAdvisor** : Métriques des conteneurs Docker
-- **🔌 Arkalia API** : Endpoints métriques intégrés
-
----
-
-## 🚀 Démarrage Rapide
+## Démarrage Rapide
 
 ### 1. Démarrer le Monitoring
 ```bash
@@ -46,18 +42,17 @@ pytest tests/security/ -v
 ```
 
 ### 3. Accès aux Services
+
 | Service | URL | Description | Credentials |
 |---------|-----|-------------|-------------|
-| **Grafana** | http://localhost:3000 | Dashboards temps réel | admin / arkalia-secure-2025 |
-| **Prometheus** | http://localhost:9090 | Métriques système | - |
-| **AlertManager** | http://localhost:9093 | Gestion alertes | - |
-| **Loki** | http://localhost:3100 | Centralisation logs | - |
-| **cAdvisor** | http://localhost:8080 | Métriques conteneurs | - |
-| **Arkalia API** | http://localhost:8000 | API principale + métriques | - |
+| Grafana | http://localhost:3000 | Dashboards temps réel | admin / arkalia-secure-2025 |
+| Prometheus | http://localhost:9090 | Métriques système | - |
+| AlertManager | http://localhost:9093 | Gestion alertes | - |
+| Loki | http://localhost:3100 | Centralisation logs | - |
+| cAdvisor | http://localhost:8080 | Métriques conteneurs | - |
+| Arkalia API | http://localhost:8000 | API principale + métriques | - |
 
----
-
-## 📊 Métriques Arkalia
+## Métriques Arkalia
 
 ### Métriques Système
 - `arkalia_system_cpu_usage` : Utilisation CPU en pourcentage

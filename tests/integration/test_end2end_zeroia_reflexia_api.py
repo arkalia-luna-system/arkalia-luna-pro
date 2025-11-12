@@ -1,12 +1,13 @@
 import pytest
 
-from demo_global import ReflexiaWrapper, SandoziaWrapper, SecurityWrapper
 from modules.core.storage import StorageManager
 from modules.zeroia import ZeroIACoordinator
+from scripts.demo.demo_global import ReflexiaWrapper, SandoziaWrapper, SecurityWrapper
 
 
 @pytest.mark.integration
-def test_end2end_zeroia_reflexia_api():
+@pytest.mark.asyncio
+async def test_end2end_zeroia_reflexia_api() -> None:
     """Test bout-en-bout : ZeroIA → Reflexia → API"""
     storage = StorageManager()
     zeroia = ZeroIACoordinator()
@@ -15,8 +16,9 @@ def test_end2end_zeroia_reflexia_api():
     security = SecurityWrapper()
 
     # 1. Décision ZeroIA
-    decision = zeroia.make_decision("security_incident")
+    decision = await zeroia.make_decision({"event_type": "security_incident"})
     assert decision is not None
+    assert isinstance(decision, dict)
 
     # 2. Création d'alerte Reflexia
     alert_id = reflexia.create_alert(
@@ -34,7 +36,7 @@ def test_end2end_zeroia_reflexia_api():
     analysis = sandozia.analyze_behavior(
         {
             "event_type": "security_incident",
-            "decision_id": str(decision),
+            "decision_id": decision.get("id", str(decision)),
         }
     )
     assert analysis is not None

@@ -6,29 +6,29 @@ Arkalia-LUNA Pro est un système d'intelligence artificielle modulaire et évolu
 
 ```mermaid
 graph TB
-    subgraph "🌕 Arkalia-LUNA Pro"
-        subgraph "🧠 Core System"
+    subgraph "Arkalia-LUNA Pro"
+        subgraph "Core System"
             A[Core Manager]
             B[Storage Manager]
             C[Health Monitor]
             D[Config Manager]
         end
 
-        subgraph "🔧 Modules Principaux"
+        subgraph "Modules Principaux"
             E[ZeroIA - Décisions]
             F[Reflexia - Surveillance]
             G[Sandozia - Analyse]
             H[Security - Protection]
         end
 
-        subgraph "⚡ Optimisations"
+        subgraph "Optimisations"
             I[Cache Manager]
             J[Load Balancer]
             K[Circuit Breaker]
             L[Advanced Metrics]
         end
 
-        subgraph "🔗 Intégration"
+        subgraph "Intégration"
             M[Optimization Integrator]
             N[Module Adapters]
             O[API Gateway]

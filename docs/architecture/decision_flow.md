@@ -1,13 +1,14 @@
 # Flux Décisionnel ZeroIA - Arkalia-LUNA Pro
 
-## 📊 **ÉTAT ACTUEL DU SYSTÈME (Mise à jour novembre 2025)**
+**Dernière mise à jour** : novembre 2025
 
-### ✅ **SUCCÈS MAJEUR - CI/CD 100% Verte !**
-- **671 tests passés** (642 unitaires + 29 intégration) ✅
-- **Couverture : 59.25%** (bien au-dessus du seuil de 28%) ✅
-- **Temps d'exécution : 31.73s** ✅
-- **Healthcheck optimisé** : Python urllib natif ✅
-- **Artefacts uploadés** : Conditionnel et robuste ✅
+## État Actuel du Système
+
+- 671 tests passés (642 unitaires + 29 intégration)
+- Couverture : 59.25% (seuil requis : 28%)
+- Temps d'exécution : 31.73s
+- Healthcheck optimisé : Python urllib natif
+- Artefacts uploadés : Conditionnel et robuste
 
 ```mermaid
 flowchart TD
