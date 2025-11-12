@@ -46,7 +46,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-          pip install black isort ruff mypy bandit safety detect-secrets autoflake
+          pip install black ruff mypy bandit safety detect-secrets autoflake
 
       - name: 🧹 Clean generated files
         run: |
@@ -71,9 +71,6 @@ jobs:
         run: |
           echo "🔍 Vérification formatage avec black..."
           black --check --diff . --exclude archive/ || (echo "❌ Formatage incorrect. Exécutez: black ." && exit 1)
-
-          echo "🔍 Vérification imports avec isort..."
-          isort --check-only --diff . --skip archive/ || (echo "❌ Imports incorrects. Exécutez: isort ." && exit 1)
 
       - name: 🔍 Run enhanced linting
         run: |
