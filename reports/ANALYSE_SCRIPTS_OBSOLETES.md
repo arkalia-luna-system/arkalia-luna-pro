@@ -1,4 +1,5 @@
 # 📊 Analyse des Scripts Obsolètes ou Inutiles
+
 ## Arkalia-LUNA Pro - Rapport d'audit complet
 
 **Date d'analyse** : 2025-01-27  
@@ -9,6 +10,7 @@
 ## 🔴 Scripts OBSOLÈTES à SUPPRIMER
 
 ### 1. Scripts de conteneurs Docker non utilisés
+
 - **`scripts/ark-containers-fixed.sh`** ❌
   - **Raison** : Aucune référence trouvée dans le codebase
   - **Alternative** : Utiliser `ark-docker-start.sh`, `ark-docker-stop.sh`
@@ -22,6 +24,7 @@
   - **Alternative** : Scripts Docker standardisés
 
 ### 2. Scripts Docker redondants
+
 - **`scripts/docker-start-robust.sh`** ❌
   - **Raison** : Aucune référence trouvée
   - **Alternative** : `scripts/ark-docker-start.sh`
@@ -31,12 +34,14 @@
   - **Alternative** : `scripts/ark-docker-start.sh`
 
 ### 3. Scripts de validation redondants
+
 - **`scripts/validate_workflows.sh`** ⚠️
   - **Raison** : Trois scripts similaires existent (`validate_workflows.sh`, `validate-all-workflows.sh`, `validate-workflows.sh`)
   - **Recommandation** : Conserver uniquement `validate-workflows.sh` (le plus complet avec 368 lignes)
   - **À supprimer** : `validate_workflows.sh` et `validate-all-workflows.sh`
 
 ### 4. Scripts de correction de linting redondants
+
 - **`scripts/fix_final_linting.py`** ⚠️
   - **Raison** : Plusieurs scripts similaires (`fix_linting_issues.py`, `fix_imports_and_types.py`, etc.)
   - **Recommandation** : Conserver uniquement `scripts/ark-fix-linting.sh` qui est référencé dans les alias shell
@@ -61,27 +66,32 @@
   - **Raison** : Correction ponctuelle, probablement obsolète
 
 ### 5. Scripts de rollback dupliqués
+
 - **`scripts/zeroia_rollback.py`** ⚠️
   - **Raison** : Version alternative de `_zeroia_rollback.py`
   - **Recommandation** : Conserver uniquement `_zeroia_rollback.py` qui est testée et utilisée
   - **Note** : `_zeroia_rollback.py` a des tests unitaires dédiés
 
 ### 6. Script de push redondant
+
 - **`scripts/ark-push-final.sh`** ⚠️
   - **Raison** : Simple wrapper qui pourrait être un alias shell
   - **Recommandation** : Intégrer dans `ark-setup-shell.sh` comme alias ou supprimer si non utilisé
 
 ### 7. Script de sitemap avec nom incorrect
+
 - **`scripts/sitemap_gen.py`** ⚠️
-  - **Raison** : Le fichier s'appelle `sitemap_gen.py` mais le code référence `sitemap_generator.py`
-  - **Problème** : `hooks.py` et `build_docs.sh` cherchent `sitemap_generator.py`
-  - **Recommandation** : Renommer en `sitemap_generator.py` pour cohérence OU corriger les références
+  - **Raison** : Le fichier s'appelle `sitemap_gen.py` mais `hooks.py` et `build_docs.sh` cherchent `sitemap_generator.py`
+  - **Problème** : Incohérence de nommage qui empêche l'exécution automatique
+  - **Recommandation** : **RENOMMER** `sitemap_gen.py` → `sitemap_generator.py` pour corriger les références
+  - **Impact** : Le sitemap ne peut pas être généré automatiquement actuellement
 
 ---
 
 ## 🟡 Scripts à VÉRIFIER (potentiellement obsolètes)
 
 ### Scripts de déploiement
+
 - **`scripts/phase4-deploy.sh`** ⚠️
   - **Raison** : Aucune référence trouvée, semble être une version de déploiement spécifique
   - **Action** : Vérifier si c'est encore utilisé pour un déploiement spécifique
@@ -91,11 +101,13 @@
   - **Action** : Vérifier si la migration est terminée
 
 ### Scripts de diagnostic
+
 - **`scripts/analyze_structure.py`** ⚠️
   - **Raison** : Utilisé uniquement dans des rapports, peut être utile pour maintenance
   - **Action** : Conserver si utilisé pour diagnostics périodiques
 
 ### Scripts de monitoring
+
 - **`scripts/ark-monitor.py`** ✅
   - **Raison** : Référencé dans la documentation
   - **Action** : Conserver
@@ -105,6 +117,7 @@
 ## 🟢 Scripts UTILES à CONSERVER
 
 ### Scripts actifs référencés
+
 - ✅ `scripts/ark-docker-*.sh` (start, stop, status, rebuild, dev)
 - ✅ `scripts/ark-fix-*.sh` (linting, style, modules)
 - ✅ `scripts/ark-validate-*.py` (monitoring, performance, coverage, site)
@@ -156,6 +169,7 @@
 ## 📋 Résumé des Actions Recommandées
 
 ### 🔴 Suppression immédiate (7 scripts)
+
 1. `scripts/ark-containers-fixed.sh`
 2. `scripts/ark-containers-perfect.sh`
 3. `scripts/ark-containers-simple.sh`
@@ -165,6 +179,7 @@
 7. `scripts/validate-all-workflows.sh` (garder `validate-workflows.sh`)
 
 ### ⚠️ À examiner avant suppression (8 scripts)
+
 1. `scripts/zeroia_rollback.py` (garder `_zeroia_rollback.py`)
 2. `scripts/ark-push-final.sh` (intégrer comme alias ou supprimer)
 3. `scripts/fix_final_linting.py` (garder uniquement si utilisé ponctuellement)
@@ -176,9 +191,11 @@
 9. `scripts/fix_remaining_prints.py` (correction ponctuelle)
 
 ### 🔧 À corriger (1 script)
+
 1. `scripts/sitemap_gen.py` → Renommer en `sitemap_generator.py` OU corriger les références dans `hooks.py` et `build_docs.sh`
 
 ### ⚠️ À vérifier manuellement (2 scripts)
+
 1. `scripts/phase4-deploy.sh` (déploiement spécifique ?)
 2. `scripts/switch-to-optimized-workflow.sh` (migration terminée ?)
 
@@ -209,4 +226,3 @@
 ---
 
 **Note** : Cette analyse a été effectuée avec une vérification double pour garantir l'exactitude. Les scripts marqués comme "à examiner" nécessitent une vérification manuelle pour confirmer leur obsolescence.
-
