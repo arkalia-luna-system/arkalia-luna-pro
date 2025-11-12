@@ -3,6 +3,7 @@
 Ce module expose l'API REST principale avec les endpoints pour tous les modules
 (ZeroIA, Reflexia, Sandozia, AssistantIA) et les métriques Prometheus.
 """
+
 import logging
 import time
 from collections.abc import AsyncGenerator, Callable

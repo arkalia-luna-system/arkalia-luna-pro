@@ -3,6 +3,7 @@
 Ce module génère automatiquement un sitemap.xml à partir de la configuration
 MkDocs pour améliorer le référencement de la documentation.
 """
+
 import datetime
 import os
 import urllib.parse

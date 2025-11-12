@@ -3,6 +3,7 @@
 Ce module fournit des fonctions pour sauvegarder et restaurer
 l'état du module ZeroIA.
 """
+
 import shutil
 from pathlib import Path
 

@@ -3,6 +3,7 @@
 Ce module expose l'API FastAPI principale avec les endpoints de santé
 pour tous les modules IA (ZeroIA, Reflexia, Sandozia).
 """
+
 import json
 import logging
 from typing import Any

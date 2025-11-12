@@ -3,6 +3,7 @@
 Ce module contient les hooks utilisés pour générer automatiquement
 la documentation et les sitemaps lors des builds.
 """
+
 import subprocess  # nosec
 
 from core.ark_logger import ark_logger

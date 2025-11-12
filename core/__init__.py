@@ -2,6 +2,7 @@
 
 Ce module expose l'API FastAPI de base pour le système Arkalia.
 """
+
 from fastapi import FastAPI
 
 app = FastAPI()
