@@ -162,7 +162,9 @@ class GracefulDegradationSystem:
             self._register_default_services()
             self.initialization_count += 1
 
-        ark_logger.info("📉 GracefulDegradationSystem initialisé", extra={"arkalia_module": "zeroia"})
+        ark_logger.info(
+            "📉 GracefulDegradationSystem initialisé", extra={"arkalia_module": "zeroia"}
+        )
 
     def _load_thresholds(self, config_path: str | None) -> dict[str, float]:
         """Charge les seuils de dégradation"""
@@ -181,7 +183,9 @@ class GracefulDegradationSystem:
                     custom_thresholds = json.load(f)
                 default_thresholds.update(custom_thresholds)
             except Exception as e:
-                logger.warning(f"⚠️ Impossible de charger config: {e}")
+                ark_logger.warning(
+                    f"⚠️ Impossible de charger config: {e}", extra={"arkalia_module": "zeroia"}
+                )
 
         return default_thresholds
 
@@ -287,14 +291,19 @@ class GracefulDegradationSystem:
             status=ServiceStatus.ACTIVE,
             last_health_check=datetime.now(),
         )
-        logger.info(f"📝 Service enregistré: {service.name} ({service.priority.value})")
+        ark_logger.info(
+            f"📝 Service enregistré: {service.name} ({service.priority.value})",
+            extra={"arkalia_module": "zeroia"},
+        )
 
     def unregister_service(self, service_name: str):
         """Désenregistre un service"""
         if service_name in self.services:
             del self.services[service_name]
             del self.service_metrics[service_name]
-            logger.info(f"🗑️ Service désenregistré: {service_name}")
+            ark_logger.info(
+                f"🗑️ Service désenregistré: {service_name}", extra={"arkalia_module": "zeroia"}
+            )
 
     async def assess_system_health(self) -> float:
         """Évalue la santé globale du système (0.0 à 1.0)"""
@@ -364,10 +373,11 @@ class GracefulDegradationSystem:
         if target_level == self.current_level:
             return
 
-        logger.warning(
-            f"📉 Dégradation déclenchée: {self.current_level.value} → {target_level.value}"
+        ark_logger.warning(
+            f"📉 Dégradation déclenchée: {self.current_level.value} → {target_level.value}",
+            extra={"arkalia_module": "zeroia"},
         )
-        logger.warning(f"   Raison: {reason}")
+        ark_logger.warning(f"   Raison: {reason}", extra={"arkalia_module": "zeroia"})
 
         old_level = self.current_level
         self.current_level = target_level
@@ -387,7 +397,9 @@ class GracefulDegradationSystem:
             try:
                 await callback(old_level, target_level, reason)
             except Exception as e:
-                logger.error(f"❌ Callback dégradation failed: {e}")
+                ark_logger.error(
+                    f"❌ Callback dégradation failed: {e}", extra={"arkalia_module": "zeroia"}
+                )
 
         # Recalculer les métriques
         await self._update_degradation_metrics()
@@ -432,7 +444,7 @@ class GracefulDegradationSystem:
         for service_name in services_to_disable:
             await self._suspend_service(service_name)
 
-        logger.info(
+        ark_logger.info(
             f"📉 Niveau {level.value} appliqué: {len(services_to_disable)} services suspendus"
         )
 
@@ -453,10 +465,13 @@ class GracefulDegradationSystem:
             try:
                 await service.graceful_shutdown()
             except Exception as e:
-                logger.error(f"❌ Graceful shutdown failed for {service_name}: {e}")
+                ark_logger.error(
+                    f"❌ Graceful shutdown failed for {service_name}: {e}",
+                    extra={"arkalia_module": "zeroia"},
+                )
 
         metrics.status = ServiceStatus.SUSPENDED
-        logger.info(f"⏸️ Service suspendu: {service_name}")
+        ark_logger.info(f"⏸️ Service suspendu: {service_name}", extra={"arkalia_module": "zeroia"})
 
     async def _degrade_service(self, service_name: str):
         """Dégrade un service (mode réduit)"""
@@ -465,7 +480,7 @@ class GracefulDegradationSystem:
 
         metrics = self.service_metrics[service_name]
         metrics.status = ServiceStatus.DEGRADED
-        logger.info(f"📉 Service dégradé: {service_name}")
+        ark_logger.info(f"📉 Service dégradé: {service_name}", extra={"arkalia_module": "zeroia"})
 
     async def attempt_recovery(self) -> bool:
         """Tente une récupération automatique"""
@@ -483,10 +498,10 @@ class GracefulDegradationSystem:
         if target_level == self.current_level:
             return False
 
-        logger.info(
-            f"🔄 Tentative de récupération: {self.current_level.value} → {target_level.value}"
+        ark_logger.info(
+            f"🔄 Tentative de récupération: {self.current_level.value} → {target_level.value}",
+            extra={"arkalia_module": "zeroia"},
         )
-
         # Réactiver les services progressivement
         await self._recover_to_level(target_level)
 
@@ -504,14 +519,22 @@ class GracefulDegradationSystem:
                 try:
                     await callback(self.current_level, target_level)
                 except Exception as e:
-                    logger.error(f"❌ Recovery callback failed: {e}")
+                    ark_logger.error(
+                        f"❌ Recovery callback failed: {e}", extra={"arkalia_module": "zeroia"}
+                    )
 
-            logger.info(f"✅ Récupération réussie vers {target_level.value}")
+            ark_logger.info(
+                f"✅ Récupération réussie vers {target_level.value}",
+                extra={"arkalia_module": "zeroia"},
+            )
             return True
         else:
             # Rollback si récupération échoue
             await self._apply_degradation_level(self.current_level)
-            logger.warning(f"⚠️ Récupération échouée, rollback vers {self.current_level.value}")
+            ark_logger.warning(
+                f"⚠️ Récupération échouée, rollback vers {self.current_level.value}",
+                extra={"arkalia_module": "zeroia"},
+            )
             return False
 
     def _get_recovery_level(self) -> DegradationLevel:
@@ -560,7 +583,9 @@ class GracefulDegradationSystem:
         metrics = self.service_metrics[service_name]
         if metrics.status in [ServiceStatus.SUSPENDED, ServiceStatus.DEGRADED]:
             metrics.status = ServiceStatus.ACTIVE
-            logger.info(f"✅ Service réactivé: {service_name}")
+            ark_logger.info(
+                f"✅ Service réactivé: {service_name}", extra={"arkalia_module": "zeroia"}
+            )
 
     async def _update_degradation_metrics(self):
         """Met à jour les métriques de dégradation"""
@@ -673,7 +698,10 @@ class GracefulDegradationSystem:
     def initialize(self) -> bool:
         """Initialise le système avec protection contre les boucles"""
         if not self.can_initialize():
-            logger.warning("🚫 Initialisation bloquée (protection anti-boucle)")
+            ark_logger.warning(
+                "🚫 Initialisation bloquée (protection anti-boucle)",
+                extra={"arkalia_module": "zeroia"},
+            )
             return False
 
         self.initialization_count += 1
