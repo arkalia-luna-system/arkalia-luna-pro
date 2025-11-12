@@ -410,7 +410,7 @@ class ErrorRecoverySystem:
             # Exécuter les stratégies de récupération
             for strategy in self.recovery_handlers.values():
                 if strategy is not None and callable(strategy):
-                    await strategy(None)  # type: ignore[call-arg, misc]
+                    await strategy(None)
 
             logger.info("✅ Récupération réussie")
             return True
