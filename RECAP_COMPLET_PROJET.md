@@ -61,8 +61,38 @@
     - `modules/core/adapters/taskia_adapter.py`
     - `modules/core/adapters/reflexia_adapter.py`
     - `modules/core/__init__.py`
-- 🔄 **Reste** : 23 fichiers à migrer vers ark_logger
+  - ✅ `modules/zeroia/orchestrator_enhanced.py`
+  - ✅ `modules/zeroia/metrics.py`
+  - ✅ `modules/zeroia/decision_engine.py`
+  - ✅ `modules/zeroia/coordinator.py`
+  - ✅ `modules/zeroia/event_store.py`
+  - ✅ `modules/zeroia/circuit_breaker.py`
+  - ✅ `modules/sandozia/utils/metrics.py`
+  - ✅ `modules/sandozia/reasoning/collaborative.py`
+  - ✅ `modules/sandozia/core/cognitive_reactor.py`
+  - ✅ `modules/sandozia/core/sandozia_core.py`
+  - ✅ `modules/sandozia/core/chronalia.py`
+  - ✅ `modules/sandozia/analyzer/behavior.py`
+  - ✅ `modules/taskia/services/task_processor.py`
+  - ✅ `modules/taskia/services/health_checker.py`
+  - ✅ `modules/reflexia/logic/main_loop_enhanced.py`
+  - ✅ `modules/monitoring/prometheus_metrics.py`
+  - ✅ `modules/utils/validators/crossmodule_validator.py`
+  - ✅ `modules/utils/error_recovery/core.py`
+  - ✅ `modules/helloria/__init__.py`
 - ✅ **LoggerService** unifié avec ark_logger
+- ✅ **100% des fichiers** migrés vers ark_logger
+
+### 🎯 Phase 4 : Optimisations Architecturales (TERMINÉ ✅)
+
+- ✅ **Fusionné** HelloriaStateManager avec StorageManager
+  - Ajouté TOMLFileBackend dans StorageManager
+  - Migré load_helloria_state/save_helloria_state vers StorageManager
+  - Supprimé classe HelloriaStateManager (redondante)
+- ✅ **Migré** CrossModuleValidator de Sandozia vers utils/validators
+  - Fusionné version Sandozia (766 lignes) avec utils
+  - Conservé toutes les fonctionnalités avancées
+  - Supprimé doublon modules/sandozia/validators/crossmodule.py
 
 ---
 
