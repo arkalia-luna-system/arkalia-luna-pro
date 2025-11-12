@@ -6,11 +6,10 @@
 """
 
 import json
-import logging
 import os
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any
 
 from core.ark_logger import ark_logger
 
@@ -141,7 +140,9 @@ class ConfigManager:
         if "core" in self._config:
             core_config = self._config["core"]
             if "log_level" in core_config:
-                logging.getLogger().setLevel(getattr(logging, core_config["log_level"]))
+                ark_logger.setLevel(
+                    getattr(logging, core_config["log_level"]), extra={"arkalia_module": "core"}
+                )
 
     def get_config(self, section: str | None = None) -> dict[str, Any]:
         """

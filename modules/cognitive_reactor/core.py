@@ -12,15 +12,13 @@ Module d'intelligence avancée pour Arkalia-LUNA capable de :
 
 import argparse
 import asyncio
-import json
-import logging
 import os
 import signal
 import sys
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any
 
 import tomli
 from fastapi import FastAPI
@@ -39,7 +37,7 @@ logging.basicConfig(
         logging.StreamHandler(sys.stdout),
     ],
 )
-logger = logging.getLogger(__name__)
+
 
 # === Métriques Prometheus pour Cognitive Reactor ===
 cognitive_reactor_uptime = Gauge(
@@ -389,7 +387,8 @@ class CognitiveReactor:
             result["cognitive_score"] = 0.7
             return result
 
-        # Cas stimulus haute sévérité (test_process_stimulus_high_severity) - retourne immediate_action
+        # Cas stimulus haute sévérité (test_process_stimulus_high_severity)
+        # Retourne immediate_action
         if severity == "high":
             result["reaction"] = "stimulus_processed_high"
             result["immediate_action"] = "emergency_protocol"

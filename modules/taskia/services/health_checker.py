@@ -31,7 +31,7 @@ class HealthChecker(IHealthChecker):
             logger: Logger injecté (DIP)
         """
         self._module_name = module_name
-        self._logger = logger or logging.getLogger(__name__)
+
         self._status = "operational"
 
     def check_health(self) -> dict[str, Any]:
@@ -41,7 +41,9 @@ class HealthChecker(IHealthChecker):
         Returns:
             Statut de santé sous forme de dictionnaire
         """
-        self._logger.info(f"Vérification de santé pour {self._module_name}")
+        ark_logger.info(
+            f"Vérification de santé pour {self._module_name}", extra={"arkalia_module": "taskia"}
+        )
 
         try:
             health_data = {
@@ -52,11 +54,13 @@ class HealthChecker(IHealthChecker):
                 "checks": {"memory": "ok", "cpu": "ok", "dependencies": "ok"},
             }
 
-            self._logger.debug(f"Données de santé: {health_data}")
+            ark_logger.debug(f"Données de santé: {health_data}", extra={"arkalia_module": "taskia"})
             return health_data
 
         except Exception as e:
-            self._logger.error(f"Erreur lors de la vérification de santé: {e}")
+            ark_logger.error(
+                f"Erreur lors de la vérification de santé: {e}", extra={"arkalia_module": "taskia"}
+            )
             self._status = "degraded"
             return {
                 "module": self._module_name,
@@ -86,4 +90,4 @@ class HealthChecker(IHealthChecker):
             raise ValueError(f"Statut invalide. Doit être l'un de: {valid_statuses}")
 
         self._status = status
-        self._logger.info(f"Statut de santé changé à: {status}")
+        ark_logger.info(f"Statut de santé changé à: {status}", extra={"arkalia_module": "taskia"})

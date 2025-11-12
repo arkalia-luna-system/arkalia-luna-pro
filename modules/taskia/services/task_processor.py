@@ -31,7 +31,6 @@ class TaskProcessor(ITaskProcessor):
             logger: Logger injecté (DIP)
         """
         self._formatter = formatter
-        self._logger = logger or logging.getLogger(__name__)
 
     def process(self, context: dict[str, Any]) -> str:
         """
@@ -43,7 +42,10 @@ class TaskProcessor(ITaskProcessor):
         Returns:
             Résultat formaté
         """
-        self._logger.info(f"Traitement du contexte avec {self._formatter.get_format_type()}")
+        ark_logger.info(
+            f"Traitement du contexte avec {self._formatter.get_format_type()}",
+            extra={"arkalia_module": "taskia"},
+        )
 
         if not self.validate_context(context):
             raise ValueError("Contexte invalide")
@@ -61,11 +63,13 @@ class TaskProcessor(ITaskProcessor):
             True si le contexte est valide
         """
         if not isinstance(context, dict):
-            self._logger.error("Le contexte doit être un dictionnaire")
+            ark_logger.error(
+                "Le contexte doit être un dictionnaire", extra={"arkalia_module": "taskia"}
+            )
             return False
 
         if not context:
-            self._logger.warning("Contexte vide")
+            ark_logger.warning("Contexte vide", extra={"arkalia_module": "taskia"})
             return False
 
         return True
