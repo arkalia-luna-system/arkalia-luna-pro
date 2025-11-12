@@ -12,6 +12,8 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Optional, Union
 
+from core.ark_logger import ark_logger
+
 
 @dataclass
 class CoreConfig:
@@ -33,8 +35,7 @@ class ConfigManager:
     """
 
     def __init__(self, config_path: str | None = None):
-        self.logger = logging.getLogger("arkalia.core.config")
-        self.config_path = config_path or self._get_default_config_path()
+        self.self.config_path = config_path or self._get_default_config_path()
         self._config: dict[str, Any] = {}
         self._core_config = CoreConfig()
         self._initialized = False
@@ -52,7 +53,9 @@ class ConfigManager:
         ✅ Chargement intelligent avec fallbacks
         """
         try:
-            self.logger.info("🔧 Initialisation ConfigManager...")
+            self.ark_logger.info(
+                "🔧 Initialisation ConfigManager...", extra={"arkalia_module": "core"}
+            )
 
             # Chargement de la configuration
             self._load_config()
@@ -64,11 +67,15 @@ class ConfigManager:
             self._apply_config()
 
             self._initialized = True
-            self.logger.info("✅ ConfigManager initialisé avec succès")
+            self.ark_logger.info(
+                "✅ ConfigManager initialisé avec succès", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            self.logger.error(f"❌ Erreur initialisation ConfigManager : {e}")
+            self.ark_logger.error(
+                f"❌ Erreur initialisation ConfigManager : {e}", extra={"arkalia_module": "core"}
+            )
             # Fallback vers configuration par défaut
             self._load_default_config()
             return False
@@ -79,12 +86,20 @@ class ConfigManager:
             if os.path.exists(self.config_path):
                 with open(self.config_path, encoding="utf-8") as f:
                     self._config = json.load(f)
-                self.logger.info(f"📄 Configuration chargée depuis {self.config_path}")
+                self.ark_logger.info(
+                    f"📄 Configuration chargée depuis {self.config_path}",
+                    extra={"arkalia_module": "core"},
+                )
             else:
-                self.logger.warning(f"⚠️ Fichier de config non trouvé : {self.config_path}")
+                self.ark_logger.warning(
+                    f"⚠️ Fichier de config non trouvé : {self.config_path}",
+                    extra={"arkalia_module": "core"},
+                )
                 self._load_default_config()
         except Exception as e:
-            self.logger.error(f"❌ Erreur chargement config : {e}")
+            self.ark_logger.error(
+                f"❌ Erreur chargement config : {e}", extra={"arkalia_module": "core"}
+            )
             self._load_default_config()
 
     def _load_default_config(self) -> None:
@@ -106,14 +121,18 @@ class ConfigManager:
                 "sandozia_anomaly": {"enabled": True, "sensitivity": 0.7},
             },
         }
-        self.logger.info("📄 Configuration par défaut chargée")
+        self.ark_logger.info(
+            "📄 Configuration par défaut chargée", extra={"arkalia_module": "core"}
+        )
 
     def _validate_config(self) -> None:
         """Validation de la configuration"""
         required_sections = ["core", "modules", "watchdogs"]
         for section in required_sections:
             if section not in self._config:
-                self.logger.warning(f"⚠️ Section manquante : {section}")
+                self.ark_logger.warning(
+                    f"⚠️ Section manquante : {section}", extra={"arkalia_module": "core"}
+                )
                 self._config[section] = {}
 
     def _apply_config(self) -> None:
@@ -169,11 +188,16 @@ class ConfigManager:
                 self._config[section] = {}
 
             self._config[section][key] = value
-            self.logger.info(f"✏️ Configuration mise à jour : {section}.{key} = {value}")
+            self.ark_logger.info(
+                f"✏️ Configuration mise à jour : {section}.{key} = {value}",
+                extra={"arkalia_module": "core"},
+            )
             return True
 
         except Exception as e:
-            self.logger.error(f"❌ Erreur modification config : {e}")
+            self.ark_logger.error(
+                f"❌ Erreur modification config : {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def save_config(self) -> bool:
@@ -189,11 +213,16 @@ class ConfigManager:
             with open(self.config_path, "w", encoding="utf-8") as f:
                 json.dump(self._config, f, indent=2, ensure_ascii=False)
 
-            self.logger.info(f"💾 Configuration sauvegardée : {self.config_path}")
+            self.ark_logger.info(
+                f"💾 Configuration sauvegardée : {self.config_path}",
+                extra={"arkalia_module": "core"},
+            )
             return True
 
         except Exception as e:
-            self.logger.error(f"❌ Erreur sauvegarde config : {e}")
+            self.ark_logger.error(
+                f"❌ Erreur sauvegarde config : {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def reload_config(self) -> bool:
@@ -201,7 +230,9 @@ class ConfigManager:
         🔄 Rechargement de la configuration
         :return: True si rechargement réussi
         """
-        self.logger.info("🔄 Rechargement de la configuration...")
+        self.ark_logger.info(
+            "🔄 Rechargement de la configuration...", extra={"arkalia_module": "core"}
+        )
         return self.initialize()
 
     def health_check(self) -> dict[str, Any]:

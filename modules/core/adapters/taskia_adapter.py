@@ -4,12 +4,11 @@
 🎯 Interface entre TaskIA existant et l'architecture SOLID
 """
 
-import logging
 from typing import Any
 
-from ..interfaces.module_interface import IModule, IModuleWithProcessing
+from core.ark_logger import ark_logger
 
-logger = logging.getLogger(__name__)
+from ..interfaces.module_interface import IModule, IModuleWithProcessing
 
 
 class TaskIAAdapter(IModuleWithProcessing):
@@ -36,7 +35,7 @@ class TaskIAAdapter(IModuleWithProcessing):
     def initialize(self) -> bool:
         """Initialise l'adaptateur TaskIA"""
         try:
-            logger.info("🔗 Initialisation TaskIA Adapter...")
+            ark_logger.info("🔗 Initialisation TaskIA Adapter...", extra={"arkalia_module": "core"})
 
             # TaskIA est un module simple, pas besoin d'import complexe
             # Vérifier que le module est disponible
@@ -45,17 +44,23 @@ class TaskIAAdapter(IModuleWithProcessing):
 
                 self._taskia_main = taskia_main
             except ImportError as e:
-                logger.error(f"❌ Module TaskIA non disponible: {e}")
+                ark_logger.error(
+                    f"❌ Module TaskIA non disponible: {e}", extra={"arkalia_module": "core"}
+                )
                 return False
 
             self.enabled = True
             self._initialized = True
 
-            logger.info("✅ TaskIA Adapter initialisé avec succès")
+            ark_logger.info(
+                "✅ TaskIA Adapter initialisé avec succès", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur initialisation TaskIA Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur initialisation TaskIA Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def health_check(self) -> dict[str, Any]:
@@ -81,7 +86,9 @@ class TaskIAAdapter(IModuleWithProcessing):
             return health_data
 
         except Exception as e:
-            logger.error(f"❌ Erreur health check TaskIA Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur health check TaskIA Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return {
                 "status": "error",
                 "message": str(e),
@@ -103,16 +110,18 @@ class TaskIAAdapter(IModuleWithProcessing):
     def shutdown(self) -> bool:
         """Arrêt propre du module"""
         try:
-            logger.info("🛑 Shutdown TaskIA Adapter...")
+            ark_logger.info("🛑 Shutdown TaskIA Adapter...", extra={"arkalia_module": "core"})
 
             self.enabled = False
             self._initialized = False
 
-            logger.info("✅ TaskIA Adapter shutdown complet")
+            ark_logger.info("✅ TaskIA Adapter shutdown complet", extra={"arkalia_module": "core"})
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur shutdown TaskIA Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur shutdown TaskIA Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def process(self, data: dict[str, Any]) -> dict[str, Any]:
@@ -151,11 +160,14 @@ class TaskIAAdapter(IModuleWithProcessing):
                 "processing_stats": self._processing_stats,
             }
 
-            logger.info(f"✅ TaskIA summary généré (temps: {processing_time:.3f}s)")
+            ark_logger.info(
+                f"✅ TaskIA summary généré (temps: {processing_time:.3f}s)",
+                extra={"arkalia_module": "core"},
+            )
             return processed_result
 
         except Exception as e:
-            logger.error(f"❌ Erreur traitement TaskIA: {e}")
+            ark_logger.error(f"❌ Erreur traitement TaskIA: {e}", extra={"arkalia_module": "core"})
 
             # Mettre à jour les statistiques d'erreur
             self._update_processing_stats(0.0, False)

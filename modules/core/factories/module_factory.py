@@ -4,8 +4,9 @@
 🎯 Création dynamique de modules compatibles IModule
 """
 
-import logging
 from typing import Any, Optional
+
+from core.ark_logger import ark_logger
 
 from ..interfaces.module_interface import IModule
 
@@ -16,8 +17,7 @@ class ModuleFactory:
     """
 
     def __init__(self):
-        self.logger = logging.getLogger("arkalia.core.factory.module")
-        self._registry: dict[str, type[IModule]] = {}
+        self.self._registry: dict[str, type[IModule]] = {}
         self._register_default_modules()
 
     def _register_default_modules(self) -> None:
@@ -42,34 +42,51 @@ class ModuleFactory:
             self.register_module_class("reflexia", type(reflexia_adapter))
             self.register_module_class("sandozia", type(sandozia_adapter))
 
-            self.logger.info("✅ Modules par défaut enregistrés")
+            self.ark_logger.info(
+                "✅ Modules par défaut enregistrés", extra={"arkalia_module": "core"}
+            )
 
         except Exception as e:
-            self.logger.error(f"❌ Erreur enregistrement modules par défaut: {e}")
+            self.ark_logger.error(
+                f"❌ Erreur enregistrement modules par défaut: {e}",
+                extra={"arkalia_module": "core"},
+            )
 
     def register_module_class(self, name: str, module_cls: type[IModule]) -> bool:
         if name in self._registry:
-            self.logger.warning(f"Classe module déjà enregistrée : {name}")
+            self.ark_logger.warning(
+                f"Classe module déjà enregistrée : {name}", extra={"arkalia_module": "core"}
+            )
             return False
         self._registry[name] = module_cls
-        self.logger.info(f"Classe module enregistrée : {name}")
+        self.ark_logger.info(
+            f"Classe module enregistrée : {name}", extra={"arkalia_module": "core"}
+        )
         return True
 
     def unregister_module_class(self, name: str) -> bool:
         if name in self._registry:
             del self._registry[name]
-            self.logger.info(f"Classe module désenregistrée : {name}")
+            self.ark_logger.info(
+                f"Classe module désenregistrée : {name}", extra={"arkalia_module": "core"}
+            )
             return True
         return False
 
     def create_module(self, name: str, **kwargs) -> IModule | None:
         if name not in self._registry:
-            self.logger.error(f"Classe module inconnue : {name}")
+            self.ark_logger.error(
+                f"Classe module inconnue : {name}", extra={"arkalia_module": "core"}
+            )
             return None
         try:
             module = self._registry[name](**kwargs)
-            self.logger.info(f"Instance module créée : {name}")
+            self.ark_logger.info(
+                f"Instance module créée : {name}", extra={"arkalia_module": "core"}
+            )
             return module
         except Exception as e:
-            self.logger.error(f"Erreur création module {name} : {e}")
+            self.ark_logger.error(
+                f"Erreur création module {name} : {e}", extra={"arkalia_module": "core"}
+            )
             return None

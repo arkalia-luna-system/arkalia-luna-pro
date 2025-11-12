@@ -15,12 +15,12 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Optional
 
+from core.ark_logger import ark_logger
+
 from ..config import ConfigManager
 from ..factories import ModuleFactory, ServiceFactory
 from ..health import HealthMonitor
 from ..interfaces import IHealthCheck, IModule, IOrchestrator
-
-logger = logging.getLogger(__name__)
 
 
 class CycleMode(Enum):
@@ -175,11 +175,11 @@ class CoreOrchestrator(IOrchestrator):
         self.health_check_task: asyncio.Task | None = None
         self.cognitive_task: asyncio.Task | None = None
 
-        logger.info("🌟 CoreOrchestrator initialized")
+        ark_logger.info("🌟 CoreOrchestrator initialized", extra={"arkalia_module": "core"})
 
     async def initialize(self) -> bool:
         """Initialise l'orchestrateur et tous les modules"""
-        logger.info("🔌 Initializing Core Orchestrator...")
+        ark_logger.info("🔌 Initializing Core Orchestrator...", extra={"arkalia_module": "core"})
 
         try:
             # Initialiser les composants core
@@ -193,16 +193,23 @@ class CoreOrchestrator(IOrchestrator):
             await self._start_monitoring_tasks()
 
             self.is_running = True
-            logger.info("✅ Core Orchestrator initialized successfully")
+            ark_logger.info(
+                "✅ Core Orchestrator initialized successfully", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to initialize Core Orchestrator: {e}")
+            ark_logger.error(
+                f"❌ Failed to initialize Core Orchestrator: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     async def _initialize_modules(self) -> None:
         """Initialise tous les modules via la factory"""
-        logger.info(f"🔌 Initializing {len(self.config.enabled_modules)} modules...")
+        ark_logger.info(
+            f"🔌 Initializing {len(self.config.enabled_modules)} modules...",
+            extra={"arkalia_module": "core"},
+        )
 
         for module_name in self.config.enabled_modules:
             try:
@@ -215,14 +222,24 @@ class CoreOrchestrator(IOrchestrator):
                         wrapper = ModuleWrapper(module_name, module_instance)
                         wrapper.update_success()
                         self.modules[module_name] = wrapper
-                        logger.info(f"✅ {module_name} initialized successfully")
+                        ark_logger.info(
+                            f"✅ {module_name} initialized successfully",
+                            extra={"arkalia_module": "core"},
+                        )
                     else:
-                        logger.warning(f"⚠️ {module_name} failed to initialize")
+                        ark_logger.warning(
+                            f"⚠️ {module_name} failed to initialize",
+                            extra={"arkalia_module": "core"},
+                        )
                 else:
-                    logger.warning(f"⚠️ {module_name} not available")
+                    ark_logger.warning(
+                        f"⚠️ {module_name} not available", extra={"arkalia_module": "core"}
+                    )
 
             except Exception as e:
-                logger.error(f"❌ Error initializing {module_name}: {e}")
+                ark_logger.error(
+                    f"❌ Error initializing {module_name}: {e}", extra={"arkalia_module": "core"}
+                )
 
     async def _start_monitoring_tasks(self) -> None:
         """Démarre les tasks de monitoring"""
@@ -238,7 +255,10 @@ class CoreOrchestrator(IOrchestrator):
         cycle_start = time.time()
         self.cycle_count += 1
 
-        logger.info(f"🌟 CYCLE #{self.cycle_count} - Mode: {self.current_cycle_mode.value}")
+        ark_logger.info(
+            f"🌟 CYCLE #{self.cycle_count} - Mode: {self.current_cycle_mode.value}",
+            extra={"arkalia_module": "core"},
+        )
 
         cycle_results: dict[str, Any] = {}
         operations_this_cycle = 0
@@ -265,7 +285,9 @@ class CoreOrchestrator(IOrchestrator):
                     self.modules[module_name].update_error(result.get("error", "Unknown error"))
 
             except Exception as e:
-                logger.error(f"❌ Error executing {module_name}: {e}")
+                ark_logger.error(
+                    f"❌ Error executing {module_name}: {e}", extra={"arkalia_module": "core"}
+                )
                 cycle_results[module_name] = {"status": "error", "error": str(e)}
                 self.modules[module_name].update_error(str(e))
 
@@ -303,7 +325,9 @@ class CoreOrchestrator(IOrchestrator):
             return {"status": "success", "result": result, "execution_time": time.time()}
 
         except Exception as e:
-            logger.error(f"❌ Error executing {module_name}: {e}")
+            ark_logger.error(
+                f"❌ Error executing {module_name}: {e}", extra={"arkalia_module": "core"}
+            )
             return {"status": "error", "error": str(e)}
 
     async def _adapt_cycle_mode(self, cycle_results: dict, successful: int, total: int) -> None:
@@ -327,7 +351,7 @@ class CoreOrchestrator(IOrchestrator):
                 self.health_monitor.check_health()
                 await asyncio.sleep(self.config.health_check_interval)
             except Exception as e:
-                logger.error(f"❌ Health check error: {e}")
+                ark_logger.error(f"❌ Health check error: {e}", extra={"arkalia_module": "core"})
                 await asyncio.sleep(5)
 
     async def _cognitive_loop(self) -> None:
@@ -337,11 +361,14 @@ class CoreOrchestrator(IOrchestrator):
                 # Logique cognitive simplifiée
                 if self.current_cycle_mode == CycleMode.COGNITIVE_BOOST:
                     self.cognitive_events += 1
-                    logger.info(f"🧠 Cognitive event #{self.cognitive_events}")
+                    ark_logger.info(
+                        f"🧠 Cognitive event #{self.cognitive_events}",
+                        extra={"arkalia_module": "core"},
+                    )
 
                 await asyncio.sleep(60)  # Check toutes les minutes
             except Exception as e:
-                logger.error(f"❌ Cognitive loop error: {e}")
+                ark_logger.error(f"❌ Cognitive loop error: {e}", extra={"arkalia_module": "core"})
                 await asyncio.sleep(5)
 
     def get_status(self) -> dict[str, Any]:
@@ -382,7 +409,7 @@ class CoreOrchestrator(IOrchestrator):
 
     async def shutdown(self) -> None:
         """Arrête l'orchestrateur proprement"""
-        logger.info("🛑 Shutting down Core Orchestrator...")
+        ark_logger.info("🛑 Shutting down Core Orchestrator...", extra={"arkalia_module": "core"})
 
         self.is_running = False
 
@@ -397,9 +424,11 @@ class CoreOrchestrator(IOrchestrator):
             try:
                 wrapper.instance.shutdown()
             except Exception as e:
-                logger.error(f"❌ Error shutting down {wrapper.name}: {e}")
+                ark_logger.error(
+                    f"❌ Error shutting down {wrapper.name}: {e}", extra={"arkalia_module": "core"}
+                )
 
-        logger.info("✅ Core Orchestrator shutdown complete")
+        ark_logger.info("✅ Core Orchestrator shutdown complete", extra={"arkalia_module": "core"})
 
     # === IMPLÉMENTATION DES MÉTHODES DE L'INTERFACE IORCHESTRATOR ===
 
@@ -407,16 +436,20 @@ class CoreOrchestrator(IOrchestrator):
         """Enregistrement d'un module"""
         try:
             if name in self.modules:
-                logger.warning(f"Module déjà enregistré : {name}")
+                ark_logger.warning(
+                    f"Module déjà enregistré : {name}", extra={"arkalia_module": "core"}
+                )
                 return False
 
             wrapper = ModuleWrapper(name, module)
             self.modules[name] = wrapper
-            logger.info(f"✅ Module enregistré : {name}")
+            ark_logger.info(f"✅ Module enregistré : {name}", extra={"arkalia_module": "core"})
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur enregistrement module {name}: {e}")
+            ark_logger.error(
+                f"❌ Erreur enregistrement module {name}: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def unregister_module(self, name: str) -> bool:
@@ -424,12 +457,16 @@ class CoreOrchestrator(IOrchestrator):
         try:
             if name in self.modules:
                 del self.modules[name]
-                logger.info(f"✅ Module désenregistré : {name}")
+                ark_logger.info(
+                    f"✅ Module désenregistré : {name}", extra={"arkalia_module": "core"}
+                )
                 return True
             return False
 
         except Exception as e:
-            logger.error(f"❌ Erreur désenregistrement module {name}: {e}")
+            ark_logger.error(
+                f"❌ Erreur désenregistrement module {name}: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def get_module(self, name: str) -> IModule | None:
@@ -452,7 +489,9 @@ class CoreOrchestrator(IOrchestrator):
                 else:
                     wrapper.update_error("Initialization failed")
             except Exception as e:
-                logger.error(f"❌ Erreur init module {name}: {e}")
+                ark_logger.error(
+                    f"❌ Erreur init module {name}: {e}", extra={"arkalia_module": "core"}
+                )
                 results[name] = False
                 wrapper.update_error(str(e))
         return results
@@ -464,7 +503,9 @@ class CoreOrchestrator(IOrchestrator):
             try:
                 results[name] = wrapper.instance.shutdown()
             except Exception as e:
-                logger.error(f"❌ Erreur shutdown module {name}: {e}")
+                ark_logger.error(
+                    f"❌ Erreur shutdown module {name}: {e}", extra={"arkalia_module": "core"}
+                )
                 results[name] = False
         return results
 
@@ -475,7 +516,9 @@ class CoreOrchestrator(IOrchestrator):
             try:
                 results[name] = wrapper.instance.health_check()
             except Exception as e:
-                logger.error(f"❌ Erreur health check module {name}: {e}")
+                ark_logger.error(
+                    f"❌ Erreur health check module {name}: {e}", extra={"arkalia_module": "core"}
+                )
                 results[name] = {"status": "error", "error": str(e)}
         return results
 
@@ -503,7 +546,9 @@ async def run_core_orchestrator(
     try:
         # Initialiser
         if not await orchestrator.initialize():
-            logger.error("❌ Failed to initialize orchestrator")
+            ark_logger.error(
+                "❌ Failed to initialize orchestrator", extra={"arkalia_module": "core"}
+            )
             return
 
         # Boucle principale
@@ -521,9 +566,9 @@ async def run_core_orchestrator(
             await asyncio.sleep(interval)
 
     except KeyboardInterrupt:
-        logger.info("🛑 Interruption utilisateur")
+        ark_logger.info("🛑 Interruption utilisateur", extra={"arkalia_module": "core"})
     except Exception as e:
-        logger.error(f"❌ Orchestrator error: {e}")
+        ark_logger.error(f"❌ Orchestrator error: {e}", extra={"arkalia_module": "core"})
     finally:
         await orchestrator.shutdown()
 

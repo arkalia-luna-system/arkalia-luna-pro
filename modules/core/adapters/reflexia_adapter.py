@@ -4,13 +4,12 @@
 🎯 Interface entre Reflexia existant et l'architecture SOLID
 """
 
-import logging
 import time
 from typing import Any, Optional
 
-from ..interfaces.module_interface import IModule, IModuleWithMonitoring, IModuleWithProcessing
+from core.ark_logger import ark_logger
 
-logger = logging.getLogger(__name__)
+from ..interfaces.module_interface import IModule, IModuleWithMonitoring, IModuleWithProcessing
 
 
 class ReflexiaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
@@ -47,7 +46,9 @@ class ReflexiaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
     def initialize(self) -> bool:
         """Initialise l'adaptateur Reflexia"""
         try:
-            logger.info("🔗 Initialisation Reflexia Adapter...")
+            ark_logger.info(
+                "🔗 Initialisation Reflexia Adapter...", extra={"arkalia_module": "core"}
+            )
 
             # Import dynamique pour éviter les dépendances circulaires
             try:
@@ -61,17 +62,23 @@ class ReflexiaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
                 self._launch_check_enhanced = launch_reflexia_check_enhanced
                 self._get_metrics = get_metrics
             except ImportError as e:
-                logger.error(f"❌ Module Reflexia non disponible: {e}")
+                ark_logger.error(
+                    f"❌ Module Reflexia non disponible: {e}", extra={"arkalia_module": "core"}
+                )
                 return False
 
             self.enabled = True
             self._initialized = True
 
-            logger.info("✅ Reflexia Adapter initialisé avec succès")
+            ark_logger.info(
+                "✅ Reflexia Adapter initialisé avec succès", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur initialisation Reflexia Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur initialisation Reflexia Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def health_check(self) -> dict[str, Any]:
@@ -113,7 +120,9 @@ class ReflexiaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
             return health_data
 
         except Exception as e:
-            logger.error(f"❌ Erreur health check Reflexia Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur health check Reflexia Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return {
                 "status": "error",
                 "message": str(e),
@@ -135,16 +144,20 @@ class ReflexiaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
     def shutdown(self) -> bool:
         """Arrêt propre du module"""
         try:
-            logger.info("🛑 Shutdown Reflexia Adapter...")
+            ark_logger.info("🛑 Shutdown Reflexia Adapter...", extra={"arkalia_module": "core"})
 
             self.enabled = False
             self._initialized = False
 
-            logger.info("✅ Reflexia Adapter shutdown complet")
+            ark_logger.info(
+                "✅ Reflexia Adapter shutdown complet", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur shutdown Reflexia Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur shutdown Reflexia Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def process(self, data: dict[str, Any]) -> dict[str, Any]:
@@ -185,13 +198,12 @@ class ReflexiaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
                 "processing_stats": self._processing_stats,
             }
 
-            logger.info(
-                f"✅ Reflexia check: {check_result.get('status')} (temps: {check_time:.3f}s)"
-            )
             return processed_result
 
         except Exception as e:
-            logger.error(f"❌ Erreur traitement Reflexia: {e}")
+            ark_logger.error(
+                f"❌ Erreur traitement Reflexia: {e}", extra={"arkalia_module": "core"}
+            )
 
             # Mettre à jour les statistiques d'erreur
             self._update_processing_stats(0.0, False, "error")
@@ -245,7 +257,9 @@ class ReflexiaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur récupération métriques Reflexia: {e}")
+            ark_logger.error(
+                f"❌ Erreur récupération métriques Reflexia: {e}", extra={"arkalia_module": "core"}
+            )
             return {
                 "status": "error",
                 "message": str(e),
@@ -258,14 +272,21 @@ class ReflexiaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
         try:
             if metric in self._alert_thresholds:
                 self._alert_thresholds[metric] = threshold
-                logger.info(f"✅ Seuil d'alerte {metric} mis à jour: {threshold}")
+                ark_logger.info(
+                    f"✅ Seuil d'alerte {metric} mis à jour: {threshold}",
+                    extra={"arkalia_module": "core"},
+                )
                 return True
             else:
-                logger.warning(f"⚠️ Métrique {metric} non reconnue")
+                ark_logger.warning(
+                    f"⚠️ Métrique {metric} non reconnue", extra={"arkalia_module": "core"}
+                )
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Erreur configuration seuil d'alerte: {e}")
+            ark_logger.error(
+                f"❌ Erreur configuration seuil d'alerte: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def _update_processing_stats(self, check_time: float, success: bool, status: str) -> None:

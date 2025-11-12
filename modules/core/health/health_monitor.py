@@ -5,13 +5,14 @@
 🛡️ Préservation des mécanismes de surveillance critique
 """
 
-import logging
 import threading
 import time
 from collections.abc import Callable
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from typing import Any, Optional
+
+from core.ark_logger import ark_logger
 
 
 @dataclass
@@ -46,9 +47,8 @@ class HealthMonitor:
     🛡️ Préservation des watchdogs critiques
     """
 
-    def __init__(self):
-        self.logger = logging.getLogger("arkalia.core.health")
-        self._metrics: dict[str, HealthMetric] = {}
+    def __init__(self) -> None:
+        self.self._metrics: dict[str, HealthMetric] = {}
         self._alerts: list[Alert] = []
         self._watchdogs: dict[str, Callable] = {}
         self._health_score: float = 1.0
@@ -66,7 +66,9 @@ class HealthMonitor:
         🛡️ Préservation des watchdogs existants
         """
         try:
-            self.logger.info("🏥 Initialisation HealthMonitor...")
+            self.ark_logger.info(
+                "🏥 Initialisation HealthMonitor...", extra={"arkalia_module": "core"}
+            )
 
             # Enregistrement des watchdogs par défaut
             self._register_default_watchdogs()
@@ -75,11 +77,15 @@ class HealthMonitor:
             self._start_monitoring_thread()
 
             self._initialized = True
-            self.logger.info("✅ HealthMonitor initialisé avec succès")
+            self.ark_logger.info(
+                "✅ HealthMonitor initialisé avec succès", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            self.logger.error(f"❌ Erreur initialisation HealthMonitor : {e}")
+            self.ark_logger.error(
+                f"❌ Erreur initialisation HealthMonitor : {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def _register_default_watchdogs(self) -> None:
@@ -96,7 +102,9 @@ class HealthMonitor:
         # Watchdog système général
         self.register_watchdog("system_health", self._system_health_check)
 
-        self.logger.info(f"🛡️ {len(self._watchdogs)} watchdogs enregistrés")
+        self.ark_logger.info(
+            f"🛡️ {len(self._watchdogs)} watchdogs enregistrés", extra={"arkalia_module": "core"}
+        )
 
     def _reflexia_panic_check(self) -> dict[str, Any]:
         """Watchdog Reflexia Panic-Check (préservé)"""
@@ -179,7 +187,10 @@ class HealthMonitor:
                 "cpu_percent": cpu_percent,
                 "memory_percent": memory.percent,
                 "disk_percent": disk.percent,
-                "message": f"System health: CPU {cpu_percent}%, RAM {memory.percent}%, Disk {disk.percent}%",
+                "message": (
+                    f"System health: CPU {cpu_percent}%, "
+                    f"RAM {memory.percent}%, Disk {disk.percent}%"
+                ),
             }
         except ImportError:
             return {"status": "ok", "message": "psutil not available, system check skipped"}
@@ -195,10 +206,14 @@ class HealthMonitor:
         """
         try:
             self._watchdogs[name] = watchdog_func
-            self.logger.info(f"🛡️ Watchdog enregistré : {name}")
+            self.ark_logger.info(
+                f"🛡️ Watchdog enregistré : {name}", extra={"arkalia_module": "core"}
+            )
             return True
         except Exception as e:
-            self.logger.error(f"❌ Erreur enregistrement watchdog {name}: {e}")
+            self.ark_logger.error(
+                f"❌ Erreur enregistrement watchdog {name}: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def unregister_watchdog(self, name: str) -> bool:
@@ -210,11 +225,16 @@ class HealthMonitor:
         try:
             if name in self._watchdogs:
                 del self._watchdogs[name]
-                self.logger.info(f"🗑️ Watchdog désenregistré : {name}")
+                self.ark_logger.info(
+                    f"🗑️ Watchdog désenregistré : {name}", extra={"arkalia_module": "core"}
+                )
                 return True
             return False
         except Exception as e:
-            self.logger.error(f"❌ Erreur désenregistrement watchdog {name}: {e}")
+            self.ark_logger.error(
+                f"❌ Erreur désenregistrement watchdog {name}: {e}",
+                extra={"arkalia_module": "core"},
+            )
             return False
 
     def run_watchdogs(self) -> dict[str, dict[str, Any]]:
@@ -251,7 +271,9 @@ class HealthMonitor:
             value=result,
         )
         self._alerts.append(alert)
-        self.logger.warning(f"🚨 Alerte créée : {alert.message}")
+        self.ark_logger.warning(
+            f"🚨 Alerte créée : {alert.message}", extra={"arkalia_module": "core"}
+        )
 
     def check_health(self) -> dict[str, Any]:
         """
@@ -290,10 +312,10 @@ class HealthMonitor:
             self._health_score = 1.0
             return
 
-        healthy_count = 0
+        healthy_count = 0.0
         for result in watchdog_results.values():
             if result.get("status") == "ok":
-                healthy_count += 1
+                healthy_count += 1.0
             elif result.get("status") == "warning":
                 healthy_count += 0.5
 
@@ -334,10 +356,12 @@ class HealthMonitor:
         """
         try:
             self._alerts.clear()
-            self.logger.info("🧹 Alertes nettoyées")
+            self.ark_logger.info("🧹 Alertes nettoyées", extra={"arkalia_module": "core"})
             return True
         except Exception as e:
-            self.logger.error(f"❌ Erreur nettoyage alertes : {e}")
+            self.ark_logger.error(
+                f"❌ Erreur nettoyage alertes : {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def _start_monitoring_thread(self) -> None:
@@ -348,7 +372,7 @@ class HealthMonitor:
         self._stop_monitoring = False
         self._monitoring_thread = threading.Thread(target=self._monitoring_loop, daemon=True)
         self._monitoring_thread.start()
-        self.logger.info("🔄 Thread de monitoring démarré")
+        self.ark_logger.info("🔄 Thread de monitoring démarré", extra={"arkalia_module": "core"})
 
     def _monitoring_loop(self) -> None:
         """Boucle de monitoring en arrière-plan"""
@@ -358,7 +382,9 @@ class HealthMonitor:
                 self.run_watchdogs()
                 time.sleep(30)
             except Exception as e:
-                self.logger.error(f"❌ Erreur boucle monitoring : {e}")
+                self.ark_logger.error(
+                    f"❌ Erreur boucle monitoring : {e}", extra={"arkalia_module": "core"}
+                )
                 time.sleep(60)  # Pause plus longue en cas d'erreur
 
     def shutdown(self) -> bool:
@@ -371,10 +397,12 @@ class HealthMonitor:
             if self._monitoring_thread and self._monitoring_thread.is_alive():
                 self._monitoring_thread.join(timeout=5)
 
-            self.logger.info("🔌 HealthMonitor arrêté")
+            self.ark_logger.info("🔌 HealthMonitor arrêté", extra={"arkalia_module": "core"})
             return True
         except Exception as e:
-            self.logger.error(f"❌ Erreur arrêt HealthMonitor : {e}")
+            self.ark_logger.error(
+                f"❌ Erreur arrêt HealthMonitor : {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def health_check(self) -> dict[str, Any]:

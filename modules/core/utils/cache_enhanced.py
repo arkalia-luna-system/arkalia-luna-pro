@@ -3,11 +3,10 @@ Cache Enhanced Module for Arkalia-LUNA Pro
 Provides enhanced caching functionality
 """
 
-import logging
 from pathlib import Path
 from typing import Any, Optional
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 def load_toml_cached(file_path: str | Path) -> dict[str, Any]:
@@ -26,7 +25,9 @@ def load_toml_cached(file_path: str | Path) -> dict[str, Any]:
 
         return toml.load(file_path)
     except Exception as e:
-        logger.error(f"Erreur chargement TOML {file_path}: {e}")
+        ark_logger.error(
+            f"Erreur chargement TOML {file_path}: {e}", extra={"arkalia_module": "core"}
+        )
         return {}
 
 

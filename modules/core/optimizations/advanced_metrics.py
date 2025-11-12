@@ -5,7 +5,6 @@
 """
 
 import json
-import logging
 import statistics
 import threading
 import time
@@ -16,7 +15,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Optional, Union
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class MetricType(Enum):
@@ -98,7 +97,9 @@ class Metric:
         self._stats_cache_time = None
         self._cache_duration = 60  # secondes
 
-        logger.debug(f"📊 Métrique créée: {name} ({metric_type.value})")
+        ark_logger.debug(
+            f"📊 Métrique créée: {name} ({metric_type.value})", extra={"arkalia_module": "core"}
+        )
 
     def record(self, value: int | float, labels: dict[str, str] | None = None) -> None:
         """Enregistre une nouvelle valeur"""
@@ -228,23 +229,27 @@ class AlertManager:
             "check_interval": 30,  # secondes
         }
 
-        logger.info("🚨 AlertManager initialisé")
+        ark_logger.info("🚨 AlertManager initialisé", extra={"arkalia_module": "core"})
 
     def add_rule(self, rule: AlertRule) -> bool:
         """Ajoute une règle d'alerte"""
         try:
             self.rules[rule.name] = rule
-            logger.info(f"🚨 Règle d'alerte ajoutée: {rule.name}")
+            ark_logger.info(
+                f"🚨 Règle d'alerte ajoutée: {rule.name}", extra={"arkalia_module": "core"}
+            )
             return True
         except Exception as e:
-            logger.error(f"❌ Erreur ajout règle: {e}")
+            ark_logger.error(f"❌ Erreur ajout règle: {e}", extra={"arkalia_module": "core"})
             return False
 
     def remove_rule(self, rule_name: str) -> bool:
         """Supprime une règle d'alerte"""
         if rule_name in self.rules:
             del self.rules[rule_name]
-            logger.info(f"🚨 Règle d'alerte supprimée: {rule_name}")
+            ark_logger.info(
+                f"🚨 Règle d'alerte supprimée: {rule_name}", extra={"arkalia_module": "core"}
+            )
             return True
         return False
 
@@ -284,7 +289,10 @@ class AlertManager:
                         threshold=rule.threshold,
                         severity=rule.severity,
                         timestamp=datetime.now(),
-                        message=f"{rule.description or rule.name}: {latest.value} {rule.condition} {rule.threshold}",
+                        message=(
+                            f"{rule.description or rule.name}: {latest.value} "
+                            f"{rule.condition} {rule.threshold}"
+                        ),
                     )
 
                     self.alerts.append(alert)
@@ -293,7 +301,9 @@ class AlertManager:
                     # Notifier les gestionnaires
                     self._notify_handlers(alert)
 
-                    logger.warning(f"🚨 Alerte déclenchée: {alert.message}")
+                    ark_logger.warning(
+                        f"🚨 Alerte déclenchée: {alert.message}", extra={"arkalia_module": "core"}
+                    )
                 else:
                     # Mettre à jour l'alerte existante
                     existing_alert.current_value = latest.value
@@ -303,7 +313,9 @@ class AlertManager:
                 existing_alert = self._find_existing_alert(rule.name)
                 if existing_alert and not existing_alert.resolved:
                     existing_alert.resolved = True
-                    logger.info(f"✅ Alerte résolue: {rule.name}")
+                    ark_logger.info(
+                        f"✅ Alerte résolue: {rule.name}", extra={"arkalia_module": "core"}
+                    )
 
         # Nettoyer les anciennes alertes
         self._cleanup_old_alerts()
@@ -345,7 +357,9 @@ class AlertManager:
         elif condition == "==":
             return value == threshold
         else:
-            logger.warning(f"⚠️ Condition inconnue: {condition}")
+            ark_logger.warning(
+                f"⚠️ Condition inconnue: {condition}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def _find_existing_alert(self, rule_name: str) -> Alert | None:
@@ -361,7 +375,9 @@ class AlertManager:
             try:
                 handler(alert)
             except Exception as e:
-                logger.error(f"❌ Erreur gestionnaire alerte: {e}")
+                ark_logger.error(
+                    f"❌ Erreur gestionnaire alerte: {e}", extra={"arkalia_module": "core"}
+                )
 
     def _cleanup_old_alerts(self) -> None:
         """Nettoie les anciennes alertes"""
@@ -389,19 +405,21 @@ class AdvancedMetricsManager:
         # Thread safety
         self._lock = threading.RLock()
 
-        logger.info("📊 AdvancedMetricsManager initialisé")
+        ark_logger.info("📊 AdvancedMetricsManager initialisé", extra={"arkalia_module": "core"})
 
     def create_metric(self, name: str, metric_type: MetricType, description: str = "") -> Metric:
         """Crée une nouvelle métrique"""
         with self._lock:
             if name in self.metrics:
-                logger.warning(f"⚠️ Métrique déjà existante: {name}")
+                ark_logger.warning(
+                    f"⚠️ Métrique déjà existante: {name}", extra={"arkalia_module": "core"}
+                )
                 return self.metrics[name]
 
             metric = Metric(name, metric_type, description)
             self.metrics[name] = metric
 
-            logger.info(f"📊 Métrique créée: {name}")
+            ark_logger.info(f"📊 Métrique créée: {name}", extra={"arkalia_module": "core"})
             return metric
 
     def record_metric(
@@ -418,7 +436,9 @@ class AdvancedMetricsManager:
                 return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur enregistrement métrique {name}: {e}")
+            ark_logger.error(
+                f"❌ Erreur enregistrement métrique {name}: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def get_metric(self, name: str) -> Metric | None:

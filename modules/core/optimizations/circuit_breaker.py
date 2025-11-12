@@ -5,7 +5,6 @@
 """
 
 import asyncio
-import logging
 import threading
 import time
 from collections.abc import Callable
@@ -14,7 +13,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Optional
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class CircuitState(Enum):
@@ -73,7 +72,7 @@ class CircuitBreaker:
         # Thread safety
         self._lock = threading.RLock()
 
-        logger.info(f"🔌 CircuitBreaker '{name}' initialisé")
+        ark_logger.info(f"🔌 CircuitBreaker '{name}' initialisé", extra={"arkalia_module": "core"})
 
     def call(self, func: Callable, *args, **kwargs) -> Any:
         """Exécute une fonction avec protection du circuit breaker"""
@@ -82,7 +81,10 @@ class CircuitBreaker:
             if self.state == CircuitState.OPEN:
                 if self._should_attempt_reset():
                     self._set_state(CircuitState.HALF_OPEN)
-                    logger.info(f"🔌 Circuit '{self.name}' en mode half-open")
+                    ark_logger.info(
+                        f"🔌 Circuit '{self.name}' en mode half-open",
+                        extra={"arkalia_module": "core"},
+                    )
                 else:
                     raise Exception(f"Circuit '{self.name}' ouvert - requête rejetée")
 
@@ -112,7 +114,10 @@ class CircuitBreaker:
             if self.state == CircuitState.OPEN:
                 if self._should_attempt_reset():
                     self._set_state(CircuitState.HALF_OPEN)
-                    logger.info(f"🔌 Circuit '{self.name}' en mode half-open")
+                    ark_logger.info(
+                        f"🔌 Circuit '{self.name}' en mode half-open",
+                        extra={"arkalia_module": "core"},
+                    )
                 else:
                     raise Exception(f"Circuit '{self.name}' ouvert - requête rejetée")
 
@@ -181,7 +186,10 @@ class CircuitBreaker:
             self._set_state(CircuitState.CLOSED)
             self.metrics.current_failure_count = 0
             self.metrics.current_success_count = 0
-            logger.info(f"🔌 Circuit '{self.name}' réinitialisé manuellement")
+            ark_logger.info(
+                f"🔌 Circuit '{self.name}' réinitialisé manuellement",
+                extra={"arkalia_module": "core"},
+            )
             return True
 
     def _set_state(self, new_state: CircuitState) -> None:
@@ -192,10 +200,12 @@ class CircuitBreaker:
 
             if new_state == CircuitState.OPEN:
                 self.metrics.circuit_opens += 1
-                logger.warning(f"🔌 Circuit '{self.name}' ouvert")
+                ark_logger.warning(
+                    f"🔌 Circuit '{self.name}' ouvert", extra={"arkalia_module": "core"}
+                )
             elif new_state == CircuitState.CLOSED:
                 self.metrics.circuit_closes += 1
-                logger.info(f"🔌 Circuit '{self.name}' fermé")
+                ark_logger.info(f"🔌 Circuit '{self.name}' fermé", extra={"arkalia_module": "core"})
 
     def _should_attempt_reset(self) -> bool:
         """Détermine si on doit tenter une réinitialisation"""
@@ -217,7 +227,10 @@ class CircuitBreaker:
                 self._set_state(CircuitState.CLOSED)
                 self.metrics.current_success_count = 0
                 self.metrics.current_failure_count = 0
-                logger.info(f"🔌 Circuit '{self.name}' fermé après récupération")
+                ark_logger.info(
+                    f"🔌 Circuit '{self.name}' fermé après récupération",
+                    extra={"arkalia_module": "core"},
+                )
         else:
             # Reset les compteurs en mode fermé
             self.metrics.current_failure_count = 0
@@ -236,16 +249,23 @@ class CircuitBreaker:
                 # Retourner en mode ouvert
                 self._set_state(CircuitState.OPEN)
                 self.metrics.current_success_count = 0
-                logger.warning(f"🔌 Circuit '{self.name}' rouvert après échec")
+                ark_logger.warning(
+                    f"🔌 Circuit '{self.name}' rouvert après échec",
+                    extra={"arkalia_module": "core"},
+                )
             elif self.state == CircuitState.CLOSED:
                 # Vérifier si on doit ouvrir le circuit
                 if self.metrics.current_failure_count >= self.config.failure_threshold:
                     self._set_state(CircuitState.OPEN)
-                    logger.error(
-                        f"🔌 Circuit '{self.name}' ouvert après {self.metrics.current_failure_count} échecs"
+                    failure_count = self.metrics.current_failure_count
+                    ark_logger.error(
+                        f"🔌 Circuit '{self.name}' ouvert après {failure_count} échecs",
+                        extra={"arkalia_module": "core"},
                     )
 
-        logger.debug(f"🔌 Échec circuit '{self.name}': {exception}")
+        ark_logger.debug(
+            f"🔌 Échec circuit '{self.name}': {exception}", extra={"arkalia_module": "core"}
+        )
 
     def _execute_with_timeout(self, func: Callable, *args, **kwargs) -> Any:
         """Exécute une fonction avec timeout"""
@@ -287,7 +307,7 @@ class CircuitBreakerRegistry:
         self._circuits: dict[str, CircuitBreaker] = {}
         self._lock = threading.RLock()
 
-        logger.info("📋 CircuitBreakerRegistry initialisé")
+        ark_logger.info("📋 CircuitBreakerRegistry initialisé", extra={"arkalia_module": "core"})
 
     def get_or_create(
         self, name: str, config: CircuitBreakerConfig | None = None
@@ -296,7 +316,9 @@ class CircuitBreakerRegistry:
         with self._lock:
             if name not in self._circuits:
                 self._circuits[name] = CircuitBreaker(name, config)
-                logger.info(f"📋 Circuit breaker créé: {name}")
+                ark_logger.info(
+                    f"📋 Circuit breaker créé: {name}", extra={"arkalia_module": "core"}
+                )
 
             return self._circuits[name]
 
@@ -310,7 +332,9 @@ class CircuitBreakerRegistry:
         with self._lock:
             if name in self._circuits:
                 del self._circuits[name]
-                logger.info(f"📋 Circuit breaker supprimé: {name}")
+                ark_logger.info(
+                    f"📋 Circuit breaker supprimé: {name}", extra={"arkalia_module": "core"}
+                )
                 return True
             return False
 

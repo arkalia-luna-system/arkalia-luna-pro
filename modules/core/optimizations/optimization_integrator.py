@@ -11,18 +11,17 @@ Connecte toutes les optimisations de la Phase 7 :
 """
 
 import asyncio
-import logging
 import threading
 from typing import Any, Optional
 
 from prometheus_client import CollectorRegistry, Counter, Gauge, generate_latest, start_http_server
 
+from core.ark_logger import ark_logger
+
 from .advanced_metrics import AdvancedMetricsManager
 from .cache_manager import CacheManager
 from .circuit_breaker import CircuitBreaker
 from .load_balancer import LoadBalancer
-
-logger = logging.getLogger(__name__)
 
 
 class OptimizationIntegrator:
@@ -50,12 +49,14 @@ class OptimizationIntegrator:
         self.integration_status: dict[str, str] = {}
         self.performance_metrics: dict[str, float] = {}
 
-        logger.info("🚀 OptimizationIntegrator initialisé")
+        ark_logger.info("🚀 OptimizationIntegrator initialisé", extra={"arkalia_module": "core"})
 
     async def initialize_optimizations(self) -> bool:
         """Initialise toutes les optimisations"""
         try:
-            logger.info("🔧 Initialisation des optimisations avancées...")
+            ark_logger.info(
+                "🔧 Initialisation des optimisations avancées...", extra={"arkalia_module": "core"}
+            )
 
             # 1. Cache Manager
             self.cache_manager = CacheManager()
@@ -74,50 +75,61 @@ class OptimizationIntegrator:
             self.integration_status["metrics"] = "✅ Initialisé"
 
             self.is_initialized = True
-            logger.info("✅ Toutes les optimisations initialisées avec succès")
+            ark_logger.info(
+                "✅ Toutes les optimisations initialisées avec succès",
+                extra={"arkalia_module": "core"},
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur initialisation optimisations: {e}")
+            ark_logger.error(
+                f"❌ Erreur initialisation optimisations: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     async def start_optimization_services(self) -> bool:
         """Démarre tous les services d'optimisation"""
         if not self.is_initialized:
-            logger.error("❌ Optimisations non initialisées")
+            ark_logger.error("❌ Optimisations non initialisées", extra={"arkalia_module": "core"})
             return False
 
         try:
-            logger.info("🚀 Démarrage des services d'optimisation...")
+            ark_logger.info(
+                "🚀 Démarrage des services d'optimisation...", extra={"arkalia_module": "core"}
+            )
 
             # Les services sont déjà démarrés lors de l'initialisation
             self.is_running = True
 
-            logger.info("✅ Services d'optimisation démarrés")
+            ark_logger.info("✅ Services d'optimisation démarrés", extra={"arkalia_module": "core"})
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur démarrage services: {e}")
+            ark_logger.error(f"❌ Erreur démarrage services: {e}", extra={"arkalia_module": "core"})
             return False
 
     async def optimize_module_operation(self, module_name: str, operation: str, **kwargs) -> Any:
         """Optimise une opération de module avec toutes les optimisations"""
         if not self.is_running:
-            logger.warning("⚠️ Optimisations non démarrées, opération normale")
+            ark_logger.warning(
+                "⚠️ Optimisations non démarrées, opération normale", extra={"arkalia_module": "core"}
+            )
             return await self._execute_normal_operation(module_name, operation, **kwargs)
 
         try:
             # 1. Vérification circuit breaker
             circuit_state = self.circuit_breaker.get_state()
             if circuit_state.value == "open":
-                logger.warning(f"⚠️ Circuit breaker ouvert pour {module_name}")
+                ark_logger.warning(
+                    f"⚠️ Circuit breaker ouvert pour {module_name}", extra={"arkalia_module": "core"}
+                )
                 return await self._handle_circuit_breaker_fallback(module_name, operation, **kwargs)
 
             # 2. Cache lookup
             cache_key = f"{module_name}:{operation}:{hash(str(kwargs))}"
             cached_result = self.cache_manager.get(cache_key)
             if cached_result is not None:
-                logger.info(f"🎯 Cache hit pour {cache_key}")
+                ark_logger.info(f"🎯 Cache hit pour {cache_key}", extra={"arkalia_module": "core"})
                 return cached_result
 
             # 3. Load balancing
@@ -155,7 +167,10 @@ class OptimizationIntegrator:
                 raise e
 
         except Exception as e:
-            logger.error(f"❌ Erreur optimisation {module_name}.{operation}: {e}")
+            ark_logger.error(
+                f"❌ Erreur optimisation {module_name}.{operation}: {e}",
+                extra={"arkalia_module": "core"},
+            )
             return await self._execute_normal_operation(module_name, operation, **kwargs)
 
     async def _execute_optimized_operation(self, instance: Any, operation: str, **kwargs) -> Any:
@@ -171,7 +186,9 @@ class OptimizationIntegrator:
 
     async def _execute_normal_operation(self, module_name: str, operation: str, **kwargs) -> Any:
         """Exécute une opération normale (fallback)"""
-        logger.info(f"🔄 Exécution normale: {module_name}.{operation}")
+        ark_logger.info(
+            f"🔄 Exécution normale: {module_name}.{operation}", extra={"arkalia_module": "core"}
+        )
         # Simulation d'opération normale
         await asyncio.sleep(0.1)
         return {"status": "normal_execution", "module": module_name, "operation": operation}
@@ -180,7 +197,9 @@ class OptimizationIntegrator:
         self, module_name: str, operation: str, **kwargs
     ) -> Any:
         """Gère le fallback quand le circuit breaker est ouvert"""
-        logger.info(f"🛡️ Circuit breaker fallback pour {module_name}")
+        ark_logger.info(
+            f"🛡️ Circuit breaker fallback pour {module_name}", extra={"arkalia_module": "core"}
+        )
         return {
             "status": "circuit_breaker_fallback",
             "module": module_name,
@@ -214,10 +233,10 @@ class OptimizationIntegrator:
 
     async def stop_optimization_services(self) -> None:
         """Arrête tous les services d'optimisation"""
-        logger.info("🛑 Arrêt des services d'optimisation...")
+        ark_logger.info("🛑 Arrêt des services d'optimisation...", extra={"arkalia_module": "core"})
 
         self.is_running = False
-        logger.info("✅ Services d'optimisation arrêtés")
+        ark_logger.info("✅ Services d'optimisation arrêtés", extra={"arkalia_module": "core"})
 
     async def health_check(self) -> dict[str, Any]:
         """Vérification de santé des optimisations"""
@@ -312,8 +331,13 @@ async def create_optimization_integrator() -> OptimizationIntegrator:
 
     if success:
         await integrator.start_optimization_services()
-        logger.info("🚀 OptimizationIntegrator créé et démarré avec succès")
+        ark_logger.info(
+            "🚀 OptimizationIntegrator créé et démarré avec succès",
+            extra={"arkalia_module": "core"},
+        )
     else:
-        logger.error("❌ Échec création OptimizationIntegrator")
+        ark_logger.error(
+            "❌ Échec création OptimizationIntegrator", extra={"arkalia_module": "core"}
+        )
 
     return integrator

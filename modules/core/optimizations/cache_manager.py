@@ -4,14 +4,13 @@
 🎯 Optimisation des performances avec cache multi-niveaux
 """
 
-import logging
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Optional, Union
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class CacheLevel(Enum):
@@ -89,7 +88,7 @@ class CacheManager:
         # Dernier nettoyage
         self.last_cleanup = datetime.now()
 
-        logger.info("🧠 CacheManager initialisé")
+        ark_logger.info("🧠 CacheManager initialisé", extra={"arkalia_module": "core"})
 
     def get(self, key: str, default: Any = None) -> Any:
         """Récupère une valeur du cache"""
@@ -101,7 +100,7 @@ class CacheManager:
             if not entry.is_expired():
                 entry.access()
                 self.metrics["hits"] += 1
-                logger.debug(f"🧠 Cache L1 hit: {key}")
+                ark_logger.debug(f"🧠 Cache L1 hit: {key}", extra={"arkalia_module": "core"})
                 return entry.value
             else:
                 del self.l1_cache[key]
@@ -114,13 +113,13 @@ class CacheManager:
                 # Promouvoir vers L1
                 self._promote_to_l1(key, entry)
                 self.metrics["hits"] += 1
-                logger.debug(f"🧠 Cache L2 hit: {key}")
+                ark_logger.debug(f"🧠 Cache L2 hit: {key}", extra={"arkalia_module": "core"})
                 return entry.value
             else:
                 del self.l2_cache[key]
 
         self.metrics["misses"] += 1
-        logger.debug(f"🧠 Cache miss: {key}")
+        ark_logger.debug(f"🧠 Cache miss: {key}", extra={"arkalia_module": "core"})
         return default
 
     def set(
@@ -150,11 +149,13 @@ class CacheManager:
                     self._evict_l2()
                 self.l2_cache[key] = entry
 
-            logger.debug(f"🧠 Cache set: {key} (level: {level.value})")
+            ark_logger.debug(
+                f"🧠 Cache set: {key} (level: {level.value})", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur cache set: {e}")
+            ark_logger.error(f"❌ Erreur cache set: {e}", extra={"arkalia_module": "core"})
             return False
 
     def delete(self, key: str) -> bool:
@@ -169,12 +170,12 @@ class CacheManager:
                 deleted = True
 
             if deleted:
-                logger.debug(f"🧠 Cache delete: {key}")
+                ark_logger.debug(f"🧠 Cache delete: {key}", extra={"arkalia_module": "core"})
 
             return deleted
 
         except Exception as e:
-            logger.error(f"❌ Erreur cache delete: {e}")
+            ark_logger.error(f"❌ Erreur cache delete: {e}", extra={"arkalia_module": "core"})
             return False
 
     def clear(self, level: CacheLevel | None = None) -> bool:
@@ -185,11 +186,14 @@ class CacheManager:
             if level is None or level == CacheLevel.L2:
                 self.l2_cache.clear()
 
-            logger.info(f"🧠 Cache cleared (level: {level.value if level else 'all'})")
+            ark_logger.info(
+                f"🧠 Cache cleared (level: {level.value if level else 'all'})",
+                extra={"arkalia_module": "core"},
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur cache clear: {e}")
+            ark_logger.error(f"❌ Erreur cache clear: {e}", extra={"arkalia_module": "core"})
             return False
 
     def get_stats(self) -> dict[str, Any]:
@@ -231,7 +235,10 @@ class CacheManager:
             del self.l2_cache[key]
 
         if expired_keys:
-            logger.debug(f"🧠 Cache cleanup: {len(expired_keys)} entrées expirées")
+            ark_logger.debug(
+                f"🧠 Cache cleanup: {len(expired_keys)} entrées expirées",
+                extra={"arkalia_module": "core"},
+            )
 
     def _evict_l1(self) -> None:
         """Évince une entrée de L1 (LRU)"""
@@ -245,7 +252,7 @@ class CacheManager:
         entry = self.l1_cache[lru_key]
         if len(self.l2_cache) < self.config["l2_max_size"]:
             self.l2_cache[lru_key] = entry
-            logger.debug(f"🧠 Cache L1->L2: {lru_key}")
+            ark_logger.debug(f"🧠 Cache L1->L2: {lru_key}", extra={"arkalia_module": "core"})
         else:
             # Évincer de L2 aussi si nécessaire
             self._evict_l2()
@@ -264,7 +271,7 @@ class CacheManager:
 
         del self.l2_cache[lru_key]
         self.metrics["evictions"] += 1
-        logger.debug(f"🧠 Cache L2 eviction: {lru_key}")
+        ark_logger.debug(f"🧠 Cache L2 eviction: {lru_key}", extra={"arkalia_module": "core"})
 
     def _promote_to_l1(self, key: str, entry: CacheEntry) -> None:
         """Promouvoit une entrée de L2 vers L1"""
@@ -272,7 +279,7 @@ class CacheManager:
             self._evict_l1()
 
         self.l1_cache[key] = entry
-        logger.debug(f"🧠 Cache L2->L1 promotion: {key}")
+        ark_logger.debug(f"🧠 Cache L2->L1 promotion: {key}", extra={"arkalia_module": "core"})
 
 
 # Instance globale

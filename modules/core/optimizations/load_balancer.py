@@ -4,7 +4,6 @@
 🎯 Distribution optimale des requêtes entre les modules
 """
 
-import logging
 import random
 import time
 from collections.abc import Callable
@@ -14,7 +13,7 @@ from enum import Enum
 from statistics import mean, median
 from typing import Any, Optional
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class LoadBalancingStrategy(Enum):
@@ -119,22 +118,30 @@ class LoadBalancer:
             "adaptive_weight_factor": 0.1,
         }
 
-        logger.info(f"⚖️ LoadBalancer initialisé avec stratégie: {strategy.value}")
+        ark_logger.info(
+            f"⚖️ LoadBalancer initialisé avec stratégie: {strategy.value}",
+            extra={"arkalia_module": "core"},
+        )
 
     def add_backend(self, backend: BackendNode) -> bool:
         """Ajoute un backend à l'équilibreur"""
         try:
             # Vérifier si le backend existe déjà
             if any(b.id == backend.id for b in self.backends):
-                logger.warning(f"⚠️ Backend déjà existant: {backend.id}")
+                ark_logger.warning(
+                    f"⚠️ Backend déjà existant: {backend.id}", extra={"arkalia_module": "core"}
+                )
                 return False
 
             self.backends.append(backend)
-            logger.info(f"✅ Backend ajouté: {backend.name} ({backend.id})")
+            ark_logger.info(
+                f"✅ Backend ajouté: {backend.name} ({backend.id})",
+                extra={"arkalia_module": "core"},
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur ajout backend: {e}")
+            ark_logger.error(f"❌ Erreur ajout backend: {e}", extra={"arkalia_module": "core"})
             return False
 
     def remove_backend(self, backend_id: str) -> bool:
@@ -143,26 +150,32 @@ class LoadBalancer:
             for i, backend in enumerate(self.backends):
                 if backend.id == backend_id:
                     del self.backends[i]
-                    logger.info(f"✅ Backend supprimé: {backend_id}")
+                    ark_logger.info(
+                        f"✅ Backend supprimé: {backend_id}", extra={"arkalia_module": "core"}
+                    )
                     return True
 
-            logger.warning(f"⚠️ Backend non trouvé: {backend_id}")
+            ark_logger.warning(
+                f"⚠️ Backend non trouvé: {backend_id}", extra={"arkalia_module": "core"}
+            )
             return False
 
         except Exception as e:
-            logger.error(f"❌ Erreur suppression backend: {e}")
+            ark_logger.error(
+                f"❌ Erreur suppression backend: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def get_backend(self) -> BackendNode | None:
         """Sélectionne un backend selon la stratégie"""
         if not self.backends:
-            logger.warning("⚠️ Aucun backend disponible")
+            ark_logger.warning("⚠️ Aucun backend disponible", extra={"arkalia_module": "core"})
             return None
 
         # Filtrer les backends sains
         healthy_backends = [b for b in self.backends if b.is_healthy]
         if not healthy_backends:
-            logger.error("❌ Aucun backend sain disponible")
+            ark_logger.error("❌ Aucun backend sain disponible", extra={"arkalia_module": "core"})
             return None
 
         # Sélectionner selon la stratégie
@@ -201,7 +214,9 @@ class LoadBalancer:
             return result
 
         except Exception as e:
-            logger.error(f"❌ Erreur requête backend {backend.id}: {e}")
+            ark_logger.error(
+                f"❌ Erreur requête backend {backend.id}: {e}", extra={"arkalia_module": "core"}
+            )
             raise
 
         finally:
@@ -248,12 +263,13 @@ class LoadBalancer:
                 }
 
                 if not is_healthy:
-                    logger.warning(
-                        f"⚠️ Backend {backend.id} non sain: score={backend.health_score:.2f}"
-                    )
+                    backend.is_healthy = False
 
             except Exception as e:
-                logger.error(f"❌ Erreur health check backend {backend.id}: {e}")
+                ark_logger.error(
+                    f"❌ Erreur health check backend {backend.id}: {e}",
+                    extra={"arkalia_module": "core"},
+                )
                 backend.is_healthy = False
                 results[backend.id] = {"healthy": False, "error": str(e)}
 

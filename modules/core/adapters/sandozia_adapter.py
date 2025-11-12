@@ -5,13 +5,12 @@
 """
 
 import asyncio
-import logging
 import time
 from typing import Any, Optional
 
-from ..interfaces.module_interface import IModule, IModuleWithMonitoring, IModuleWithProcessing
+from core.ark_logger import ark_logger
 
-logger = logging.getLogger(__name__)
+from ..interfaces.module_interface import IModule, IModuleWithMonitoring, IModuleWithProcessing
 
 
 class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
@@ -50,7 +49,9 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
     def initialize(self) -> bool:
         """Initialise l'adaptateur Sandozia"""
         try:
-            logger.info("🔗 Initialisation Sandozia Adapter...")
+            ark_logger.info(
+                "🔗 Initialisation Sandozia Adapter...", extra={"arkalia_module": "core"}
+            )
 
             # Import dynamique pour éviter les dépendances circulaires
             try:
@@ -65,7 +66,9 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
                 self._behavior_analyzer = BehaviorAnalyzer()
 
             except ImportError as e:
-                logger.error(f"❌ Module Sandozia non disponible: {e}")
+                ark_logger.error(
+                    f"❌ Module Sandozia non disponible: {e}", extra={"arkalia_module": "core"}
+                )
                 # Essayer d'importer directement depuis le fichier
                 try:
                     from modules.sandozia.analyzer.behavior import BehaviorAnalyzer
@@ -76,7 +79,9 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
                     self._behavior_analyzer = BehaviorAnalyzer()
 
                 except ImportError as e2:
-                    logger.error(f"❌ Import direct Sandozia échoué: {e2}")
+                    ark_logger.error(
+                        f"❌ Import direct Sandozia échoué: {e2}", extra={"arkalia_module": "core"}
+                    )
                     self._sandozia_core = None
                     self._behavior_analyzer = None
                     return False
@@ -84,11 +89,15 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
             self.enabled = True
             self._initialized = True
 
-            logger.info("✅ Sandozia Adapter initialisé avec succès")
+            ark_logger.info(
+                "✅ Sandozia Adapter initialisé avec succès", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur initialisation Sandozia Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur initialisation Sandozia Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def health_check(self) -> dict[str, Any]:
@@ -130,7 +139,9 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
             return health_data
 
         except Exception as e:
-            logger.error(f"❌ Erreur health check Sandozia Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur health check Sandozia Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return {
                 "status": "error",
                 "message": str(e),
@@ -152,16 +163,20 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
     def shutdown(self) -> bool:
         """Arrêt propre du module"""
         try:
-            logger.info("🛑 Shutdown Sandozia Adapter...")
+            ark_logger.info("🛑 Shutdown Sandozia Adapter...", extra={"arkalia_module": "core"})
 
             self.enabled = False
             self._initialized = False
 
-            logger.info("✅ Sandozia Adapter shutdown complet")
+            ark_logger.info(
+                "✅ Sandozia Adapter shutdown complet", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur shutdown Sandozia Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur shutdown Sandozia Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def process(self, data: dict[str, Any]) -> dict[str, Any]:
@@ -217,11 +232,16 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
                 "processing_stats": self._processing_stats,
             }
 
-            logger.info(f"✅ Sandozia analysis: {analysis_type} (temps: {analysis_time:.3f}s)")
+            ark_logger.info(
+                f"✅ Sandozia analysis: {analysis_type} (temps: {analysis_time:.3f}s)",
+                extra={"arkalia_module": "core"},
+            )
             return processed_result
 
         except Exception as e:
-            logger.error(f"❌ Erreur traitement Sandozia: {e}")
+            ark_logger.error(
+                f"❌ Erreur traitement Sandozia: {e}", extra={"arkalia_module": "core"}
+            )
 
             # Mettre à jour les statistiques d'erreur
             self._update_processing_stats(0.0, False, {"status": "error", "message": str(e)})
@@ -286,7 +306,9 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur récupération métriques Sandozia: {e}")
+            ark_logger.error(
+                f"❌ Erreur récupération métriques Sandozia: {e}", extra={"arkalia_module": "core"}
+            )
             return {
                 "status": "error",
                 "message": str(e),
@@ -299,14 +321,21 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
         try:
             if metric in self._alert_thresholds:
                 self._alert_thresholds[metric] = threshold
-                logger.info(f"✅ Seuil d'alerte {metric} mis à jour: {threshold}")
+                ark_logger.info(
+                    f"✅ Seuil d'alerte {metric} mis à jour: {threshold}",
+                    extra={"arkalia_module": "core"},
+                )
                 return True
             else:
-                logger.warning(f"⚠️ Métrique {metric} non reconnue")
+                ark_logger.warning(
+                    f"⚠️ Métrique {metric} non reconnue", extra={"arkalia_module": "core"}
+                )
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Erreur configuration seuil d'alerte: {e}")
+            ark_logger.error(
+                f"❌ Erreur configuration seuil d'alerte: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def _analyze_behavior(self, data: dict[str, Any]) -> dict[str, Any]:
@@ -346,7 +375,9 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur analyse comportementale: {e}")
+            ark_logger.error(
+                f"❌ Erreur analyse comportementale: {e}", extra={"arkalia_module": "core"}
+            )
             return {"status": "error", "message": str(e)}
 
     def _update_processing_stats(

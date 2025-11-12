@@ -4,12 +4,11 @@
 🎯 Interface entre ZeroIA existant et l'architecture SOLID
 """
 
-import logging
 from typing import Any
 
-from ..interfaces.module_interface import IModule, IModuleWithProcessing
+from core.ark_logger import ark_logger
 
-logger = logging.getLogger(__name__)
+from ..interfaces.module_interface import IModule, IModuleWithProcessing
 
 
 class ZeroIAAdapter(IModuleWithProcessing):
@@ -37,7 +36,7 @@ class ZeroIAAdapter(IModuleWithProcessing):
     def initialize(self) -> bool:
         """Initialise l'adaptateur ZeroIA"""
         try:
-            logger.info("🔗 Initialisation ZeroIA Adapter...")
+            ark_logger.info("🔗 Initialisation ZeroIA Adapter...", extra={"arkalia_module": "core"})
 
             # Import dynamique pour éviter les dépendances circulaires
             # from modules.zeroia.core import get_zeroia_core  # Module supprimé
@@ -49,17 +48,24 @@ class ZeroIAAdapter(IModuleWithProcessing):
             self._zeroia_core = {"status": "active"}  # Mock pour compatibilité
 
             if self._zeroia_core is None:
-                logger.error("❌ Impossible d'obtenir l'instance ZeroIA Core")
+                ark_logger.error(
+                    "❌ Impossible d'obtenir l'instance ZeroIA Core",
+                    extra={"arkalia_module": "core"},
+                )
                 return False
 
             self.enabled = True
             self._initialized = True
 
-            logger.info("✅ ZeroIA Adapter initialisé avec succès")
+            ark_logger.info(
+                "✅ ZeroIA Adapter initialisé avec succès", extra={"arkalia_module": "core"}
+            )
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur initialisation ZeroIA Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur initialisation ZeroIA Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def health_check(self) -> dict[str, Any]:
@@ -91,7 +97,9 @@ class ZeroIAAdapter(IModuleWithProcessing):
             return health_data
 
         except Exception as e:
-            logger.error(f"❌ Erreur health check ZeroIA Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur health check ZeroIA Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return {
                 "status": "error",
                 "message": str(e),
@@ -113,7 +121,7 @@ class ZeroIAAdapter(IModuleWithProcessing):
     def shutdown(self) -> bool:
         """Arrêt propre du module"""
         try:
-            logger.info("🛑 Shutdown ZeroIA Adapter...")
+            ark_logger.info("🛑 Shutdown ZeroIA Adapter...", extra={"arkalia_module": "core"})
 
             # Sauvegarder l'état final si nécessaire
             if self._zeroia_core is not None:
@@ -123,11 +131,13 @@ class ZeroIAAdapter(IModuleWithProcessing):
             self.enabled = False
             self._initialized = False
 
-            logger.info("✅ ZeroIA Adapter shutdown complet")
+            ark_logger.info("✅ ZeroIA Adapter shutdown complet", extra={"arkalia_module": "core"})
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur shutdown ZeroIA Adapter: {e}")
+            ark_logger.error(
+                f"❌ Erreur shutdown ZeroIA Adapter: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def process(self, data: dict[str, Any]) -> dict[str, Any]:
@@ -162,13 +172,16 @@ class ZeroIAAdapter(IModuleWithProcessing):
                 "processing_stats": self._processing_stats,
             }
 
-            logger.info(
-                f"✅ ZeroIA decision: {result.get('decision')} (confidence: {result.get('confidence')})"
+            decision = result.get("decision")
+            confidence = result.get("confidence")
+            ark_logger.info(
+                f"✅ ZeroIA decision: {decision} (confidence: {confidence})",
+                extra={"arkalia_module": "core"},
             )
             return processed_result
 
         except Exception as e:
-            logger.error(f"❌ Erreur traitement ZeroIA: {e}")
+            ark_logger.error(f"❌ Erreur traitement ZeroIA: {e}", extra={"arkalia_module": "core"})
 
             # Mettre à jour les statistiques d'erreur
             self._processing_stats["failed_decisions"] += 1

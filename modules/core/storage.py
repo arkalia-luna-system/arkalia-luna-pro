@@ -4,7 +4,6 @@ Provides unified storage interface for all modules
 """
 
 import json
-import logging
 import os
 import pickle
 import sqlite3
@@ -14,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional, Union
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class StorageBackend(ABC):
@@ -70,7 +69,7 @@ class JSONFileBackend(StorageBackend):
                 self._cache[key] = data
                 return data
         except Exception as e:
-            logger.error(f"Erreur lecture {key}: {e}")
+            ark_logger.error(f"Erreur lecture {key}: {e}", extra={"arkalia_module": "core"})
             return default
 
     def set(self, key: str, value: Any) -> bool:
@@ -85,7 +84,7 @@ class JSONFileBackend(StorageBackend):
             self._cache[key] = value
             return True
         except Exception as e:
-            logger.error(f"Erreur écriture {key}: {e}")
+            ark_logger.error(f"Erreur écriture {key}: {e}", extra={"arkalia_module": "core"})
             return False
 
     def delete(self, key: str) -> bool:
@@ -98,7 +97,7 @@ class JSONFileBackend(StorageBackend):
                 return True
             return False
         except Exception as e:
-            logger.error(f"Erreur suppression {key}: {e}")
+            ark_logger.error(f"Erreur suppression {key}: {e}", extra={"arkalia_module": "core"})
             return False
 
     def exists(self, key: str) -> bool:
@@ -112,7 +111,7 @@ class JSONFileBackend(StorageBackend):
             files = list(self.base_path.glob(pattern))
             return [f.stem for f in files]
         except Exception as e:
-            logger.error(f"Erreur listage clés: {e}")
+            ark_logger.error(f"Erreur listage clés: {e}", extra={"arkalia_module": "core"})
             return []
 
 
@@ -158,7 +157,7 @@ class SQLiteBackend(StorageBackend):
                     return json.loads(result[0])
                 return default
         except Exception as e:
-            logger.error(f"Erreur lecture SQLite {key}: {e}")
+            ark_logger.error(f"Erreur lecture SQLite {key}: {e}", extra={"arkalia_module": "core"})
             return default
 
     def set(self, key: str, value: Any) -> bool:
@@ -175,7 +174,7 @@ class SQLiteBackend(StorageBackend):
                 conn.commit()
                 return True
         except Exception as e:
-            logger.error(f"Erreur écriture SQLite {key}: {e}")
+            ark_logger.error(f"Erreur écriture SQLite {key}: {e}", extra={"arkalia_module": "core"})
             return False
 
     def delete(self, key: str) -> bool:
@@ -186,7 +185,9 @@ class SQLiteBackend(StorageBackend):
                 conn.commit()
                 return True
         except Exception as e:
-            logger.error(f"Erreur suppression SQLite {key}: {e}")
+            ark_logger.error(
+                f"Erreur suppression SQLite {key}: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def exists(self, key: str) -> bool:
@@ -196,7 +197,9 @@ class SQLiteBackend(StorageBackend):
                 cursor = conn.execute("SELECT 1 FROM storage WHERE key = ?", (key,))
                 return cursor.fetchone() is not None
         except Exception as e:
-            logger.error(f"Erreur vérification SQLite {key}: {e}")
+            ark_logger.error(
+                f"Erreur vérification SQLite {key}: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def list_keys(self, prefix: str = "") -> list[str]:
@@ -211,7 +214,7 @@ class SQLiteBackend(StorageBackend):
                     cursor = conn.execute("SELECT key FROM storage")
                 return [row[0] for row in cursor.fetchall()]
         except Exception as e:
-            logger.error(f"Erreur listage SQLite: {e}")
+            ark_logger.error(f"Erreur listage SQLite: {e}", extra={"arkalia_module": "core"})
             return []
 
 
@@ -225,7 +228,9 @@ class StorageManager:
         else:
             self.backend = JSONFileBackend(**kwargs)
 
-        logger.info(f"StorageManager initialisé avec backend: {backend}")
+        ark_logger.info(
+            f"StorageManager initialisé avec backend: {backend}", extra={"arkalia_module": "core"}
+        )
 
     def get_state(self, module: str, key: str = "state", default: Any = None) -> Any:
         """Get module state"""
@@ -276,7 +281,9 @@ class StorageManager:
                 self.backend.delete(key)
             return True
         except Exception as e:
-            logger.error(f"Erreur suppression données module {module}: {e}")
+            ark_logger.error(
+                f"Erreur suppression données module {module}: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def backup_module(self, module: str, backup_path: str) -> bool:
@@ -293,10 +300,14 @@ class StorageManager:
             with open(backup_file, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2, ensure_ascii=False, default=str)
 
-            logger.info(f"Backup module {module} créé: {backup_path}")
+            ark_logger.info(
+                f"Backup module {module} créé: {backup_path}", extra={"arkalia_module": "core"}
+            )
             return True
         except Exception as e:
-            logger.error(f"Erreur backup module {module}: {e}")
+            ark_logger.error(
+                f"Erreur backup module {module}: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def restore_module(self, module: str, backup_path: str) -> bool:
@@ -308,10 +319,14 @@ class StorageManager:
             for key, value in data.items():
                 self.backend.set(key, value)
 
-            logger.info(f"Module {module} restauré depuis: {backup_path}")
+            ark_logger.info(
+                f"Module {module} restauré depuis: {backup_path}", extra={"arkalia_module": "core"}
+            )
             return True
         except Exception as e:
-            logger.error(f"Erreur restauration module {module}: {e}")
+            ark_logger.error(
+                f"Erreur restauration module {module}: {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
 

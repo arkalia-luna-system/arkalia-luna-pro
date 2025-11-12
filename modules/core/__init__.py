@@ -7,12 +7,13 @@
 👤 Author : Athalia
 """
 
+# Configuration du logging
 import logging
 from typing import Any, Optional
 
-# Configuration du logging
+from core.ark_logger import ark_logger
+
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Import des composants principaux
 try:
@@ -22,7 +23,9 @@ try:
     from .interfaces import IHealthCheck, IModule, IOrchestrator
     from .orchestrator import CoreOrchestrator
 except ImportError as e:
-    logger.warning(f"⚠️ Composants core non encore implémentés : {e}")
+    ark_logger.warning(
+        f"⚠️ Composants core non encore implémentés : {e}", extra={"arkalia_module": "core"}
+    )
     CoreOrchestrator = None
     HealthMonitor = None
     ConfigManager = None
@@ -44,7 +47,6 @@ class CoreManager:
         self.health_monitor = None
         self.config_manager = None
         self._initialized = False
-        self.logger = logging.getLogger("arkalia.core.manager")
 
     def initialize(self) -> bool:
         """
@@ -53,7 +55,9 @@ class CoreManager:
         🛡️ Préservation des watchdogs
         """
         try:
-            self.logger.info("🧠 Initialisation Core SOLID...")
+            self.ark_logger.info(
+                "🧠 Initialisation Core SOLID...", extra={"arkalia_module": "core"}
+            )
             if ConfigManager is not None:
                 self.config_manager = ConfigManager()
             if HealthMonitor is not None:
@@ -66,10 +70,14 @@ class CoreManager:
             # Validation de l'initialisation
             self._validate_initialization()
             self._initialized = True
-            self.logger.info("✅ Core SOLID initialisé avec succès")
+            self.ark_logger.info(
+                "✅ Core SOLID initialisé avec succès", extra={"arkalia_module": "core"}
+            )
             return True
         except Exception as e:
-            self.logger.error(f"❌ Erreur initialisation Core : {e}")
+            self.ark_logger.error(
+                f"❌ Erreur initialisation Core : {e}", extra={"arkalia_module": "core"}
+            )
             return False
 
     def _validate_initialization(self) -> None:
@@ -84,7 +92,10 @@ class CoreManager:
     def get_orchestrator(self):
         """Récupération de l'orchestrateur"""
         if not self._initialized:
-            self.logger.warning("⚠️ Core non initialisé, initialisation automatique...")
+            self.ark_logger.warning(
+                "⚠️ Core non initialisé, initialisation automatique...",
+                extra={"arkalia_module": "core"},
+            )
             if not self.initialize():
                 return None
         return self.orchestrator
@@ -145,13 +156,15 @@ def launch_core() -> bool:
     try:
         orchestrator = create_core()
         if orchestrator:
-            logger.info("🚀 Core SOLID lancé avec succès")
+            ark_logger.info("🚀 Core SOLID lancé avec succès", extra={"arkalia_module": "core"})
             return True
         else:
-            logger.error("❌ Impossible de créer l'orchestrateur")
+            ark_logger.error(
+                "❌ Impossible de créer l'orchestrateur", extra={"arkalia_module": "core"}
+            )
             return False
     except Exception as e:
-        logger.error(f"❌ Erreur lancement Core : {e}")
+        ark_logger.error(f"❌ Erreur lancement Core : {e}", extra={"arkalia_module": "core"})
         return False
 
 
@@ -160,7 +173,10 @@ try:
     default_core = create_core()
 except Exception:
     default_core = None
-    logger.warning("⚠️ Core par défaut non disponible (composants en cours de développement)")
+    ark_logger.warning(
+        "⚠️ Core par défaut non disponible (composants en cours de développement)",
+        extra={"arkalia_module": "core"},
+    )
 
 
 # Interface de compatibilité avec l'ancien arkalia_master
