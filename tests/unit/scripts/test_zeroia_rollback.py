@@ -94,9 +94,9 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
     """Test que le script de rollback s'exécute correctement."""
 
     # Créer les répertoires nécessaires
-    state_dir = Path("modules/zeroia/state")
+    state_dir = PROJECT_ROOT / "modules" / "zeroia" / "state"
     state_dir.mkdir(parents=True, exist_ok=True)
-    logs_dir = Path("logs")
+    logs_dir = PROJECT_ROOT / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
 
     # Créer un fichier d'état de test
@@ -108,6 +108,9 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
     state_file = state_dir / "zeroia_state.toml"
     with open(state_file, "w", encoding="utf-8") as f:
         toml.dump(test_state, f)
+
+    # Vérifier que le fichier existe avant l'exécution
+    assert state_file.exists(), f"Le fichier d'état n'a pas été créé à {state_file}"
 
     # Configurer l'environnement pour les imports
     env = os.environ.copy()
@@ -129,4 +132,6 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
 
     # Vérifier qu'un backup a été créé dans le bon emplacement
     backup_file = state_dir / "zeroia_state_backup.toml"
-    assert backup_file.exists(), f"Le fichier de backup n'a pas été créé à {backup_file}"
+    assert (
+        backup_file.exists()
+    ), f"Le fichier de backup n'a pas été créé à {backup_file}. stdout: {result.stdout}, stderr: {result.stderr}"
