@@ -19,7 +19,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 # Configuration
 ARKALIA_PORTS = [8000, 8001, 8002, 8003, 3000, 9090, 9093, 3100]
@@ -36,23 +36,23 @@ REQUIRED_DOCKER_IMAGES = [
 class ArkaliaBootstrap:
     """Bootstrap complet pour Arkalia-LUNA Pro"""
 
-    def __init__(self):
-        self.project_root = Path(__file__).parent
+    def __init__(self) -> None:
+        self.project_root = Path(__file__).parent.parent.parent
         self.venv_path = self.project_root / "venv"
-        self.results = {
+        self.results: dict[str, Any] = {
             "timestamp": time.time(),
             "system_info": {},
             "checks": {},
             "recommendations": [],
         }
 
-    def print_header(self, title: str):
+    def print_header(self, title: str) -> None:
         """Affiche un en-tête"""
         print(f"\n{'=' * 60}")
         print(f"🎯 {title}")
         print(f"{'=' * 60}")
 
-    def print_step(self, step: str, status: str = "✅"):
+    def print_step(self, step: str, status: str = "✅") -> None:
         """Affiche une étape"""
         print(f"{status} {step}")
 
@@ -252,7 +252,7 @@ class ArkaliaBootstrap:
         ]
 
         for service in services:
-            service_path = self.project_root / service["path"]
+            service_path = self.project_root / Path(service["path"])
             if service_path.exists():
                 checks[f"service_{service['name']}"] = {
                     "status": "✅",
@@ -307,7 +307,7 @@ class ArkaliaBootstrap:
         self.results["checks"]["docker_images"] = checks
         return len(missing_images) == 0
 
-    def generate_recommendations(self):
+    def generate_recommendations(self) -> None:
         """Génère des recommandations basées sur les vérifications"""
         self.print_header("RECOMMANDATIONS")
 
@@ -430,7 +430,7 @@ class ArkaliaBootstrap:
         return all_passed
 
 
-def main():
+def main() -> None:
     """Point d'entrée principal"""
     bootstrap = ArkaliaBootstrap()
 

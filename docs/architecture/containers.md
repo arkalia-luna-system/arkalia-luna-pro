@@ -249,6 +249,6 @@ curl http://localhost:8003/health
 
 ---
 
-### Dernière mise à jour
+### Mise à jour
 
 Novembre 2025
