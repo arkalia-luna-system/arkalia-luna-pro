@@ -1,17 +1,17 @@
-# 🚀 Quick Start - Arkalia-LUNA Pro v2.8.0
+# Quick Start - Arkalia-LUNA Pro v2.8.0
 
-## 📊 **ÉTAT ACTUEL DU SYSTÈME (Mise à jour novembre 2025)**
+## État Actuel du Système (Mise à jour novembre 2025)
 
-### ✅ **SUCCÈS MAJEUR - CI/CD 100% Verte !**
-- **671 tests passés** (642 unitaires + 29 intégration) ✅
-- **Couverture : 59.25%** (bien au-dessus du seuil de 28%) ✅
-- **Temps d'exécution : 31.73s** ✅
-- **Healthcheck optimisé** : Python urllib natif ✅
-- **Artefacts uploadés** : Conditionnel et robuste ✅
+### CI/CD
+- 671 tests passés (642 unitaires + 29 intégration)
+- Couverture : 59.25% (seuil requis : 28%)
+- Temps d'exécution : 31.73s
+- Healthcheck optimisé : Python urllib natif
+- Artefacts uploadés : Conditionnel et robuste
 
-Guide de démarrage rapide pour utiliser Arkalia-LUNA Pro en 5 minutes !
+Guide de démarrage rapide pour utiliser Arkalia-LUNA Pro en 5 minutes.
 
-## ⚡ Installation Express
+## Installation Express
 
 ### 1. Prérequis
 ```bash

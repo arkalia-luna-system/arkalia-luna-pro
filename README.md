@@ -1,7 +1,7 @@
-# 🌕🤖🚀 **Arkalia-LUNA Pro** - Orchestrateur IA Production-Ready
+# Arkalia-LUNA Pro - Orchestrateur IA
 
-> **🌍 English**: Production-ready AI orchestration platform with FastAPI, advanced monitoring, security, deployment, cognitive modules - reference open-source for production.  
-> **🇫🇷 Français**: Plateforme d'orchestration IA prête pour la production avec FastAPI, monitoring avancé, sécurité, déploiement, modules cognitifs - référence open-source pour production.
+> **English**: AI orchestration platform with FastAPI, advanced monitoring, security, deployment, cognitive modules - reference open-source for production.  
+> **Français**: Plateforme d'orchestration IA avec FastAPI, monitoring avancé, sécurité, déploiement, modules cognitifs - référence open-source pour production.
 
 [![Release](https://img.shields.io/github/v/tag/athalia-siwek/arkalia-luna-pro?label=release)](https://github.com/athalia-siwek/arkalia-luna-pro/releases)
 [![Status](https://img.shields.io/badge/status-production%20ready-brightgreen.svg)](https://github.com/athalia-siwek/arkalia-luna-pro)
@@ -11,7 +11,7 @@
 [![codecov](https://codecov.io/gh/athalia-siwek/arkalia-luna-pro/branch/develop/graph/badge.svg)](https://codecov.io/gh/athalia-siwek/arkalia-luna-pro)
 [![Workflows](https://img.shields.io/badge/CI%2FCD-8%20workflows-blue.svg)](https://github.com/athalia-siwek/arkalia-luna-pro/.github/workflows)
 
-## 🚀 Déploiement Rapide
+## Déploiement Rapide
 
 ```bash
 # 1. Clone et setup
@@ -26,87 +26,87 @@ make test-integration
 
 **Accès aux services** :
 
-- 🌐 API principale : <http://localhost:8000/health>
-- 📊 Grafana : <http://localhost:3000> (admin/admin)
-- 📈 Prometheus : <http://localhost:9090>
+- API principale : <http://localhost:8000/health>
+- Grafana : <http://localhost:3000> (admin/admin)
+- Prometheus : <http://localhost:9090>
 
-### ✅ Services Opérationnels v2.8.0
+### Services Opérationnels v2.8.0
 
-- **🚀 arkalia-api** (Port 8000) - API centrale FastAPI optimisée avec healthcheck Python natif
-- **🧠 AssistantIA** (Port 8001) - Navigation contextuelle avec Ollama
-- **🔁 ReflexIA** (Port 8002) - Observateur cognitif réflexif
-- **🤖 ZeroIA Coordinator** (Enhanced v2.8.0) - **NOUVEAU** Coordinateur principal avec tous les systèmes avancés
-- **🧠 Sandozia** (v2.8.0) - Intelligence croisée, validation inter-modules
-- **🧠 Cognitive Reactor** (v2.8.0) - Orchestrateur cognitif central
-- **🔒 Security** - Vault, sandbox, tokens, audit sécurité
-- **📈 Monitoring** - Prometheus, Grafana, Loki, alertes, 34 métriques
+- arkalia-api (Port 8000) - API centrale FastAPI optimisée avec healthcheck Python natif
+- AssistantIA (Port 8001) - Navigation contextuelle avec Ollama
+- ReflexIA (Port 8002) - Observateur cognitif réflexif
+- ZeroIA Coordinator (Enhanced v2.8.0) - Coordinateur principal avec tous les systèmes avancés
+- Sandozia (v2.8.0) - Intelligence croisée, validation inter-modules
+- Cognitive Reactor (v2.8.0) - Orchestrateur cognitif central
+- Security - Vault, sandbox, tokens, audit sécurité
+- Monitoring - Prometheus, Grafana, Loki, alertes, 34 métriques
 
-### 📊 Monitoring Stack Complet
+### Monitoring Stack Complet
 
-- **📈 Grafana** (Port 3000) - 8 dashboards spécialisés
-- **📊 Prometheus** (Port 9090) - 34 métriques temps réel
-- **📝 Loki** (Port 3100) - Logs centralisés
-- **🚨 AlertManager** (Port 9093) - 15 alertes automatiques
-- **📊 cAdvisor** - Métriques conteneurs
-- **🖥️ Node Exporter** - Métriques système
+- Grafana (Port 3000) - 8 dashboards spécialisés
+- Prometheus (Port 9090) - 34 métriques temps réel
+- Loki (Port 3100) - Logs centralisés
+- AlertManager (Port 9093) - 15 alertes automatiques
+- cAdvisor - Métriques conteneurs
+- Node Exporter - Métriques système
 
-### 🎯 Nouvelles Fonctionnalités v2.8.0
+### Nouvelles Fonctionnalités v2.8.0
 
-- ✅ **ZeroIA Coordinator** - **NOUVEAU** Coordinateur principal avec tous les systèmes avancés intégrés
-- ✅ **Confidence Scoring** - Scoring de confiance avec mémoire explicable
-- ✅ **Graceful Degradation** - Dégradation gracieuse production-ready
-- ✅ **Error Recovery System** - Récupération automatique d'erreurs
-- ✅ **Enhanced Orchestrator** - Orchestration avec Circuit Breaker
-- ✅ **Intelligence Générative Avancée** - Auto-génération de code Python
-- ✅ **Cognitive Reactor** - Réactions cognitives automatiques
-- ✅ **Monitoring Complet Production-Ready** - Stack observabilité totale
-- ✅ **Sécurité Renforcée** - Fail2ban, vault, sandbox, tokens, scan Bandit
-- ✅ **Conteneurisation Optimisée** - 5 containers actifs
-- ✅ **Health Checks Automatiques** - Tous les services healthy (vérification Python natif)
-- ✅ **CI/CD 100% verte** - Workflows optimisés, artefacts conditionnels, upload Bandit/coverage
+- ZeroIA Coordinator - Coordinateur principal avec tous les systèmes avancés intégrés
+- Confidence Scoring - Scoring de confiance avec mémoire explicable
+- Graceful Degradation - Dégradation gracieuse
+- Error Recovery System - Récupération automatique d'erreurs
+- Enhanced Orchestrator - Orchestration avec Circuit Breaker
+- Intelligence Générative Avancée - Auto-génération de code Python
+- Cognitive Reactor - Réactions cognitives automatiques
+- Monitoring Complet - Stack observabilité totale
+- Sécurité Renforcée - Fail2ban, vault, sandbox, tokens, scan Bandit
+- Conteneurisation Optimisée - 5 containers actifs
+- Health Checks Automatiques - Tous les services healthy (vérification Python natif)
+- CI/CD 100% verte - Workflows optimisés, artefacts conditionnels, upload Bandit/coverage
 
-### 📈 Métriques Authentiques
+### Métriques
 
-- **Fichiers de tests** : 100 fichiers Python ✅
-- **Tests exécutés** : 671 tests collectés ✅
-- **Couverture globale** : 59.25% (objectif: 65%) 🎯
-- **Workflows CI/CD** : 8 workflows actifs ✅
-- **CI/CD** : Stable, artefacts uploadés, sécurité validée
-- **Stabilité** : Tous les conteneurs healthy et opérationnels
+- Fichiers de tests : 100 fichiers Python
+- Tests exécutés : 671 tests collectés
+- Couverture globale : 59.25% (objectif: 65%)
+- Workflows CI/CD : 8 workflows actifs
+- CI/CD : Stable, artefacts uploadés, sécurité validée
+- Stabilité : Tous les conteneurs healthy et opérationnels
 
-## ⚠️ Limitations & Contexte d'Usage
+## Limitations & Contexte d'Usage
 
 **Ce système est adapté pour** :
 
-- ✅ Environnements de développement et intégration
-- ✅ Proof of concept et prototypage IA
-- ✅ Formation et apprentissage des technologies IA
-- ✅ Tests de charge et évaluation de performance
+- Environnements de développement et intégration
+- Proof of concept et prototypage IA
+- Formation et apprentissage des technologies IA
+- Tests de charge et évaluation de performance
 
 **Limitations actuelles** :
 
-- 🎯 Couverture tests à 59% (cible: 65%+)
-- ⚡ Optimisation mémoire en cours (forte consommation)
-- 🔧 Dépendance Ollama locale requise
-- 📊 Métriques Prometheus basiques (non production-ready)
+- Couverture tests à 59% (cible: 65%+)
+- Optimisation mémoire en cours (forte consommation)
+- Dépendance Ollama locale requise
+- Métriques Prometheus basiques
 
 **Non recommandé pour** :
 
-- ❌ Production critique sans audit sécurité
-- ❌ Données sensibles sans chiffrement end-to-end
-- ❌ Haute disponibilité sans cluster
+- Production critique sans audit sécurité
+- Données sensibles sans chiffrement end-to-end
+- Haute disponibilité sans cluster
 
-## 🏗️ Architecture v2.8.0
+## Architecture v2.8.0
 
 ```mermaid
 graph TB
-    subgraph "🌐 API Layer"
+    subgraph "API Layer"
         H[Helloria API<br/>Port 8000<br/>FastAPI Central]
         A[AssistantIA<br/>Port 8001<br/>Navigation Contextuelle]
         R[ReflexIA<br/>Port 8002<br/>Observateur Cognitif]
     end
 
-    subgraph "🧠 Core Intelligence"
+    subgraph "Core Intelligence"
         Z[ZeroIA Coordinator<br/>Enhanced v2.8.0<br/>Moteur de Décision]
         ZD[Decision Engine<br/>Prise de décision]
         ZC[Confidence Scorer<br/>Scoring de confiance]
@@ -120,19 +120,19 @@ graph TB
         SV[Cross Validator<br/>Validation inter-modules]
     end
 
-    subgraph "⚡ Cognitive Processing"
+    subgraph "Cognitive Processing"
         CR[Cognitive Reactor<br/>v2.8.0<br/>Orchestrateur Cognitif]
         GA[Generative AI<br/>v2.8.0<br/>Auto-génération code]
     end
 
-    subgraph "📊 Monitoring Stack"
+    subgraph "Monitoring Stack"
         P[Prometheus<br/>Port 9090<br/>34 métriques]
         G[Grafana<br/>Port 3000<br/>8 dashboards]
         L[Loki<br/>Port 3100<br/>Logs centralisés]
         AM[AlertManager<br/>Port 9093<br/>15 alertes]
     end
 
-    subgraph "🔒 Security Layer"
+    subgraph "Security Layer"
         V[Vault Manager<br/>Secrets & Tokens]
         SB[Sandbox<br/>Isolation]
         SC[Security Scanner<br/>Bandit Audit]
@@ -235,11 +235,11 @@ graph TD
     style E fill:#F44336
 ```
 
-## 🎯 Cas d'Usage
+## Cas d'Usage
 
 Arkalia-LUNA Pro s'adapte à plusieurs cas d'usage professionnels avec des exemples pratiques détaillés ci-dessous.
 
-### 1. 🔒 Détection et Réponse Automatique aux Incidents de Sécurité
+### 1. Détection et Réponse Automatique aux Incidents de Sécurité
 
 **Scénario** : Détection d'une tentative d'intrusion ou d'une activité suspecte sur le système.
 
@@ -260,10 +260,10 @@ python scripts/launch_demo_scenario.py --scenario security
 
 **Résultat attendu** :
 
-- ⏱️ Temps de réponse : < 30ms
-- ✅ Décision prise automatiquement
-- 📊 Métriques enregistrées dans Prometheus
-- 🚨 Alerte visible dans Grafana
+- Temps de réponse : < 30ms
+- Décision prise automatiquement
+- Métriques enregistrées dans Prometheus
+- Alerte visible dans Grafana
 
 ---
 
@@ -462,62 +462,62 @@ curl http://localhost:8002/health
 curl http://localhost:8003/health
 ```
 
-## 🔧 Fonctionnalités Principales v2.8.0
+## Fonctionnalités Principales v2.8.0
 
-### 🤖 **ZeroIA Coordinator - Moteur de Décision Autonome Enhanced v2.8.0** 🆕
+### ZeroIA Coordinator - Moteur de Décision Autonome Enhanced v2.8.0
 
-- **Coordinateur principal** avec tous les systèmes avancés intégrés
-- **Decision Engine** - Moteur de décision intelligent
-- **Confidence Scoring** - Scoring de confiance avec mémoire explicable
-- **Graceful Degradation** - Dégradation gracieuse production-ready
-- **Error Recovery System** - Récupération automatique d'erreurs
-- **Enhanced Orchestrator** - Orchestration avec Circuit Breaker
-- **Event Sourcing** pour la traçabilité complète
-- **Métriques temps réel** avec Prometheus
+- Coordinateur principal avec tous les systèmes avancés intégrés
+- Decision Engine - Moteur de décision intelligent
+- Confidence Scoring - Scoring de confiance avec mémoire explicable
+- Graceful Degradation - Dégradation gracieuse
+- Error Recovery System - Récupération automatique d'erreurs
+- Enhanced Orchestrator - Orchestration avec Circuit Breaker
+- Event Sourcing pour la traçabilité complète
+- Métriques temps réel avec Prometheus
 
-### 🧠 **Cognitive Reactor - Intelligence Avancée**
+### Cognitive Reactor - Intelligence Avancée
 
-- **Détection automatique** de patterns cognitifs
-- **Génération de réactions** automatiques intelligentes
-- **Apprentissage continu** et prédictions
-- **Réactivité automatique** aux problèmes système
-- **Ajustement automatique** de seuils et paramètres
+- Détection automatique de patterns cognitifs
+- Génération de réactions automatiques intelligentes
+- Apprentissage continu et prédictions
+- Réactivité automatique aux problèmes système
+- Ajustement automatique de seuils et paramètres
 
-### 🔁 **ReflexIA - Observateur Cognitif**
+### ReflexIA - Observateur Cognitif
 
-- **Monitoring temps réel** des autres modules
-- **Détection de contradictions** avec ZeroIA
-- **Analyse comportementale** des décisions
-- **Métriques Prometheus** intégrées
+- Monitoring temps réel des autres modules
+- Détection de contradictions avec ZeroIA
+- Analyse comportementale des décisions
+- Métriques Prometheus intégrées
 
-### 🧠 **AssistantIA - Navigation Contextuelle**
+### AssistantIA - Navigation Contextuelle
 
-- **Interface utilisateur** pour interagir avec le système
-- **Contexte adaptatif** selon l'état des modules
-- **API REST** pour l'intégration externe
-- **Intégration Ollama** pour modèles locaux
+- Interface utilisateur pour interagir avec le système
+- Contexte adaptatif selon l'état des modules
+- API REST pour l'intégration externe
+- Intégration Ollama pour modèles locaux
 
-### 🧠 **Sandozia - Intelligence Croisée Production-Ready**
+### Sandozia - Intelligence Croisée
 
-- **Intelligence collaborative** entre modules
-- **Analyse comportementale** avancée
-- **Validation croisée** des décisions
-- **Heatmaps cognitives** et patterns détectés
+- Intelligence collaborative entre modules
+- Analyse comportementale avancée
+- Validation croisée des décisions
+- Heatmaps cognitives et patterns détectés
 
-### 🚀 **Helloria - API Centrale**
+### Helloria - API Centrale
 
-- **FastAPI optimisé** avec 1 worker
-- **Métriques Prometheus** intégrées
-- **Health endpoints** automatiques (vérification Python natif)
-- **Performance** < 500ms
+- FastAPI optimisé avec 1 worker
+- Métriques Prometheus intégrées
+- Health endpoints automatiques (vérification Python natif)
+- Performance < 500ms
 
-### 🔒 **Security - Sécurité avancée**
+### Security - Sécurité avancée
 
-- **Vault** pour secrets, tokens, sandbox
-- **Scan Bandit** automatisé, artefacts uploadés
-- **Audit sécurité** automatisé, logs centralisés
+- Vault pour secrets, tokens, sandbox
+- Scan Bandit automatisé, artefacts uploadés
+- Audit sécurité automatisé, logs centralisés
 
-## 📊 Monitoring et Observabilité Production-Ready
+## Monitoring et Observabilité
 
 ### Dashboard Grafana
 
@@ -544,7 +544,7 @@ curl http://localhost:8003/health
 - **Alertes automatiques** configurées
 - **Notifications** en temps réel
 
-## 🧪 Tests et Validation
+## Tests et Validation
 
 ### Tests Automatisés
 
@@ -573,7 +573,7 @@ make clean
 - **CI/CD** : 100% verte, artefacts uploadés (Bandit, coverage, logs)
 - **Healthcheck** : Python natif sur tous les conteneurs
 
-## 🔒 Sécurité & Qualité
+## Sécurité & Qualité
 
 - **Authentification API** (token, header X-API-Token)
 - **Rate limiting** (10 req/s/IP)
@@ -583,41 +583,41 @@ make clean
 - **Scan Bandit** automatisé, artefacts uploadés
 - **Audit sécurité** automatisé, logs centralisés
 
-## 📚 Documentation
+## Documentation
 
 - **Docs techniques** : [docs/](docs/)
 - **API** : Swagger (<http://localhost:8000/docs>)
 - **Architecture** : MkDocs (<http://localhost:9000>)
 
-## 🛠️ Maintenance & CI/CD
+## Maintenance & CI/CD
 
 - **Workflows GitHub Actions** : build, tests, lint, security, artefacts
 - **CI/CD 100% verte** : tests non-bloquants, healthcheck Python, upload conditionnel
 - **Déploiement** : staging, production, healthchecks, rollback sécurisé
 
-## 🤝 Contribution & Support
+## Contribution & Support
 
 ### Comment Contribuer
 
-- 🐛 **Bug Reports** : Utilisez les [issues templates](.github/ISSUE_TEMPLATE.md)
-- ✨ **Nouvelles fonctionnalités** : Fork → PR avec tests
-- 📚 **Documentation** : Améliorations bienvenues
-- 🧪 **Tests** : Objectif 65%+ de couverture
+- Bug Reports : Utilisez les [issues templates](.github/ISSUE_TEMPLATE.md)
+- Nouvelles fonctionnalités : Fork → PR avec tests
+- Documentation : Améliorations bienvenues
+- Tests : Objectif 65%+ de couverture
 
 ### Support & Questions
 
-- 📋 **GitHub Issues** : Questions techniques et bugs
-- 💬 **Discussions** : Architecture et roadmap
-- 📧 **Contact** : Pour collaborations professionnelles
+- GitHub Issues : Questions techniques et bugs
+- Discussions : Architecture et roadmap
+- Contact : Pour collaborations professionnelles
 
 ### Standards de Qualité
 
-- ✅ Tests obligatoires pour toute PR
-- ✅ Black + Ruff + pre-commit
-- ✅ Documentation à jour
-- ✅ Performance maintenue
+- Tests obligatoires pour toute PR
+- Black + Ruff + pre-commit
+- Documentation à jour
+- Performance maintenue
 
-## 🧭 Roadmap & Prochaines Étapes
+## Roadmap & Prochaines Étapes
 
 - **Couverture tests** : 59% → 65% → 70%
 - **Optimisation mémoire** : Réduction footprint
@@ -627,6 +627,6 @@ make clean
 
 ---
 
-## 🌟 Arkalia-LUNA Pro v2.8.0
+## Arkalia-LUNA Pro v2.8.0
 
-Orchestrateur IA structuré pour performer, ouvert et pensé pour l'apprentissage collectif
+Orchestrateur IA structuré, ouvert et pensé pour l'apprentissage collectif
