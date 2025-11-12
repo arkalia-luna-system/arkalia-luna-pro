@@ -41,9 +41,11 @@
 ## 🗑️ FICHIERS À NETTOYER
 
 ### Fichiers macOS cachés
-- `modules/zeroia/utils/._backup.py` - Fichier macOS caché (à supprimer)
+- **1735 fichiers `._*`** trouvés dans le projet (fichiers macOS cachés)
+- Exemples : `modules/helloria/._core.py`, `modules/zeroia/utils/._backup.py`, etc.
 
 **Action :** Supprimer tous les fichiers `._*` (fichiers macOS cachés)
+**Note :** Ces fichiers sont générés automatiquement par macOS et peuvent être ignorés via `.gitignore`
 
 ---
 
@@ -76,7 +78,9 @@
 
 ## 🎯 ACTIONS RECOMMANDÉES
 
-1. ✅ **Supprimer fichiers macOS cachés** (`._*`)
+1. ⚠️ **Nettoyer fichiers macOS cachés** (`._*` - 1735 fichiers trouvés)
+   - Option 1 : Supprimer manuellement avec `find . -name "._*" -delete`
+   - Option 2 : Ajouter `._*` dans `.gitignore` pour les ignorer
 2. ⚠️ **Décider** : Supprimer ou garder dossiers `backup/` et `chaos_backups/` vides
 3. ✅ **Vérifier** : Aucune référence obsolète dans le code
 4. ✅ **Documentation** : Toutes les références sont à jour
