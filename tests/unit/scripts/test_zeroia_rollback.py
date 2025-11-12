@@ -108,7 +108,7 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
 
     # Exécuter le script avec --force
     result = subprocess.run(
-        ["python", "scripts/zeroia_rollback.py", "--force", "--silent"],
+        ["python", "scripts/_zeroia_rollback.py", "--force", "--silent"],
         capture_output=True,
         text=True,
         env=env,
