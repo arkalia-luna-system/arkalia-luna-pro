@@ -574,7 +574,7 @@ def reason_loop_enhanced_with_recovery(
                     )
 
                 except Exception as recovery_error:
-                    ark_logger.error(f"❌ Error Recovery échoué: {recovery_error}", extra={"arkalia_module": "zeroia"})
+                    ark_logger.error(f"❌ Error Recovery échoué: {recovery_error}")
                     decision, score = "monitor", 0.1
 
         # Anti-répétition
@@ -606,7 +606,7 @@ def reason_loop_enhanced_with_recovery(
                 cognitive_reactions = trigger_cognitive_reaction(cognitive_context, 0)
 
                 if cognitive_reactions:
-                    ark_logger.info(f"🔥 Réactions automatiques déclenchées: {cognitive_reactions}", extra={"arkalia_module": "zeroia"})
+                    ark_logger.info(f"🔥 Réactions automatiques déclenchées: {cognitive_reactions}")
 
                     # Event sourcing des réactions cognitives
                     es.add_event(
@@ -620,7 +620,7 @@ def reason_loop_enhanced_with_recovery(
                     )
 
             except Exception as e:
-                ark_logger.warning(f"⚠️ Erreur CognitiveReactor  # noqa: F401  : {e}", extra={"arkalia_module": "zeroia"})
+                ark_logger.warning(f"⚠️ Erreur CognitiveReactor  # noqa: F401  : {e}")
 
         # Persistance avec protection
         persist_state_enhanced(decision, score, ctx, state_path)
@@ -661,14 +661,13 @@ def reason_loop_enhanced_with_recovery(
             extra={"arkalia_module": "zeroia"},
         )
         ark_logger.info(
-                f"[ZeroIA] CPU usage: {cpu}% → decision={decision} (score={score})",
-                extra={"arkalia_module": "zeroia"},
+            f"[ZeroIA] CPU usage: {cpu}% → decision={decision} (score={score})",
             extra={"arkalia_module": "zeroia"},
         )
 
         if decision_error:
             ark_logger.error(
-                f"[ZeroIA] Error Recovery triggered for: {type(decision_error, extra={"arkalia_module": "zeroia"}).__name__}",
+                f"[ZeroIA] Error Recovery triggered for: {type(decision_error, ).__name__}",
                 extra={"arkalia_module": "zeroia"},
             )
 
@@ -679,7 +678,7 @@ def reason_loop_enhanced_with_recovery(
         raise
     except (CognitiveOverloadError, DecisionIntegrityError) as e:
         # Erreurs gérées par le circuit breaker
-        ark_logger.error(f"🚨 [ZeroIA] Erreur gérée: {e}", extra={"arkalia_module": "zeroia"})
+        ark_logger.error(f"🚨 [ZeroIA] Erreur gérée: {e}")
 
         # Décision de sécurité en cas d'erreur
         fallback_decision, fallback_score = "monitor", 0.1
@@ -700,7 +699,7 @@ def reason_loop_enhanced_with_recovery(
 
     except Exception as e:
         # Erreur inattendue - event sourcing critique
-        ark_logger.error(f"💥 [ZeroIA] Erreur critique: {e}", extra={"arkalia_module": "zeroia"})
+        ark_logger.error(f"💥 [ZeroIA] Erreur critique: {e}")
 
         es.add_event(
             EventType.SYSTEM_ERROR,
@@ -754,13 +753,13 @@ def main_loop_enhanced() -> None:
         time.sleep(60)
 
     except (CognitiveOverloadError, DecisionIntegrityError) as e:
-        ark_logger.info(f"[ZeroIA Enhanced] ⚠️ SURCHARGE: {e}", extra={"arkalia_module": "zeroia"})
+        ark_logger.info(f"[ZeroIA Enhanced] ⚠️ SURCHARGE: {e}")
 
         # Graceful degradation
         time.sleep(30)
 
     except Exception as e:
-        ark_logger.info(f"[ZeroIA Enhanced] 🚨 ERREUR: {e}", extra={"arkalia_module": "zeroia"})
+        ark_logger.info(f"[ZeroIA Enhanced] 🚨 ERREUR: {e}")
         ark_logger.exception(e, extra={"arkalia_module": "zeroia"})
 
         # Event sourcing d'erreur
@@ -808,12 +807,12 @@ def cleanup_components(circuit_breaker: CircuitBreaker, event_store: EventStore)
     try:
         # Logs finaux du circuit breaker
         status = circuit_breaker.get_status()
-        ark_logger.info(f"🔄 Circuit Breaker final - État: {status['state']}", extra={"arkalia_module": "zeroia"})
-        ark_logger.info(f"📊 Métriques finales - Succès: {status['metrics']['success_rate']:.2f}%", extra={"arkalia_module": "zeroia"})
+        ark_logger.info(f"🔄 Circuit Breaker final - État: {status['state']}")
+        ark_logger.info(f"📊 Métriques finales - Succès: {status['metrics']['success_rate']:.2f}%")
 
         # Analytics finaux event store
         analytics = event_store.get_analytics()
-        ark_logger.info(f"📋 Event Store final - {analytics['total_events']} événements", extra={"arkalia_module": "zeroia"})
+        ark_logger.info(f"📋 Event Store final - {analytics['total_events']} événements")
 
         # Event de cleanup
         event_store.add_event(
@@ -829,7 +828,7 @@ def cleanup_components(circuit_breaker: CircuitBreaker, event_store: EventStore)
         ark_logger.info("✅ Cleanup terminé avec succès", extra={"arkalia_module": "zeroia"})
 
     except Exception as e:
-        ark_logger.error(f"⚠️ Erreur pendant cleanup: {e}", extra={"arkalia_module": "zeroia"})
+        ark_logger.error(f"⚠️ Erreur pendant cleanup: {e}")
 
 
 def get_error_recovery_status() -> dict:
@@ -913,7 +912,9 @@ class ReasonLoopEnhanced:
 
     def _trigger_recovery(self) -> None:
         """Déclenche une procédure de récupération"""
-        ark_logger.info("🔄 Déclenchement de la procédure de récupération", extra={"arkalia_module": "zeroia"})
+        ark_logger.info(
+            "🔄 Déclenchement de la procédure de récupération", extra={"arkalia_module": "zeroia"}
+        )
 
         # Réinitialiser les compteurs
         self.contradiction_count = 0
@@ -934,7 +935,7 @@ class ReasonLoopEnhanced:
             self.sync_state["sync_failures"] = 0
             return True
         except Exception as e:
-            ark_logger.error(f"🚨 Erreur synchronisation ReflexIA: {e}", extra={"arkalia_module": "zeroia"})
+            ark_logger.error(f"🚨 Erreur synchronisation ReflexIA: {e}")
             if isinstance(self.sync_state["sync_failures"], int):
                 self.sync_state["sync_failures"] += 1
             return False
@@ -948,7 +949,7 @@ class ReasonLoopEnhanced:
                 state = toml.load(REFLEXIA_STATE)
                 return state.get("status", "unknown")
         except Exception as e:
-            ark_logger.error(f"🚨 Erreur lecture état ReflexIA: {e}", extra={"arkalia_module": "zeroia"})
+            ark_logger.error(f"🚨 Erreur lecture état ReflexIA: {e}")
         return None
 
     def run_loop(self) -> None:
@@ -967,7 +968,7 @@ class ReasonLoopEnhanced:
                 time.sleep(self.config["sync_interval"])
 
             except Exception as e:
-                ark_logger.error(f"🚨 Erreur dans la boucle: {e}", extra={"arkalia_module": "zeroia"})
+                ark_logger.error(f"🚨 Erreur dans la boucle: {e}")
                 time.sleep(10)
 
 
