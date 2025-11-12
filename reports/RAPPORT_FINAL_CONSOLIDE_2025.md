@@ -6,15 +6,15 @@
 
 ---
 
-## 🚨 Bloc Critique : Synthèse et Statut Réel
+## Bloc Critique : Synthèse et Statut Réel
 
 | Élément                        | Statut      | Présence/Fichier(s)                | À faire / Conseil rangement |
 |-------------------------------|-------------|------------------------------------|-----------------------------|
-| **Démo interactive ZeroIA→Reflexia→API** | ✅ Présent   | `scripts/demo/demo_global.py`                   | Peut être enrichi (CLI/menu) |
-| **Score cognitif global**     | ✅ Présent   | `scripts/tools/arkalia_score.py`, `arkalia_score.toml` | Centralisé, à jour         |
-| **Landing page publique**     | ❌ Manquant  | `README.md` (technique)             | Créer README landing + Gumroad |
-| **Tests intermodules**        | 🟡 Partiel   | `tests/integration/test_zeroia_reflexia_sync.py`, `tests/integration/test_api_guardian_behavior.py` | Ajouter test bout-en-bout  |
-| **Benchmarks cognitifs**      | 🟡 Partiel   | `scripts/ark-performance-benchmark.py`   | Compléter pour cognition   |
+| Démo interactive ZeroIA→Reflexia→API | Présent   | `scripts/demo/demo_global.py`                   | Peut être enrichi (CLI/menu) |
+| Score cognitif global     | Présent   | `scripts/tools/arkalia_score.py`, `arkalia_score.toml` | Centralisé, à jour         |
+| Landing page publique     | Manquant  | `README.md` (technique)             | Créer README landing + Gumroad |
+| Tests intermodules        | Partiel   | `tests/integration/test_zeroia_reflexia_sync.py`, `tests/integration/test_api_guardian_behavior.py` | Ajouter test bout-en-bout  |
+| Benchmarks cognitifs      | Partiel   | `scripts/ark-performance-benchmark.py`   | Compléter pour cognition   |
 
 ---
 
