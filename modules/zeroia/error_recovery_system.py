@@ -15,18 +15,21 @@ import logging
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional, TypedDict
+from typing import TYPE_CHECKING, Any, Optional, TypedDict
 
 import toml
 
-try:
+if TYPE_CHECKING:
     from .circuit_breaker import CircuitBreaker
     from .event_store import EventStore, EventType
-except ImportError:
-    # Fallback si modules pas disponibles
-    CircuitBreaker = None  # type: ignore[assignment]
-    EventStore = None  # type: ignore[assignment]
-    EventType = None  # type: ignore[assignment]
+else:
+    try:
+        from .circuit_breaker import CircuitBreaker
+        from .event_store import EventStore, EventType
+    except ImportError:
+        CircuitBreaker = None  # type: ignore[assignment]
+        EventStore = None  # type: ignore[assignment]
+        EventType = None  # type: ignore[assignment]
 
 logger = logging.getLogger(__name__)
 
@@ -407,7 +410,7 @@ class ErrorRecoverySystem:
             # Exécuter les stratégies de récupération
             for strategy in self.recovery_handlers.values():
                 if strategy is not None:
-                    await strategy(None)
+                    await strategy(None)  # type: ignore[call-arg]
 
             logger.info("✅ Récupération réussie")
             return True

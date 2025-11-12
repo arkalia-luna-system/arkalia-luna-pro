@@ -4,6 +4,7 @@ Module de connexion à Ollama.
 Ce module gère la communication avec l'API Ollama pour les requêtes
 de modèles de langage.
 """
+
 # modules/assistantia/utils/ollama_connector.py
 
 import json

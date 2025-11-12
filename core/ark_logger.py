@@ -156,10 +156,6 @@ def setup_logger(
     return logger
 
 
-# Logger principal global
-ark_logger: logging.Logger = setup_logger("arkalia")  # type: ignore[assignment]
-
-
 # Loggers spécialisés
 def get_module_logger(module_name: str) -> logging.Logger:
     """Retourne un logger spécialisé pour un module."""
@@ -203,13 +199,13 @@ def log_success(message: str, module: str = "core") -> None:
     logger.info(f"✅ {message}")
 
 
-def log_warning(message: str, module: str = "core"):
+def log_warning(message: str, module: str = "core") -> None:
     """Log un avertissement."""
     logger = get_module_logger(module)
     logger.warning(f"⚠️ {message}")
 
 
-def log_info(message: str, module: str = "core"):
+def log_info(message: str, module: str = "core") -> None:
     """Log une information."""
     logger = get_module_logger(module)
     logger.info(f"ℹ️ {message}")

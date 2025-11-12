@@ -3,6 +3,7 @@
 Ce script génère automatiquement une page listant les dernières mises à jour
 depuis l'historique Git.
 """
+
 import subprocess  # nosec
 from pathlib import Path
 from typing import Any

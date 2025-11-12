@@ -4,6 +4,7 @@ Module de boucle principale pour Reflexia.
 Ce module gère la boucle principale d'exécution de Reflexia
 avec monitoring continu et prise de décision.
 """
+
 import time
 from typing import Optional
 
