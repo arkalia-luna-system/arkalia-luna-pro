@@ -252,7 +252,8 @@ class ArkaliaBootstrap:
         ]
 
         for service in services:
-            service_path = self.project_root / Path(service["path"])
+            path_str = str(service["path"])
+            service_path = self.project_root / path_str
             if service_path.exists():
                 checks[f"service_{service['name']}"] = {
                     "status": "✅",
@@ -374,7 +375,7 @@ class ArkaliaBootstrap:
 
         self.results["recommendations"] = recommendations
 
-    def save_report(self, filename: str = "bootstrap_report.json"):
+    def save_report(self, filename: str = "bootstrap_report.json") -> None:
         """Sauvegarde le rapport de bootstrap"""
         report_path = self.project_root / filename
         with open(report_path, "w") as f:

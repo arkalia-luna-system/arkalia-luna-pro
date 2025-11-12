@@ -205,6 +205,10 @@ module = ["modules.reflexia.logic.metrics_enhanced"]
 ignore_missing_imports = true
 disallow_untyped_decorators = false
 
+[[tool.mypy.overrides]]
+module = ["scripts.tools.bootstrap_arkalia"]
+ignore_errors = true
+
 [tool.flake8]
 max-line-length = 100
 ignore = ["E402", "F841", "W293", "F401", "F811", "E203"]
