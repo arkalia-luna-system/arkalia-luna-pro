@@ -15,7 +15,7 @@ from .analyzer.behavior import BehaviorAnalyzer
 from .core.sandozia_core import SandoziaCore
 from .reasoning.collaborative import CollaborativeReasoning
 from .utils.metrics import SandoziaMetrics
-from .validators.crossmodule import CrossModuleValidator
+from .validators import CrossModuleValidator
 
 __version__ = "3.0.0-phase2"
 __author__ = "Arkalia-LUNA System"
