@@ -140,13 +140,13 @@ Les points d'amélioration identifiés sont mineurs.
 
 | Endpoint Documenté | Trouvé dans le Code | Module |
 |-------------------|---------------------|---------|
-| `/health` | Oui | `helloria/core.py`, `scripts/run/run_reflexia_api.py` |
+| `/health` | Oui | `modules/helloria/core.py`, `scripts/run/run_reflexia_api.py` |
 | `/metrics` | Oui | Multiple modules |
-| `/status` | Oui | `helloria/core.py`, `zeroia/core.py` |
+| `/status` | Oui | `modules/helloria/core.py`, `zeroia/core.py` |
 | `/api/v1/health` | Oui | `assistantia/core.py` |
-| `/zeroia/health` | Oui | `helloria/core.py` |
-| `/reflexia/health` | Oui | `helloria/core.py` |
-| `/sandozia/health` | Oui | `helloria/core.py` |
+| `/zeroia/health` | Oui | `modules/helloria/core.py` |
+| `/reflexia/health` | Oui | `modules/helloria/core.py` |
+| `/sandozia/health` | Oui | `modules/helloria/core.py` |
 
 ### 4. Monitoring Stack - Correspondance
 

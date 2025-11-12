@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from helloria.core import app  # ou là où tu exposes FastAPI
+from modules.helloria.core import app  # ou là où tu exposes FastAPI
 
 
 @pytest.fixture

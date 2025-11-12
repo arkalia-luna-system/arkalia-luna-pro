@@ -190,7 +190,7 @@ class SandoziaCore:
         if self.config_path.exists():
             try:
                 # Cache TOML Enhanced - 94.8% performance boost
-                from modules.utils_enhanced.cache_enhanced import load_toml_cached
+                from modules.utils.helpers import load_toml_cached
 
                 loaded_config = load_toml_cached(self.config_path)
                 # Merge avec defaults

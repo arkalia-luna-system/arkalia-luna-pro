@@ -33,6 +33,12 @@ class LockedReadError(Exception):
 _file_locks: dict[str, Any] = {}
 _locks_mutex = threading.Lock()
 
+# Cache TOML simple (thread-safe)
+_TOML_CACHE: dict[str, dict[str, Any]] = {}
+_CACHE_TIMESTAMPS: dict[str, float] = {}
+_CACHE_TTL: float = 30.0  # 30 secondes par défaut
+_cache_lock = threading.Lock()
+
 
 def _get_file_lock(file_path: Path) -> threading.Lock:
     """Obtient un verrou spécifique à un fichier"""
@@ -262,6 +268,45 @@ def read_state_safe(file_path: str | Path) -> dict[str, Any]:
         json.JSONDecodeError,
         toml.TomlDecodeError,
     ):
+        return {}
+
+
+def load_toml_cached(file_path: str | Path, cache_ttl: float = 30.0) -> dict[str, Any]:
+    """
+    Charge un fichier TOML avec cache thread-safe
+
+    Args:
+        file_path: Chemin vers le fichier TOML
+        cache_ttl: Durée de vie du cache en secondes (défaut: 30.0)
+
+    Returns:
+        dict: Données du fichier TOML (depuis cache si valide, sinon depuis disque)
+    """
+    file_path = Path(file_path)
+    str_path = str(file_path.absolute())
+    current_time = time.time()
+
+    # Vérifier cache valide
+    with _cache_lock:
+        if (
+            str_path in _TOML_CACHE
+            and str_path in _CACHE_TIMESTAMPS
+            and current_time - _CACHE_TIMESTAMPS[str_path] < cache_ttl
+        ):
+            return _TOML_CACHE[str_path]
+
+    # Cache invalide ou inexistant, charger depuis disque
+    try:
+        data = locked_read(file_path)
+        if isinstance(data, dict):
+            # Mettre à jour le cache
+            with _cache_lock:
+                _TOML_CACHE[str_path] = data
+                _CACHE_TIMESTAMPS[str_path] = current_time
+            return data
+        return {}
+    except (FileNotFoundError, LockedReadError, toml.TomlDecodeError) as e:
+        logger.warning(f"Erreur chargement TOML {file_path}: {e}")
         return {}
 
 

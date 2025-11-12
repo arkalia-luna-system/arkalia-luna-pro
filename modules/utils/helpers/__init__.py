@@ -15,6 +15,7 @@ from .io_safe import (
     AtomicWriteError,
     LockedReadError,
     atomic_write,
+    load_toml_cached,
     locked_read,
     read_state_safe,
     save_json_safe,
@@ -24,6 +25,7 @@ from .io_safe import (
 __all__ = [
     "atomic_write",
     "locked_read",
+    "load_toml_cached",
     "save_toml_safe",
     "save_json_safe",
     "read_state_safe",

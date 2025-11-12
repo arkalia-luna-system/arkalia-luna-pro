@@ -128,7 +128,7 @@ class TestFallbackMetrics:
 
     def test_fallback_metrics_generation(self) -> None:
         """🔧 Test génération métriques de secours"""
-        from helloria.core import _get_fallback_metrics
+        from modules.helloria.core import _get_fallback_metrics
 
         metrics = _get_fallback_metrics()
 
@@ -150,7 +150,7 @@ class TestFallbackMetrics:
 
     def test_fallback_metrics_values(self) -> None:
         """🎯 Test cohérence des valeurs de métriques"""
-        from helloria.core import _get_fallback_metrics
+        from modules.helloria.core import _get_fallback_metrics
 
         metrics = _get_fallback_metrics()
 
@@ -163,7 +163,7 @@ class TestFallbackMetrics:
 
     def test_prometheus_format_conversion(self) -> None:
         """📝 Test conversion format Prometheus"""
-        from helloria.core import _convert_to_prometheus_format
+        from modules.helloria.core import _convert_to_prometheus_format
 
         test_metrics = {"test_counter": 42, "test_gauge": 3.14, "test_string": "active"}
 
@@ -207,7 +207,7 @@ class TestMetricsIntegration:
                 json.dump(test_dashboard, f)
 
             # Test collecte
-            from helloria.core import _get_fallback_metrics
+            from modules.helloria.core import _get_fallback_metrics
 
             metrics = _get_fallback_metrics()
 
@@ -242,7 +242,7 @@ class TestMetricsIntegration:
                 toml.dump(test_state, f)
 
             # Test collecte
-            from helloria.core import _get_fallback_metrics
+            from modules.helloria.core import _get_fallback_metrics
 
             metrics = _get_fallback_metrics()
 
@@ -263,7 +263,7 @@ class TestMetricsPerformance:
 
     def test_metrics_collection_speed(self) -> None:
         """⚡ Test vitesse de collecte des métriques"""
-        from helloria.core import _get_fallback_metrics
+        from modules.helloria.core import _get_fallback_metrics
 
         start_time = time.time()
 
@@ -286,7 +286,7 @@ class TestMetricsPerformance:
 
     def test_prometheus_format_speed(self) -> None:
         """📝 Test vitesse de formatage Prometheus"""
-        from helloria.core import _convert_to_prometheus_format, _get_fallback_metrics
+        from modules.helloria.core import _convert_to_prometheus_format, _get_fallback_metrics
 
         metrics = _get_fallback_metrics()
 

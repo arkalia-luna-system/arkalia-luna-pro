@@ -49,10 +49,10 @@ def test_api_startup():
         print("❌ Fichier scripts/run/run_arkalia_api.py non trouvé")
         return False
 
-    # Vérifier que helloria/core.py existe
-    core_file = Path("helloria/core.py")
+    # Vérifier que modules/helloria/core.py existe
+    core_file = Path("modules/helloria/core.py")
     if not core_file.exists():
-        print("❌ Fichier helloria/core.py non trouvé")
+        print("❌ Fichier modules/helloria/core.py non trouvé")
         return False
 
     print("✅ Fichiers de l'API présents")

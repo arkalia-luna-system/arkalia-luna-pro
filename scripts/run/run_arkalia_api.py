@@ -31,7 +31,7 @@ def check_dependencies() -> bool:
 def check_modules() -> bool:
     """Vérification des modules critiques"""
     critical_modules = [
-        "helloria/core.py",
+        "modules/helloria/core.py",
         "modules/reflexia/core.py",
         "modules/zeroia/core.py",
         "modules/assistantia/core.py",

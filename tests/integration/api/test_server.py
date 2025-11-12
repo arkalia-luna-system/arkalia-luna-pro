@@ -1,7 +1,7 @@
 import pytest
 from starlette.testclient import TestClient
 
-from helloria.core import app
+from modules.helloria.core import app
 
 
 @pytest.mark.asyncio

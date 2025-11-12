@@ -28,7 +28,9 @@ def test_ping() -> None:
 def test_status() -> None:
     response = client.get("/status")
     assert response.status_code == 200
-    assert response.json()["status"] == "Helloria est opérationnel"
+    data = response.json()
+    assert "status" in data
+    assert data["status"] == "active"
 
 
 @pytest.mark.asyncio
@@ -38,4 +40,6 @@ async def test_status_response_format() -> None:
         response = await ac.get("/status")
         data = response.json()
         assert "status" in data
-        assert data["status"] == "Helloria est opérationnel"
+        assert data["status"] == "active"
+        assert "service" in data
+        assert "modules" in data

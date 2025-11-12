@@ -110,7 +110,7 @@ check_critical_files() {
 
     critical_files=(
         "/app/scripts/run/run_arkalia_api.py"
-        "/app/helloria/core.py"
+        "/app/modules/helloria/core.py"
         "/app/modules/reflexia/core.py"
         "/app/modules/zeroia/core.py"
         "/app/modules/assistantia/core.py"

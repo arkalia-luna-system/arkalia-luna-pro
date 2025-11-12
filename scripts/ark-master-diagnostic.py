@@ -122,7 +122,7 @@ class MasterOrchestratorDiagnostic:
             # Vérifier les métriques
             monitoring_status = [
                 "✅ ArkaliaMetrics dans modules/monitoring/",
-                "✅ Endpoint /metrics dans helloria/core.py",
+                "✅ Endpoint /metrics dans modules/helloria/core.py",
                 "❌ Pas d'exposition /metrics dans Master Container",
                 "✅ Logs persistants dans /app/logs/",
                 "✅ State sauvegardé dans state/arkalia_master_state.toml",

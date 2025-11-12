@@ -8,7 +8,7 @@ depuis des fichiers TOML avec cache optimisé.
 import toml
 
 from core.ark_logger import ark_logger
-from modules.utils_enhanced import load_toml_cached
+from modules.utils.helpers import load_toml_cached
 
 
 def load_weights(path: str) -> dict:

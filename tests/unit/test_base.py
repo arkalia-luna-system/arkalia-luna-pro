@@ -2,7 +2,7 @@
 
 from fastapi.testclient import TestClient
 
-from helloria.core import app  # Assure-toi que helloria/core.py expose bien `app`
+from modules.helloria.core import app  # Assure-toi que modules/helloria/core.py expose bien `app`
 
 client = TestClient(app)
 
