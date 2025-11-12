@@ -21,7 +21,7 @@
 
 ## 🎯 DÉTAIL DES TRANSFORMATIONS
 
-### 1. 🔧 **BOOTSTRAP COMPLET** - `bootstrap_arkalia.py`
+### 1. 🔧 **BOOTSTRAP COMPLET** - `scripts/tools/bootstrap_arkalia.py`
 
 **Fonctionnalités implémentées :**
 - ✅ **Vérification Docker** : Version, daemon, images requises
@@ -33,7 +33,7 @@
 **Usage :**
 ```bash
 # Vérification complète
-python bootstrap_arkalia.py
+python scripts/tools/bootstrap_arkalia.py
 
 # Résultat : Rapport détaillé + recommandations
 ```
@@ -173,7 +173,7 @@ pytest tests/chaos/ -v -m chaos
 ### **Tests de Fonctionnement**
 ```bash
 # ✅ Bootstrap testé
-python bootstrap_arkalia.py
+python scripts/tools/bootstrap_arkalia.py
 # Résultat : Vérification complète + rapport JSON
 
 # ✅ Métriques testées

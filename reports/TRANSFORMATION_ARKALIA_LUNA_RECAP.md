@@ -53,7 +53,7 @@ modules/zeroia/archive/zeroia_legacy/
 
 **Reflexia :**
 ```python
-# run_reflexia_api.py - API FastAPI dédiée
+# scripts/run/run_reflexia_api.py - API FastAPI dédiée
 @app.get("/health")
 async def health_check() -> dict:
     return {"status": "healthy"}
@@ -61,7 +61,7 @@ async def health_check() -> dict:
 
 **Cognitive Reactor :**
 ```python
-# run_cognitive_api.py - Nouveau script API
+# scripts/run/run_cognitive_api.py - Nouveau script API
 @app.get("/health")
 async def health_check() -> dict:
     return {"status": "healthy", "service": "cognitive_reactor"}

@@ -23,7 +23,7 @@ Toutes les optimisations stratégiques suggérées par l'utilisateur ont été *
   - Cohérence des données
 
 ### 3. **Score Cognitif Global** ✅ VALIDÉ
-- **Fichiers créés :** `arkalia_score.py` + `config/arkalia_score.toml`
+- **Fichiers créés :** `scripts/tools/arkalia_score.py` + `config/arkalia_score.toml`
 - **Test :** ✅ Score généré avec succès
 - **Résultat :**
   ```
@@ -33,7 +33,7 @@ Toutes les optimisations stratégiques suggérées par l'utilisateur ont été *
   ```
 
 ### 4. **Demo Global** ✅ VALIDÉ
-- **Fichier créé :** `demo_global.py`
+- **Fichier créé :** `scripts/demo/demo_global.py`
 - **Test :** ✅ Démonstration complète réussie
 - **Résultats :**
   ```

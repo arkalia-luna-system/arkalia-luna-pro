@@ -35,7 +35,7 @@
 
 ## 🚀 Essayez la démo en 1 commande
 ```bash
-python demo_global.py
+python scripts/demo/demo_global.py
 ```
 
 ## 📊 Suivi IA en temps réel

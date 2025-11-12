@@ -140,7 +140,7 @@ Les points d'amélioration identifiés sont mineurs et n'affectent pas la qualit
 
 | Endpoint Documenté | Trouvé dans le Code | Module |
 |-------------------|---------------------|---------|
-| `/health` | ✅ Oui | `helloria/core.py`, `run_reflexia_api.py` |
+| `/health` | ✅ Oui | `helloria/core.py`, `scripts/run/run_reflexia_api.py` |
 | `/metrics` | ✅ Oui | Multiple modules |
 | `/status` | ✅ Oui | `helloria/core.py`, `zeroia/core.py` |
 | `/api/v1/health` | ✅ Oui | `assistantia/core.py` |
