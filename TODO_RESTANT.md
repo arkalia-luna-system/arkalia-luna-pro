@@ -1,6 +1,6 @@
 # 📋 TODO Restant - Corrections Luna Pro
 
-**Date** : novembre 2025
+**Date** : novembre 2025  
 **Basé sur** : Audit V2 (AUDIT_VERIFICATION_PLAN_ACTION_V2.md)
 
 ---
@@ -13,78 +13,44 @@
 - ✅ **Mentions Enterprise corrigées** : Dans README et docs principaux
 - ✅ **Dates uniformisées** : Tous les .md → `novembre 2025`
 - ✅ **Formatage** : Black + Ruff OK
-- ✅ **Push sur develop** : 3 commits effectués
+- ✅ **Badge Codecov officiel** : Ajouté dans README (ligne 11)
+- ✅ **Section "Architecture des Containers"** : Créée dans README avec diagramme Mermaid
+- ✅ **Section "Cas d'Usage"** : Créée dans README avec 6 cas d'usage détaillés
+- ✅ **docs/getting-started/use-cases.md** : Guide complet créé
+- ✅ **docs/architecture/containers.md** : Documentation détaillée créée
+- ✅ **Diagrammes Mermaid** : Architecture et flux de données ajoutés
+- ✅ **Push sur develop** : Tous les commits effectués
 
 ---
 
 ## ❌ CE QUI RESTE À FAIRE
 
-### 🔴 CRITIQUE (Impact crédibilité)
+### 🟠 HAUTE PRIORITÉ (Nécessite intervention manuelle)
 
-#### 1. **Badge Codecov officiel manquant** ⏱️ 15 min
-- ❌ **État actuel** : Badge custom existe mais pas lié à Codecov
-- ✅ **codecov.yml** existe et est configuré
-- ❌ **Action** : Ajouter badge Codecov dans README :
-  ```markdown
-  [![codecov](https://codecov.io/gh/athalia-siwek/arkalia-luna-pro/branch/develop/graph/badge.svg)](https://codecov.io/gh/athalia-siwek/arkalia-luna-pro)
-  ```
-- 📍 **Emplacement** : Après le badge Coverage existant (ligne 11)
-
-#### 2. **Documenter les 5 containers actifs** ⏱️ 1h
-- ❌ **État actuel** : Pas de section dédiée dans README
-- ✅ **docker-compose.yml** contient les définitions
-- ❌ **Action** : Créer section "Architecture des Containers" dans README avec :
-  - Liste des 5 containers actifs
-  - Rôle de chaque container
-  - Ports exposés
-  - Dépendances entre containers
-  - Diagramme Mermaid des interactions
-
----
-
-### 🟠 HAUTE PRIORITÉ (Impact présentation)
-
-#### 3. **Screenshots dashboard manquants** ⏱️ 2h
+#### 1. **Screenshots dashboard manquants** ⏱️ 2h
 - ❌ **État actuel** : Seulement 1 PNG (`docs/img/diagram_kernel.png`)
 - ❌ **Manque** :
   - Screenshot dashboard Grafana (8 dashboards mentionnés)
   - Screenshot orchestration Docker (`docker ps`)
   - Screenshot Prometheus
+  - Screenshot AlertManager
 - ✅ **Action** :
-  1. Capturer les screenshots
-  2. Les ajouter dans `docs/img/`
-  3. Les référencer dans README et `docs/infrastructure/monitoring.md`
+  1. Démarrer Docker Compose : `docker-compose up -d`
+  2. Démarrer monitoring stack : `cd infrastructure/monitoring && docker-compose up -d`
+  3. Capturer les screenshots :
+     - Grafana : http://localhost:3000 (8 dashboards)
+     - Prometheus : http://localhost:9090
+     - Docker : `docker ps` (orchestration)
+     - AlertManager : http://localhost:9093
+  4. Sauvegarder dans `docs/img/` :
+     - `dashboard-grafana-overview.png`
+     - `dashboard-grafana-cognitif.png`
+     - `dashboard-prometheus.png`
+     - `docker-containers.png`
+     - `alertmanager.png`
+  5. Les référencer dans README et `docs/infrastructure/monitoring.md`
 
-#### 4. **Cas d'usage métier non documentés** ⏱️ 2-3h
-- ❌ **État actuel** : Cas d'usage dans `reports/README_LANDING.md` mais pas dans doc principale
-- ❌ **Manque** : Section "Cas d'usage" dans README et `docs/getting-started/`
-- ✅ **Action** :
-  1. Créer `docs/getting-started/use-cases.md`
-  2. Déplacer/améliorer les 5 cas d'usage de `reports/README_LANDING.md`
-  3. Ajouter exemples concrets avec code/config
-  4. Ajouter section "Cas d'usage" dans README principal
-
-#### 5. **Vue d'ensemble README à améliorer** ⏱️ 2h
-- ⚠️ **État actuel** : README complet (339 lignes) mais manque de visuels
-- ❌ **Manque** :
-  - Diagramme d'architecture visuel (Mermaid ou image)
-  - Section "Cas d'usage" avec exemples
-  - Section "Architecture des Containers" avec diagramme
-- ✅ **Action** :
-  1. Ajouter diagramme Mermaid de l'architecture
-  2. Ajouter section "Cas d'usage" avec exemples
-  3. Améliorer section "Architecture" avec diagramme visuel
-
----
-
-### 🟡 MOYENNE PRIORITÉ (Amélioration continue)
-
-#### 6. **Documentation containers dédiée** ⏱️ 1h
-- ❌ **État actuel** : Pas de fichier dédié
-- ✅ **Action** : Créer `docs/architecture/containers.md` avec :
-  - Description détaillée de chaque container
-  - Diagramme d'interactions entre containers (Mermaid)
-  - Guide de configuration et déploiement
+**Note** : Cette tâche nécessite que les services soient démarrés et opérationnels.
 
 ---
 
@@ -92,45 +58,59 @@
 
 | Priorité | Tâche | Temps | Statut |
 |-----------|-------|-------|--------|
-| 🔴 CRITIQUE | Badge Codecov | 15 min | ❌ À faire |
-| 🔴 CRITIQUE | Doc 5 containers | 1h | ❌ À faire |
-| 🟠 HAUTE | Screenshots dashboard | 2h | ❌ À faire |
-| 🟠 HAUTE | Cas d'usage métier | 2-3h | ❌ À faire |
-| 🟠 HAUTE | Vue d'ensemble README | 2h | ❌ À faire |
-| 🟡 MOYENNE | Doc containers dédiée | 1h | ❌ À faire |
+| 🔴 CRITIQUE | Badge Codecov | 15 min | ✅ **FAIT** |
+| 🔴 CRITIQUE | Doc 5 containers | 1h | ✅ **FAIT** |
+| 🟠 HAUTE | Screenshots dashboard | 2h | ❌ **À FAIRE** (intervention manuelle) |
+| 🟠 HAUTE | Cas d'usage métier | 2-3h | ✅ **FAIT** |
+| 🟠 HAUTE | Vue d'ensemble README | 2h | ✅ **FAIT** |
+| 🟡 MOYENNE | Doc containers dédiée | 1h | ✅ **FAIT** |
 
-**Temps total estimé** : **8-10h**
+**Temps total restant** : **2h** (screenshots uniquement)
 
 ---
 
-## 🎯 PROCHAINES ÉTAPES RECOMMANDÉES
+## 🎯 PROCHAINES ÉTAPES
 
-### Phase 1 : Corrections rapides (30 min)
-1. ✅ Badge Codecov (15 min)
-2. ✅ Section "Architecture des Containers" dans README (15 min)
+### Phase Finale : Screenshots (2h - Intervention manuelle)
 
-### Phase 2 : Documentation (3-4h)
-3. ✅ Cas d'usage métier (`docs/getting-started/use-cases.md`)
-4. ✅ Section "Cas d'usage" dans README
-5. ✅ Diagramme architecture Mermaid
+1. **Prérequis** :
+   ```bash
+   # Démarrer tous les services
+   docker-compose up -d
+   
+   # Démarrer monitoring
+   cd infrastructure/monitoring
+   docker-compose -f docker-compose.monitoring.yml up -d
+   
+   # Vérifier que tout est opérationnel
+   docker ps
+   curl http://localhost:8000/health
+   curl http://localhost:3000/api/health
+   ```
 
-### Phase 3 : Visuels (2h)
-6. ✅ Screenshots dashboard Grafana
-7. ✅ Screenshot orchestration Docker
+2. **Capturer les screenshots** :
+   - Ouvrir Grafana : http://localhost:3000
+   - Capturer les 8 dashboards principaux
+   - Ouvrir Prometheus : http://localhost:9090
+   - Capturer la page principale
+   - Exécuter `docker ps` et capturer la sortie
+   - Ouvrir AlertManager : http://localhost:9093
 
-### Phase 4 : Documentation avancée (1h)
-8. ✅ `docs/architecture/containers.md` dédié
+3. **Ajouter dans la documentation** :
+   - Sauvegarder dans `docs/img/`
+   - Référencer dans README (section Monitoring)
+   - Référencer dans `docs/infrastructure/monitoring.md`
 
 ---
 
 ## 📝 NOTES
 
-- **Badge Codecov** : Nécessite que le repo soit connecté à Codecov.io (peut nécessiter setup GitHub)
 - **Screenshots** : Nécessite que Docker et Grafana soient démarrés pour capturer
-- **Cas d'usage** : Contenu existe dans `reports/README_LANDING.md`, à déplacer/améliorer
+- **Tout le reste est terminé** ✅
+- **Qualité code** : Black, Ruff, Bandit, Pre-commit tous OK ✅
+- **Documentation** : Complète et à jour ✅
 
 ---
 
-**Dernière mise à jour** : novembre 2025
+**Dernière mise à jour** : novembre 2025  
 **Basé sur** : AUDIT_VERIFICATION_PLAN_ACTION_V2.md
-
