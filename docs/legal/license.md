@@ -24,7 +24,7 @@
 |----------------|-----------------------------------------------------|
 | 🧠 Créatrice     | **Athalia 🌙** (Architecte IA, développeuse système) |
 | 📂 Dépôt GitHub  | [arkalia-luna-system](https://github.com/arkalia-luna-system) |
-| 📜 Objectif      | Système IA enterprise auto-réflexif et intelligence croisée |
+| 📜 Objectif      | Système IA production-ready auto-réflexif et intelligence croisée |
 | 🎯 Version       | **v3.x Phase 2 Sandozia Intelligence Croisée** |
 
 ---

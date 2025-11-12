@@ -59,7 +59,7 @@ make test-integration
 - ✅ **Cognitive Reactor** - Réactions cognitives automatiques
 - ✅ **Monitoring Complet Production-Ready** - Stack observabilité totale
 - ✅ **Sécurité Renforcée** - Fail2ban, vault, sandbox, tokens, scan Bandit
-- ✅ **Conteneurisation Optimisée** - 7 modules IA opérationnels
+- ✅ **Conteneurisation Optimisée** - 5 containers actifs
 - ✅ **Health Checks Automatiques** - Tous les services healthy (vérification Python natif)
 - ✅ **CI/CD 100% verte** - Workflows optimisés, artefacts conditionnels, upload Bandit/coverage
 
