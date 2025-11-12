@@ -20,7 +20,7 @@ from pathlib import Path
 from typing import Any
 
 from core.ark_logger import ark_logger
-from modules.sandozia.analyzer.behavior import BehaviorAnalyzer
+from ..analyzer.behavior import BehaviorAnalyzer
 from modules.zeroia.event_store import EventStore, EventType
 
 
