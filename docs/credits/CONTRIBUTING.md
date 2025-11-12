@@ -74,7 +74,7 @@ Les tests doivent être isolés dans `tests/` par module.
 pytest tests/unit/ --cov=modules --cov-report=html
 
 # Tests d'intégration
-pytest tests/integration/ -c pytest-integration.ini
+pytest tests/integration/ -c config/pytest/pytest-integration.ini
 
 # Tests de chaos
 pytest tests/chaos/ -v

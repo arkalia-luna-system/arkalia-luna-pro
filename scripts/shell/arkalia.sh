@@ -43,7 +43,7 @@ case "$1" in
     test)
         print_header
         echo -e "${GREEN}🧪 Lancement de tous les tests...${NC}"
-        ./ark-test-full.sh
+        ./scripts/shell/ark-test-full.sh
         ;;
     test-fast)
         print_header

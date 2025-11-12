@@ -161,8 +161,8 @@ check_environment() {
     fi
 
     # Vérification pytest.ini
-    if [ ! -f pytest.ini ]; then
-        print_warning "pytest.ini missing, some tests might fail"
+    if [ ! -f config/pytest/pytest.ini ]; then
+        print_warning "config/pytest/pytest.ini missing, some tests might fail"
     else
         print_success "Pytest configuration found"
     fi

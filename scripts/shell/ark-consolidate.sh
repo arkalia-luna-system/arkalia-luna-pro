@@ -303,7 +303,7 @@ case "$1" in
     test)
         print_header
         echo -e "${GREEN}🧪 Lancement de tous les tests...${NC}"
-        ./ark-test-full.sh
+        ./scripts/shell/ark-test-full.sh
         ;;
     test-fast)
         print_header
@@ -318,7 +318,7 @@ case "$1" in
     clean)
         print_header
         echo -e "${GREEN}🧹 Nettoyage du projet...${NC}"
-        ./ark-clean.sh
+        ./scripts/shell/ark-clean.sh
         ;;
     archive)
         print_header

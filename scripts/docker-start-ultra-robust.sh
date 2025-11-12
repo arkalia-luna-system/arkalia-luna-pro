@@ -15,7 +15,7 @@ fi
 
 # Nettoyer les conteneurs existants
 echo "🧹 Nettoyage des conteneurs existants..."
-docker-compose -f docker-compose-ultra-robust.yml down --remove-orphans
+docker-compose -f config/docker/docker-compose-ultra-robust.yml down --remove-orphans
 
 # Créer les répertoires nécessaires
 echo "📁 Création des répertoires nécessaires..."
@@ -32,7 +32,7 @@ wait_for_service() {
     elapsed=0
     while [ $elapsed -lt $timeout ]; do
         # Vérifier le statut du conteneur
-        container_status=$(docker-compose -f docker-compose-ultra-robust.yml ps $service_name | grep -o "healthy\|unhealthy\|starting" | head -1 || echo "unknown")
+        container_status=$(docker-compose -f config/docker/docker-compose-ultra-robust.yml ps $service_name | grep -o "healthy\|unhealthy\|starting" | head -1 || echo "unknown")
 
         if [ "$container_status" = "healthy" ]; then
             echo "✅ $service_name est prêt!"
@@ -41,7 +41,7 @@ wait_for_service() {
             echo "❌ $service_name est marqué comme unhealthy"
             # Afficher les logs pour diagnostic
             echo "📋 Logs de $service_name:"
-            docker-compose -f docker-compose-ultra-robust.yml logs --tail=20 $service_name
+            docker-compose -f config/docker/docker-compose-ultra-robust.yml logs --tail=20 $service_name
             return 1
         fi
 
@@ -52,7 +52,7 @@ wait_for_service() {
 
     echo "⏰ Timeout: $service_name n'est pas prêt après ${timeout}s"
     echo "📋 Logs de $service_name:"
-    docker-compose -f docker-compose-ultra-robust.yml logs --tail=50 $service_name
+    docker-compose -f config/docker/docker-compose-ultra-robust.yml logs --tail=50 $service_name
     return 1
 }
 
@@ -93,7 +93,7 @@ echo "🚀 Démarrage des services dans l'ordre avec gestion d'erreurs..."
 
 # 1. Démarrer l'API principale
 echo "📡 Démarrage de l'API principale (arkalia-api)..."
-docker-compose -f docker-compose-ultra-robust.yml up -d arkalia-api
+docker-compose -f config/docker/docker-compose-ultra-robust.yml up -d arkalia-api
 
 # Attendre que l'API soit prête (timeout très long)
 if wait_for_service "arkalia-api" 600 "healthcheck"; then
@@ -104,14 +104,14 @@ else
         echo "✅ API principale répond manuellement!"
     else
         echo "❌ API principale ne répond pas, arrêt du processus"
-        docker-compose -f docker-compose-ultra-robust.yml logs arkalia-api
+        docker-compose -f config/docker/docker-compose-ultra-robust.yml logs arkalia-api
         exit 1
     fi
 fi
 
 # 2. Démarrer ReflexIA
 echo "🔁 Démarrage de ReflexIA..."
-docker-compose -f docker-compose-ultra-robust.yml up -d reflexia
+docker-compose -f config/docker/docker-compose-ultra-robust.yml up -d reflexia
 
 # Attendre que ReflexIA soit prêt
 if wait_for_service "reflexia" 300 "healthcheck"; then
@@ -122,22 +122,22 @@ else
         echo "✅ ReflexIA répond manuellement!"
     else
         echo "❌ ReflexIA ne répond pas, arrêt du processus"
-        docker-compose -f docker-compose-ultra-robust.yml logs reflexia
+        docker-compose -f config/docker/docker-compose-ultra-robust.yml logs reflexia
         exit 1
     fi
 fi
 
 # 3. Démarrer les autres services
 echo "🚀 Démarrage des autres services..."
-docker-compose -f docker-compose-ultra-robust.yml up -d
+docker-compose -f config/docker/docker-compose-ultra-robust.yml up -d
 
 # Attendre que tous les services soient prêts
 echo "⏳ Attente que tous les services soient prêts..."
 timeout=600  # 10 minutes
 elapsed=0
 while [ $elapsed -lt $timeout ]; do
-    unhealthy_count=$(docker-compose -f docker-compose-ultra-robust.yml ps | grep -c "unhealthy" || true)
-    starting_count=$(docker-compose -f docker-compose-ultra-robust.yml ps | grep -c "starting" || true)
+    unhealthy_count=$(docker-compose -f config/docker/docker-compose-ultra-robust.yml ps | grep -c "unhealthy" || true)
+    starting_count=$(docker-compose -f config/docker/docker-compose-ultra-robust.yml ps | grep -c "starting" || true)
 
     if [ "$unhealthy_count" -eq 0 ] && [ "$starting_count" -eq 0 ]; then
         echo "✅ Tous les services sont prêts!"
@@ -151,7 +151,7 @@ done
 
 # Afficher le statut final
 echo "📊 Statut final des services:"
-docker-compose -f docker-compose-ultra-robust.yml ps
+docker-compose -f config/docker/docker-compose-ultra-robust.yml ps
 
 # Vérification manuelle des endpoints
 echo "🔍 Vérification manuelle des endpoints..."
@@ -187,11 +187,11 @@ if [ "$all_services_ok" = true ]; then
 else
     echo "⚠️ ATTENTION: Certains services ne répondent pas correctement"
     echo "📋 Consultez les logs pour plus de détails:"
-    echo "   docker-compose -f docker-compose-ultra-robust.yml logs"
+    echo "   docker-compose -f config/docker/docker-compose-ultra-robust.yml logs"
 fi
 
 echo ""
 echo "🔧 Commandes utiles:"
-echo "   docker-compose -f docker-compose-ultra-robust.yml ps"
-echo "   docker-compose -f docker-compose-ultra-robust.yml logs -f <service>"
-echo "   docker-compose -f docker-compose-ultra-robust.yml restart <service>"
+echo "   docker-compose -f config/docker/docker-compose-ultra-robust.yml ps"
+echo "   docker-compose -f config/docker/docker-compose-ultra-robust.yml logs -f <service>"
+echo "   docker-compose -f config/docker/docker-compose-ultra-robust.yml restart <service>"

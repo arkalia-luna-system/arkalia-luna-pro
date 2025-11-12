@@ -114,7 +114,11 @@ class TestBasicE2E:
 
     def test_config_files_exist(self):
         """Test que les fichiers de configuration existent"""
-        config_files = ["config/arkalia_master_config.toml", "config/settings.toml", "pytest.ini"]
+        config_files = [
+            "config/arkalia_master_config.toml",
+            "config/settings.toml",
+            "config/pytest/pytest.ini",
+        ]
 
         for config_file in config_files:
             if Path(config_file).exists():

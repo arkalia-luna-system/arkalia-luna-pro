@@ -89,7 +89,7 @@ GET /metrics
 http://localhost:8000
 ```
 
-### **Endpoints**
+### **Endpoints ZeroIA**
 
 #### **POST /chat** - Interface de chat avec l'IA
 
@@ -141,7 +141,7 @@ Content-Type: application/json
 http://localhost:8002
 ```
 
-### **Endpoints**
+### **Endpoints Reflexia**
 
 #### **GET /reflexia/check** - Vérification réflexive
 
@@ -172,7 +172,7 @@ GET /reflexia/metrics
 
 **Description** : Métriques au format Prometheus pour Reflexia
 
-#### **GET /health** - Health Check
+#### **GET /reflexia/health** - Health Check Reflexia
 
 ```http
 GET /health
@@ -223,7 +223,7 @@ GET http://localhost:8000/metrics
 http://localhost:8001
 ```
 
-### **Endpoints**
+### **Endpoints AssistantIA**
 
 #### **POST /api/v1/chat** - Conversation IA
 

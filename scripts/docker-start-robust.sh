@@ -14,7 +14,7 @@ fi
 
 # Nettoyer les conteneurs existants
 echo "🧹 Nettoyage des conteneurs existants..."
-docker-compose -f docker-compose-fixed.yml down --remove-orphans
+docker-compose -f config/docker/docker-compose-fixed.yml down --remove-orphans
 
 # Créer les répertoires nécessaires
 echo "📁 Création des répertoires nécessaires..."
@@ -25,14 +25,14 @@ echo "🚀 Démarrage des services dans l'ordre..."
 
 # 1. Démarrer l'API principale
 echo "📡 Démarrage de l'API principale (arkalia-api)..."
-docker-compose -f docker-compose-fixed.yml up -d arkalia-api
+docker-compose -f config/docker/docker-compose-fixed.yml up -d arkalia-api
 
 # Attendre que l'API soit prête
 echo "⏳ Attente que l'API principale soit prête..."
 timeout=300  # 5 minutes
 elapsed=0
 while [ $elapsed -lt $timeout ]; do
-    if docker-compose -f docker-compose-fixed.yml ps arkalia-api | grep -q "healthy"; then
+    if docker-compose -f config/docker/docker-compose-fixed.yml ps arkalia-api | grep -q "healthy"; then
         echo "✅ API principale prête!"
         break
     fi
@@ -43,20 +43,20 @@ done
 
 if [ $elapsed -ge $timeout ]; then
     echo "❌ Timeout: L'API principale n'est pas prête"
-    docker-compose -f docker-compose-fixed.yml logs arkalia-api
+    docker-compose -f config/docker/docker-compose-fixed.yml logs arkalia-api
     exit 1
 fi
 
 # 2. Démarrer ReflexIA
 echo "🔁 Démarrage de ReflexIA..."
-docker-compose -f docker-compose-fixed.yml up -d reflexia
+docker-compose -f config/docker/docker-compose-fixed.yml up -d reflexia
 
 # Attendre que ReflexIA soit prêt
 echo "⏳ Attente que ReflexIA soit prêt..."
 timeout=180  # 3 minutes
 elapsed=0
 while [ $elapsed -lt $timeout ]; do
-    if docker-compose -f docker-compose-fixed.yml ps reflexia | grep -q "healthy"; then
+    if docker-compose -f config/docker/docker-compose-fixed.yml ps reflexia | grep -q "healthy"; then
         echo "✅ ReflexIA prêt!"
         break
     fi
@@ -67,20 +67,20 @@ done
 
 if [ $elapsed -ge $timeout ]; then
     echo "❌ Timeout: ReflexIA n'est pas prêt"
-    docker-compose -f docker-compose-fixed.yml logs reflexia
+    docker-compose -f config/docker/docker-compose-fixed.yml logs reflexia
     exit 1
 fi
 
 # 3. Démarrer les autres services
 echo "🚀 Démarrage des autres services..."
-docker-compose -f docker-compose-fixed.yml up -d
+docker-compose -f config/docker/docker-compose-fixed.yml up -d
 
 # Attendre que tous les services soient prêts
 echo "⏳ Attente que tous les services soient prêts..."
 timeout=300  # 5 minutes
 elapsed=0
 while [ $elapsed -lt $timeout ]; do
-    unhealthy_count=$(docker-compose -f docker-compose-fixed.yml ps | grep -c "unhealthy" || true)
+    unhealthy_count=$(docker-compose -f config/docker/docker-compose-fixed.yml ps | grep -c "unhealthy" || true)
     if [ "$unhealthy_count" -eq 0 ]; then
         echo "✅ Tous les services sont prêts!"
         break
@@ -92,7 +92,7 @@ done
 
 # Afficher le statut final
 echo "📊 Statut final des services:"
-docker-compose -f docker-compose-fixed.yml ps
+docker-compose -f config/docker/docker-compose-fixed.yml ps
 
 # Vérifier les endpoints
 echo "🔍 Vérification des endpoints..."
