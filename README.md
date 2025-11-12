@@ -141,36 +141,36 @@ graph TB
     H --> Z
     A --> Z
     R --> Z
-    
+
     Z --> ZD
     Z --> ZC
     Z --> ZG
     Z --> ZE
-    
+
     Z --> S
     S --> SA
     S --> SV
-    
+
     Z --> CR
     CR --> GA
-    
+
     H --> GS
     S --> GS
     CR --> GS
-    
+
     H --> V
     S --> V
     Z --> V
-    
+
     H --> P
     Z --> P
     S --> P
     CR --> P
-    
+
     P --> G
     P --> AM
     L --> G
-    
+
     GS --> ST
     V --> ST
 ```
@@ -222,7 +222,7 @@ graph TD
     A --> C[reflexia:8002]
     C --> D[arkalia-sandozia]
     C --> E[cognitive:8003]
-    
+
     style A fill:#4CAF50
     style B fill:#2196F3
     style C fill:#FF9800
@@ -230,38 +230,9 @@ graph TD
     style E fill:#F44336
 ```
 
-## 🎯 Cas d'Usage Métier
-
-Arkalia-LUNA Pro s'adapte à plusieurs cas d'usage professionnels :
-
-### 1. Détection d'incidents et réponse automatisée
-- **Contexte** : Surveillance système 24/7 avec détection automatique d'anomalies
-- **Modules utilisés** : ZeroIA (décision), Reflexia (monitoring), Sandozia (validation)
-- **Bénéfice** : Réduction du temps de réponse de 90%
-
-### 2. Surveillance cognitive temps réel
-- **Contexte** : Monitoring de la santé et performance des modules IA
-- **Modules utilisés** : Reflexia, Prometheus, Grafana
-- **Bénéfice** : Visibilité complète sur l'état du système
-
-### 3. Automatisation de workflows critiques
-- **Contexte** : Orchestration de tâches complexes avec validation croisée
-- **Modules utilisés** : ZeroIA, Sandozia, Cognitive Reactor
-- **Bénéfice** : Fiabilité accrue grâce à la validation multi-modules
-
-### 4. Audit et conformité IA
-- **Contexte** : Traçabilité des décisions et conformité réglementaire
-- **Modules utilisés** : ZeroIA (Event Sourcing), Security (audit)
-- **Bénéfice** : Conformité GDPR, traçabilité complète
-
-### 5. SaaS IA modulaire pour PME/ETI/Grands comptes
-- **Contexte** : Plateforme IA modulaire et scalable
-- **Modules utilisés** : Tous les modules (architecture modulaire)
-- **Bénéfice** : Déploiement rapide, scalabilité, maintenance facilitée
-
-Pour plus de détails, voir [Guide des Cas d'Usage](docs/getting-started/use-cases.md).
-
 ## 🎯 Cas d'Usage
+
+Arkalia-LUNA Pro s'adapte à plusieurs cas d'usage professionnels avec des exemples pratiques détaillés ci-dessous.
 
 ### 1. 🔒 Détection et Réponse Automatique aux Incidents de Sécurité
 

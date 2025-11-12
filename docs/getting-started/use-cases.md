@@ -187,4 +187,3 @@ curl http://localhost:8000/health
 ---
 
 **Dernière mise à jour : novembre 2025
-

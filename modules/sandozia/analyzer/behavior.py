@@ -486,17 +486,11 @@ if __name__ == "__main__":
         # Générer des données synthétiques
         for _i in range(50):
             # Métriques normales (démo uniquement)
-            analyzer.add_metric_sample(
-                "reflexia", "confidence_score", random.uniform(0.7, 0.95)
-            )  # nosec B311
-            analyzer.add_metric_sample(
-                "zeroia", "confidence_score", random.uniform(0.6, 0.9)
-            )  # nosec B311
+            analyzer.add_metric_sample("reflexia", "confidence_score", random.uniform(0.7, 0.95))  # nosec B311
+            analyzer.add_metric_sample("zeroia", "confidence_score", random.uniform(0.6, 0.9))  # nosec B311
 
             # Temps de réponse
-            analyzer.add_metric_sample(
-                "reflexia", "response_time", random.uniform(0.1, 0.5)
-            )  # nosec B311
+            analyzer.add_metric_sample("reflexia", "response_time", random.uniform(0.1, 0.5))  # nosec B311
 
             time.sleep(0.01)  # Petit délai
 

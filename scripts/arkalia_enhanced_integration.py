@@ -188,9 +188,7 @@ class ArkaliaEnhancedEngine:
             "system_ram": base_ram,
             "reflexia_score": round(random.uniform(0.6, 1.0), 3),  # nosec B311
             "sandozia_health": round(random.uniform(0.7, 0.95), 3),  # nosec B311
-            "contradiction": random.choice(
-                [False, False, False, True]
-            ),  # nosec B311  # 25% contradictions
+            "contradiction": random.choice([False, False, False, True]),  # nosec B311  # 25% contradictions
             "modules_active": ["zeroia", "reflexia", "sandozia"],
             "quarantined_modules": [],
             "berserk_mode": False,

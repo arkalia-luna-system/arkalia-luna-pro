@@ -69,7 +69,7 @@ python scripts/bench_cognitif.py
 
 ## 📞 Contact & Support
 - **GitHub** : [github.com/athalia-siwek/arkalia-luna-pro](https://github.com/athalia-siwek/arkalia-luna-pro)
-- **Email** : contact@arkalia.ai
+- **Email** : arkalia.luna.system@gmail.com
 - **Gumroad** : [gumroad.com/arkalia-luna](https://gumroad.com/arkalia-luna)
 
 ---

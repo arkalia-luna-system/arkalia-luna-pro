@@ -3,6 +3,7 @@
 ## 📊 **ÉTAT ACTUEL DU SYSTÈME (Mise à jour novembre 2025)**
 
 ### ✅ **SUCCÈS MAJEUR - CI/CD 100% Verte !**
+
 - **671 tests passés** (642 unitaires + 29 intégration) ✅
 - **Couverture : 59.25%** (bien au-dessus du seuil de 28%) ✅
 - **Temps d'exécution : 31.73s** ✅
@@ -73,6 +74,7 @@ Signalez via notre [Issue Tracker GitHub](https://github.com/arkalia-luna-system
 
 <details>
 <summary>### 10. Comment démarrer rapidement avec Arkalia-LUNA Pro ?</summary>
+
 ```bash
 # Clone et setup
 git clone https://github.com/arkalia-luna-system/arkalia-luna-pro
@@ -85,6 +87,7 @@ ark-run
 # Test intelligence croisée
 python scripts/ark-validate-performance.py
 ```
+
 </details>
 
 ---

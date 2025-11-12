@@ -139,9 +139,7 @@ class TokenManager:
     - Rate limiting par token
     """
 
-    def __init__(
-        self, vault: ArkaliaVault, jwt_secret_name: str = "jwt_master_secret"
-    ) -> None:  # nosec B107
+    def __init__(self, vault: ArkaliaVault, jwt_secret_name: str = "jwt_master_secret") -> None:  # nosec B107
         """
         Fonction __init__.
 

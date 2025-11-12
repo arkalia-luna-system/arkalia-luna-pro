@@ -1,6 +1,6 @@
 # 📋 TODO Restant - Corrections Luna Pro
 
-**Date** : novembre 2025  
+**Date** : novembre 2025
 **Basé sur** : Audit V2 (AUDIT_VERIFICATION_PLAN_ACTION_V2.md)
 
 ---
@@ -131,6 +131,6 @@
 
 ---
 
-**Dernière mise à jour** : novembre 2025  
+**Dernière mise à jour** : novembre 2025
 **Basé sur** : AUDIT_VERIFICATION_PLAN_ACTION_V2.md
 

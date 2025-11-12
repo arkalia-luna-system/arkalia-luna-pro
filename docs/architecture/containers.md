@@ -120,9 +120,9 @@ graph TD
     A --> C[reflexia:8002<br/>Observateur]
     C --> D[arkalia-sandozia<br/>Intelligence Croisée]
     C --> E[cognitive:8003<br/>Intelligence Avancée]
-    
+
     B -.->|Ollama| F[LLM Local]
-    
+
     style A fill:#4CAF50,color:#fff
     style B fill:#2196F3,color:#fff
     style C fill:#FF9800,color:#fff
