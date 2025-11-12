@@ -18,7 +18,7 @@
 
 ---
 
-## 📂 Conseils de rangement / doublons
+## Conseils de rangement / doublons
 - **Démo** : Un seul script (`scripts/demo/demo_global.py`), bien placé, pas de doublon.
 - **Score** : Un générateur et un fichier TOML, centralisés.
 - **Tests** : Les tests d'intégration sont bien rangés, il manque juste le test bout-en-bout.
