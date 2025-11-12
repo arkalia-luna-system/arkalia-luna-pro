@@ -106,7 +106,7 @@ class BuildIntegrityValidator:
         }
 
         # Atomic write pour éviter corruption
-        from utils.io_safe import save_json_safe
+        from modules.utils.helpers.io_safe import save_json_safe
 
         save_json_safe(manifest_data, str(self.manifest_file))
 
@@ -381,5 +381,5 @@ if __name__ == "__main__":
         validator = BuildIntegrityValidator()
         checksums = validator.generate_checksums()
         ark_logger.info(
-            f"Generated checksums for {len(checksum, )} files", extra={"module": "crypto"}
+            f"Generated checksums for {len(checksums)} files", extra={"module": "crypto"}
         )

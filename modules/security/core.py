@@ -21,7 +21,7 @@ app = FastAPI()
 
 
 @app.get("/health")
-async def health():
+async def health() -> dict[str, str]:
     try:
         return {"status": "ok", "service": "security_guardian"}
     except Exception as e:
@@ -74,7 +74,7 @@ default_config = UsecurityConfig()
 default_core = UsecurityCore(default_config)
 
 
-async def main():
+async def main() -> None:
     """Fonction principale"""
     config = UsecurityConfig()
     core = UsecurityCore(config)

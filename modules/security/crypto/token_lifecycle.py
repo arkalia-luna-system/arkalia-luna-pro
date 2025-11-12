@@ -16,8 +16,9 @@ from typing import Any, Optional
 
 import jwt
 
-from .vault_manager import ArkaliaVault, VaultError
 from core.ark_logger import ark_logger
+
+from .vault_manager import ArkaliaVault, VaultError
 
 
 class TokenType(Enum):
@@ -243,7 +244,7 @@ class TokenManager:
                     self.token_metadata[token_id] = TokenMetadata.from_dict(meta_dict)
 
                 ark_logger.info(
-                    f"📊 Loaded metadata for {len(self.token_metadat, extra={"arkalia_module": "security"})} tokens",
+                    f"📊 Loaded metadata for {len(self.token_metadat)} tokens",
                     extra={"arkalia_module": "security"},
                 )
         except Exception as e:

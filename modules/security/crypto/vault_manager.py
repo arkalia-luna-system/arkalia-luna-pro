@@ -364,7 +364,7 @@ class ArkaliaVault(BuildIntegrityValidator):
             self.delete_secret(name)
 
         ark_logger.info(
-            f"🧹 Cleaned up {len(expired_secret, extra={"arkalia_module": "security"})} expired secrets",
+            f"🧹 Cleaned up {len(expired_secret)} expired secrets",
             extra={"arkalia_module": "security"},
         )
         return len(expired_secrets)
