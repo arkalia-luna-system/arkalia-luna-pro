@@ -105,7 +105,7 @@
 - **Black** : ✅ Formatage OK (tous fichiers formatés)
 - **Tests** : ✅ 671 tests passent (59.25% couverture)
 - **CI/CD** : ✅ 100% verte
-- **Fichiers macOS cachés** : ✅ Supprimés
+- **Fichiers macOS cachés** : ✅ Supprimés (1735 fichiers `._*` supprimés, ajouté dans `.gitignore`)
 
 ### 📈 Statistiques
 
@@ -142,9 +142,10 @@
 
 - ✅ `RECAP_COMPLET_PROJET.md` (mis à jour)
 - ✅ `AUDIT_DOUBLONS_ET_OPTIMISATIONS.md` (mis à jour)
-- ⚠️ Vérifier cohérence entre code et documentation
-- ⚠️ Mettre à jour `TODO_RESTANT.md` avec nouvelles tâches
-- ⚠️ Mettre à jour `plan-ameliorations-futures.md` avec état actuel
+- ✅ `plan-ameliorations-futures.md` (mis à jour avec Phases 1-4)
+- ✅ `VERIFICATION_ARCHIVAGE.md` (créé et mis à jour)
+- ✅ Cohérence code/documentation vérifiée
+- ⚠️ Mettre à jour `TODO_RESTANT.md` avec nouvelles tâches (optionnel)
 
 ---
 

@@ -211,7 +211,12 @@
 
 **Problème identifié :** Fichiers macOS `._*` supprimés ✅
 
-**Vérification continue :** S'assurer qu'ils ne reviennent pas
+**✅ ACTION RÉALISÉE :**
+- ✅ **SUPPRIMÉ** 1735 fichiers macOS cachés (`._*`)
+- ✅ **AJOUTÉ** `._*` dans `.gitignore` pour éviter leur retour
+- ✅ **VÉRIFIÉ** : 0 fichier `._*` restant dans le projet
+
+**Vérification continue :** Fichiers ignorés par Git maintenant
 
 ---
 
