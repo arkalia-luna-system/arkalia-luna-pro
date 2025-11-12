@@ -667,7 +667,7 @@ def reason_loop_enhanced_with_recovery(
 
         if decision_error:
             ark_logger.error(
-                f"[ZeroIA] Error Recovery triggered for: {type(decision_error, ).__name__}",
+                f"[ZeroIA] Error Recovery triggered for: {type(decision_error).__name__}",
                 extra={"arkalia_module": "zeroia"},
             )
 
