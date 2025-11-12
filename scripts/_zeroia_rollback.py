@@ -118,7 +118,11 @@ def restore_snapshot(silent: bool = False) -> bool:
     # Résoudre les chemins dynamiquement
     if SNAPSHOT_FILE is not None and SNAPSHOT_FILE.is_absolute():
         snapshot_file = SNAPSHOT_FILE
-        state_file = STATE_FILE if (STATE_FILE is not None and STATE_FILE.is_absolute()) else get_state_file()
+        state_file = (
+            STATE_FILE
+            if (STATE_FILE is not None and STATE_FILE.is_absolute())
+            else get_state_file()
+        )
     else:
         snapshot_file = get_snapshot_file()
         state_file = get_state_file()
@@ -160,7 +164,11 @@ def rollback_from_backup(silent: bool = False) -> None:
     # Résoudre les chemins dynamiquement
     if BACKUP_FILE is not None and BACKUP_FILE.is_absolute():
         backup_file = BACKUP_FILE
-        state_file = STATE_FILE if (STATE_FILE is not None and STATE_FILE.is_absolute()) else get_state_file()
+        state_file = (
+            STATE_FILE
+            if (STATE_FILE is not None and STATE_FILE.is_absolute())
+            else get_state_file()
+        )
     else:
         backup_file = get_backup_file()
         state_file = get_state_file()
