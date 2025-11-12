@@ -173,24 +173,24 @@ python -m pytest tests/integration/
 
 ### Score Cognitif Global
 ```bash
-🌍 Score Global: 0.654
-📈 Statut: good
-🚨 Alertes: 3 (seuils dépassés)
-📊 Composants:
-  - Confiance ZeroIA: 0.5 (seuil: 0.7) ⚠️
-  - Alertes Reflexia: 0 (seuil: 5) ✅
-  - Intégrité Sandozia: 0.5 (seuil: 0.8) ⚠️
-  - Charge cognitive: 0.275 (seuil: 0.6) ✅
-  - Santé système: 0.6 (seuil: 0.8) ⚠️
+Score Global: 0.654
+Statut: good
+Alertes: 3 (seuils dépassés)
+Composants:
+  - Confiance ZeroIA: 0.5 (seuil: 0.7)
+  - Alertes Reflexia: 0 (seuil: 5)
+  - Intégrité Sandozia: 0.5 (seuil: 0.8)
+  - Charge cognitive: 0.275 (seuil: 0.6)
+  - Santé système: 0.6 (seuil: 0.8)
 ```
 
 ### Démonstration Globale
 ```bash
-🎯 Scénarios exécutés: 3
-⏱️  Durée totale: 0.54s
-✅ Taux de succès: 100.0%
-🔗 Modules intégrés: 5
-📊 Métriques collectées: 15
+Scénarios exécutés: 3
+Durée totale: 0.54s
+Taux de succès: 100.0%
+Modules intégrés: 5
+Métriques collectées: 15
 ```
 
 ---
