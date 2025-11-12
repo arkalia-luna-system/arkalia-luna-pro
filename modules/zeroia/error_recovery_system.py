@@ -153,7 +153,7 @@ class ErrorRecoverySystem:
             RecoveryStrategy.MANUAL_INTERVENTION: self._manual_intervention,
         }
 
-        logger.info("🔄 ErrorRecoverySystem initialisé")
+        ark_logger.info("🔄 ErrorRecoverySystem initialisé", extra={"arkalia_module": "zeroia"})
 
     def _load_error_strategies(self) -> dict[str, dict]:
         """Charge la configuration des stratégies d'erreur"""
@@ -190,11 +190,17 @@ class ErrorRecoverySystem:
     async def _exponential_backoff(self, error_context: ErrorContext | None = None) -> Any | None:
         """Stratégie : Backoff exponentiel"""
         if error_context is None:
-            logger.warning("⚠️ Aucun contexte d'erreur fourni pour exponential_backoff")
+            ark_logger.warning(
+                "⚠️ Aucun contexte d'erreur fourni pour exponential_backoff",
+                extra={"arkalia_module": "zeroia"},
+            )
             return None
 
         delay = 2**error_context.attempt_count
-        logger.info(f"⏳ Backoff {delay}s pour {error_context.error_message}")
+        ark_logger.info(
+            f"⏳ Backoff {delay}s pour {error_context.error_message}",
+            extra={"arkalia_module": "zeroia"},
+        )
         await asyncio.sleep(delay)
         return {"status": "backoff_completed", "delay": delay}
 
@@ -203,20 +209,32 @@ class ErrorRecoverySystem:
     ) -> Any | None:
         """Stratégie : Récupération via Circuit Breaker"""
         if error_context is None:
-            logger.warning("⚠️ Aucun contexte d'erreur fourni pour circuit_break_recovery")
+            ark_logger.warning(
+                "⚠️ Aucun contexte d'erreur fourni pour circuit_break_recovery",
+                extra={"arkalia_module": "zeroia"},
+            )
             return None
 
-        logger.info(f"🔄 Circuit breaker recovery pour {error_context.error_message}")
+        ark_logger.info(
+            f"🔄 Circuit breaker recovery pour {error_context.error_message}",
+            extra={"arkalia_module": "zeroia"},
+        )
         await asyncio.sleep(5)  # Attente de stabilisation
         return {"status": "circuit_reset", "strategy": "circuit_break"}
 
     async def _graceful_degradation(self, error_context: ErrorContext | None = None) -> Any | None:
         """Stratégie : Dégradation gracieuse"""
         if error_context is None:
-            logger.warning("⚠️ Aucun contexte d'erreur fourni pour graceful_degradation")
+            ark_logger.warning(
+                "⚠️ Aucun contexte d'erreur fourni pour graceful_degradation",
+                extra={"arkalia_module": "zeroia"},
+            )
             return None
 
-        logger.info(f"📉 Dégradation gracieuse pour {error_context.error_message}")
+        ark_logger.info(
+            f"📉 Dégradation gracieuse pour {error_context.error_message}",
+            extra={"arkalia_module": "zeroia"},
+        )
         return {
             "status": "degraded_mode",
             "features_available": ["basic", "monitoring"],
@@ -226,20 +244,32 @@ class ErrorRecoverySystem:
     async def _system_restart(self, error_context: ErrorContext | None = None) -> Any | None:
         """Stratégie : Redémarrage système (simulé)"""
         if error_context is None:
-            logger.warning("⚠️ Aucun contexte d'erreur fourni pour system_restart")
+            ark_logger.warning(
+                "⚠️ Aucun contexte d'erreur fourni pour system_restart",
+                extra={"arkalia_module": "zeroia"},
+            )
             return None
 
-        logger.critical(f"🔄 Redémarrage système requis pour {error_context.error_message}")
+        ark_logger.critical(
+            f"🔄 Redémarrage système requis pour {error_context.error_message}",
+            extra={"arkalia_module": "zeroia"},
+        )
         await asyncio.sleep(10)
         return {"status": "system_restarted", "timestamp": datetime.now().isoformat()}
 
     async def _manual_intervention(self, error_context: ErrorContext | None = None) -> Any | None:
         """Stratégie : Intervention manuelle requise"""
         if error_context is None:
-            logger.warning("⚠️ Aucun contexte d'erreur fourni pour manual_intervention")
+            ark_logger.warning(
+                "⚠️ Aucun contexte d'erreur fourni pour manual_intervention",
+                extra={"arkalia_module": "zeroia"},
+            )
             return None
 
-        logger.critical(f"🚨 INTERVENTION MANUELLE REQUISE: {error_context.error_message}")
+        ark_logger.critical(
+            f"🚨 INTERVENTION MANUELLE REQUISE: {error_context.error_message}",
+            extra={"arkalia_module": "zeroia"},
+        )
         incident_id = f"INC-{datetime.now().strftime('%Y%m%d%H%M%S')}"
         return {
             "status": "manual_intervention_required",
@@ -262,19 +292,25 @@ class ErrorRecoverySystem:
                 return await self._immediate_retry(error_context)
 
         except Exception as e:
-            logger.error(f"❌ Error during recovery: {e}")
+            ark_logger.error(f"❌ Error during recovery: {e}", extra={"arkalia_module": "zeroia"})
             return None
 
     async def _handle_timeout(self, error_context: ErrorContext) -> Any | None:
         """Handle timeout errors"""
-        logger.info(f"Handling timeout error: {error_context.error_message}")
+        ark_logger.info(
+            f"Handling timeout error: {error_context.error_message}",
+            extra={"arkalia_module": "zeroia"},
+        )
         # Add delay before retry
         await asyncio.sleep(5)
         return await self._immediate_retry(error_context)
 
     async def _handle_memory_error(self, error_context: ErrorContext) -> Any | None:
         """Handle memory-related errors"""
-        logger.info(f"Handling memory error: {error_context.error_message}")
+        ark_logger.info(
+            f"Handling memory error: {error_context.error_message}",
+            extra={"arkalia_module": "zeroia"},
+        )
         # Trigger garbage collection
         import gc
 
@@ -283,17 +319,23 @@ class ErrorRecoverySystem:
 
     async def _handle_contradiction(self, error_context: ErrorContext) -> Any | None:
         """Handle contradiction errors"""
-        logger.info(f"Handling contradiction error: {error_context.error_message}")
+        ark_logger.info(
+            f"Handling contradiction error: {error_context.error_message}",
+            extra={"arkalia_module": "zeroia"},
+        )
         # Increment contradiction count
         self.metrics["contradiction_count"] += 1
         return await self._immediate_retry(error_context)
 
     async def _immediate_retry(self, error_context: ErrorContext) -> Any | None:
         """Retry immediately with the same parameters"""
-        logger.info(f"Attempting immediate retry: {error_context.error_message}")
+        ark_logger.info(
+            f"Attempting immediate retry: {error_context.error_message}",
+            extra={"arkalia_module": "zeroia"},
+        )
 
         if error_context.attempt_count >= error_context.max_retries:
-            logger.error("Maximum retry attempts reached")
+            ark_logger.error("Maximum retry attempts reached", extra={"arkalia_module": "zeroia"})
             return None
 
         try:
@@ -304,7 +346,7 @@ class ErrorRecoverySystem:
             return True
 
         except Exception as e:
-            logger.error(f"Retry failed: {e}")
+            ark_logger.error(f"Retry failed: {e}", extra={"arkalia_module": "zeroia"})
             return None
 
     def handle_contradiction(self, zeroia_state: str, reflexia_state: str) -> None:
@@ -312,7 +354,10 @@ class ErrorRecoverySystem:
         self.metrics["contradiction_count"] += 1
 
         # Log contradiction details
-        logger.warning(f"Handling contradiction: ZeroIA={zeroia_state}, ReflexIA={reflexia_state}")
+        ark_logger.warning(
+            f"Handling contradiction: ZeroIA={zeroia_state}, ReflexIA={reflexia_state}",
+            extra={"arkalia_module": "zeroia"},
+        )
 
         # Record recovery attempt
         self.recovery_attempts[datetime.utcnow().isoformat()] = {
@@ -337,7 +382,9 @@ class ErrorRecoverySystem:
                 toml.dump(metrics_dict, f)
 
         except Exception as e:
-            logger.error(f"Failed to save error recovery metrics: {e}")
+            ark_logger.error(
+                f"Failed to save error recovery metrics: {e}", extra={"arkalia_module": "zeroia"}
+            )
 
     def get_recovery_status(self) -> dict[str, Any]:
         """Return current recovery system status"""
@@ -386,14 +433,22 @@ class ErrorRecoverySystem:
             try:
                 last_error_dt = datetime.fromisoformat(self.metrics["last_error_time"])
                 if (now - last_error_dt).total_seconds() < 60:
-                    logger.warning("⏳ Récupération en cooldown")
+                    ark_logger.warning(
+                        "⏳ Récupération en cooldown", extra={"arkalia_module": "zeroia"}
+                    )
                     return False
             except ValueError:
-                logger.warning("⚠️ Format de date invalide pour last_error_time")
+                ark_logger.warning(
+                    "⚠️ Format de date invalide pour last_error_time",
+                    extra={"arkalia_module": "zeroia"},
+                )
 
         # Vérifier le nombre de tentatives
         if self.metrics["failed_recoveries"] >= 3:
-            logger.error("❌ Nombre maximum de tentatives de récupération atteint")
+            ark_logger.error(
+                "❌ Nombre maximum de tentatives de récupération atteint",
+                extra={"arkalia_module": "zeroia"},
+            )
             return False
 
         self.metrics["failed_recoveries"] += 1
@@ -411,11 +466,13 @@ class ErrorRecoverySystem:
                 if strategy is not None and callable(strategy):
                     await strategy(None)
 
-            logger.info("✅ Récupération réussie")
+            ark_logger.info("✅ Récupération réussie", extra={"arkalia_module": "zeroia"})
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur pendant la récupération: {str(e)}")
+            ark_logger.error(
+                f"❌ Erreur pendant la récupération: {str(e)}", extra={"arkalia_module": "zeroia"}
+            )
             return False
 
 
