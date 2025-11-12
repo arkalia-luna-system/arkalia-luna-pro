@@ -1,6 +1,6 @@
 import pytest
-from demo_global import ReflexiaWrapper, SandoziaWrapper, SecurityWrapper
 
+from demo_global import ReflexiaWrapper, SandoziaWrapper, SecurityWrapper
 from modules.core.storage import StorageManager
 from modules.zeroia import ZeroIACoordinator
 
