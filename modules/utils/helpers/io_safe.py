@@ -117,7 +117,9 @@ def atomic_write(
                 try:
                     os.unlink(tmp_path)
                 except OSError as cleanup_error:
-                    logger.warning(f"Failed to cleanup temporary file {tmp_path}: {cleanup_error}")  # nosec B110
+                    logger.warning(
+                        f"Failed to cleanup temporary file {tmp_path}: {cleanup_error}"
+                    )  # nosec B110
 
             raise AtomicWriteError(f"Erreur écriture atomique {file_path}: {e}") from e
 
