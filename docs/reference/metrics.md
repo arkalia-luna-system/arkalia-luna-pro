@@ -1,23 +1,22 @@
-# 📊 Métriques Arkalia-LUNA Pro
+# Métriques Arkalia-LUNA Pro
 
-## 🎯 Vue d'ensemble
+## Vue d'ensemble
 
 Cette page documente toutes les métriques Prometheus exposées par Arkalia-LUNA Pro v2.8.0.
 
----
+## Métriques Globales
 
-## 📈 **Métriques Globales**
+### Statut des Métriques
 
-### **Statut des Métriques**
-- **Total métriques** : 34
-- **Modules couverts** : 6
-- **Métriques système** : 8
-- **Métriques sécurité** : 6
-- **Métriques performance** : 14
+| Catégorie | Nombre |
+|-----------|--------|
+| Total métriques | 34 |
+| Modules couverts | 6 |
+| Métriques système | 8 |
+| Métriques sécurité | 6 |
+| Métriques performance | 14 |
 
----
-
-## 🌐 **API Principale (Helloria) - 34 métriques**
+## API Principale (Helloria) - 34 métriques
 
 ### **Métriques Système**
 ```prometheus
@@ -97,9 +96,9 @@ arkalia_auth_successes_total{module="helloria"} 1200
 
 ---
 
-## 🧠 **ZeroIA - 12 métriques**
+## ZeroIA - 12 métriques
 
-### **Métriques de Décision**
+### Métriques de Décision
 ```prometheus
 # Decisions Made
 zeroia_decisions_total{decision_type="automatic"} 150
@@ -114,7 +113,7 @@ zeroia_decision_response_time_seconds{quantile="0.5"} 0.1
 zeroia_decision_response_time_seconds{quantile="0.95"} 0.3
 ```
 
-### **Métriques de Patterns**
+### Métriques de Patterns
 ```prometheus
 # Patterns Detected
 zeroia_patterns_detected_total{pattern_type="cpu_spike"} 5
@@ -131,9 +130,9 @@ zeroia_cognitive_contradictions_total 1
 
 ---
 
-## 👁️ **Reflexia - 8 métriques**
+## Reflexia - 8 métriques
 
-### **Métriques de Monitoring**
+### Métriques de Monitoring
 ```prometheus
 # System Monitoring
 reflexia_system_cpu_usage_percent 45.2
@@ -154,7 +153,7 @@ reflexia_monitoring_latency_seconds 0.05
 
 ---
 
-## 🔍 **Sandozia - 6 métriques**
+## Sandozia - 6 métriques
 
 ### **Métriques d'Analyse**
 ```prometheus
@@ -176,7 +175,7 @@ sandozia_analysis_response_time_seconds{quantile="0.95"} 0.8
 
 ---
 
-## 🎯 **Cognitive Reactor - 4 métriques**
+## Cognitive Reactor - 4 métriques
 
 ### **Métriques d'Orchestration**
 ```prometheus
@@ -195,7 +194,7 @@ cognitive_reactor_optimizations_applied 3
 
 ---
 
-## 🤖 **AssistantIA - 4 métriques**
+## AssistantIA - 4 métriques
 
 ### **Métriques d'Assistant**
 ```prometheus
@@ -216,7 +215,7 @@ assistantia_security_blocks_total 2
 
 ---
 
-## 📊 **Dashboards Grafana**
+## Dashboards Grafana
 
 ### **Dashboard Principal**
 - **URL** : http://localhost:3000/d/arkalia-monitoring
@@ -236,7 +235,7 @@ assistantia_security_blocks_total 2
 
 ---
 
-## 🚨 **Alertes Prometheus**
+## Alertes Prometheus
 
 ### **Règles d'Alertes**
 ```yaml

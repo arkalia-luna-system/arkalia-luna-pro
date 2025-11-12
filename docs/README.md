@@ -1,4 +1,4 @@
-# 🌙 Arkalia-LUNA Pro v2.8.0
+# Arkalia-LUNA Pro v2.8.0
 
 <div class="luna-bg-fractal">
   <!-- SVG fractal/éclair bleu, overlay -->
@@ -23,7 +23,7 @@
   </svg>
 </div>
 
-<div class="luna-status">Reflexia active. 100% system integrity</div>
+<div class="luna-status">Reflexia active. System integrity: 100%</div>
 
 <header class="luna-header">
   <nav class="luna-nav">
@@ -41,10 +41,10 @@
 
 <div style="display: flex; justify-content: flex-end; align-items: center; margin: 1rem 0 2rem 0;">
   <a href="http://localhost:5173/" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, rgba(126, 203, 255, 0.2) 0%, rgba(30, 58, 138, 0.3) 100%); color: #7ecbff; font-family: 'Orbitron', monospace; font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border-radius: 9999px; border: 1px solid rgba(126, 203, 255, 0.3); transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-    🚀 Dashboard React (Port 5173)
+    Dashboard React (Port 5173)
   </a>
   <a href="http://localhost:8081/" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, rgba(126, 203, 255, 0.2) 0%, rgba(30, 58, 138, 0.3) 100%); color: #7ecbff; font-family: 'Orbitron', monospace; font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border-radius: 9999px; border: 1px solid rgba(126, 203, 255, 0.3); transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-left: 1rem;">
-    📚 Documentation (Port 8081)
+    Documentation (Port 8081)
   </a>
 </div>
 
