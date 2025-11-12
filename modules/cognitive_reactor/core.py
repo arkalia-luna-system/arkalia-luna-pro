@@ -27,6 +27,8 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Gauge, generate_latest
 
+from modules.utils.helpers import read_state_safe, save_json_safe
+
 # === Configuration du logging ===
 logging.basicConfig(
     level=logging.INFO,
@@ -116,24 +118,18 @@ class CognitiveReactor:
     def load_cognitive_state(self) -> dict[str, Any]:
         """Charge l'état cognitif depuis le fichier"""
         state_file = self.state_dir / "cognitive_state.json"
-        try:
-            if state_file.exists():
-                with open(state_file) as f:
-                    return json.load(f)
-        except Exception as e:
-            logger.warning(f"Impossible de charger l'état cognitif: {e}")
+        loaded = read_state_safe(state_file)
+        if loaded:
+            return loaded
         return self.cognitive_state
 
-    def save_cognitive_state(self):
+    def save_cognitive_state(self) -> dict[str, Any]:
         """Sauvegarde l'état cognitif"""
         state_file = self.state_dir / "cognitive_state.json"
-        try:
-            with open(state_file, "w") as f:
-                json.dump(self.cognitive_state, f, indent=2)
+        if save_json_safe(self.cognitive_state, state_file):
             return self.cognitive_state.copy()
-        except Exception as e:
-            logger.error(f"Erreur lors de la sauvegarde de l'état: {e}")
-            return self.cognitive_state.copy()
+        logger.error("Erreur lors de la sauvegarde de l'état")
+        return self.cognitive_state.copy()
 
     def analyze_system_context(self) -> dict[str, Any]:
         """Analyse le contexte système global"""

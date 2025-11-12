@@ -24,6 +24,7 @@ from typing import Any, Optional
 import toml
 
 from core.ark_logger import ark_logger
+from modules.utils.helpers import save_json_if_changed, save_toml_if_changed
 from modules.zeroia.circuit_breaker import (  # noqa: F401
     CircuitBreaker,
     CognitiveOverloadError,
@@ -34,7 +35,6 @@ from modules.zeroia.error_recovery_system import ErrorRecoverySystem  # noqa: F4
 from modules.zeroia.event_store import Event, EventStore, EventType  # noqa: F401
 from modules.zeroia.graceful_degradation import GracefulDegradationSystem
 from modules.zeroia.utils.backup import save_backup
-from modules.zeroia.utils.state_writer import save_json_if_changed, save_toml_if_changed
 
 # === Chemins par défaut ===
 CTX_PATH = Path("state/global_context.toml")

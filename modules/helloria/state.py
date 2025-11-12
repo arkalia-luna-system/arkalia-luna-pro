@@ -5,9 +5,12 @@ Ce module fait partie du système Arkalia Luna Pro.
 """
 
 import logging
+from pathlib import Path
 from typing import Any, Optional
 
 import toml
+
+from modules.utils.helpers import read_state_safe, save_toml_safe
 
 logger = logging.getLogger(__name__)
 
@@ -34,10 +37,7 @@ class HelloriaStateManager:
 
         Cette fonction fait partie du système Arkalia Luna Pro.
         """
-        try:
-            self.state = toml.load(self.path)
-        except FileNotFoundError:
-            self.state = {}
+        self.state = read_state_safe(Path(self.path))
 
     def save(self) -> None:
         """
@@ -45,8 +45,7 @@ class HelloriaStateManager:
 
         Cette fonction fait partie du système Arkalia Luna Pro.
         """
-        with open(self.path, "w") as f:
-            toml.dump(self.state, f)
+        save_toml_safe(self.state, Path(self.path))
 
 
 def load_helloria_state(state: dict[str, Any]) -> dict[str, Any]:
@@ -58,13 +57,10 @@ def load_helloria_state(state: dict[str, Any]) -> dict[str, Any]:
     Returns:
         dict: État Helloria chargé depuis le fichier ou état par défaut.
     """
-    try:
-        with open("state/helloria_state.toml") as f:
-            return toml.load(f)
-    except FileNotFoundError:
+    loaded = read_state_safe(Path("state/helloria_state.toml"))
+    if not loaded:
         return {"status": "inactive"}
-    except Exception:
-        return {"status": "error"}
+    return loaded
 
 
 def save_helloria_state(state: dict[str, Any]) -> None:
@@ -73,11 +69,7 @@ def save_helloria_state(state: dict[str, Any]) -> None:
     Args:
         state: État à sauvegarder.
     """
-    try:
-        with open("state/helloria_state.toml", "w") as f:
-            toml.dump(state, f)
-    except Exception as e:
-        logger.warning(f"Failed to save Helloria state: {e}")  # nosec B110
+    save_toml_safe(state, Path("state/helloria_state.toml"))
 
 
 IS_HELLORIA = True

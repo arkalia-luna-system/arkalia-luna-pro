@@ -16,9 +16,7 @@ Auteur: Arkalia-LUNA Project
 """
 
 import hashlib
-import json
 import os
-from datetime import datetime
 from typing import Any, Optional
 
 import toml
@@ -47,80 +45,6 @@ def file_hash(path: str) -> str:
         return ""
     with open(path, "rb") as f:
         return hashlib.sha256(f.read()).hexdigest()
-
-
-def save_toml_if_changed(data: dict[str, Any], target_path: str) -> None:
-    """
-    Sauvegarde un fichier TOML seulement s'il y a des changements.
-
-    Utilise une approche atomique avec fichier temporaire pour éviter
-    la corruption des données. Ajoute automatiquement un timestamp.
-
-    Args:
-        data (dict[str, Any]): Dictionnaire de données à sauvegarder
-        target_path (str): Chemin de destination du fichier TOML
-
-    Raises:
-        OSError: Si erreur d'écriture fichier
-        toml.TomlDecodeError: Si erreur de sérialisation TOML
-
-    Example:
-        >>> state_data = {"decision": {"last": "monitor", "score": 0.8}}
-        >>> save_toml_if_changed(state_data, "state/zeroia_state.toml")
-    """
-    tmp_path = f"{target_path}.tmp"
-    data_to_hash = data.copy()
-    data_to_hash.pop("timestamp", None)
-
-    with open(tmp_path, "w", encoding="utf-8", newline="\n") as f:
-        toml.dump(data_to_hash, f)
-
-    if file_hash(tmp_path) != file_hash(target_path):
-        os.replace(tmp_path, target_path)
-    else:
-        os.remove(tmp_path)
-
-    data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    with open(target_path, "w", encoding="utf-8", newline="\n") as f:
-        toml.dump(data, f)
-    with open(target_path, "a", encoding="utf-8", newline="\n") as f:
-        f.write("\n")
-
-
-def save_json_if_changed(data: dict[str, Any], target_path: str) -> None:
-    """
-    Sauvegarde un fichier JSON seulement s'il y a des changements.
-
-    Utilise une approche atomique avec fichier temporaire et formatage
-    consistant (indent=2, sort_keys=True) pour faciliter les diffs Git.
-
-    Args:
-        data (dict[str, Any]): Dictionnaire de données à sauvegarder
-        target_path (str): Chemin de destination du fichier JSON
-
-    Raises:
-        OSError: Si erreur d'écriture fichier
-        json.JSONEncodeError: Si erreur de sérialisation JSON
-
-    Example:
-        >>> dashboard = {"status": "active", "last_decision": "monitor"}
-        >>> save_json_if_changed(dashboard, "state/zeroia_dashboard.json")
-    """
-    tmp_path = f"{target_path}.tmp"
-    data_to_hash = data.copy()
-    data_to_hash.pop("timestamp", None)
-
-    with open(tmp_path, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(data_to_hash, f, indent=2, sort_keys=True)
-
-    if file_hash(tmp_path) != file_hash(target_path):
-        os.replace(tmp_path, target_path)
-    else:
-        os.remove(tmp_path)
-
-    data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    with open(target_path, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(data, f, indent=2, sort_keys=True)
 
 
 def check_health(path: str) -> bool:
@@ -153,30 +77,6 @@ def check_health(path: str) -> bool:
         return False
 
 
-def write_state_json(file_path: str, data: dict[str, Any]) -> None:
-    """
-    Écrit directement un fichier JSON d'état avec formatage consistant.
-
-    Fonction simplifiée pour l'écriture directe sans vérification de hash.
-    Utilisée principalement pour les snapshots et exports d'état.
-
-    Args:
-        file_path (str): Chemin de destination du fichier JSON
-        data (dict[str, Any]): Données à écrire
-
-    Raises:
-        OSError: Si erreur d'écriture fichier
-        json.JSONEncodeError: Si erreur de sérialisation
-
-    Example:
-        >>> snapshot = {"timestamp": "2024-01-01", "state": "operational"}
-        >>> write_state_json("snapshots/state_001.json", snapshot)
-    """
-    with open(file_path, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(data, f, indent=2)
-        f.write("\n")
-
-
 def load_zeroia_state(path: str) -> dict[str, Any]:
     """
     Charge un fichier d'état ZeroIA TOML avec gestion d'erreurs.
@@ -204,11 +104,10 @@ def load_zeroia_state(path: str) -> dict[str, Any]:
 
 
 # === API publique du module ===
+# Note: save_json_if_changed, save_toml_if_changed, write_state_json
+# ont été migrés vers modules/utils/helpers/io_safe.py
 __all__ = [
     "check_health",
     "file_hash",
     "load_zeroia_state",
-    "save_json_if_changed",
-    "save_toml_if_changed",
-    "write_state_json",
 ]

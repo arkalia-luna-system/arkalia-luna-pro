@@ -3,12 +3,14 @@
 # Supprime les corruptions silencieuses TOML/JSON
 
 import fcntl
+import hashlib
 import json
 import logging
 import os
 import tempfile
 import threading
 import time
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
@@ -308,6 +310,157 @@ def load_toml_cached(file_path: str | Path, cache_ttl: float = 30.0) -> dict[str
     except (FileNotFoundError, LockedReadError, toml.TomlDecodeError) as e:
         logger.warning(f"Erreur chargement TOML {file_path}: {e}")
         return {}
+
+
+def _file_hash(file_path: Path) -> str:
+    """
+    Calcule le hash SHA256 d'un fichier pour détecter les changements.
+
+    Args:
+        file_path: Chemin vers le fichier à hasher
+
+    Returns:
+        str: Hash SHA256 du fichier, chaîne vide si fichier inexistant
+    """
+    if not file_path.exists():
+        return ""
+    with open(file_path, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()
+
+
+def save_toml_if_changed(
+    data: dict[str, Any], file_path: str | Path, add_timestamp: bool = True
+) -> bool:
+    """
+    Sauvegarde un fichier TOML seulement s'il y a des changements (thread-safe).
+
+    Utilise une approche atomique avec fichier temporaire et vérification de hash
+    pour éviter les écritures inutiles. Thread-safe grâce à atomic_write.
+
+    Args:
+        data: Dictionnaire de données à sauvegarder
+        file_path: Chemin de destination du fichier TOML
+        add_timestamp: Si True, ajoute un timestamp au dictionnaire
+
+    Returns:
+        bool: True si le fichier a été modifié, False s'il était identique
+
+    Raises:
+        AtomicWriteError: En cas d'erreur d'écriture
+    """
+    file_path = Path(file_path)
+    data_to_hash = data.copy()
+    if add_timestamp:
+        data_to_hash.pop("timestamp", None)
+
+    # Créer un fichier temporaire pour comparer
+    tmp_file_path: Path | None = None
+    try:
+        # Écrire dans le fichier temporaire
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=file_path.parent,
+            delete=False,
+            prefix=f".{file_path.name}.tmp.",
+            suffix=".arkalia",
+        ) as tmp_file:
+            toml.dump(data_to_hash, tmp_file)
+            tmp_file.flush()
+            os.fsync(tmp_file.fileno())
+            tmp_file_path = Path(tmp_file.name)
+
+        # Comparer les hashs
+        new_hash = _file_hash(tmp_file_path)
+        old_hash = _file_hash(file_path) if file_path.exists() else ""
+
+        if new_hash == old_hash:
+            # Pas de changement, supprimer le fichier temporaire
+            os.unlink(tmp_file_path)
+            return False
+
+        # Il y a des changements, ajouter timestamp si demandé
+        if add_timestamp:
+            data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Utiliser atomic_write pour la sauvegarde finale (thread-safe)
+        return atomic_write(file_path, data)
+
+    except Exception as e:
+        # Nettoyer en cas d'erreur
+        if tmp_file_path is not None and tmp_file_path.exists():
+            try:
+                os.unlink(tmp_file_path)
+            except OSError:
+                pass
+        raise AtomicWriteError(f"Erreur sauvegarde TOML conditionnelle {file_path}: {e}") from e
+
+
+def save_json_if_changed(
+    data: dict[str, Any], file_path: str | Path, add_timestamp: bool = True
+) -> bool:
+    """
+    Sauvegarde un fichier JSON seulement s'il y a des changements (thread-safe).
+
+    Utilise une approche atomique avec fichier temporaire et vérification de hash
+    pour éviter les écritures inutiles. Formatage consistant (indent=2, sort_keys=True).
+
+    Args:
+        data: Dictionnaire de données à sauvegarder
+        file_path: Chemin de destination du fichier JSON
+        add_timestamp: Si True, ajoute un timestamp au dictionnaire
+
+    Returns:
+        bool: True si le fichier a été modifié, False s'il était identique
+
+    Raises:
+        AtomicWriteError: En cas d'erreur d'écriture
+    """
+    file_path = Path(file_path)
+    data_to_hash = data.copy()
+    if add_timestamp:
+        data_to_hash.pop("timestamp", None)
+
+    # Créer un fichier temporaire pour comparer
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=file_path.parent,
+            delete=False,
+            prefix=f".{file_path.name}.tmp.",
+            suffix=".arkalia",
+        ) as tmp_file:
+            json.dump(data_to_hash, tmp_file, indent=2, sort_keys=True, ensure_ascii=False)
+            tmp_file.flush()
+            os.fsync(tmp_file.fileno())
+            tmp_file_path = Path(tmp_file.name)
+
+        # Comparer les hashs
+        new_hash = _file_hash(tmp_file_path)
+        old_hash = _file_hash(file_path) if file_path.exists() else ""
+
+        if new_hash == old_hash:
+            # Pas de changement, supprimer le fichier temporaire
+            os.unlink(tmp_file_path)
+            return False
+
+        # Il y a des changements, ajouter timestamp si demandé
+        if add_timestamp:
+            data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Utiliser atomic_write pour la sauvegarde finale (thread-safe)
+        # Note: atomic_write gère déjà le formatage JSON
+        return atomic_write(file_path, data)
+
+    except Exception as e:
+        # Nettoyer en cas d'erreur
+        if "tmp_file_path" in locals() and tmp_file_path.exists():
+            try:
+                os.unlink(tmp_file_path)
+            except OSError:
+                pass
+        raise AtomicWriteError(f"Erreur sauvegarde JSON conditionnelle {file_path}: {e}") from e
 
 
 # Alias pour compatibilité

@@ -18,7 +18,9 @@ from .io_safe import (
     load_toml_cached,
     locked_read,
     read_state_safe,
+    save_json_if_changed,
     save_json_safe,
+    save_toml_if_changed,
     save_toml_safe,
 )
 
@@ -27,7 +29,9 @@ __all__ = [
     "locked_read",
     "load_toml_cached",
     "save_toml_safe",
+    "save_toml_if_changed",
     "save_json_safe",
+    "save_json_if_changed",
     "read_state_safe",
     "AtomicWriteError",
     "LockedReadError",

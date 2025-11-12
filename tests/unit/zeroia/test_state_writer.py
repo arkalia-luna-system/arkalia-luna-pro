@@ -6,11 +6,7 @@ from typing import Any
 
 import toml
 
-from modules.zeroia.utils.state_writer import (
-    save_json_if_changed,
-    save_toml_if_changed,
-    write_state_json,
-)
+from modules.utils.helpers import save_json_if_changed, save_json_safe, save_toml_if_changed
 
 TMP_TOML = "tests/tmp/test_state.toml"
 TMP_JSON = "tests/tmp/test_dashboard.json"
@@ -87,7 +83,7 @@ def test_save_json_changes_written() -> None:
 def test_write_state_json(tmp_path: Path) -> None:
     path = tmp_path / "test_state.json"
     data = {"status": "ok", "value": 42}
-    write_state_json(str(path), data)
+    save_json_safe(data, path)
 
     with open(path) as f:
         loaded = json.load(f)
