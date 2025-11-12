@@ -4,6 +4,8 @@
 🎯 Création dynamique de modules compatibles IModule
 """
 
+from typing import Any
+
 from core.ark_logger import ark_logger
 
 from ..interfaces.module_interface import IModule
