@@ -60,7 +60,7 @@ COPY --chown=arkalia:arkalia modules ./modules
 COPY --chown=arkalia:arkalia state ./state
 COPY --chown=arkalia:arkalia config ./config
 COPY --chown=arkalia:arkalia version.toml ./
-COPY --chown=arkalia:arkalia run_arkalia_api.py ./
+COPY --chown=arkalia:arkalia scripts ./scripts
 
 # Switch vers utilisateur non-root
 USER arkalia
@@ -69,4 +69,4 @@ USER arkalia
 EXPOSE 8000
 
 # Point d'entrée optimisé avec script de démarrage robuste
-CMD ["python", "run_arkalia_api.py"]
+CMD ["python", "-m", "scripts.run.run_arkalia_api"]

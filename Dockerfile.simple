@@ -23,7 +23,7 @@ COPY --chown=arkalia:arkalia requirements-docker.txt ./
 COPY --chown=arkalia:arkalia helloria ./helloria
 COPY --chown=arkalia:arkalia modules ./modules
 COPY --chown=arkalia:arkalia core ./core
-COPY --chown=arkalia:arkalia run_arkalia_api.py ./
+COPY --chown=arkalia:arkalia scripts ./scripts
 
 # Installation des dépendances
 RUN pip install --upgrade pip setuptools wheel && \
@@ -36,4 +36,4 @@ USER arkalia
 EXPOSE 8000
 
 # Point d'entrée
-CMD ["python", "run_arkalia_api.py"]
+CMD ["python", "-m", "scripts.run.run_arkalia_api"]

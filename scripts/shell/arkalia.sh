@@ -38,7 +38,7 @@ case "$1" in
     start)
         print_header
         echo -e "${GREEN}🚀 Démarrage d'Arkalia-LUNA...${NC}"
-        python run_arkalia_api.py
+        python -m scripts.run.run_arkalia_api
         ;;
     test)
         print_header

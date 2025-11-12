@@ -340,7 +340,7 @@ python scripts/launch_demo_scenario.py --scenario learning
 
 ```python
 # Démo workflow complet
-python demo_global.py
+python scripts/demo/demo_global.py
 ```
 
 **Résultat attendu** :

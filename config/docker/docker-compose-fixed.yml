@@ -32,12 +32,18 @@ services:
       dockerfile: Dockerfile.simple
     ports:
       - "${PORT_API:-8000}:8000"
-    command: python run_arkalia_api.py
+    command: python scripts/run/run_arkalia_api.py
     environment:
       - ARKALIA_ENV=development
       - ARKALIA_LOG_LEVEL=INFO
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8000)); s.close(); print('OK')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s=socket.socket(); s.connect(('localhost', 8000)); s.close(); print('OK')",
+        ]
       interval: 30s
       timeout: 15s
       retries: 3
@@ -73,7 +79,13 @@ services:
       arkalia-api:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8001)); s.close(); print('OK')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s=socket.socket(); s.connect(('localhost', 8001)); s.close(); print('OK')",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -111,12 +123,26 @@ services:
     networks:
       - arkalia_network
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8002)); s.close(); print('OK')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s=socket.socket(); s.connect(('localhost', 8002)); s.close(); print('OK')",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
-    command: ["uvicorn", "run_reflexia_api:app", "--host", "0.0.0.0", "--port", "8002"]
+    command:
+      [
+        "uvicorn",
+        "scripts.run.run_reflexia_api:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8002",
+      ]
     depends_on:
       arkalia-api:
         condition: service_healthy
@@ -176,12 +202,26 @@ services:
     networks:
       - arkalia_network
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8003)); s.close(); print('OK')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s=socket.socket(); s.connect(('localhost', 8003)); s.close(); print('OK')",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
-    command: ["uvicorn", "run_cognitive_api:app", "--host", "0.0.0.0", "--port", "8003"]
+    command:
+      [
+        "uvicorn",
+        "scripts.run.run_cognitive_api:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8003",
+      ]
     depends_on:
       arkalia-api:
         condition: service_healthy

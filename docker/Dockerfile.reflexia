@@ -51,8 +51,7 @@ COPY --chown=reflexia:reflexia modules/reflexia ./modules/reflexia
 COPY --chown=reflexia:reflexia modules/monitoring ./modules/monitoring
 COPY --chown=reflexia:reflexia modules/utils_enhanced ./modules/utils_enhanced
 COPY --chown=reflexia:reflexia modules/__init__.py ./modules/
-COPY --chown=reflexia:reflexia run_reflexia.py ./
-COPY --chown=reflexia:reflexia run_reflexia_api.py ./
+COPY --chown=reflexia:reflexia scripts ./scripts
 COPY --chown=reflexia:reflexia config ./config
 COPY --chown=reflexia:reflexia state ./state
 
@@ -64,4 +63,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
     CMD curl -f http://localhost:8002/health || exit 1
 
 # Point d'entrée optimisé
-CMD ["python", "run_reflexia_api.py"]
+CMD ["python", "-m", "scripts.run.run_reflexia_api"]

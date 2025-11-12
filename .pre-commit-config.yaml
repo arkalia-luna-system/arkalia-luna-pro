@@ -99,7 +99,7 @@ repos:
         args:
           [
             "-c",
-            "bandit.yaml",
+            "config/security/bandit.yaml",
             "-r",
             "modules",
             "core",

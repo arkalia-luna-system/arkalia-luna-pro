@@ -32,12 +32,18 @@ services:
       dockerfile: Dockerfile.simple
     ports:
       - "${PORT_API:-8000}:8000"
-    command: python run_arkalia_api.py
+    command: python -m scripts.run.run_arkalia_api
     environment:
       - ARKALIA_ENV=development
       - ARKALIA_LOG_LEVEL=INFO
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8000)); s.close(); print('OK')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s=socket.socket(); s.connect(('localhost', 8000)); s.close(); print('OK')",
+        ]
       interval: 45s
       timeout: 20s
       retries: 5
@@ -73,7 +79,13 @@ services:
       arkalia-api:
         condition: service_started
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8001)); s.close(); print('OK')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s=socket.socket(); s.connect(('localhost', 8001)); s.close(); print('OK')",
+        ]
       interval: 30s
       timeout: 15s
       retries: 3
@@ -115,12 +127,26 @@ services:
       arkalia-api:
         condition: service_started
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8002)); s.close(); print('OK')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s=socket.socket(); s.connect(('localhost', 8002)); s.close(); print('OK')",
+        ]
       interval: 30s
       timeout: 15s
       retries: 3
       start_period: 60s
-    command: ["uvicorn", "run_reflexia_api:app", "--host", "0.0.0.0", "--port", "8002"]
+    command:
+      [
+        "uvicorn",
+        "scripts.run.run_reflexia_api:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8002",
+      ]
 
   # 🧠 Sandozia — Intelligence Croisée Enterprise v2.6.0 Optimisée
   arkalia-sandozia:
@@ -181,12 +207,26 @@ services:
       reflexia:
         condition: service_started
     healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('localhost', 8003)); s.close(); print('OK')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s=socket.socket(); s.connect(('localhost', 8003)); s.close(); print('OK')",
+        ]
       interval: 30s
       timeout: 15s
       retries: 3
       start_period: 60s
-    command: ["uvicorn", "run_cognitive_api:app", "--host", "0.0.0.0", "--port", "8003"]
+    command:
+      [
+        "uvicorn",
+        "scripts.run.run_cognitive_api:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8003",
+      ]
 
   # 🚀 Generative AI — Intelligence Générative Avancée v2.8.0
   # generative-ai:

@@ -10,7 +10,7 @@ Cette page documente tous les endpoints API disponibles dans Arkalia-LUNA Pro v2
 
 ### **Base URL**
 
-```
+```text
 http://localhost:8000
 ```
 
@@ -83,9 +83,9 @@ GET /metrics
 
 ## 🧠 **ZeroIA - Moteur de Décision Autonome**
 
-### **Base URL**
+### **Base URL ZeroIA**
 
-```
+```text
 http://localhost:8000
 ```
 
@@ -135,9 +135,9 @@ Content-Type: application/json
 
 ## 👁️ **Reflexia - Observateur Cognitif**
 
-### **Base URL**
+### **Base URL Reflexia**
 
-```
+```text
 http://localhost:8002
 ```
 
@@ -217,9 +217,9 @@ GET http://localhost:8000/metrics
 
 ## 🤖 **AssistantIA - Assistant IA**
 
-### **Base URL**
+### **Base URL AssistantIA**
 
-```
+```text
 http://localhost:8001
 ```
 
@@ -273,25 +273,25 @@ La validation de prompt est intégrée dans l'endpoint `/chat` via le module de 
 
 ### **Prometheus**
 
-```
+```text
 http://localhost:9090/metrics
 ```
 
 ### **Grafana**
 
-```
+```text
 http://localhost:3000
 ```
 
 ### **AlertManager**
 
-```
+```text
 http://localhost:9093
 ```
 
 ### **Loki (Logs)**
 
-```
+```text
 http://localhost:3100
 ```
 

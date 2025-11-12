@@ -43,7 +43,7 @@ COPY modules/taskia/ ./modules/taskia/
 COPY modules/monitoring/ ./modules/monitoring/
 COPY modules/security/ ./modules/security/
 COPY modules/utils_enhanced/ ./modules/utils_enhanced/
-COPY run_cognitive_api.py ./
+COPY scripts ./scripts
 
 # === Création des répertoires nécessaires ===
 RUN mkdir -p /app/modules/cognitive_reactor/state \
@@ -59,7 +59,7 @@ USER cognitive
 EXPOSE 8003
 
 # === Point d'entrée ===
-ENTRYPOINT ["python", "run_cognitive_api.py"]
+ENTRYPOINT ["python", "-m", "scripts.run.run_cognitive_api"]
 
 # === Commande par défaut ===
 CMD ["--workers", "1"]

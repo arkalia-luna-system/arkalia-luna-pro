@@ -7,7 +7,7 @@ Ce script exécute la boucle réflexive complète (collecte des métriques,
 décision adaptative, sauvegarde du snapshot) via le cœur du module `reflexia`.
 
 💡 Usage :
-    python run_reflexia.py
+    python -m scripts.run.run_reflexia
 """
 
 from modules.reflexia.core import launch_reflexia_loop

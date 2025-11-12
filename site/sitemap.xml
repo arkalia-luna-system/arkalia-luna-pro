@@ -2,178 +2,230 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/architecture/</loc>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/plan-ameliorations-futures/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/rapport-documentation-etat/</loc>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/vscode-setup/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/architecture/cahier_des_charges_v4.0/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/architecture/containers/</loc>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/architecture/decision_flow/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/architecture/structure_monitoring_consolidee/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/architecture/structure_securite_consolidee/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/architecture/structure_utils_consolidee/</loc>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/chaos/chaos_test_suite/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/credits/CONTRIBUTING/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/credits/credits/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/devops/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/devops/linting-resolution/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/devops/security/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/fonctionnement/composants/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/fonctionnement/kernel/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/fonctionnement/structure/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/fonctionnement/utilisation/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/getting-started/cognitive-levels/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/getting-started/quick-start/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/getting-started/use-cases/</loc>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/guides/docker_hardening/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/guides/ops-guide/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/guides/rebuild-guide/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/infrastructure/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/infrastructure/automation/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/infrastructure/ci-cd/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/infrastructure/configuration/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/infrastructure/deployment/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/infrastructure/monitoring/</loc>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/legal/license/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/modules/assistantia/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/modules/cognitive-reactor/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/modules/helloria/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/modules/reflexia/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/modules/sandozia/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/modules/zeroia/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/planning/roadmap/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/planning/roadmap/ENHANCEMENTS/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/reference/api/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/reference/endpoints/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/reference/metrics/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/releases/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/releases/dernieres_updates/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/releases/v2.8.0/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/security/architecture/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/security/backup-recovery/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/security/compliance/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/security/incident-response/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/security/log_redaction/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/security/model-poisoning-detection/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/security/penetration-testing/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/security/security/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://arkalia-luna-system.github.io/arkalia-luna-pro/support/faqs/</loc>
-         <lastmod>2025-07-03</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
 </urlset>

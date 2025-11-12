@@ -40,7 +40,7 @@ python demo_global.py
 
 ## 📊 Suivi IA en temps réel
 ```bash
-python arkalia_score.py
+python scripts/tools/arkalia_score.py
 cat arkalia_score.toml
 ```
 

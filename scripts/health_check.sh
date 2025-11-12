@@ -89,7 +89,7 @@ check_processes() {
     log_info "Vérification des processus critiques..."
 
     # Vérification du processus Python principal
-    if pgrep -f "run_arkalia_api.py" > /dev/null; then
+    if pgrep -f "scripts.run.run_arkalia_api\|scripts/run/run_arkalia_api.py" > /dev/null; then
         log_success "Processus API principal: ACTIF"
     else
         log_error "Processus API principal: INACTIF"
@@ -109,7 +109,7 @@ check_critical_files() {
     log_info "Vérification des fichiers critiques..."
 
     critical_files=(
-        "/app/run_arkalia_api.py"
+        "/app/scripts/run/run_arkalia_api.py"
         "/app/helloria/core.py"
         "/app/modules/reflexia/core.py"
         "/app/modules/zeroia/core.py"

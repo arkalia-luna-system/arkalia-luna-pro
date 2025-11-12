@@ -22,7 +22,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 
 - **Port** : 8000
 - **Image** : Construite depuis `Dockerfile.simple`
-- **Command** : `python run_arkalia_api.py`
+- **Command** : `python -m scripts.run.run_arkalia_api`
 - **Dépendances** : Aucune (container racine)
 - **Ressources** : 512M RAM max, 1 CPU max
 - **Healthcheck** : Socket TCP sur port 8000
@@ -66,7 +66,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 
 - **Port** : 8002
 - **Image** : Construite depuis `docker/Dockerfile.reflexia`
-- **Command** : `uvicorn run_reflexia_api:app --host 0.0.0.0 --port 8002`
+- **Command** : `uvicorn scripts.run.run_reflexia_api:app --host 0.0.0.0 --port 8002`
 - **Dépendances** : `arkalia-api` (service_started)
 - **Ressources** : Par défaut (512M RAM)
 - **Healthcheck** : Socket TCP sur port 8002
@@ -110,7 +110,7 @@ Arkalia-LUNA Pro utilise **5 containers actifs** orchestrés avec Docker Compose
 
 - **Port** : 8003
 - **Image** : Construite depuis `docker/Dockerfile.cognitive-reactor`
-- **Command** : `uvicorn run_cognitive_api:app --host 0.0.0.0 --port 8003`
+- **Command** : `uvicorn scripts.run.run_cognitive_api:app --host 0.0.0.0 --port 8003`
 - **Dépendances** : `reflexia` (service_started)
 - **Ressources** : Par défaut (512M RAM)
 - **Healthcheck** : Socket TCP sur port 8003
@@ -249,4 +249,6 @@ curl http://localhost:8003/health
 
 ---
 
-**Dernière mise à jour : novembre 2025**
+### Dernière mise à jour
+
+Novembre 2025

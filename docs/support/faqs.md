@@ -31,7 +31,7 @@ Arkalia-LUNA Pro v2.8.0 est le **premier système IA auto-réflexif production-r
 
 ### 3. Comment puis-je contribuer au projet ?
 
-Consultez notre [Guide de Contribution](credits/CONTRIBUTING.md) et soumettez des pull requests sur notre [dépôt GitHub](https://github.com/arkalia-luna-system/arkalia-luna-pro). Nous recherchons particulièrement des contributions sur les modules IA et l'intelligence croisée.
+Consultez notre [Guide de Contribution](../credits/CONTRIBUTING.md) et soumettez des pull requests sur notre [dépôt GitHub](https://github.com/arkalia-luna-system/arkalia-luna-pro). Nous recherchons particulièrement des contributions sur les modules IA et l'intelligence croisée.
 
 ### 4. Quels sont les prérequis pour développer avec Arkalia-LUNA Pro ?
 
@@ -92,4 +92,6 @@ python scripts/ark-validate-performance.py
 **© 2025 Arkalia-LUNA Pro Team** — FAQ Enterprise v2.8.0
 🧠 *Powered by Sandozia Intelligence Croisée*
 
-*Dernière mise à jour : novembre 2025*
+### Dernière mise à jour
+
+Novembre 2025

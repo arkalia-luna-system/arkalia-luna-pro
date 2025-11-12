@@ -14,7 +14,7 @@ all: test
 # 🧪 Tests
 test:
 	@echo "🧪 Exécution des tests complets..."
-	bash ./ark-test-full.sh
+	bash ./scripts/shell/ark-test-full.sh
 
 test-unit:
 	@echo "🧪 Tests unitaires uniquement..."

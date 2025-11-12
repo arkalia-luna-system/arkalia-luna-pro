@@ -247,8 +247,8 @@ class ArkaliaBootstrap:
 
         checks = {}
         services = [
-            {"name": "arkalia-api", "port": 8000, "path": "run_arkalia_api.py"},
-            {"name": "reflexia-api", "port": 8002, "path": "run_reflexia_api.py"},
+            {"name": "arkalia-api", "port": 8000, "path": "scripts/run/run_arkalia_api.py"},
+            {"name": "reflexia-api", "port": 8002, "path": "scripts/run/run_reflexia_api.py"},
         ]
 
         for service in services:

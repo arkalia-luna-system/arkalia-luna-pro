@@ -68,7 +68,7 @@ services:
     image: arkalia-luna-reflexia:optimized
     ports:
       - "${PORT_REFLEXIA:-8002}:8002"
-    command: python run_reflexia_api.py
+    command: python scripts/run/run_reflexia_api.py
     environment:
       - REFLEXIA_ENV=production
       - REFLEXIA_MONITORING_ENABLED=true
@@ -152,7 +152,7 @@ services:
     image: arkalia-luna-helloria:optimized
     ports:
       - "${PORT_API:-8000}:8000"
-    command: python run_arkalia_api.py
+    command: python scripts/run/run_arkalia_api.py
     environment:
       - ARKALIA_ENV=production
       - ARKALIA_LOG_LEVEL=INFO

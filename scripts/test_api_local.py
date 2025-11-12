@@ -44,9 +44,9 @@ def test_api_startup():
     print("🚀 Test du démarrage de l'API...")
 
     # Vérifier que le fichier principal existe
-    api_file = Path("run_arkalia_api.py")
+    api_file = Path("scripts/run/run_arkalia_api.py")
     if not api_file.exists():
-        print("❌ Fichier run_arkalia_api.py non trouvé")
+        print("❌ Fichier scripts/run/run_arkalia_api.py non trouvé")
         return False
 
     # Vérifier que helloria/core.py existe
