@@ -42,7 +42,7 @@ COPY modules/helloria/ ./modules/helloria/
 COPY modules/taskia/ ./modules/taskia/
 COPY modules/monitoring/ ./modules/monitoring/
 COPY modules/security/ ./modules/security/
-COPY modules/utils_enhanced/ ./modules/utils_enhanced/
+COPY modules/utils/ ./modules/utils/
 COPY scripts ./scripts
 
 # === Création des répertoires nécessaires ===

@@ -62,7 +62,7 @@ WORKDIR /app
 COPY --chown=security:security modules/security ./modules/security
 COPY --chown=security:security modules/core ./modules/core
 COPY --chown=security:security modules/monitoring ./modules/monitoring
-COPY --chown=security:security modules/utils_enhanced ./modules/utils_enhanced
+COPY --chown=security:security modules/utils ./modules/utils
 COPY --chown=security:security modules/__init__.py ./modules/
 COPY --chown=security:security config ./config
 COPY --chown=security:security state ./state

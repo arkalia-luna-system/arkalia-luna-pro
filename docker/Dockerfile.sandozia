@@ -31,7 +31,7 @@ RUN pip install --upgrade pip setuptools wheel && \
 # Copie sélective du code
 COPY --chown=sandozia:sandozia modules/sandozia ./modules/sandozia
 COPY --chown=sandozia:sandozia modules/monitoring ./modules/monitoring
-COPY --chown=sandozia:sandozia modules/utils_enhanced ./modules/utils_enhanced
+COPY --chown=sandozia:sandozia modules/utils ./modules/utils
 COPY --chown=sandozia:sandozia modules/__init__.py ./modules/
 COPY --chown=sandozia:sandozia config ./config
 COPY --chown=sandozia:sandozia state ./state

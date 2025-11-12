@@ -37,7 +37,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
 
 # Copier le code source
 COPY modules/assistantia/ ./modules/assistantia/
-COPY modules/utils_enhanced/ ./modules/utils_enhanced/
+COPY modules/utils/ ./modules/utils/
 COPY utils/ ./utils/
 
 # Créer les répertoires nécessaires

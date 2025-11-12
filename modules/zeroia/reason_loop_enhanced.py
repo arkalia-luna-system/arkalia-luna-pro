@@ -100,7 +100,7 @@ def initialize_components() -> tuple[CircuitBreaker, EventStore]:
     return cb, es
 
 
-def initialize_components_with_recovery():
+def initialize_components_with_recovery() -> tuple[Any, Any, Any, Any]:
     """Initialize components with singleton pattern to prevent repeated initialization"""
     global circuit_breaker, event_store, error_recovery, graceful_degradation
 
@@ -232,7 +232,9 @@ def load_toml_enhanced_cache(path: Path, max_age: int | None = None) -> dict:
         and path_str in _CACHE_TIMESTAMPS
         and current_time - _CACHE_TIMESTAMPS[path_str] < max_age
     ):
-        return _TOML_CACHE[path_str]
+        cached = _TOML_CACHE[path_str]
+        if isinstance(cached, dict):
+            return cached
 
     try:
         if not path.exists() or not path.read_text().strip():
@@ -272,13 +274,19 @@ def load_toml(path: Path) -> dict:
 def load_context(path: Path = CTX_PATH) -> dict:
     """Charge le contexte global avec protection circuit breaker"""
     cb, es, _, _ = initialize_components_with_recovery()
-    return cb.call(load_toml, path)
+    result = cb.call(load_toml, path)
+    if isinstance(result, dict):
+        return result
+    return {}
 
 
 def load_reflexia_state(path: Path = REFLEXIA_STATE) -> dict:
     """Charge l'état ReflexIA avec protection circuit breaker"""
     cb, es, _, _ = initialize_components_with_recovery()
-    return cb.call(load_toml, path)
+    result = cb.call(load_toml, path)
+    if isinstance(result, dict):
+        return result
+    return {}
 
 
 def decide_protected(context: dict) -> tuple[str, float]:
@@ -760,7 +768,12 @@ def main_loop_enhanced() -> None:
 
     except Exception as e:
         ark_logger.info(f"[ZeroIA Enhanced] 🚨 ERREUR: {e}")
-        ark_logger.exception(e, extra={"arkalia_module": "zeroia"})
+        import traceback
+
+        ark_logger.error(
+            f"[ZeroIA Enhanced] Exception: {e}\n{traceback.format_exc()}",
+            extra={"arkalia_module": "zeroia"},
+        )
 
         # Event sourcing d'erreur
         if event_store is not None:
@@ -776,13 +789,19 @@ def main_loop_enhanced() -> None:
 def get_circuit_status() -> dict:
     """Retourne le statut du circuit breaker"""
     cb, es, _, _ = initialize_components_with_recovery()
-    return cb.get_status()
+    status = cb.get_status()
+    if isinstance(status, dict):
+        return status
+    return {}
 
 
 def get_event_analytics() -> dict:
     """Retourne les analytics des événements"""
     cb, es, _, _ = initialize_components_with_recovery()
-    return es.get_analytics()
+    analytics = es.get_analytics()
+    if isinstance(analytics, dict):
+        return analytics
+    return {}
 
 
 def reset_circuit_breaker() -> None:
@@ -836,9 +855,10 @@ def get_error_recovery_status() -> dict:
     try:
         _, _, error_recovery, _ = initialize_components_with_recovery()
         if error_recovery:
-            return error_recovery.get_recovery_status()
-        else:
-            return {"status": "unavailable", "reason": "module_not_loaded"}
+            status = error_recovery.get_recovery_status()
+            if isinstance(status, dict):
+                return status
+        return {"status": "unavailable", "reason": "module_not_loaded"}
     except Exception as e:
         return {"status": "error", "error": str(e)}
 
@@ -848,9 +868,10 @@ def get_degradation_status() -> dict:
     try:
         _, _, _, graceful_degradation = initialize_components_with_recovery()
         if graceful_degradation:
-            return graceful_degradation.get_system_status()
-        else:
-            return {"status": "unavailable", "reason": "module_not_loaded"}
+            status = graceful_degradation.get_system_status()
+            if isinstance(status, dict):
+                return status
+        return {"status": "unavailable", "reason": "module_not_loaded"}
     except Exception as e:
         return {"status": "error", "error": str(e)}
 
@@ -947,7 +968,11 @@ class ReasonLoopEnhanced:
                 import toml
 
                 state = toml.load(REFLEXIA_STATE)
-                return state.get("status", "unknown")
+                if isinstance(state, dict):
+                    status = state.get("status", "unknown")
+                    if isinstance(status, str):
+                        return status
+                return "unknown"
         except Exception as e:
             ark_logger.error(f"🚨 Erreur lecture état ReflexIA: {e}")
         return None

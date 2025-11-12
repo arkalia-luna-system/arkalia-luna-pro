@@ -49,7 +49,7 @@ WORKDIR /app
 # Copie sélective du code
 COPY --chown=reflexia:reflexia modules/reflexia ./modules/reflexia
 COPY --chown=reflexia:reflexia modules/monitoring ./modules/monitoring
-COPY --chown=reflexia:reflexia modules/utils_enhanced ./modules/utils_enhanced
+COPY --chown=reflexia:reflexia modules/utils ./modules/utils
 COPY --chown=reflexia:reflexia modules/__init__.py ./modules/
 COPY --chown=reflexia:reflexia scripts ./scripts
 COPY --chown=reflexia:reflexia config ./config

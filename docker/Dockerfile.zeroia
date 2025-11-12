@@ -49,7 +49,7 @@ WORKDIR /app
 # Copie sélective du code
 COPY --chown=zeroia:zeroia modules/zeroia ./modules/zeroia
 COPY --chown=zeroia:zeroia modules/monitoring ./modules/monitoring
-COPY --chown=zeroia:zeroia modules/utils_enhanced ./modules/utils_enhanced
+COPY --chown=zeroia:zeroia modules/utils ./modules/utils
 COPY --chown=zeroia:zeroia modules/__init__.py ./modules/
 COPY --chown=zeroia:zeroia config ./config
 COPY --chown=zeroia:zeroia state ./state
