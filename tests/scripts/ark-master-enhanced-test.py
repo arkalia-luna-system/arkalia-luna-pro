@@ -173,7 +173,9 @@ async def test_enhanced_features():
 
     # Test CrossModule Validator
     try:
-        from modules.utils.validators.crossmodule_validator import CrossModuleValidator  # noqa: F401
+        from modules.utils.validators.crossmodule_validator import (
+            CrossModuleValidator,
+        )  # noqa: F401
 
         # Test d'instanciation pour vérifier que l'import fonctionne
         _ = CrossModuleValidator  # noqa: F401
