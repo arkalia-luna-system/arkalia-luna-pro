@@ -162,7 +162,7 @@ class GracefulDegradationSystem:
             self._register_default_services()
             self.initialization_count += 1
 
-        logger.info("📉 GracefulDegradationSystem initialisé")
+        ark_logger.info("📉 GracefulDegradationSystem initialisé", extra={"arkalia_module": "zeroia"})
 
     def _load_thresholds(self, config_path: str | None) -> dict[str, float]:
         """Charge les seuils de dégradation"""
