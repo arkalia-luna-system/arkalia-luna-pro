@@ -92,7 +92,9 @@
 ### 🔴 PRIORITÉ HAUTE
 
 #### 1. **Continuer migration logging** ⏱️ 3-4h
+
 - 🔄 **23 fichiers** restants à migrer vers ark_logger
+
 - **Modules prioritaires** :
   - `modules/zeroia/` (6 fichiers restants)
     - `modules/zeroia/orchestrator_enhanced.py`

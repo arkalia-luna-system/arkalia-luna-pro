@@ -11,10 +11,14 @@ Principes SOLID appliqués :
 - DIP : Injection de dépendances via factories
 """
 
-from .crossmodule_validator import CrossModuleValidator, ModuleState, ValidationResult
+from .crossmodule_validator import (
+    CrossModuleValidator,
+    ValidationLevel,
+    ValidationResult,
+)
 
 __all__ = [
     "CrossModuleValidator",
     "ValidationResult",
-    "ModuleState",
+    "ValidationLevel",
 ]

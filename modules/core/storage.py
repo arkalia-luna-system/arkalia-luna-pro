@@ -52,7 +52,7 @@ class JSONFileBackend(StorageBackend):
     def __init__(self, base_path: str = "state"):
         self.base_path = Path(base_path)
         self.base_path.mkdir(exist_ok=True)
-        self._cache = {}
+        self._cache: dict[str, Any] = {}
 
     def _get_file_path(self, key: str) -> Path:
         """Get file path for key"""
@@ -122,7 +122,7 @@ class TOMLFileBackend(StorageBackend):
     def __init__(self, base_path: str = "state"):
         self.base_path = Path(base_path)
         self.base_path.mkdir(exist_ok=True)
-        self._cache = {}
+        self._cache: dict[str, Any] = {}
 
     def _get_file_path(self, key: str) -> Path:
         """Get file path for key"""
