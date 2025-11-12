@@ -3,6 +3,7 @@
 
 import shutil
 import tempfile
+from collections.abc import Generator
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -15,7 +16,7 @@ class TestRotationManager:
     """Tests pour le gestionnaire de rotation"""
 
     @pytest.fixture
-    def temp_vault_dir(self) -> Path:
+    def temp_vault_dir(self) -> Generator[Path, None, None]:
         temp_dir = tempfile.mkdtemp()
         yield Path(temp_dir)
         shutil.rmtree(temp_dir)

@@ -275,7 +275,7 @@ class TestReasonLoopEnhancedRobustness:
         threshold = reason_loop.config["contradiction_threshold"]
 
         # Déclencher des contradictions jusqu'au seuil
-        threshold_int = int(threshold) if isinstance(threshold, (int, float)) else 10
+        threshold_int = int(threshold) if isinstance(threshold, int | float) else 10
         for _ in range(threshold_int - 1):
             reason_loop.handle_contradiction("normal", "warning")
 

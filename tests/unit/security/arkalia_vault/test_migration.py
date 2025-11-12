@@ -3,6 +3,7 @@
 
 import shutil
 import tempfile
+from collections.abc import Generator
 from pathlib import Path
 
 import pytest
@@ -14,7 +15,7 @@ class TestMigrationFunctions:
     """Tests pour les fonctions de migration"""
 
     @pytest.fixture
-    def temp_vault_dir(self) -> Path:
+    def temp_vault_dir(self) -> Generator[Path, None, None]:
         temp_dir = tempfile.mkdtemp()
         yield Path(temp_dir)
         shutil.rmtree(temp_dir)
