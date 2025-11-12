@@ -16,7 +16,20 @@ from typing import Any
 
 
 class JSONDiagnostic:
+    """Diagnostic des fichiers JSON du projet.
+
+    Attributes:
+        root_path: Chemin racine du projet.
+        json_files: Liste des fichiers JSON trouvés.
+        analysis: Résultats de l'analyse.
+    """
+
     def __init__(self, root_path: str = "."):
+        """Initialise le diagnostic JSON.
+
+        Args:
+            root_path: Chemin racine du projet (défaut: ".").
+        """
         self.root_path = Path(root_path)
         self.json_files: list[dict] = []
         self.analysis: dict[str, Any] = {

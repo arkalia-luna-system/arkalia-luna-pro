@@ -14,6 +14,11 @@ GRAFANA_API_KEY = "your_grafana_api_key"  # pragma: allowlist secret
 
 
 def read_state() -> dict:
+    """Lit l'état Reflexia depuis le fichier de state.
+
+    Returns:
+        dict: État Reflexia ou erreur si le fichier n'existe pas.
+    """
     if not STATE_FILE.exists():
         return {"status": "💥", "error": "Fichier reflexia_state.json introuvable."}
 
@@ -26,6 +31,11 @@ def read_state() -> dict:
 
 
 def display_info(result: dict) -> None:
+    """Affiche les informations de l'état Reflexia.
+
+    Args:
+        result: Résultat de la lecture de l'état.
+    """
     if result["status"] != "✅":
         ark_logger.error(f"[ERREUR] {result['error']}", extra={"arkalia_module": "scripts"})
         return
@@ -52,6 +62,11 @@ def display_info(result: dict) -> None:
 
 
 def export_to_grafana(data) -> None:
+    """Exporte les données Reflexia vers Grafana.
+
+    Args:
+        data: Données à exporter.
+    """
     headers = {
         "Authorization": f"Bearer {GRAFANA_API_KEY}",
         "Content-Type": "application/json",

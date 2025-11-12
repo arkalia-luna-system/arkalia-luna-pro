@@ -15,7 +15,19 @@ from typing import Any
 
 
 class StructureAnalyzer:
+    """Analyseur de structure du projet.
+
+    Attributes:
+        root_path: Chemin racine du projet.
+        analysis: Résultats de l'analyse.
+    """
+
     def __init__(self, root_path: str = "."):
+        """Initialise l'analyseur de structure.
+
+        Args:
+            root_path: Chemin racine du projet (défaut: ".").
+        """
         self.root_path = Path(root_path)
         self.analysis: dict[str, Any] = {
             "summary": {},

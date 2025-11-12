@@ -19,6 +19,7 @@ Cette page documente toutes les métriques Prometheus exposées par Arkalia-LUNA
 ## API Principale (Helloria) - 34 métriques
 
 ### **Métriques Système**
+
 ```prometheus
 # CPU Usage
 arkalia_cpu_usage_percent{module="helloria"} 45.2
@@ -40,6 +41,7 @@ arkalia_uptime_seconds{module="helloria"} 172800
 ```
 
 ### **Métriques API**
+
 ```prometheus
 # HTTP Requests
 arkalia_http_requests_total{module="helloria",method="GET",endpoint="/health"} 1234
@@ -60,6 +62,7 @@ arkalia_active_connections{module="helloria"} 5
 ```
 
 ### **Métriques Modules**
+
 ```prometheus
 # Module Status
 arkalia_module_status{module="helloria"} 1
@@ -79,6 +82,7 @@ arkalia_module_response_time_seconds{module="assistantia"} 0.8
 ```
 
 ### **Métriques Sécurité**
+
 ```prometheus
 # Security Events
 arkalia_security_events_total{module="helloria",event_type="blocked_request"} 25
@@ -99,6 +103,7 @@ arkalia_auth_successes_total{module="helloria"} 1200
 ## ZeroIA - 12 métriques
 
 ### Métriques de Décision
+
 ```prometheus
 # Decisions Made
 zeroia_decisions_total{decision_type="automatic"} 150
@@ -114,6 +119,7 @@ zeroia_decision_response_time_seconds{quantile="0.95"} 0.3
 ```
 
 ### Métriques de Patterns
+
 ```prometheus
 # Patterns Detected
 zeroia_patterns_detected_total{pattern_type="cpu_spike"} 5
@@ -133,6 +139,7 @@ zeroia_cognitive_contradictions_total 1
 ## Reflexia - 8 métriques
 
 ### Métriques de Monitoring
+
 ```prometheus
 # System Monitoring
 reflexia_system_cpu_usage_percent 45.2
@@ -156,6 +163,7 @@ reflexia_monitoring_latency_seconds 0.05
 ## Sandozia - 6 métriques
 
 ### **Métriques d'Analyse**
+
 ```prometheus
 # Analysis Requests
 sandozia_analysis_requests_total{analysis_type="pattern"} 45
@@ -178,6 +186,7 @@ sandozia_analysis_response_time_seconds{quantile="0.95"} 0.8
 ## Cognitive Reactor - 4 métriques
 
 ### **Métriques d'Orchestration**
+
 ```prometheus
 # Orchestration Status
 cognitive_reactor_orchestration_status 1
@@ -197,6 +206,7 @@ cognitive_reactor_optimizations_applied 3
 ## AssistantIA - 4 métriques
 
 ### **Métriques d'Assistant**
+
 ```prometheus
 # Chat Requests
 assistantia_chat_requests_total 89
@@ -218,12 +228,14 @@ assistantia_security_blocks_total 2
 ## Dashboards Grafana
 
 ### **Dashboard Principal**
-- **URL** : http://localhost:3000/d/arkalia-monitoring
+
+- **URL** : <http://localhost:3000/d/arkalia-monitoring>
 - **Panels** : 8 panels spécialisés
 - **Refresh** : 30 secondes
 - **Thème** : Dark mode
 
 ### **Panels Disponibles**
+
 1. **Système CPU & Mémoire**
 2. **Statut des modules Arkalia**
 3. **Requêtes API en temps réel**
@@ -238,6 +250,7 @@ assistantia_security_blocks_total 2
 ## Alertes Prometheus
 
 ### **Règles d'Alertes**
+
 ```yaml
 # CPU Usage High
 - alert: HighCPUUsage
@@ -281,6 +294,7 @@ assistantia_security_blocks_total 2
 ## 🔧 **Configuration Prometheus**
 
 ### **Targets Configuration**
+
 ```yaml
 scrape_configs:
   - job_name: 'arkalia-api'

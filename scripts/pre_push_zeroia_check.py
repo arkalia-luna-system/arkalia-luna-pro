@@ -27,6 +27,11 @@ ENV_FILES = list(Path(".").rglob("*.env"))
 
 
 def check_toml_validity() -> bool:
+    """Vérifie la validité du fichier TOML d'état ZeroIA.
+
+    Returns:
+        bool: True si le fichier est valide, False sinon.
+    """
     try:
         with STATE_FILE.open("rb") as f:
             tomllib.load(f)
@@ -40,6 +45,11 @@ def check_toml_validity() -> bool:
 
 
 def check_pat_exposure() -> bool:
+    """Vérifie l'exposition de tokens PAT GitHub dans les fichiers.
+
+    Returns:
+        bool: True si aucun token n'est exposé, False sinon.
+    """
     pat_regex = re.compile(r"ghp_[A-Za-z0-9]{36,}")
     for file in ENV_FILES:
         content = file.read_text(errors="ignore")

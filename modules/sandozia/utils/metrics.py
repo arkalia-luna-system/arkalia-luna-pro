@@ -27,6 +27,8 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class MetricPoint:
+    """Point de métrique avec timestamp et labels."""
+
     timestamp: datetime
     value: float
     labels: dict[str, str]
@@ -81,7 +83,7 @@ class SandoziaMetrics:
         # Nettoyer les anciennes métriques
         self._cleanup_old_metrics(name)
 
-    def _cleanup_old_metrics(self, metric_name: str):
+    def _cleanup_old_metrics(self, metric_name: str) -> None:
         cutoff = datetime.now() - timedelta(hours=self.retention_hours)
         self.metrics_store[metric_name] = [
             point for point in self.metrics_store[metric_name] if point.timestamp > cutoff
@@ -124,7 +126,7 @@ class SandoziaMetrics:
             denominator = (sum_sq1 * sum_sq2) ** 0.5
             if denominator == 0:
                 return 0.0
-            correlation = numerator / denominator
+            correlation: float = numerator / denominator
             cache_key = f"{metric1}_{metric2}_{time_window_minutes}"
             self.correlations_cache[cache_key] = correlation
             return correlation

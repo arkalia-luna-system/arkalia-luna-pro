@@ -35,12 +35,25 @@ def log(msg: str, silent: bool = False):
 
 
 def backup_current_state(silent: bool = False) -> None:
+    """Crée une sauvegarde de l'état ZeroIA actuel.
+
+    Args:
+        silent: Mode silencieux (défaut: False).
+    """
     if STATE_FILE.exists():
         shutil.copy2(STATE_FILE, BACKUP_FILE)
         log(f"🗄️  Backup du fichier actuel effectué : {BACKUP_FILE}", silent)
 
 
 def restore_snapshot(silent: bool = False) -> bool:
+    """Restaure un snapshot de l'état ZeroIA.
+
+    Args:
+        silent: Mode silencieux (défaut: False).
+
+    Returns:
+        bool: True si la restauration a réussi, False sinon.
+    """
     if not SNAPSHOT_FILE.exists():
         log("❌ Aucun fichier snapshot à restaurer.", silent)
         return False
@@ -50,6 +63,7 @@ def restore_snapshot(silent: bool = False) -> bool:
 
 
 def log_failure() -> None:
+    """Enregistre un échec dans le log de failures."""
     FAILURE_LOG.parent.mkdir(parents=True, exist_ok=True)
     try:
         with FAILURE_LOG.open("a", encoding="utf-8") as f:
@@ -61,6 +75,11 @@ def log_failure() -> None:
 
 
 def rollback_from_backup(silent: bool = False) -> None:
+    """Effectue un rollback depuis le backup.
+
+    Args:
+        silent: Mode silencieux (défaut: False).
+    """
     if not BACKUP_FILE.exists():
         log("❌ Rollback impossible : aucun backup trouvé.", silent)
         return
@@ -71,7 +90,12 @@ def rollback_from_backup(silent: bool = False) -> None:
         log(f"❌ Erreur lors du rollback : {e}", silent)
 
 
-def parse_arguments() -> None:
+def parse_arguments() -> argparse.Namespace:
+    """Parse les arguments de ligne de commande.
+
+    Returns:
+        argparse.Namespace: Arguments parsés.
+    """
     parser = argparse.ArgumentParser(description="ZeroIA Rollback Script")
     parser.add_argument(
         "--no-rollback",

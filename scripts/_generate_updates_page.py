@@ -11,6 +11,11 @@ for file in Path("docs/releases").glob("._*"):
 
 
 def main(**kwargs) -> None:
+    """Génère la page des dernières mises à jour depuis Git.
+
+    Args:
+        **kwargs: Arguments optionnels (non utilisés actuellement).
+    """
     ark_logger.info("✅ Hook exécuté : génération des updates", extra={"arkalia_module": "scripts"})
 
     repo_path = Path.cwd()  # Assure que le chemin actuel est un dépôt Git

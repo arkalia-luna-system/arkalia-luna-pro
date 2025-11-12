@@ -1,6 +1,8 @@
-# 📊 Arkalia IA Monitor
-# Affiche un état synthétique de la cognition ZeroIA
+"""Monitor Arkalia IA - Affiche un état synthétique de la cognition ZeroIA.
 
+Ce script fournit un monitoring en temps réel de l'état des modules IA
+et des conteneurs Docker.
+"""
 import json
 import subprocess  # nosec
 import sys
@@ -17,6 +19,7 @@ LOG_FILE = Path("logs/failure_analysis.md")
 
 
 def check_docker_status() -> None:
+    """Vérifie le statut des conteneurs Docker."""
     try:
         result = subprocess.run(
             [sys.executable, "docker_status.py"],
@@ -40,6 +43,7 @@ def check_docker_status() -> None:
 
 
 def ping_reflexia() -> None:
+    """Vérifie la disponibilité du module Reflexia."""
     try:
         response = requests.get("http://reflexia-endpoint/ping", timeout=5)
         if response.status_code == 200:
@@ -51,6 +55,7 @@ def ping_reflexia() -> None:
 
 
 def display_recent_errors() -> None:
+    """Affiche les dernières erreurs enregistrées."""
     ark_logger.info("\n📝 Dernières erreurs connues", extra={"arkalia_module": "scripts"})
     if LOG_FILE.exists():
         with LOG_FILE.open("r", encoding="utf-8") as f:

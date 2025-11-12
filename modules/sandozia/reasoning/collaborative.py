@@ -25,6 +25,8 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class ReasoningResult:
+    """Résultat d'un raisonnement collaboratif entre modules."""
+
     consensus_reached: bool
     final_decision: str
     confidence: float

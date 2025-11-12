@@ -25,6 +25,11 @@ REQUIRED_FIELDS = ["last_decision", "confidence_score", "justification", "timest
 
 
 def check_state_file() -> int:
+    """Vérifie la validité du fichier d'état ZeroIA.
+
+    Returns:
+        int: Code de sortie (0=OK, 1=champs manquants, 2=fichier introuvable).
+    """
     # Utiliser la variable d'environnement ou le chemin par défaut
     state_path = os.environ.get("ZEROIA_STATE_PATH", DEFAULT_STATE_PATH)
 

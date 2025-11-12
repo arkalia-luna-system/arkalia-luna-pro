@@ -12,6 +12,15 @@ OUTPUT_FILE = "docs/logs/zeroia_status.md"
 
 
 def get_container_logs(container_name: str, tail: int = 50) -> str:
+    """Récupère les logs d'un conteneur Docker.
+
+    Args:
+        container_name: Nom du conteneur.
+        tail: Nombre de lignes à récupérer (défaut: 50).
+
+    Returns:
+        str: Logs du conteneur.
+    """
     try:
         logs = subprocess.check_output(
             ["docker", "logs", container_name, "--tail", str(tail)],
@@ -23,6 +32,14 @@ def get_container_logs(container_name: str, tail: int = 50) -> str:
 
 
 def get_container_status(container_name: str) -> str:
+    """Récupère le statut d'un conteneur Docker.
+
+    Args:
+        container_name: Nom du conteneur.
+
+    Returns:
+        str: Statut du conteneur.
+    """
     try:
         status = subprocess.check_output(
             ["docker", "inspect", "-f", "{{.State.Status}}", container_name]
@@ -33,11 +50,25 @@ def get_container_status(container_name: str) -> str:
 
 
 def parse_decisions(logs: str) -> list[str]:
+    """Parse les décisions ZeroIA depuis les logs.
+
+    Args:
+        logs: Logs du conteneur.
+
+    Returns:
+        list: Liste des décisions trouvées.
+    """
     lines = logs.splitlines()
     return [line.strip() for line in lines if "ZeroIA decided" in line]
 
 
 def write_markdown(status: str, decisions: list[str]) -> None:
+    """Écrit le statut ZeroIA dans un fichier Markdown.
+
+    Args:
+        status: Statut du conteneur.
+        decisions: Liste des décisions récentes.
+    """
     timestamp = datetime.datetime.now().isoformat(timespec="seconds")
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("# 🤖 ZeroIA — Statut automatique\n\n")
@@ -56,6 +87,11 @@ def write_markdown(status: str, decisions: list[str]) -> None:
 
 
 def get_file_info(filepath) -> None:
+    """Affiche les informations d'un fichier.
+
+    Args:
+        filepath: Chemin du fichier.
+    """
     p = Path(filepath)
     if not p.exists():
         return f"- ❌ {filepath} (not found)"
@@ -65,6 +101,7 @@ def get_file_info(filepath) -> None:
 
 
 def main() -> None:
+    """Fonction principale de génération du statut ZeroIA."""
     container = "zeroia"
     if not os.path.exists("docs/logs"):
         os.makedirs("docs/logs")

@@ -620,6 +620,13 @@ async def run_daemon():
 
     # Gestion signal d'arrêt
     def signal_handler(signum, frame) -> None:
+        """
+        Gestionnaire de signaux pour arrêt gracieux du daemon.
+
+        Args:
+            signum: Numéro du signal reçu.
+            frame: Frame d'exécution actuel.
+        """
         logger.info("🛑 Arrêt du daemon CognitiveReactor")
         sys.exit(0)
 
