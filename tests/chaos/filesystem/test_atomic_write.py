@@ -2,7 +2,6 @@
 import time
 from pathlib import Path
 
-import pytest
 import toml
 
 from modules.utils.helpers.io_safe import atomic_write

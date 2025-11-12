@@ -11,9 +11,7 @@ from modules.core.optimizations import (
     cache_result,
     circuit_breaker,
     get_cache_manager,
-    get_circuit_breaker_registry,
     get_load_balancer,
-    get_metrics_manager,
     load_balanced_request,
     record_metric,
 )

@@ -1,7 +1,7 @@
 # 📄 tests/common/fixtures.py
 # Fixtures partagées pour tous les tests
 
-from collections.abc import Generator, Iterator
+from collections.abc import Generator
 from pathlib import Path
 
 import pytest

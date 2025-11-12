@@ -6,8 +6,6 @@ Couverture cible : 50% → 80%+
 import os
 import tempfile
 import time
-from datetime import datetime
-from unittest.mock import Mock, patch
 
 import pytest
 
@@ -21,7 +19,6 @@ from modules.zeroia.reason_loop_enhanced import (
     get_event_analytics,
     initialize_components_with_recovery,
     load_context,
-    reason_loop_enhanced_with_recovery,
 )
 
 

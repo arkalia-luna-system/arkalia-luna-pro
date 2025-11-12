@@ -1,6 +1,5 @@
 # tests/test_sitemap.py
 
-import os
 from pathlib import Path
 
 import defusedxml.ElementTree as ET

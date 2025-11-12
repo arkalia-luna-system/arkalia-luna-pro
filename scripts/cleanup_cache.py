@@ -4,7 +4,6 @@
 Supprime les caches Python, les logs anciens et les fichiers temporaires
 """
 
-import os
 import shutil
 import time
 from pathlib import Path

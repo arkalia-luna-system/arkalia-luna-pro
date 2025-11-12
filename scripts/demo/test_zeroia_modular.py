@@ -9,10 +9,8 @@ Teste les 4 nouveaux modules :
 - Coordinator
 """
 
-import json
 import logging
 import time
-from pathlib import Path
 
 # Configuration du logging
 logging.basicConfig(

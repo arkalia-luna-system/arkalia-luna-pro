@@ -5,7 +5,6 @@
 Tests end-to-end simples pour vérifier le bon fonctionnement du système.
 """
 
-import time
 from pathlib import Path
 
 import pytest

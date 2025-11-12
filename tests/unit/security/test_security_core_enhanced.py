@@ -2,9 +2,7 @@
 # 🔒 tests/unit/security/test_security_core_enhanced.py
 # Tests pour modules/security/core.py (imports corrigés)
 
-import asyncio
 import importlib.util
-import sys
 from pathlib import Path
 
 import pytest

@@ -9,7 +9,6 @@ import time
 from collections.abc import AsyncGenerator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from datetime import datetime
-from typing import Union
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -174,10 +173,8 @@ app.include_router(reflexia_router, prefix="/reflexia")
 
 def print_status() -> None:
     """Affiche le statut de démarrage d'Arkalia-LUNA."""
-    from rich import print
-
     ark_logger.info(
-        "[green bold]Arkalia-LUNA is active and running.[/green bold]",
+        "Arkalia-LUNA is active and running.",
         extra={"arkalia_module": "app"},
     )
 

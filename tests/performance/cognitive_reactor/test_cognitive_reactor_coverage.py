@@ -3,11 +3,9 @@ Tests unitaires pour cognitive_reactor - Arkalia-LUNA Pro
 Couverture cible : 45% → 80%+
 """
 
-import os
 import tempfile
 import time
 from typing import Any
-from unittest.mock import patch
 
 import pytest
 

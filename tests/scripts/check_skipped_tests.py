@@ -3,7 +3,6 @@
 Script pour vérifier les tests skipped dans Arkalia-LUNA Pro
 """
 
-import os
 import subprocess
 import sys
 from pathlib import Path

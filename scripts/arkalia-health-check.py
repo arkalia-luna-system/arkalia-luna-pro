@@ -4,7 +4,6 @@
 Script de diagnostic et monitoring des deux sites web
 """
 
-import asyncio
 import json
 import logging
 import os
@@ -15,7 +14,6 @@ from datetime import datetime
 from pathlib import Path
 
 import requests
-import toml
 
 from core.ark_logger import ark_logger
 

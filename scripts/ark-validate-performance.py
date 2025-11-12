@@ -6,7 +6,6 @@ Valide les modules ZeroIA, EventStore et CircuitBreaker
 
 import tempfile
 import time
-from pathlib import Path
 
 from core.ark_logger import ark_logger
 

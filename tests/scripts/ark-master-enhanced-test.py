@@ -6,7 +6,6 @@ Test complet de l'orchestrateur enhanced v5.0.0
 
 import asyncio
 import sys
-from typing import Any, Optional
 
 from core.ark_logger import ark_logger
 

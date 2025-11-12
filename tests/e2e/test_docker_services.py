@@ -6,9 +6,6 @@ Tests end-to-end pour vérifier le bon fonctionnement des services Docker
 et leur intégration.
 """
 
-import asyncio
-import json
-import subprocess
 import time
 from typing import Any
 
@@ -16,7 +13,7 @@ import httpx
 import pytest
 
 try:
-    from docker.client import DockerClient
+    from docker.client import DockerClient  # noqa: F401
 
     docker_available = True
 except (ImportError, AttributeError):

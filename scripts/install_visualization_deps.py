@@ -6,7 +6,6 @@ Installe les packages nécessaires pour les graphiques et dashboards
 
 import subprocess
 import sys
-from pathlib import Path
 
 from core.ark_logger import ark_logger
 

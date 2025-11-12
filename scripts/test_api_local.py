@@ -5,13 +5,12 @@ Vérifie que l'API fonctionne avant de tester avec Docker
 """
 
 import sys
-import time
 from pathlib import Path
 
 import requests
 
 
-def test_api_endpoints():
+def test_api_endpoints() -> None:
     """Test des endpoints de l'API"""
     base_url = "http://localhost:8000"
     endpoints = ["/", "/health", "/status", "/metrics"]
@@ -39,7 +38,7 @@ def test_api_endpoints():
     print()
 
 
-def test_api_startup():
+def test_api_startup() -> bool:
     """Test du démarrage de l'API"""
     print("🚀 Test du démarrage de l'API...")
 
@@ -59,8 +58,8 @@ def test_api_startup():
 
     # Vérifier les dépendances
     try:
-        import fastapi
-        import uvicorn
+        import fastapi  # noqa: F401
+        import uvicorn  # noqa: F401
 
         print("✅ Dépendances FastAPI et Uvicorn disponibles")
     except ImportError as e:
@@ -70,7 +69,7 @@ def test_api_startup():
     return True
 
 
-def test_docker_healthcheck():
+def test_docker_healthcheck() -> bool:
     """Test du healthcheck Docker"""
     print("🐳 Test du healthcheck Docker...")
 
@@ -99,7 +98,7 @@ def test_docker_healthcheck():
         return False
 
 
-def main():
+def main() -> None:
     """Fonction principale"""
     print("🌕 Test de l'API Arkalia-LUNA")
     print("=" * 50)

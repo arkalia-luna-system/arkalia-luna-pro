@@ -7,7 +7,6 @@ Gestion d'erreurs et healthcheck intégré
 import logging
 import os
 import sys
-import time
 from pathlib import Path
 
 # Configuration logging
@@ -18,8 +17,8 @@ logger = logging.getLogger(__name__)
 def check_dependencies() -> bool:
     """Vérification des dépendances critiques"""
     try:
-        import fastapi
-        import uvicorn
+        import fastapi  # noqa: F401
+        import uvicorn  # noqa: F401
 
         logger.info("✅ FastAPI et Uvicorn disponibles")
         return True

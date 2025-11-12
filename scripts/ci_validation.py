@@ -5,7 +5,6 @@ Vérifie les points critiques sans échouer sur les erreurs mineures
 """
 
 import importlib
-import os
 import subprocess
 import sys
 from pathlib import Path

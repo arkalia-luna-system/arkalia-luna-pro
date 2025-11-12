@@ -3,12 +3,10 @@ Arkalia Score Generator
 Génère un score cognitif global en temps réel
 """
 
-import json
 import logging
-import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import toml
 

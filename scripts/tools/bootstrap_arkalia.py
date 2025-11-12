@@ -13,13 +13,12 @@ Vérifications :
 import json
 import os
 import platform
-import shutil
 import socket
 import subprocess
 import sys
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 # Configuration
 ARKALIA_PORTS = [8000, 8001, 8002, 8003, 3000, 9090, 9093, 3100]

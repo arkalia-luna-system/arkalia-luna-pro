@@ -4,11 +4,9 @@
 Génère des graphiques et rapports de performance
 """
 
-import json
 import random
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np

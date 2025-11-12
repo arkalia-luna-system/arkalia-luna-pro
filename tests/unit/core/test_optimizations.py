@@ -4,23 +4,12 @@
 """
 
 import time
-from datetime import datetime
-
-import pytest
 
 from modules.core.optimizations import (
-    AdvancedMetricsManager,
-    AlertRule,
-    AlertSeverity,
     BackendNode,
     CacheLevel,
-    CacheManager,
-    CircuitBreaker,
     CircuitBreakerConfig,
-    CircuitBreakerRegistry,
     CircuitState,
-    LoadBalancer,
-    LoadBalancingStrategy,
     MetricType,
     cache_result,
     circuit_breaker,

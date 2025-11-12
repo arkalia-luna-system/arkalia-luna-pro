@@ -9,7 +9,6 @@ import asyncio
 import time
 from typing import Any
 
-import aiohttp
 import httpx
 import pytest
 import pytest_asyncio
@@ -302,7 +301,6 @@ class TestAPIMemoryPerformance:
     def test_api_memory_usage_under_load(self) -> None:
         """Test de l'utilisation mémoire de l'API sous charge"""
         import threading
-        import time
 
         import psutil
         import requests

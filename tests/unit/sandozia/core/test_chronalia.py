@@ -3,7 +3,7 @@
 import json
 import time
 from collections.abc import Generator
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -12,7 +12,6 @@ from modules.sandozia.core.chronalia import (
     Chronalia,
     CognitiveCycle,
     create_chronalia,
-    log_cognitive_cycle,
 )
 
 

@@ -3,7 +3,7 @@ from unittest.mock import patch
 import pytest
 from fastapi.testclient import TestClient
 
-from modules.assistantia.core import app, get_query_ollama
+from modules.assistantia.core import app
 
 
 @pytest.fixture(scope="module")

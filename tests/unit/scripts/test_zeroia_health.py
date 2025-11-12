@@ -1,8 +1,7 @@
 import unittest
-from pathlib import Path
 from unittest.mock import mock_open, patch
 
-from scripts._zeroia_health import check_component_health, check_performance, check_state_file
+from scripts._zeroia_health import check_state_file
 
 
 class TestZeroiaHealth(unittest.TestCase):

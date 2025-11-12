@@ -21,12 +21,11 @@ import pytest
 
 from modules.zeroia.circuit_breaker import (
     CircuitBreaker,
-    CircuitState,
     CognitiveOverloadError,
     DecisionIntegrityError,
     SystemRebootRequired,
 )
-from modules.zeroia.event_store import EventStore, EventType
+from modules.zeroia.event_store import EventStore
 
 
 @pytest.fixture

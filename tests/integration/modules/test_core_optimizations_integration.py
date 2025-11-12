@@ -5,8 +5,6 @@
 
 import time
 
-import pytest
-
 from modules.core.optimizations import (
     BackendNode,
     CircuitBreakerConfig,

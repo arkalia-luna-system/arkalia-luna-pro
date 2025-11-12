@@ -1,10 +1,8 @@
 import os
 import subprocess
-import sys
 import tempfile
 from collections.abc import Iterator
 from pathlib import Path
-from typing import Any
 
 import pytest
 import toml

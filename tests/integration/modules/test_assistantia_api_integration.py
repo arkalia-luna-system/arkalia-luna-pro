@@ -1,7 +1,5 @@
-import os
 from unittest.mock import patch
 
-import pytest
 from fastapi.testclient import TestClient
 
 from core.ark_logger import ark_logger

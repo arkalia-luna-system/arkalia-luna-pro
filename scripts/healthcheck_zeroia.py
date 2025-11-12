@@ -11,7 +11,6 @@ Ce script vérifie l'état de santé de ZeroIA en validant :
 import datetime
 import os
 import sys
-from pathlib import Path
 
 import toml
 

@@ -1,15 +1,13 @@
 """Tests pour app/main.py"""
 
-import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from unittest.mock import MagicMock, patch
 
-import psutil
 import pytest
 from fastapi.testclient import TestClient
 from prometheus_client import CONTENT_TYPE_LATEST
 
-from app.main import app, metrics, start_time
+from app.main import app, metrics
 
 client = TestClient(app)
 

@@ -16,21 +16,15 @@ Benchmarks couverts :
 import os
 import time
 from pathlib import Path
-from typing import Any
-from unittest.mock import patch
 
 import psutil
 import pytest
-import pytest_benchmark.plugin
 
 from core.ark_logger import ark_logger
-from modules.zeroia import ZeroIACoordinator
 from modules.zeroia.circuit_breaker import CircuitBreaker
-from modules.zeroia.confidence_score import ConfidenceScorer
 from modules.zeroia.event_store import EventStore, EventType
 from modules.zeroia.reason_loop_enhanced import (
     create_default_context_enhanced,
-    reason_loop_enhanced_with_recovery,
 )
 
 

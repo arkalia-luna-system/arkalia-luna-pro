@@ -5,9 +5,7 @@ Génère un rapport détaillé de la structure du projet
 """
 
 import json
-import os
 import re
-import sys
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path

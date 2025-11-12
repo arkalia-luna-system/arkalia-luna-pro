@@ -5,11 +5,8 @@ Analyse tous les fichiers JSON pour identifier les zones problématiques
 """
 
 import csv
-import json
-import os
 import re
-import sys
-from collections import Counter, defaultdict
+from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -292,7 +289,6 @@ class JSONDiagnostic:
 def main():
     """Point d'entrée principal"""
     import argparse
-    import re
 
     parser = argparse.ArgumentParser(description="Diagnostic des fichiers JSON Arkalia Luna Pro")
     parser.add_argument("--root", default=".", help="Racine du projet à analyser")

@@ -1,10 +1,9 @@
 import json
 import tempfile
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 from unittest.mock import mock_open, patch
 
-import pytest
 import toml
 
 from modules.zeroia.confidence_score import ConfidenceScorer

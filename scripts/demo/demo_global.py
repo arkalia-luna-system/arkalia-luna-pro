@@ -9,7 +9,6 @@ import logging
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
 # Configuration du logging
 from modules.core.optimizations.optimization_integrator import OptimizationIntegrator

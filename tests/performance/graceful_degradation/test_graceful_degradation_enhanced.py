@@ -6,13 +6,11 @@ Couverture cible : 38% → 80%+
 import os
 import tempfile
 import time
-from unittest.mock import Mock, patch
 
 import pytest
 
 from modules.zeroia.graceful_degradation import (
     DegradationLevel,
-    DegradationMetrics,
     GracefulDegradationSystem,
     ServiceDefinition,
     ServiceMetrics,

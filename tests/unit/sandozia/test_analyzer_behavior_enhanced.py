@@ -3,11 +3,8 @@
 # Tests pour modules/sandozia/analyzer/behavior.py (imports corrigés)
 
 import importlib.util
-import sys
 from datetime import datetime
 from pathlib import Path
-
-import pytest
 
 # Ajout dynamique du module sandozia.analyzer.behavior
 behavior_path = (

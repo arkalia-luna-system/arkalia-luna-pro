@@ -20,7 +20,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import diskcache  # type: ignore
+import diskcache
 import toml
 
 # Ajout FastAPI pour endpoint /metrics
@@ -162,7 +162,7 @@ class SandoziaCore:
 
         # État du système
         self.is_running = False
-        self.monitoring_task = None
+        self.monitoring_task: asyncio.Task[None] | None = None
 
         ark_logger.info(
             "🧠 SandoziaCore initialized - Intelligence Croisée ready",
@@ -213,7 +213,7 @@ class SandoziaCore:
 
         return default_config
 
-    async def initialize_modules(self):
+    async def initialize_modules(self) -> None:
         """Initialise les connexions aux modules IA"""
         ark_logger.info(
             "🔌 Initializing IA modules connections...", extra={"arkalia_module": "sandozia"}
@@ -451,7 +451,7 @@ class SandoziaCore:
 
         return recommendations
 
-    async def start_monitoring(self):
+    async def start_monitoring(self) -> None:
         """Démarre le monitoring en continu"""
         if self.is_running:
             ark_logger.warning("⚠️ Monitoring already running", extra={"arkalia_module": "sandozia"})
@@ -464,7 +464,7 @@ class SandoziaCore:
 
         ark_logger.info("🚀 Sandozia monitoring started", extra={"arkalia_module": "sandozia"})
 
-    async def stop_monitoring(self):
+    async def stop_monitoring(self) -> None:
         """Arrête le monitoring"""
         self.is_running = False
 
@@ -477,7 +477,7 @@ class SandoziaCore:
 
         ark_logger.info("🛑 Sandozia monitoring stopped", extra={"arkalia_module": "sandozia"})
 
-    async def _monitoring_loop(self):
+    async def _monitoring_loop(self) -> None:
         """Boucle principale de monitoring"""
         interval = self.config["monitoring"]["interval_seconds"]
 
@@ -519,7 +519,7 @@ class SandoziaCore:
 
             await asyncio.sleep(interval)
 
-    async def _save_state(self, snapshot: IntelligenceSnapshot, metrics: SandoziaMetrics):
+    async def _save_state(self, snapshot: IntelligenceSnapshot, metrics: SandoziaMetrics) -> None:
         """Sauvegarde l'état et métriques"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -553,16 +553,6 @@ class SandoziaCore:
 
 # === Métriques Prometheus pour Sandozia ===
 # Gestion simple des métriques avec try/except pour éviter les doublons
-try:
-    sandozia_uptime = Gauge(
-        "sandozia_uptime_seconds", "Temps de fonctionnement de Sandozia (secondes)"
-    )
-    sandozia_coherence_score = Gauge(
-        "sandozia_coherence_score", "Score de cohérence inter-modules Sandozia"
-    )
-except ValueError:
-    # Les métriques existent déjà, on crée des objets mock pour éviter les erreurs
-    pass
 
 
 class MockGauge:
@@ -572,7 +562,7 @@ class MockGauge:
     Cette classe fait partie du système Arkalia Luna Pro.
     """
 
-    def set(self, value):
+    def set(self, value: float) -> None:
         """
         Fonction set.
 
@@ -581,15 +571,27 @@ class MockGauge:
         pass
 
 
-sandozia_uptime = MockGauge()
-sandozia_coherence_score = MockGauge()
+sandozia_uptime: Gauge | MockGauge
+sandozia_coherence_score: Gauge | MockGauge
+
+try:
+    sandozia_uptime = Gauge(
+        "sandozia_uptime_seconds", "Temps de fonctionnement de Sandozia (secondes)"
+    )
+    sandozia_coherence_score = Gauge(
+        "sandozia_coherence_score", "Score de cohérence inter-modules Sandozia"
+    )
+except ValueError:
+    # Les métriques existent déjà, on crée des objets mock pour éviter les erreurs
+    sandozia_uptime = MockGauge()
+    sandozia_coherence_score = MockGauge()
 
 # === FastAPI app ===
 app = FastAPI()
 
 
 @app.get("/metrics")
-async def get_metrics():
+async def get_metrics() -> Any:
     """
     📊 Endpoint métriques Prometheus pour Sandozia
     """
@@ -614,7 +616,7 @@ async def get_metrics():
 
 
 # Fonction helper pour CLI
-async def main():
+async def main() -> None:
     """Point d'entrée CLI pour Sandozia"""
     import argparse
 

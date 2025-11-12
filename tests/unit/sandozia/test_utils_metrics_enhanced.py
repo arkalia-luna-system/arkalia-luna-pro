@@ -3,11 +3,8 @@
 # Tests pour modules/sandozia/utils/metrics.py (imports corrigés)
 
 import importlib.util
-import sys
 from datetime import datetime
 from pathlib import Path
-
-import pytest
 
 # Ajout dynamique du module sandozia.utils.metrics
 metrics_path = Path(__file__).resolve().parents[3] / "modules" / "sandozia" / "utils" / "metrics.py"

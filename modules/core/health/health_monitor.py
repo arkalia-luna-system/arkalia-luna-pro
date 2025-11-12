@@ -66,7 +66,8 @@ class HealthMonitor:
         🛡️ Préservation des watchdogs existants
 
         Args:
-            start_monitoring: Si True, démarre le thread de monitoring (défaut: False pour économiser les ressources)
+            start_monitoring: Si True, démarre le thread de monitoring
+                (défaut: False pour économiser les ressources)
         """
         try:
             ark_logger.info("🏥 Initialisation HealthMonitor...", extra={"arkalia_module": "core"})

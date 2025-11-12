@@ -439,5 +439,7 @@ storage = _LazyStorage()
 
 def set_storage_backend(backend: str, **kwargs: Any) -> None:
     """Set storage backend globally"""
-    global storage
-    storage = StorageManager(backend, **kwargs)
+    global _storage, storage
+    _storage = None  # Réinitialiser pour forcer la création d'une nouvelle instance
+    _storage = StorageManager(backend, **kwargs)
+    storage = _LazyStorage()  # Recréer le wrapper lazy
