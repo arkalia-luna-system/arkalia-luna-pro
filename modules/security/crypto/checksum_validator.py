@@ -283,7 +283,7 @@ class BuildIntegrityValidator:
             f.write(json.dumps(log_entry) + "\n")
 
         ark_logger.critical(
-            f"🚨 SECURITY VIOLATION: {len(violation, )} integrity issues logged",
+            f"🚨 SECURITY VIOLATION: {len(violations)} integrity issues logged",
             extra={"arkalia_module": "security"},
         )
 
