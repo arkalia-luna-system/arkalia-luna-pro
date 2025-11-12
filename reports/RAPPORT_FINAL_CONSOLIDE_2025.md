@@ -27,14 +27,14 @@
 
 ---
 
-## 🚀 Actions à réaliser (prochaines étapes)
+## Actions à réaliser (prochaines étapes)
 1. **Créer un README landing page pro (GitHub + Gumroad)**
 2. **Ajouter un test d'intégration bout-en-bout dans `tests/integration/`**
 3. **Compléter le benchmark cognitif dans `scripts/ark-performance-benchmark.py` ou créer `bench_cognitif.py`**
 
 ---
 
-## 📊 Récapitulatif des fichiers clés
+## Récapitulatif des fichiers clés
 - **Démo interactive** : `scripts/demo/demo_global.py`
 - **Score cognitif** : `scripts/tools/arkalia_score.py`, `arkalia_score.toml`
 - **Tests intermodules** : `tests/integration/test_zeroia_reflexia_sync.py`, `tests/integration/test_api_guardian_behavior.py`
@@ -80,14 +80,14 @@ modules/core/
 ### Modules Principaux (8 modules consolidés)
 ```
 modules/
-├── core/               # 🧠 Cœur SOLID centralisé
-├── zeroia/             # 🎯 Module de décision consolidé
-├── reflexia/           # 🔍 Module de surveillance consolidé
-├── sandozia/           # 📊 Module d'analyse consolidé
-├── assistantia/        # 💬 Module d'assistance
-├── helloria/           # 🌐 Module d'API
-├── security/           # 🛡️ Module de sécurité
-└── taskia/             # 📋 Module de tâches
+├── core/               # Cœur SOLID centralisé
+├── zeroia/             # Module de décision consolidé
+├── reflexia/           # Module de surveillance consolidé
+├── sandozia/           # Module d'analyse consolidé
+├── assistantia/        # Module d'assistance
+├── helloria/           # Module d'API
+├── security/           # Module de sécurité
+└── taskia/             # Module de tâches
 ```
 
 ### Optimisations Avancées (4 systèmes)
