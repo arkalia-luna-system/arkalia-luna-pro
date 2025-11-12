@@ -249,3 +249,7 @@ def main() -> None:
     if restore_snapshot(silent=args.silent):
         log_failure()
     rollback_from_backup(silent=args.silent)
+
+
+if __name__ == "__main__":
+    main()
