@@ -47,7 +47,7 @@ class HealthMonitor:
     🛡️ Préservation des watchdogs critiques
     """
 
-    def __init__(self) -> None:
+    def __init__(self, auto_start_monitoring: bool = False) -> None:
         self._metrics: dict[str, HealthMetric] = {}
         self._alerts: list[Alert] = []
         self._watchdogs: dict[str, Callable] = {}
@@ -57,13 +57,16 @@ class HealthMonitor:
         self._stop_monitoring = False
         self._initialized = False
 
-        # Initialisation automatique
-        self.initialize()
+        # Initialisation automatique (sans démarrer le thread par défaut)
+        self.initialize(start_monitoring=auto_start_monitoring)
 
-    def initialize(self) -> bool:
+    def initialize(self, start_monitoring: bool = False) -> bool:
         """
         🚀 Initialisation du moniteur de santé
         🛡️ Préservation des watchdogs existants
+
+        Args:
+            start_monitoring: Si True, démarre le thread de monitoring (défaut: False pour économiser les ressources)
         """
         try:
             ark_logger.info("🏥 Initialisation HealthMonitor...", extra={"arkalia_module": "core"})
@@ -71,8 +74,9 @@ class HealthMonitor:
             # Enregistrement des watchdogs par défaut
             self._register_default_watchdogs()
 
-            # Démarrage du monitoring en arrière-plan
-            self._start_monitoring_thread()
+            # Démarrage du monitoring en arrière-plan (seulement si demandé)
+            if start_monitoring:
+                self._start_monitoring_thread()
 
             self._initialized = True
             ark_logger.info(

@@ -151,8 +151,8 @@ class SandoziaCore:
         # Métriques et état
         self.metrics_history: list[SandoziaMetrics] = []
         self.intelligence_snapshots = diskcache.Cache(
-            "./cache/sandozia_snapshots", size_limit=500_000_000
-        )  # 500MB limit
+            "./cache/sandozia_snapshots", size_limit=100_000_000
+        )  # 100MB limit (réduit de 500MB pour économiser la RAM)
         self.snapshots_counter = 0  # Compteur simple pour le suivi
         self.active_correlations: dict[str, Any] = {}
 
