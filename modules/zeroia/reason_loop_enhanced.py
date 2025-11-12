@@ -661,7 +661,8 @@ def reason_loop_enhanced_with_recovery(
             extra={"arkalia_module": "zeroia"},
         )
         ark_logger.info(
-            f"[ZeroIA] CPU usage: {cpu}% → decision={decision} (score={score}, extra={"arkalia_module": "zeroia"})",
+                f"[ZeroIA] CPU usage: {cpu}% → decision={decision} (score={score})",
+                extra={"arkalia_module": "zeroia"},
             extra={"arkalia_module": "zeroia"},
         )
 
