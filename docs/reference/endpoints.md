@@ -20,7 +20,7 @@ http://localhost:8000
 GET /
 ```
 
-**Description** : Page d'accueil de l'API  
+**Description** : Page d'accueil de l'API
 **Réponse** : HTML de la page d'accueil
 
 #### GET /health - Health Check
@@ -29,7 +29,7 @@ GET /
 GET /health
 ```
 
-**Description** : Vérification de l'état de santé  
+**Description** : Vérification de l'état de santé
 **Réponse** :
 
 ```json
@@ -46,7 +46,7 @@ GET /health
 GET /status
 ```
 
-**Description** : Statut détaillé de tous les modules  
+**Description** : Statut détaillé de tous les modules
 **Réponse** :
 
 ```json
