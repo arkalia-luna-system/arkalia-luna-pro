@@ -5,7 +5,6 @@
 import fcntl
 import hashlib
 import json
-import logging
 import os
 import tempfile
 import threading
@@ -16,7 +15,7 @@ from typing import Any, Optional
 
 import toml
 
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 class AtomicWriteError(Exception):
@@ -32,7 +31,7 @@ class LockedReadError(Exception):
 
 
 # Thread lock global pour la sécurité
-_file_locks: dict[str, Any] = {}
+_file_locks: dict[str, threading.Lock] = {}
 _locks_mutex = threading.Lock()
 
 # Cache TOML simple (thread-safe)
@@ -125,8 +124,9 @@ def atomic_write(
                 try:
                     os.unlink(tmp_path)
                 except OSError as cleanup_error:
-                    logger.warning(
-                        f"Failed to cleanup temporary file {tmp_path}: {cleanup_error}"
+                    ark_logger.warning(
+                        f"Failed to cleanup temporary file {tmp_path}: {cleanup_error}",
+                        extra={"arkalia_module": "utils"},
                     )  # nosec B110
 
             raise AtomicWriteError(f"Erreur écriture atomique {file_path}: {e}") from e
@@ -176,14 +176,20 @@ def locked_read(
                 fcntl.flock(f.fileno(), fcntl.LOCK_SH)
 
             try:
-                content = f.read()
+                content: str | bytes = f.read()
 
                 # Parse automatique pour JSON/TOML
                 if isinstance(content, str) and content.strip():
                     if file_path.suffix.lower() == ".json":
-                        return json.loads(content)
+                        parsed = json.loads(content)
+                        if isinstance(parsed, dict):
+                            return parsed
+                        return content
                     elif file_path.suffix.lower() == ".toml":
-                        return toml.loads(content)
+                        parsed = toml.loads(content)
+                        if isinstance(parsed, dict):
+                            return parsed
+                        return content
 
                 return content
 
@@ -308,7 +314,9 @@ def load_toml_cached(file_path: str | Path, cache_ttl: float = 30.0) -> dict[str
             return data
         return {}
     except (FileNotFoundError, LockedReadError, toml.TomlDecodeError) as e:
-        logger.warning(f"Erreur chargement TOML {file_path}: {e}")
+        ark_logger.warning(
+            f"Erreur chargement TOML {file_path}: {e}", extra={"arkalia_module": "utils"}
+        )
         return {}
 
 

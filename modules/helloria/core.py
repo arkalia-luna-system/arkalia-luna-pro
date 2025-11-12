@@ -6,7 +6,6 @@ pour tous les modules IA (ZeroIA, Reflexia, Sandozia).
 """
 
 import json
-import logging
 import time
 from pathlib import Path
 from typing import Any, Union
@@ -14,6 +13,8 @@ from typing import Any, Union
 import psutil
 from fastapi import APIRouter, FastAPI, Request, Response
 from fastapi.responses import JSONResponse, PlainTextResponse
+
+from core.ark_logger import ark_logger
 
 # 📦 Import des routes externes (modules IA)
 from modules.reflexia.core_api import router as reflexia_router
@@ -24,14 +25,6 @@ from modules.reflexia.core_api import router as reflexia_router
 
 # 🚦 Router principal
 router = APIRouter()
-logger = logging.getLogger(__name__)
-
-# 🧾 Logging d'erreurs
-logging.basicConfig(
-    level=logging.ERROR,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    filename="app_errors.log",
-)
 
 
 # 🎯 Endpoint principal IA
@@ -49,7 +42,7 @@ async def chat(request: Request) -> dict[str, Any] | JSONResponse:
         return {"réponse": response_text}
 
     except Exception as e:
-        logging.error(f"Erreur interne : {str(e)}")
+        ark_logger.error(f"Erreur interne : {str(e)}", extra={"arkalia_module": "helloria"})
         raise Exception(f"Erreur Helloria: {e}") from e
 
 
@@ -114,7 +107,7 @@ async def metrics() -> PlainTextResponse:
             prometheus_text = _convert_to_prometheus_format(metrics_data)
             return PlainTextResponse(prometheus_text, media_type="text/plain")
     except Exception as e:
-        logging.error(f"Erreur endpoint /metrics: {e}")
+        ark_logger.error(f"Erreur endpoint /metrics: {e}", extra={"arkalia_module": "helloria"})
         raise Exception(f"Erreur Helloria: {e}") from e
 
 
@@ -169,7 +162,9 @@ def _get_fallback_metrics() -> dict:
         sandozia_active = 1 if sandozia_state.exists() else 0
     except Exception as e:
         # En cas d'erreur, on logge au lieu de passer silencieusement
-        logger.warning(f"Sandozia state check failed: {e}")
+        ark_logger.warning(
+            f"Sandozia state check failed: {e}", extra={"arkalia_module": "helloria"}
+        )
 
     # État AssistantIA
     assistantia_active = 0
@@ -177,7 +172,9 @@ def _get_fallback_metrics() -> dict:
         assistantia_state = Path("modules/assistantia/core.py")
         assistantia_active = 1 if assistantia_state.exists() else 0
     except Exception as e:
-        logger.warning(f"AssistantIA state check failed: {e}")
+        ark_logger.warning(
+            f"AssistantIA state check failed: {e}", extra={"arkalia_module": "helloria"}
+        )
 
     # État Nyxalia
     nyxalia_active = 0
@@ -185,7 +182,7 @@ def _get_fallback_metrics() -> dict:
         nyxalia_state = Path("modules/nyxalia/core.py")
         nyxalia_active = 1 if nyxalia_state.exists() else 0
     except Exception as e:
-        logger.warning(f"Nyxalia state check failed: {e}")
+        ark_logger.warning(f"Nyxalia state check failed: {e}", extra={"arkalia_module": "helloria"})
 
     # État Taskia
     taskia_active = 0
@@ -193,7 +190,7 @@ def _get_fallback_metrics() -> dict:
         taskia_state = Path("modules/taskia/core.py")
         taskia_active = 1 if taskia_state.exists() else 0
     except Exception as e:
-        logger.warning(f"Taskia state check failed: {e}")
+        ark_logger.warning(f"Taskia state check failed: {e}", extra={"arkalia_module": "helloria"})
 
     return {
         "arkalia_system_health": 1 if all(critical_files.values()) else 0,

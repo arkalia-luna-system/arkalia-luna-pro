@@ -7,7 +7,6 @@ Responsabilité : Persistance et gestion des états.
 """
 
 import json
-import logging
 import textwrap
 from datetime import datetime
 from pathlib import Path
@@ -15,10 +14,9 @@ from typing import Any, Optional
 
 import toml
 
+from core.ark_logger import ark_logger
 from modules.utils.helpers import save_json_if_changed, save_toml_if_changed
 from modules.zeroia.utils.backup import save_backup
-
-logger = logging.getLogger(__name__)
 
 # === Chemins par défaut ===
 STATE_PATH = Path("modules/zeroia/state/zeroia_state.toml")

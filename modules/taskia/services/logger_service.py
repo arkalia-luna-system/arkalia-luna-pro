@@ -1,22 +1,25 @@
 #!/usr/bin/env python3
 """
 🌕 TaskIA Logger Service
-📝 Service de logging selon le principe SRP
-🔧 Version: 2.0.0
+📝 Service de logging selon le principe SRP - Utilise ark_logger
+🔧 Version: 2.1.0
 👤 Author: Athalia
 📅 Created: 2025-01-27
+Updated: 2025-11-12 - Unifié avec ark_logger
 """
 
-import logging
 from typing import Optional
+
+from core.ark_logger import ark_logger
 
 
 class LoggerService:
     """
-    Service de logging centralisé.
+    Service de logging centralisé utilisant ark_logger.
 
     Principe SRP : Responsabilité unique = gérer les logs
     Principe DIP : Fournit des loggers injectables
+    Note: Utilise maintenant ark_logger en interne pour cohérence
     """
 
     def __init__(self, module_name: str = "taskia"):
@@ -27,32 +30,15 @@ class LoggerService:
             module_name: Nom du module pour le logger
         """
         self._module_name = module_name
-        self._logger = logging.getLogger(f"arkalia.{module_name}")
-        self._setup_logger()
 
-    def _setup_logger(self) -> None:
-        """Configure le logger avec les paramètres par défaut."""
-        if not self._logger.handlers:
-            self._logger.setLevel(logging.INFO)
-
-            # Handler console
-            console_handler = logging.StreamHandler()
-            console_handler.setLevel(logging.INFO)
-
-            # Formatter
-            formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-            console_handler.setFormatter(formatter)
-
-            self._logger.addHandler(console_handler)
-
-    def get_logger(self) -> logging.Logger:
+    def get_logger(self):
         """
-        Retourne le logger configuré.
+        Retourne le logger configuré (compatibilité API).
 
         Returns:
-            Logger configuré
+            Logger configuré (ark_logger)
         """
-        return self._logger
+        return ark_logger
 
     def set_level(self, level: int) -> None:
         """
@@ -60,8 +46,10 @@ class LoggerService:
 
         Args:
             level: Niveau de logging (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+        Note: ark_logger gère le niveau globalement
         """
-        self._logger.setLevel(level)
+        # ark_logger gère le niveau globalement, cette méthode est conservée pour compatibilité
+        pass
 
     def log_operation(self, operation: str, details: str | None = None) -> None:
         """
@@ -75,7 +63,7 @@ class LoggerService:
         if details:
             message += f" - {details}"
 
-        self._logger.info(message)
+        ark_logger.info(message, extra={"arkalia_module": self._module_name})
 
     def log_error(self, error: str, context: str | None = None) -> None:
         """
@@ -89,4 +77,4 @@ class LoggerService:
         if context:
             message += f" - Contexte: {context}"
 
-        self._logger.error(message)
+        ark_logger.error(message, extra={"arkalia_module": self._module_name})

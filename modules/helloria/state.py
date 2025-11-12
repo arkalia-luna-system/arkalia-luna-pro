@@ -4,15 +4,13 @@ Module state.
 Ce module fait partie du système Arkalia Luna Pro.
 """
 
-import logging
 from pathlib import Path
 from typing import Any, Optional
 
 import toml
 
+from core.ark_logger import ark_logger
 from modules.utils.helpers import read_state_safe, save_toml_safe
-
-logger = logging.getLogger(__name__)
 
 
 class HelloriaStateManager:

@@ -22,11 +22,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-import tomli  # type: ignore
+import tomli
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Gauge, generate_latest
 
+from core.ark_logger import ark_logger
 from modules.utils.helpers import read_state_safe, save_json_safe
 
 # === Configuration du logging ===
@@ -53,7 +54,7 @@ app = FastAPI()
 
 
 @app.get("/metrics")
-async def get_metrics():
+async def get_metrics() -> PlainTextResponse | JSONResponse:
     """
     📊 Endpoint métriques Prometheus pour Cognitive Reactor
     """
@@ -73,7 +74,7 @@ async def get_metrics():
 
 
 @app.get("/health")
-async def health():
+async def health() -> dict[str, str]:
     try:
         return {"status": "ok", "service": "cognitive_reactor"}
     except Exception as e:
@@ -113,7 +114,10 @@ class CognitiveReactor:
         self.reaction_history: list[dict[str, Any]] = []
         self.stimuli_queue: list[dict[str, Any]] = []
 
-        logger.info(f"🧠 CognitiveReactor initialisé en mode {mode}")
+        ark_logger.info(
+            f"🧠 CognitiveReactor initialisé en mode {mode}",
+            extra={"arkalia_module": "cognitive_reactor"},
+        )
 
     def load_cognitive_state(self) -> dict[str, Any]:
         """Charge l'état cognitif depuis le fichier"""
@@ -128,7 +132,9 @@ class CognitiveReactor:
         state_file = self.state_dir / "cognitive_state.json"
         if save_json_safe(self.cognitive_state, state_file):
             return self.cognitive_state.copy()
-        logger.error("Erreur lors de la sauvegarde de l'état")
+        ark_logger.error(
+            "Erreur lors de la sauvegarde de l'état", extra={"arkalia_module": "cognitive_reactor"}
+        )
         return self.cognitive_state.copy()
 
     def analyze_system_context(self) -> dict[str, Any]:
@@ -151,7 +157,10 @@ class CognitiveReactor:
                 with open(state_file, "rb") as f:
                     return tomli.load(f)
         except Exception as e:
-            logger.debug(f"Impossible de charger l'état de {module_name}: {e}")
+            ark_logger.debug(
+                f"Impossible de charger l'état de {module_name}: {e}",
+                extra={"arkalia_module": "cognitive_reactor"},
+            )
         return {"active": False, "error": "state_unavailable"}
 
     def _get_system_metrics(self) -> dict[str, Any]:
@@ -254,7 +263,10 @@ class CognitiveReactor:
     def execute_cognitive_reaction(self, reaction: dict[str, Any]) -> bool:
         """Exécute une réaction cognitive"""
         try:
-            logger.info(f"🧠 Exécution réaction cognitive: {reaction['type']}")
+            ark_logger.info(
+                f"🧠 Exécution réaction cognitive: {reaction['type']}",
+                extra={"arkalia_module": "cognitive_reactor"},
+            )
 
             if reaction["type"] == "adaptive_threshold_adjustment":
                 return self._adjust_threshold(reaction["parameters"])
@@ -268,39 +280,56 @@ class CognitiveReactor:
             return False
 
         except Exception as e:
-            logger.error(f"Erreur lors de l'exécution de la réaction: {e}")
+            ark_logger.error(
+                f"Erreur lors de l'exécution de la réaction: {e}",
+                extra={"arkalia_module": "cognitive_reactor"},
+            )
             return False
 
     def _adjust_threshold(self, parameters: dict[str, Any]) -> bool:
         """Ajuste les seuils adaptatifs"""
         try:
             # Intégration avec ZeroIA pour ajuster les seuils
-            logger.info(f"🔧 Ajustement seuil: {parameters}")
+            ark_logger.info(
+                f"🔧 Ajustement seuil: {parameters}", extra={"arkalia_module": "cognitive_reactor"}
+            )
             return True
         except Exception as e:
-            logger.error(f"Erreur ajustement seuil: {e}")
+            ark_logger.error(
+                f"Erreur ajustement seuil: {e}", extra={"arkalia_module": "cognitive_reactor"}
+            )
             return False
 
     def _restart_module(self, module_name: str) -> bool:
         """Redémarre un module"""
         try:
-            logger.info(f"🔄 Redémarrage module: {module_name}")
+            ark_logger.info(
+                f"🔄 Redémarrage module: {module_name}",
+                extra={"arkalia_module": "cognitive_reactor"},
+            )
             # Intégration avec Docker pour redémarrer le conteneur
             return True
         except Exception as e:
-            logger.error(f"Erreur redémarrage module: {e}")
+            ark_logger.error(
+                f"Erreur redémarrage module: {e}", extra={"arkalia_module": "cognitive_reactor"}
+            )
             return False
 
     def _suggest_alternative(self, parameters: dict[str, Any]) -> bool:
         """Suggère des alternatives"""
         try:
-            logger.info(f"💡 Suggestion alternative: {parameters}")
+            ark_logger.info(
+                f"💡 Suggestion alternative: {parameters}",
+                extra={"arkalia_module": "cognitive_reactor"},
+            )
             return True
         except Exception as e:
-            logger.error(f"Erreur suggestion alternative: {e}")
+            ark_logger.error(
+                f"Erreur suggestion alternative: {e}", extra={"arkalia_module": "cognitive_reactor"}
+            )
             return False
 
-    def learn_from_reactions(self, reactions: list[dict[str, Any]], outcomes: list[bool]):
+    def learn_from_reactions(self, reactions: list[dict[str, Any]], outcomes: list[bool]) -> None:
         """Apprend des réactions précédentes"""
         for reaction, outcome in zip(reactions, outcomes, strict=False):
             learning_entry = {
@@ -470,9 +499,11 @@ class CognitiveReactor:
         if "start_time" in data:
             self.start_time = data["start_time"]
 
-    async def cognitive_loop(self):
+    async def cognitive_loop(self) -> None:
         """Boucle principale du réacteur cognitif"""
-        logger.info("🧠 Démarrage de la boucle cognitive")
+        ark_logger.info(
+            "🧠 Démarrage de la boucle cognitive", extra={"arkalia_module": "cognitive_reactor"}
+        )
 
         while self.enabled and self.reaction_count < self.max_reactions:
             try:
@@ -483,7 +514,10 @@ class CognitiveReactor:
                 patterns = self.detect_cognitive_patterns(context)
 
                 if patterns:
-                    logger.info(f"🧠 Patterns détectés: {len(patterns)}")
+                    ark_logger.info(
+                        f"🧠 Patterns détectés: {len(patterns)}",
+                        extra={"arkalia_module": "cognitive_reactor"},
+                    )
 
                     # === Génération des réactions ===
                     reactions = self.generate_cognitive_reactions(patterns)
@@ -501,7 +535,10 @@ class CognitiveReactor:
                     # === Prédictions ===
                     predictions = self.predict_future_patterns()
                     if predictions:
-                        logger.info(f"🔮 Prédictions: {len(predictions)}")
+                        ark_logger.info(
+                            f"🔮 Prédictions: {len(predictions)}",
+                            extra={"arkalia_module": "cognitive_reactor"},
+                        )
                         self.cognitive_state["predictions_made"] = int(
                             self.cognitive_state.get("predictions_made", 0)
                         ) + len(predictions)
@@ -515,10 +552,15 @@ class CognitiveReactor:
                 await asyncio.sleep(self.reaction_interval)
 
             except Exception as e:
-                logger.error(f"Erreur dans la boucle cognitive: {e}")
+                ark_logger.error(
+                    f"Erreur dans la boucle cognitive: {e}",
+                    extra={"arkalia_module": "cognitive_reactor"},
+                )
                 await asyncio.sleep(10)
 
-        logger.info("🧠 Boucle cognitive terminée")
+        ark_logger.info(
+            "🧠 Boucle cognitive terminée", extra={"arkalia_module": "cognitive_reactor"}
+        )
 
     def get_status(self) -> dict[str, Any]:
         """Retourne le statut du réacteur cognitif"""
@@ -534,7 +576,7 @@ class CognitiveReactor:
         }
 
 
-async def main():
+async def main() -> None:
     """Fonction principale"""
     parser = argparse.ArgumentParser(description="Cognitive Reactor - Intelligence Avancée")
     parser.add_argument(
@@ -556,12 +598,16 @@ async def main():
     reactor = CognitiveReactor(mode=args.mode)
 
     if not reactor.enabled:
-        logger.warning("🧠 Cognitive Reactor désactivé")
+        ark_logger.warning(
+            "🧠 Cognitive Reactor désactivé", extra={"arkalia_module": "cognitive_reactor"}
+        )
         return
 
     # === Gestion des signaux ===
-    def signal_handler(signum, frame) -> None:
-        logger.info("🧠 Signal de terminaison reçu")
+    def signal_handler(signum: int, frame: Any) -> None:
+        ark_logger.info(
+            "🧠 Signal de terminaison reçu", extra={"arkalia_module": "cognitive_reactor"}
+        )
         reactor.enabled = False
 
     signal.signal(signal.SIGINT, signal_handler)
@@ -571,12 +617,16 @@ async def main():
     try:
         await reactor.cognitive_loop()
     except KeyboardInterrupt:
-        logger.info("🧠 Arrêt demandé par l'utilisateur")
+        ark_logger.info(
+            "🧠 Arrêt demandé par l'utilisateur", extra={"arkalia_module": "cognitive_reactor"}
+        )
     except Exception as e:
-        logger.error(f"🧠 Erreur fatale: {e}")
+        ark_logger.error(f"🧠 Erreur fatale: {e}", extra={"arkalia_module": "cognitive_reactor"})
         sys.exit(1)
     finally:
-        logger.info("🧠 Cognitive Reactor arrêté")
+        ark_logger.info(
+            "🧠 Cognitive Reactor arrêté", extra={"arkalia_module": "cognitive_reactor"}
+        )
 
 
 if __name__ == "__main__":
