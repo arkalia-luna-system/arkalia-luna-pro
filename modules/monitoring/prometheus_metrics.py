@@ -15,6 +15,8 @@ from prometheus_client import (
     generate_latest,
 )
 
+from core.ark_logger import ark_logger
+
 
 class ArkaliaMetrics:
     """Classe de gestion des métriques Prometheus"""
