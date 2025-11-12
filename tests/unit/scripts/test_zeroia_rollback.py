@@ -112,11 +112,14 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
     # Vérifier que le fichier existe avant l'exécution
     assert state_file.exists(), f"Le fichier d'état n'a pas été créé à {state_file}"
 
+    # Vérifier que le répertoire logs existe (nécessaire pour le script)
+    assert logs_dir.exists(), f"Le répertoire logs n'existe pas à {logs_dir}"
+
     # Configurer l'environnement pour les imports
     env = os.environ.copy()
     env["PYTHONPATH"] = str(PROJECT_ROOT) + ":" + env.get("PYTHONPATH", "")
 
-    # Exécuter le script avec --silent
+    # Exécuter le script avec --silent depuis PROJECT_ROOT
     result = subprocess.run(
         ["python", "scripts/_zeroia_rollback.py", "--silent"],
         capture_output=True,
@@ -131,7 +134,27 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
     ), f"Script a échoué avec code {result.returncode}\nstdout: {result.stdout}\nstderr: {result.stderr}"
 
     # Vérifier qu'un backup a été créé dans le bon emplacement
+    # Le script crée le backup seulement si STATE_FILE.exists()
     backup_file = state_dir / "zeroia_state_backup.toml"
-    assert (
-        backup_file.exists()
-    ), f"Le fichier de backup n'a pas été créé à {backup_file}. stdout: {result.stdout}, stderr: {result.stderr}"
+
+    # Si le backup n'existe pas, vérifier si le fichier d'état existe toujours
+    if not backup_file.exists():
+        # Vérifier si le fichier d'état existe toujours
+        state_exists = state_file.exists()
+        # Vérifier si le répertoire existe
+        dir_exists = state_dir.exists()
+        # Vérifier les permissions
+        error_msg = (
+            f"Le fichier de backup n'a pas été créé à {backup_file}.\n"
+            f"État du fichier: exists={state_exists}, path={state_file}\n"
+            f"Répertoire: exists={dir_exists}, path={state_dir}\n"
+            f"stdout: {result.stdout}\n"
+            f"stderr: {result.stderr}"
+        )
+        assert backup_file.exists(), error_msg
+
+    # Vérifier que le backup contient les bonnes données
+    if backup_file.exists():
+        backup_content = toml.loads(backup_file.read_text(encoding="utf-8"))
+        assert "status" in backup_content, "Le backup ne contient pas 'status'"
+        assert backup_content["status"]["active"] is True, "Le backup n'a pas les bonnes données"

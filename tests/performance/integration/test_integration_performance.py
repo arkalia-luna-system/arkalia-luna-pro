@@ -6,15 +6,10 @@ Tests de performance pour l'intégration entre modules.
 """
 
 import asyncio
-import sys
 import time
-from pathlib import Path
 from typing import Any
 
 import pytest
-
-# Ajout du path pour les imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from modules.cognitive_reactor.core import CognitiveReactor
 from modules.reflexia.core import launch_reflexia_check

@@ -6,18 +6,13 @@ Tests de performance pour l'API REST FastAPI.
 """
 
 import asyncio
-import sys
 import time
-from pathlib import Path
 from typing import Any
 
 import aiohttp
 import httpx
 import pytest
 import requests
-
-# Ajout du path pour les imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 
 @pytest.fixture

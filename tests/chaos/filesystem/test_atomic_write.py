@@ -1,11 +1,8 @@
 # 🔥 Test de résilience écriture atomique sous charge
-import sys
 import time
 from pathlib import Path
 
-root = str(Path(__file__).parent.parent.parent.parent)
-sys.path.insert(0, root)
-sys.path.insert(0, root + "/utils")
+import pytest
 import toml
 
 from modules.utils.helpers.io_safe import atomic_write

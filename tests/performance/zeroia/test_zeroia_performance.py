@@ -14,18 +14,13 @@ Benchmarks couverts :
 """
 
 import os
-import sys
 import time
-from pathlib import Path
 from typing import Any
 from unittest.mock import patch
 
 import psutil
 import pytest
 import pytest_benchmark.plugin
-
-# Ajout du path pour les imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from core.ark_logger import ark_logger
 from modules.zeroia import ZeroIACoordinator

@@ -9,14 +9,9 @@ Tests couvrant :
 - Intégration avec les modules IA
 """
 
-import sys
-from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-
-# Ajout du path pour les imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from modules.cognitive_reactor.core import CognitiveReactor
 

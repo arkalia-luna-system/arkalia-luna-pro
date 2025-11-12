@@ -4,7 +4,6 @@
 import json
 import random
 import subprocess
-import sys
 import tempfile
 import time
 from pathlib import Path
@@ -14,10 +13,6 @@ import pytest
 import toml
 
 from core.ark_logger import ark_logger
-
-root = str(Path(__file__).parent.parent.parent)
-sys.path.insert(0, root)
-sys.path.insert(0, root + "/utils")
 from modules.utils.helpers.io_safe import atomic_write, locked_read
 from modules.zeroia.reason_loop import load_context
 
