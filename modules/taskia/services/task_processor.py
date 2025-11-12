@@ -7,6 +7,7 @@
 📅 Created: 2025-01-27
 """
 
+import logging
 from typing import Any
 
 from core.ark_logger import ark_logger

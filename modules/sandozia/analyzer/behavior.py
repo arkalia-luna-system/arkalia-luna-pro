@@ -19,6 +19,7 @@ Signale :
 """
 
 import json
+import logging
 import statistics
 from collections import defaultdict, deque
 from dataclasses import dataclass

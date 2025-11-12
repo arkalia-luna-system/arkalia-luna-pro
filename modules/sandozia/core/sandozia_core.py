@@ -14,6 +14,7 @@ Coordonne l'intelligence collaborative entre les modules IA :
 
 import asyncio
 import json
+import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path

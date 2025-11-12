@@ -315,12 +315,14 @@
 
 ## ⚠️ RISQUES ET PRÉCAUTIONS
 
-### Risques identifiés :
+### Risques identifiés
+
 1. **Migration helloria/core.py** : Vérifier tous les imports avant suppression
 2. **Migration I/O** : Tester intensivement les opérations de fichier
 3. **Migration logging** : S'assurer que les logs restent fonctionnels
 
-### Tests requis :
+### Tests requis
+
 - ✅ Tests unitaires pour chaque migration
 - ✅ Tests d'intégration pour valider les changements
 - ✅ Tests de performance pour I/O
@@ -329,12 +331,14 @@
 
 ## 📝 NOTES IMPORTANTES
 
-### Décisions architecturales à prendre :
+### Décisions architecturales à prendre
+
 1. **Helloria** : Quel est le vrai module ? `helloria/` ou `modules/helloria/` ?
 2. **I/O** : Faut-il garder les fonctions "if_changed" ou les intégrer dans io_safe ?
 3. **Logging** : Faut-il un système de logging unique ou modulaire ?
 
-### Questions à se poser :
+### Questions à se poser
+
 - Pourquoi avons-nous créé `utils_enhanced` si `utils/` existe déjà ?
 - Pourquoi deux fichiers `helloria/core.py` ?
 - Pourquoi tant de fonctions de sauvegarde différentes ?
@@ -351,7 +355,8 @@
 - **`96528fdb`** : Fix dernière occurrence logger dans state_manager
 - **`8902b79f`** : Toutes les occurrences logger dans state_manager migrées
 
-### Statistiques globales :
+### Statistiques globales
+
 - **20 fichiers modifiés** (Phases 1-2)
 - **47 fichiers migrés** vers ark_logger (Phase 3 - 67% complété)
 - **-3 modules** redondants supprimés (`helloria/core.py`, `utils_enhanced/`, `configs/`)

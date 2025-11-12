@@ -126,7 +126,7 @@ class CognitiveReactor:
         )
 
     # === Méthodes minimales pour compatibilité tests unitaires ===
-    async def process_stimulus(self, stimulus):
+    async def process_stimulus(self, stimulus: Any) -> dict[str, Any]:
         """Traite un stimulus et retourne une réaction"""
         self.stimuli_queue.append(stimulus)
 
@@ -144,21 +144,21 @@ class CognitiveReactor:
             "severity": severity,
         }
 
-    async def generate_cognitive_response(self, context):
+    async def generate_cognitive_response(self, context: Any) -> dict[str, Any]:
         """Génère une réponse cognitive basée sur le contexte"""
         return {"response": "ok", "decision": "proceed", "confidence": 0.8}
 
-    async def learn_from_experience(self, experience):
+    async def learn_from_experience(self, experience: Any) -> dict[str, Any]:
         """Apprend d'une expérience"""
         if isinstance(experience, dict):
             self.reaction_history.append(experience)
         return {"learned": True}
 
-    async def predict_optimal_reaction(self, situation):
+    async def predict_optimal_reaction(self, situation: Any) -> dict[str, Any]:
         """Prédit la réaction optimale"""
         return {"prediction": "none", "recommended_action": "monitor", "confidence": 0.6}
 
-    async def handle_multiple_stimuli(self, stimuli):
+    async def handle_multiple_stimuli(self, stimuli: Any) -> dict[str, Any]:
         """Traite plusieurs stimuli"""
         results = []
         for stimulus in stimuli:
@@ -166,7 +166,7 @@ class CognitiveReactor:
             results.append(result)
         return {"processed": True, "reaction": "multiple_stimuli_handled", "count": len(results)}
 
-    def get_cognitive_metrics(self):
+    def get_cognitive_metrics(self) -> dict[str, Any]:
         """Retourne les métriques cognitives"""
         return {
             "metrics": "none",
@@ -175,44 +175,44 @@ class CognitiveReactor:
             "fatigue_level": 0.2,
         }
 
-    async def recover_cognitive_state(self):
+    async def recover_cognitive_state(self) -> dict[str, Any]:
         """Récupère l'état cognitif"""
         self.cognitive_state = {}
         return {"recovered": True}
 
-    async def cleanup_memory(self):
+    async def cleanup_memory(self) -> dict[str, Any]:
         """Nettoie la mémoire"""
         self.stimuli_queue.clear()
         return {"cleaned": True}
 
     # === Méthodes manquantes pour les tests ===
-    async def adapt_cognitive_state(self, environmental_change):
+    async def adapt_cognitive_state(self, environmental_change: Any) -> dict[str, Any]:
         """Adapte l'état cognitif aux changements environnementaux"""
         self.cognitive_state.update(environmental_change)
         return {"adapted": True}
 
-    async def handle_cognitive_overload(self):
+    async def handle_cognitive_overload(self) -> dict[str, Any]:
         """Gère la surcharge cognitive"""
         return {"overload_handled": True}
 
-    async def reset_cognitive_state(self):
+    async def reset_cognitive_state(self) -> dict[str, Any]:
         """Remet à zéro l'état cognitif"""
         self.cognitive_state = {}
         self.stimuli_queue.clear()
         return {"reset": True}
 
-    async def trigger_cognitive_recovery(self):
+    async def trigger_cognitive_recovery(self) -> dict[str, Any]:
         """Déclenche la récupération cognitive"""
         return {"recovery_triggered": True}
 
-    def save_cognitive_state(self):
+    def save_cognitive_state(self) -> dict[str, Any]:
         """Sauvegarde l'état cognitif"""
         return {
             "cognitive_state": self.cognitive_state.copy(),
             "stimuli_queue_length": len(self.stimuli_queue),
         }
 
-    def serialize(self):
+    def serialize(self) -> dict[str, Any]:
         """Sérialise l'état du réacteur"""
         return {
             "cognitive_state": self.cognitive_state,
@@ -368,8 +368,8 @@ class CognitiveReactor:
         module_name: str,
         reason: QuarantineReason,
         duration_minutes: int | None = None,
-        metadata: dict | None = None,
-    ):
+        metadata: dict[str, Any] | None = None,
+    ) -> None:
         """🔒 Met un module en quarantine"""
 
         duration = duration_minutes or self.config["quarantine_duration_minutes"]
@@ -464,7 +464,7 @@ class CognitiveReactor:
             )
             return 0.5
 
-    def _cleanup_expired_quarantines(self):
+    def _cleanup_expired_quarantines(self) -> None:
         """Nettoie les quarantines expirées"""
         expired = [
             module
@@ -475,7 +475,7 @@ class CognitiveReactor:
         for module in expired:
             self._release_quarantine(module)
 
-    def _release_quarantine(self, module_name: str):
+    def _release_quarantine(self, module_name: str) -> None:
         """Libère un module de quarantine"""
         if module_name in self.quarantined_modules:
             quarantine = self.quarantined_modules.pop(module_name)
@@ -503,7 +503,7 @@ class CognitiveReactor:
                 extra={"arkalia_module": "sandozia"},
             )
 
-    async def _log_reaction(self, reaction: CognitiveReaction):
+    async def _log_reaction(self, reaction: CognitiveReaction) -> None:
         """Enregistre une réaction dans l'historique et Event Store"""
         self.reaction_history.append(reaction)
 
@@ -526,7 +526,7 @@ class CognitiveReactor:
             module="cognitive_reactor",
         )
 
-    async def _cleanup_pause_marker(self, pause_file: Path, delay_seconds: int):
+    async def _cleanup_pause_marker(self, pause_file: Path, delay_seconds: int) -> None:
         """Nettoie automatiquement le marker de pause après délai"""
         await asyncio.sleep(delay_seconds)
         if pause_file.exists():
@@ -587,7 +587,10 @@ def trigger_cognitive_reaction(context: dict, decision_pattern_count: int = 0) -
     if decision_pattern_count >= 7:
         reactions = trigger_cognitive_reaction(context, decision_pattern_count)
         for reaction in reactions:
-            ark_logger.info(f"🔥 Réaction automatique: {reaction}", extra={"arkalia_module": "sandozia"})
+            ark_logger.info(
+                f"🔥 Réaction automatique: {reaction}",
+                extra={"arkalia_module": "sandozia"},
+            )
     """
     reactor = create_cognitive_reactor()
 
@@ -617,7 +620,7 @@ def trigger_cognitive_reaction(context: dict, decision_pattern_count: int = 0) -
 
 
 # 🚀 Mode daemon pour conteneur Docker
-async def run_daemon():
+async def run_daemon() -> None:
     """Lance le CognitiveReactor en mode daemon"""
     import argparse
     import signal
@@ -638,7 +641,7 @@ async def run_daemon():
     ark_logger.info("🔥 CognitiveReactor daemon démarré", extra={"arkalia_module": "sandozia"})
 
     # Gestion signal d'arrêt
-    def signal_handler(signum, frame) -> None:
+    def signal_handler(signum: int, frame: Any) -> None:
         """
         Gestionnaire de signaux pour arrêt gracieux du daemon.
 

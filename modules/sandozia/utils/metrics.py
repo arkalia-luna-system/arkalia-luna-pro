@@ -13,6 +13,7 @@ Collecte et traite les métriques d'intelligence croisée :
 """
 
 import json
+import logging
 import statistics
 from collections import defaultdict
 from dataclasses import dataclass
