@@ -344,7 +344,7 @@
 </div>
 
 <div class="footer-note">
-    <p><strong>Arkalia-LUNA Pro v2.8.0</strong> - Système d'Intelligence Artificielle Enterprise. Architecture modulaire avec 7 modules IA opérationnels, monitoring complet et observabilité totale. Optimisé pour la production avec 671 tests automatisés, 59.25% de couverture, CI/CD 100% verte et 99.9% de disponibilité.</p>
+    <p><strong>Arkalia-LUNA Pro v2.8.0</strong> - Système d'Intelligence Artificielle Production-Ready. Architecture modulaire avec 5 containers actifs, monitoring complet et observabilité totale. Optimisé pour la production avec 671 tests automatisés, 59.25% de couverture, CI/CD stable.</p>
 </div>
 
 # 📚 docs/

@@ -23,7 +23,7 @@ Bienvenue dans la section FAQ d'**Arkalia-LUNA Pro v2.8.0**. Découvrez les rép
 
 ### 1. Qu'est-ce qu'Arkalia-LUNA Pro v2.8.0 ?
 
-Arkalia-LUNA Pro v2.8.0 est le **premier système IA auto-réflexif production-ready** au monde avec **Sandozia Intelligence Croisée**. Il combine 8 modules IA autonomes, validation croisée automatique, méta-cognition et consensus multi-agent pour une intelligence artificielle éthique et souveraine. CI/CD 100% verte, 671 tests passés, couverture 59.25%.
+Arkalia-LUNA Pro v2.8.0 est un **système IA auto-réflexif production-ready** avec **Sandozia Intelligence Croisée**. Il combine 5 modules IA actifs, validation croisée automatique, méta-cognition et consensus multi-agent pour une intelligence artificielle éthique et souveraine. CI/CD stable, 671 tests passés, couverture 59.25%.
 
 ### 2. Qu'est-ce que Sandozia Intelligence Croisée ?
 
@@ -45,7 +45,7 @@ Consultez notre [Guide de Contribution](/credits/CONTRIBUTING.md) et soumettez d
 
 **Q : Comment tester la cohérence de Sandozia ?**
 
-**R :** Utilisez notre suite de validation : `python scripts/ark-validate-performance.py` pour test complet, ou `python scripts/ark-validate-monitoring.py` pour validation croisée uniquement. Score de cohérence > 0.95 indique un système optimal.
+**R :** Utilisez notre suite de validation : `python scripts/ark-validate-performance.py` pour test complet, ou `python scripts/ark-validate-monitoring.py` pour validation croisée uniquement. Score de cohérence > 0.90 indique un système en bon état.
 
 ### 6. Où puis-je trouver la documentation technique ?
 

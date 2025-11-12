@@ -387,7 +387,7 @@ Interface de conversation avec l'assistant IA.
 **Response** :
 ```json
 {
-  "response": "Le système Arkalia-LUNA Pro Enhanced v2.8.0 fonctionne parfaitement ! 🚀\n\n✅ Orchestrator Enhanced : 100% succès\n✅ Tests : 671/671 PASSED (100%)\n✅ Circuit Breaker : État fermé stable\n✅ Event Store : Auto-recovery opérationnel\n\nTous les modules sont opérationnels et les performances sont exceptionnelles !",
+  "response": "Le système Arkalia-LUNA Pro Enhanced v2.8.0 fonctionne correctement ! 🚀\n\n✅ Orchestrator Enhanced : Opérationnel\n✅ Tests : 671 tests collectés\n✅ Circuit Breaker : État fermé stable\n✅ Event Store : Auto-recovery opérationnel\n\nLes modules sont opérationnels et les performances sont bonnes.",
   "conversation_id": "conv_20241229_205100",
   "timestamp": "2024-12-29T20:51:00Z",
   "model_used": "llama3.2",
@@ -571,7 +571,7 @@ L'**API Arkalia-LUNA Pro Enhanced v2.8.0** offre :
 ✅ **Framework Enhanced** - Orchestrator, Circuit Breaker, Event Store
 ✅ **Error Recovery** - Gestion gracieuse toutes erreurs
 ✅ **Intelligence Croisée** - Validation et consensus multi-modules
-✅ **Performance Exceptionnelle** - 100% tests, 100% succès orchestrator
+✅ **Performance** - Tests automatisés, orchestrator opérationnel
 ✅ **Documentation Complète** - OpenAPI/Swagger intégré
 
 **🌟 Une API production-ready pour l'IA de nouvelle génération !**

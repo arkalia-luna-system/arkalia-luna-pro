@@ -131,7 +131,7 @@ pytest tests/ -v                      # Script de test principal
 ## 🎯 Résultats Attendus
 
 ### Après la correction :
-- **Tests fonctionnels** : 100% des tests passent
+- **Tests fonctionnels** : La majorité des tests passent
 - **Structure propre** : Organisation claire et logique
 - **Maintenance facilitée** : Tests faciles à maintenir
 - **Couverture optimale** : Couverture de code maximale
