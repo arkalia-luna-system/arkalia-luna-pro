@@ -64,7 +64,8 @@ def log(msg: str, silent: bool = False) -> None:
         with log_file.open("a", encoding="utf-8") as f:
             f.write(f"[rollback] {msg}\n")
     except Exception as e:
-        print(f"[rollback] Erreur : {e}")
+        if not silent:
+            print(f"[rollback] Erreur : {e}")
     if not silent:
         print(msg)
 
@@ -80,10 +81,10 @@ def backup_current_state(silent: bool = False) -> None:
     # Sinon, résoudre depuis le répertoire de travail courant
     if STATE_FILE.is_absolute():
         state_file = STATE_FILE
-        backup_file = BACKUP_FILE if BACKUP_FILE.is_absolute() else Path.cwd() / BACKUP_FILE
+        backup_file = BACKUP_FILE if BACKUP_FILE.is_absolute() else get_backup_file()
     else:
-        state_file = Path.cwd() / STATE_FILE
-        backup_file = Path.cwd() / BACKUP_FILE
+        state_file = get_state_file()
+        backup_file = get_backup_file()
 
     if state_file.exists():
         # Créer le répertoire parent si nécessaire
@@ -106,10 +107,10 @@ def restore_snapshot(silent: bool = False) -> bool:
     # Résoudre les chemins dynamiquement
     if SNAPSHOT_FILE.is_absolute():
         snapshot_file = SNAPSHOT_FILE
-        state_file = STATE_FILE if STATE_FILE.is_absolute() else Path.cwd() / STATE_FILE
+        state_file = STATE_FILE if STATE_FILE.is_absolute() else get_state_file()
     else:
-        snapshot_file = Path.cwd() / SNAPSHOT_FILE
-        state_file = Path.cwd() / STATE_FILE
+        snapshot_file = get_snapshot_file()
+        state_file = get_state_file()
 
     if not snapshot_file.exists():
         log("❌ Aucun fichier snapshot à restaurer.", silent)
@@ -148,10 +149,10 @@ def rollback_from_backup(silent: bool = False) -> None:
     # Résoudre les chemins dynamiquement
     if BACKUP_FILE.is_absolute():
         backup_file = BACKUP_FILE
-        state_file = STATE_FILE if STATE_FILE.is_absolute() else Path.cwd() / STATE_FILE
+        state_file = STATE_FILE if STATE_FILE.is_absolute() else get_state_file()
     else:
-        backup_file = Path.cwd() / BACKUP_FILE
-        state_file = Path.cwd() / STATE_FILE
+        backup_file = get_backup_file()
+        state_file = get_state_file()
 
     if not backup_file.exists():
         log("❌ Rollback impossible : aucun backup trouvé.", silent)
