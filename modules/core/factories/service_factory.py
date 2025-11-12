@@ -13,7 +13,7 @@ class ServiceFactory:
     """
 
     def __init__(self):
-        self.self._services: dict[str, Any] = {}
+        self._services: dict[str, Any] = {}
         self._registry: dict[str, type] = {}
 
     def register_service_class(self, name: str, service_cls: type) -> bool:

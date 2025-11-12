@@ -14,7 +14,7 @@ class ModuleFactory:
     """
 
     def __init__(self):
-        self.self._registry: dict[str, type[IModule]] = {}
+        self._registry: dict[str, type[IModule]] = {}
         self._register_default_modules()
 
     def _register_default_modules(self) -> None:
