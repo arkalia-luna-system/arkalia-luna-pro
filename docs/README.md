@@ -113,60 +113,60 @@
   <div class="luna-roadmap">Roadmap</div>
 </main>
 
-## 🚀 Architecture Modulaire
+## Architecture Modulaire
 
 <div class="modules-grid">
     <div class="module-card">
         <div class="module-icon">🚀</div>
         <h3>Helloria</h3>
         <p>API centrale FastAPI haute performance avec gestion d'état distribuée</p>
-        <span class="status-badge healthy">✅ Opérationnel</span>
+        <span class="status-badge healthy">Opérationnel</span>
     </div>
 
     <div class="module-card">
         <div class="module-icon">🧠</div>
         <h3>AssistantIA</h3>
         <p>Interface conversationnelle contextuelle avec intégration Ollama</p>
-        <span class="status-badge healthy">✅ Opérationnel</span>
+        <span class="status-badge healthy">Opérationnel</span>
     </div>
 
     <div class="module-card">
         <div class="module-icon">🔁</div>
         <h3>Reflexia</h3>
         <p>Observateur cognitif réflexif avec analyse comportementale</p>
-        <span class="status-badge healthy">✅ Opérationnel</span>
+        <span class="status-badge healthy">Opérationnel</span>
     </div>
 
     <div class="module-card">
         <div class="module-icon">🤖</div>
         <h3>ZeroIA</h3>
         <p>Moteur de Décision Autonome avec circuit breaker et adaptive thresholds</p>
-        <span class="status-badge healthy">✅ Opérationnel</span>
+        <span class="status-badge healthy">Opérationnel</span>
     </div>
 
     <div class="module-card">
         <div class="module-icon">🧠</div>
         <h3>Sandozia</h3>
         <p>Intelligence croisée Enterprise avec analyse multi-dimensionnelle</p>
-        <span class="status-badge healthy">✅ Opérationnel</span>
+        <span class="status-badge healthy">Opérationnel</span>
     </div>
 
     <div class="module-card">
         <div class="module-icon">⚡</div>
         <h3>Cognitive Reactor</h3>
         <p>Moteur d'intelligence avancée avec traitement parallèle</p>
-        <span class="status-badge healthy">✅ Opérationnel</span>
+        <span class="status-badge healthy">Opérationnel</span>
     </div>
 
     <div class="module-card">
         <div class="module-icon">📊</div>
         <h3>Monitoring</h3>
         <p>Observabilité complète avec Prometheus et métriques customisées</p>
-        <span class="status-badge healthy">✅ Opérationnel</span>
+        <span class="status-badge healthy">Opérationnel</span>
     </div>
 </div>
 
-## 📊 Métriques Système
+## Métriques Système
 
 <div class="metrics-grid">
     <div class="metric-card">
@@ -218,7 +218,7 @@
     </div>
 </div>
 
-## 📋 Prérequis Système
+## Prérequis Système
 
 <div class="requirements-list">
     <div class="requirement-item">
@@ -247,7 +247,7 @@
     </div>
 </div>
 
-## 🏁 Démarrage Rapide
+## Démarrage Rapide
 
 <div class="quick-links">
     <a href="getting-started/quick-start/" class="quick-link primary">
@@ -315,7 +315,7 @@
     </a>
 </div>
 
-## 🔧 Support & Maintenance
+## Support & Maintenance
 
 <div class="support-section">
     <div class="support-item">
@@ -347,7 +347,7 @@
     <p><strong>Arkalia-LUNA Pro v2.8.0</strong> - Système d'Intelligence Artificielle Production-Ready. Architecture modulaire avec 5 containers actifs, monitoring complet et observabilité totale. Optimisé pour la production avec 671 tests automatisés, 59.25% de couverture, CI/CD stable.</p>
 </div>
 
-# 📚 docs/
+# Documentation
 
 Ce dossier contient toute la **documentation technique et utilisateur** du projet.
 
