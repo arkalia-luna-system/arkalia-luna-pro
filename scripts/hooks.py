@@ -1,11 +1,19 @@
-# scripts/hooks.py
+"""Hooks pour la génération automatique de documentation.
 
+Ce module contient les hooks utilisés pour générer automatiquement
+la documentation et les sitemaps lors des builds.
+"""
 import subprocess  # nosec
 
 from core.ark_logger import ark_logger
 
 
 def run_sitemap_generator(config=None) -> None:
+    """Génère le sitemap pour la documentation MkDocs.
+
+    Args:
+        config: Configuration optionnelle (non utilisée actuellement).
+    """
     import os
     import sys
 

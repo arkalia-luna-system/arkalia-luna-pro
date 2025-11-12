@@ -50,6 +50,14 @@ class HelloriaStateManager:
 
 
 def load_helloria_state(state: dict[str, Any]) -> dict[str, Any]:
+    """Charge l'état Helloria depuis le fichier TOML.
+
+    Args:
+        state: État par défaut (non utilisé, conservé pour compatibilité).
+
+    Returns:
+        dict: État Helloria chargé depuis le fichier ou état par défaut.
+    """
     try:
         with open("state/helloria_state.toml") as f:
             return toml.load(f)
@@ -60,6 +68,11 @@ def load_helloria_state(state: dict[str, Any]) -> dict[str, Any]:
 
 
 def save_helloria_state(state: dict[str, Any]) -> None:
+    """Sauvegarde l'état Helloria dans le fichier TOML.
+
+    Args:
+        state: État à sauvegarder.
+    """
     try:
         with open("state/helloria_state.toml", "w") as f:
             toml.dump(state, f)

@@ -102,85 +102,79 @@ arkalia-luna-pro/
 ├── security/              # Vault, chiffrement, validation
 ```
 
----
+## Patterns Architecturaux
 
-## 🧩 Patterns Architecturaux
+### Intelligence Croisée
+- SandoziaCore : Orchestration centrale avec monitoring temps réel
+- Validation croisée : Cohérence entre modules IA
+- Détection patterns : Anomalies comportementales automatiques
+- Consensus multi-agent : Résolution conflits par vote pondéré
 
-### 🎯 **Intelligence Croisée**
-- **SandoziaCore** : Orchestration centrale avec monitoring temps réel
-- **Validation croisée** : Cohérence entre modules IA
-- **Détection patterns** : Anomalies comportementales automatiques
-- **Consensus multi-agent** : Résolution conflits par vote pondéré
-
-### 🔄 **Event-Driven Architecture**
+### Event-Driven Architecture
 - Communication asynchrone entre modules
 - Message queues pour découplage
 - Event sourcing pour audit trail
 - CQRS pour séparation lecture/écriture
 
-### 🛡️ **Security by Design**
+### Security by Design
 - Chiffrement bout-en-bout (AES-256)
 - Authentification forte (JWT, rate limiting)
 - Isolation modules par sandboxing
 - Audit trail complet toutes opérations
-- **Tests sécurité** : 7/7 passés, scan Bandit OK
+- Tests sécurité : 7/7 passés, scan Bandit OK
 
-### 📊 **Observability Enterprise**
+### Observability Enterprise
 - 34 métriques Prometheus temps réel
 - 8 dashboards Grafana
 - 15 alertes intelligentes
 - Logs structurés JSON centralisés
 - Tracing distribué (prévu)
 
----
+## Couverture, CI/CD & Qualité
 
-## 📈 Couverture, CI/CD & Qualité
+| Métrique | Valeur |
+|----------|--------|
+| Couverture globale | 59.25% (671 tests passés) |
+| Tests unitaires | 642/642 |
+| Tests d'intégration | 29/29 |
+| CI/CD | 100% verte (GitHub Actions, pre-commit, artefacts conditionnels) |
+| Healthchecks | Tous healthy (arkalia-api, ZeroIA, Reflexia, Sandozia, etc.) |
+| Déploiement | Staging & production automatisés |
+| Monitoring | 34 métriques exposées, alertes proactives |
 
-- **Couverture globale** : 59.25% (671 tests passés)
-- **Tests unitaires** : 642/642
-- **Tests d'intégration** : 29/29
-- **CI/CD** : 100% verte (GitHub Actions, pre-commit, artefacts conditionnels)
-- **Healthchecks** : Tous healthy (arkalia-api, ZeroIA, Reflexia, Sandozia, etc.)
-- **Déploiement** : Staging & production automatisés
-- **Monitoring** : 34 métriques exposées, alertes proactives
+## Métriques Performance & Sécurité
 
----
+| Métrique | Valeur |
+|----------|--------|
+| Temps réponse API | < 200ms (p95) |
+| Disponibilité | 99.9%+ |
+| Blocages sécurité | 0 (système sain) |
+| Violations rate limit | 0 |
+| Échecs authentification | 0 |
+| Chiffrement | AES-256, rotation des clés |
+| Vault | Sécurisé, couverture 92% |
 
-## 📊 Métriques Performance & Sécurité
+## Déploiement et Orchestration
 
-- **Temps réponse API** : < 200ms (p95)
-- **Disponibilité** : 99.9%+
-- **Blocages sécurité** : 0 (système sain)
-- **Violations rate limit** : 0
-- **Échecs authentification** : 0
-- **Chiffrement** : AES-256, rotation des clés
-- **Vault** : Sécurisé, couverture 92%
-
----
-
-## 🔄 Déploiement et Orchestration
-
-### 🐳 **Containerisation & Monitoring**
+### Containerisation & Monitoring
 - Docker Compose pour tous les modules
 - Monitoring Prometheus + Grafana
 - Healthchecks automatisés
 - Logs centralisés
 
----
-
-## 🎯 **Métriques de Performance Actuelles**
+## Métriques de Performance Actuelles
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests collectés** | 671 | ✅ |
-| **Couverture** | 59.25% | ✅ >28% |
-| **Temps CI** | 31.73s | ✅ Optimal |
-| **Modules critiques** | 15/15 | ✅ Opérationnels |
-| **Healthcheck** | Python urllib | ✅ Natif |
-| **Artefacts** | Upload conditionnel | ✅ Robuste |
+| Tests collectés | 671 | OK |
+| Couverture | 59.25% | >28% |
+| Temps CI | 31.73s | Optimal |
+| Modules critiques | 15/15 | Opérationnels |
+| Healthcheck | Python urllib | Natif |
+| Artefacts | Upload conditionnel | Robuste |
 
 ---
 
-*Dernière mise à jour : novembre 2025
-*Version : v2.8.0*
-*Mainteneur : Arkalia-LUNA Pro Team*
+**Dernière mise à jour** : novembre 2025  
+**Version** : v2.8.0  
+**Mainteneur** : Arkalia-LUNA Pro Team

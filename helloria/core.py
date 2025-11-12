@@ -243,11 +243,21 @@ app.include_router(reflexia_router, prefix="/reflexia")
 
 @app.get("/health")
 def health() -> dict:
+    """Endpoint de santé générale du système.
+
+    Returns:
+        dict: Statut de santé du système.
+    """
     return {"status": "ok"}
 
 
 @app.get("/zeroia/health", tags=["ZeroIA"])
 def zeroia_health() -> dict:
+    """Vérifie l'état de santé du module ZeroIA.
+
+    Returns:
+        dict: Statut de santé de ZeroIA.
+    """
     try:
         from modules.zeroia import health_check
 
@@ -258,6 +268,11 @@ def zeroia_health() -> dict:
 
 @app.get("/reflexia/health", tags=["ReflexIA"])
 def reflexia_health() -> dict:
+    """Vérifie l'état de santé du module Reflexia.
+
+    Returns:
+        dict: Statut de santé de Reflexia.
+    """
     try:
         # Vérification simple de l'état ReflexIA
         from pathlib import Path
@@ -273,6 +288,11 @@ def reflexia_health() -> dict:
 
 @app.get("/sandozia/health", tags=["Sandozia"])
 def sandozia_health() -> dict:
+    """Vérifie l'état de santé du module Sandozia.
+
+    Returns:
+        dict: Statut de santé de Sandozia.
+    """
     try:
         # Vérification simple de l'état Sandozia
         from pathlib import Path
@@ -288,6 +308,11 @@ def sandozia_health() -> dict:
 
 @app.get("/zeroia/status", tags=["ZeroIA"])
 def zeroia_status() -> dict[str, Any]:
+    """Récupère le statut détaillé du module ZeroIA.
+
+    Returns:
+        dict: Statut détaillé de ZeroIA depuis le dashboard.
+    """
     try:
         with open("state/zeroia_dashboard.json") as f:
             data = json.load(f)

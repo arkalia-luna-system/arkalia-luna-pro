@@ -1,37 +1,35 @@
-# 🔗 Endpoints API Arkalia-LUNA Pro
+# Endpoints API Arkalia-LUNA Pro
 
-## 🎯 Vue d'ensemble
+## Vue d'ensemble
 
 Cette page documente tous les endpoints API disponibles dans Arkalia-LUNA Pro v2.8.0.
 
----
+## API Principale (Helloria)
 
-## 🌐 **API Principale (Helloria)**
-
-### **Base URL**
+### Base URL
 
 ```text
 http://localhost:8000
 ```
 
-### **Endpoints Principaux**
+### Endpoints Principaux
 
-#### **GET /** - Page d'accueil
+#### GET / - Page d'accueil
 
 ```http
 GET /
 ```
 
-**Description** : Page d'accueil de l'API
+**Description** : Page d'accueil de l'API  
 **Réponse** : HTML de la page d'accueil
 
-#### **GET /health** - Health Check
+#### GET /health - Health Check
 
 ```http
 GET /health
 ```
 
-**Description** : Vérification de l'état de santé
+**Description** : Vérification de l'état de santé  
 **Réponse** :
 
 ```json
@@ -42,13 +40,13 @@ GET /health
 }
 ```
 
-#### **GET /status** - Statut détaillé
+#### GET /status - Statut détaillé
 
 ```http
 GET /status
 ```
 
-**Description** : Statut détaillé de tous les modules
+**Description** : Statut détaillé de tous les modules  
 **Réponse** :
 
 ```json
@@ -70,7 +68,7 @@ GET /status
 }
 ```
 
-#### **GET /metrics** - Métriques Prometheus
+#### GET /metrics - Métriques Prometheus
 
 ```http
 GET /metrics
@@ -81,7 +79,7 @@ GET /metrics
 
 ---
 
-## 🧠 **ZeroIA - Moteur de Décision Autonome**
+## ZeroIA - Moteur de Décision Autonome
 
 ### **Base URL ZeroIA**
 
@@ -133,7 +131,7 @@ Content-Type: application/json
 
 ---
 
-## 👁️ **Reflexia - Observateur Cognitif**
+## Reflexia - Observateur Cognitif
 
 ### **Base URL Reflexia**
 
@@ -182,7 +180,7 @@ GET /health
 
 ---
 
-## 🔍 **Sandozia - Intelligence Croisée**
+## Sandozia - Intelligence Croisée
 
 ### **Note importante**
 
@@ -215,7 +213,7 @@ GET http://localhost:8000/metrics
 
 ---
 
-## 🤖 **AssistantIA - Assistant IA**
+## AssistantIA - Assistant IA
 
 ### **Base URL AssistantIA**
 
@@ -269,7 +267,7 @@ La validation de prompt est intégrée dans l'endpoint `/chat` via le module de 
 
 ---
 
-## 📊 **Monitoring - Métriques**
+## Monitoring - Métriques
 
 ### **Prometheus**
 
@@ -297,7 +295,7 @@ http://localhost:3100
 
 ---
 
-## 🔒 **Sécurité**
+## Sécurité
 
 ### **Authentification**
 
@@ -322,7 +320,7 @@ Access-Control-Allow-Headers: Content-Type, Authorization
 
 ---
 
-## 📝 **Codes de Réponse**
+## Codes de Réponse
 
 | Code | Description |
 |------|-------------|
@@ -337,7 +335,7 @@ Access-Control-Allow-Headers: Content-Type, Authorization
 
 ---
 
-## 🔧 **Exemples d'Utilisation**
+## Exemples d'Utilisation
 
 ### **cURL - Health Check**
 
@@ -367,11 +365,11 @@ curl -X POST http://localhost:8000/chat \
 
 ---
 
-## 📚 **Documentation Complète**
+## Documentation Complète
 
-- [📖 API Documentation](api.md)
-- [📊 Métriques](metrics.md)
-- [🔧 Configuration](../devops/index.md)
+- [API Documentation](api.md)
+- [Métriques](metrics.md)
+- [Configuration](../devops/index.md)
 
 ---
 

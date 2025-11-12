@@ -1,3 +1,8 @@
+"""Application principale FastAPI pour Arkalia-LUNA Pro.
+
+Ce module expose l'API REST principale avec les endpoints pour tous les modules
+(ZeroIA, Reflexia, Sandozia, AssistantIA) et les métriques Prometheus.
+"""
 import logging
 import time
 from collections.abc import AsyncGenerator, Callable
@@ -167,6 +172,7 @@ app.include_router(reflexia_router, prefix="/reflexia")
 
 
 def print_status() -> None:
+    """Affiche le statut de démarrage d'Arkalia-LUNA."""
     from rich import print
 
     ark_logger.info(
@@ -181,6 +187,13 @@ def print_status() -> None:
 
 
 class ZeroiaDecisionInput(BaseModel):
+    """Modèle d'entrée pour l'endpoint de décision ZeroIA.
+
+    Attributes:
+        context: Contexte de la décision à évaluer.
+        priority: Priorité de la décision (optionnel).
+    """
+
     context: dict
     priority: str | None = None
 
