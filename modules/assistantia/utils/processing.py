@@ -1,3 +1,9 @@
+"""
+Module de traitement pour AssistantIA.
+
+Ce module gère le prétraitement des messages utilisateur
+avant envoi aux modèles de langage.
+"""
 # modules/assistantia/utils/processing.py
 
 

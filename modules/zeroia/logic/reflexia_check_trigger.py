@@ -1,3 +1,9 @@
+"""
+Module de déclenchement des vérifications Reflexia.
+
+Ce module gère les déclencheurs pour activer les vérifications Reflexia
+en fonction de l'état du système.
+"""
 from typing import Any, Optional
 
 import requests

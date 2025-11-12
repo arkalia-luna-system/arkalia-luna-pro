@@ -24,9 +24,9 @@ try:
     from .event_store import EventStore, EventType
 except ImportError:
     # Fallback si modules pas disponibles
-    CircuitBreaker = None
-    EventStore = None
-    EventType = None
+    CircuitBreaker = None  # type: ignore[assignment]
+    EventStore = None  # type: ignore[assignment]
+    EventType = None  # type: ignore[assignment]
 
 logger = logging.getLogger(__name__)
 
@@ -87,6 +87,8 @@ class ErrorType(Enum):
 
 
 class RecoveryMetrics(TypedDict):
+    """Métriques de récupération d'erreurs."""
+
     total_errors: int
     successful_recoveries: int
     failed_recoveries: int
@@ -95,6 +97,8 @@ class RecoveryMetrics(TypedDict):
 
 
 class RecoveryAttempt(TypedDict):
+    """Tentative de récupération d'erreur."""
+
     type: str
     zeroia_state: str
     reflexia_state: str
@@ -402,7 +406,8 @@ class ErrorRecoverySystem:
 
             # Exécuter les stratégies de récupération
             for strategy in self.recovery_handlers.values():
-                await strategy(None)
+                if strategy is not None:
+                    await strategy(None)
 
             logger.info("✅ Récupération réussie")
             return True

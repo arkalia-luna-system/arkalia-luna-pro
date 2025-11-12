@@ -1,3 +1,9 @@
+"""
+Module de gestion de l'état ZeroIA.
+
+Ce module gère le chargement et la sauvegarde de l'état ZeroIA
+depuis/vers des fichiers TOML.
+"""
 from pathlib import Path
 from typing import Any, Optional
 

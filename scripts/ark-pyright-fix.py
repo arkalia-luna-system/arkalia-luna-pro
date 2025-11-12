@@ -28,6 +28,7 @@ def ensure_init_py() -> None:
 
 
 def ensure_env_py_path() -> None:
+    """Configure le chemin Python dans le fichier .env."""
     """
     Vérifie et ajoute PYTHONPATH dans .env si nécessaire.
     """
@@ -44,6 +45,7 @@ def ensure_env_py_path() -> None:
 
 
 def main() -> None:
+    """Fonction principale du script de correction Pyright."""
     """
     Fonction principale exécutant les corrections Pyright.
     """

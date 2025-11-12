@@ -1,3 +1,9 @@
+"""
+Module de métriques pour Reflexia.
+
+Ce module gère la collecte et l'analyse des métriques système
+pour les vérifications Reflexia.
+"""
 def read_metrics() -> dict:
     """
     Simule la collecte de métriques système.

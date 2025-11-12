@@ -526,8 +526,7 @@ def create_monthly_rotation_policy(secret_name: str) -> RotationPolicy:
 
 
 def create_access_based_policy(secret_name: str, max_accesses: int = 100) -> RotationPolicy:
-    """
-    Crée une politique de rotation basée sur le nombre d'accès.
+    """Crée une politique de rotation basée sur le nombre d'accès.
 
     Args:
         secret_name: Nom du secret pour lequel créer la politique.
@@ -535,15 +534,6 @@ def create_access_based_policy(secret_name: str, max_accesses: int = 100) -> Rot
 
     Returns:
         RotationPolicy: Politique configurée pour rotation basée sur l'accès.
-    """
-    """Crée une politique de rotation basée sur le nombre d'accès.
-
-    Args:
-        secret_name: Nom du secret.
-        max_accesses: Nombre maximum d'accès avant rotation (défaut: 100).
-
-    Returns:
-        RotationPolicy: Politique de rotation basée sur l'accès.
     """
     return RotationPolicy(
         name=secret_name,

@@ -105,6 +105,12 @@ active_connections = 0
 
 
 def get_query_ollama() -> Callable[[str, str, float], str]:
+    """
+    Retourne une fonction de requête Ollama.
+
+    Returns:
+        Callable: Fonction lambda pour interroger Ollama avec prompt, model et température.
+    """
     return lambda prompt, model, temp: real_query_ollama(prompt, model, temp)
 
 

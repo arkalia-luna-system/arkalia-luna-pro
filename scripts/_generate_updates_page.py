@@ -1,14 +1,11 @@
-"""
-Script de génération de la page des dernières mises à jour.
+"""Script de génération de la page des dernières mises à jour.
 
 Ce script génère automatiquement une page listant les dernières mises à jour
 depuis l'historique Git.
 """
-
-# scripts/generate_updates_page.py
-
 import subprocess  # nosec
 from pathlib import Path
+from typing import Any
 
 from core.ark_logger import ark_logger
 
@@ -17,7 +14,7 @@ for file in Path("docs/releases").glob("._*"):
     file.unlink()
 
 
-def main(**kwargs: dict) -> None:
+def main(**kwargs: Any) -> None:
     """Génère la page des dernières mises à jour depuis Git.
 
     Args:

@@ -157,7 +157,7 @@ def setup_logger(
 
 
 # Logger principal global
-ark_logger = setup_logger("arkalia")
+ark_logger: logging.Logger = setup_logger("arkalia")  # type: ignore[assignment]
 
 
 # Loggers spécialisés
@@ -177,11 +177,11 @@ def get_security_logger() -> logging.Logger:
 
 
 # Fonctions utilitaires
-def log_function_call(func_name: str, module: str = "core"):
+def log_function_call(func_name: str, module: str = "core") -> Any:
     """Décorateur pour logger les appels de fonction."""
 
-    def decorator(func):
-        def wrapper(*args, **kwargs):
+    def decorator(func: Any) -> Any:
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             logger = get_module_logger(module)
             logger.debug(f"🧪 {func_name} déclaré")
             return func(*args, **kwargs)
@@ -191,13 +191,13 @@ def log_function_call(func_name: str, module: str = "core"):
     return decorator
 
 
-def log_error(error: Exception, context: str = "", module: str = "core"):
+def log_error(error: Exception, context: str = "", module: str = "core") -> None:
     """Log une erreur avec contexte."""
     logger = get_module_logger(module)
     logger.error(f"❌ Erreur dans {context}: {error}")
 
 
-def log_success(message: str, module: str = "core"):
+def log_success(message: str, module: str = "core") -> None:
     """Log un succès."""
     logger = get_module_logger(module)
     logger.info(f"✅ {message}")

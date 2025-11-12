@@ -1,3 +1,11 @@
+"""
+Validateur de Prompts - Sécurité LLM Arkalia-LUNA
+
+Ce module protège contre :
+- Prompt injection
+- Code injection
+- Attaques DOS
+"""
 # Validateur de Prompts - Sécurité LLM Arkalia-LUNA
 # Protection contre prompt injection, code injection, et attaques DOS
 

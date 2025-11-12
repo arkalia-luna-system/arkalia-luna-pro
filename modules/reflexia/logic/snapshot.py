@@ -1,3 +1,8 @@
+"""
+Module de snapshot pour Reflexia.
+
+Ce module gère la sauvegarde et le chargement des snapshots d'état Reflexia.
+"""
 import json
 import os
 from datetime import datetime

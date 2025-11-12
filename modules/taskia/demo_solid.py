@@ -109,11 +109,28 @@ def demo_solid_principles():
 
     # Ajout d'un nouveau formateur sans modifier le code existant
     class CsvFormatter(IFormatter):
+        """Formateur CSV pour les données TaskIA."""
+
         def format(self, data: dict[str, Any]) -> str:
+            """
+            Formate les données en CSV.
+
+            Args:
+                data: Dictionnaire de données à formater.
+
+            Returns:
+                str: Données formatées en CSV.
+            """
             lines = [f"{k},{v}" for k, v in data.items()]
             return "\n".join(lines)
 
         def get_format_type(self) -> str:
+            """
+            Retourne le type de format.
+
+            Returns:
+                str: Type de format ("csv").
+            """
             return "csv"
 
     # Enregistrement du nouveau formateur
