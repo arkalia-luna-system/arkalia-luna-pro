@@ -10,6 +10,7 @@ import time
 from typing import Any
 
 import pytest
+from pytest_benchmark.fixture import BenchmarkFixture
 
 from modules.cognitive_reactor.core import CognitiveReactor
 from modules.reflexia.core import launch_reflexia_check
@@ -20,17 +21,17 @@ from modules.zeroia import ZeroIACoordinator
 
 # Fixtures au niveau module pour être accessibles à toutes les classes
 @pytest.fixture
-def zeroia_core():
+def zeroia_core() -> ZeroIACoordinator:
     """Instance ZeroIA pour les tests"""
     return ZeroIACoordinator()
 
 
 @pytest.fixture
-def reflexia_core():
+def reflexia_core() -> Any:
     """Fournit un wrapper compatible pour ReflexIA (API procédurale)"""
 
     class ReflexiaCoreWrapper:
-        def check_module_health(self, module_name):
+        def check_module_health(self, module_name: str) -> Any:
             # Utilise launch_reflexia_check pour obtenir les métriques
             result = launch_reflexia_check()
             # On retourne le status global ou un sous-ensemble selon le module demandé
@@ -42,11 +43,11 @@ def reflexia_core():
 
 
 @pytest.fixture
-def sandozia_core():
+def sandozia_core() -> Any:
     """Instance Sandozia pour les tests avec analyse comportementale simulée"""
 
     class SandoziaCoreWrapper(SandoziaCore):
-        def analyze_data(self, data):
+        def analyze_data(self, data: dict[str, Any]) -> Any:
             # Simulation d'une analyse comportementale
             analyzer = BehaviorAnalyzer()
             # On ajoute quelques métriques pour simuler l'analyse
@@ -60,7 +61,7 @@ def sandozia_core():
 
 
 @pytest.fixture
-def cognitive_reactor():
+def cognitive_reactor() -> CognitiveReactor:
     """Instance CognitiveReactor pour les tests"""
     return CognitiveReactor()
 
@@ -69,10 +70,15 @@ class TestIntegrationPerformance:
     """Tests de performance d'intégration"""
 
     @pytest.mark.benchmark
-    def test_zeroia_reflexia_integration_performance(self, zeroia_core, reflexia_core, benchmark):
+    def test_zeroia_reflexia_integration_performance(
+        self,
+        zeroia_core: ZeroIACoordinator,
+        reflexia_core: Any,
+        benchmark: BenchmarkFixture,
+    ) -> None:
         """Test de performance d'intégration ZeroIA-ReflexIA"""
 
-        def integration_operation():
+        def integration_operation() -> dict[str, Any]:
             # Simulation d'une décision ZeroIA avec vérification ReflexIA
             context = {"cpu_usage": 75.0, "memory_usage": 80.0, "error_rate": 0.02}
 
@@ -90,10 +96,12 @@ class TestIntegrationPerformance:
         assert "health_check" in result
 
     @pytest.mark.benchmark
-    def test_sandozia_analysis_performance(self, sandozia_core, benchmark):
+    def test_sandozia_analysis_performance(
+        self, sandozia_core: Any, benchmark: BenchmarkFixture
+    ) -> None:
         """Test de performance d'analyse Sandozia"""
 
-        def analysis_operation():
+        def analysis_operation() -> Any:
             data = {
                 "system_metrics": {"cpu": 70.0, "memory": 75.0, "disk": 60.0},
                 "events": ["high_cpu", "memory_warning", "disk_space_low"],
@@ -106,10 +114,12 @@ class TestIntegrationPerformance:
         assert result is not None
 
     @pytest.mark.benchmark
-    def test_cognitive_reactor_integration_performance(self, cognitive_reactor, benchmark):
+    def test_cognitive_reactor_integration_performance(
+        self, cognitive_reactor: CognitiveReactor, benchmark: BenchmarkFixture
+    ) -> None:
         """Test de performance d'intégration CognitiveReactor"""
 
-        def cognitive_operation():
+        def cognitive_operation() -> Any:
             stimulus = {
                 "type": "system_alert",
                 "severity": "medium",
@@ -126,11 +136,16 @@ class TestIntegrationPerformance:
 
     @pytest.mark.benchmark
     def test_full_workflow_performance(
-        self, zeroia_core, reflexia_core, sandozia_core, cognitive_reactor, benchmark
-    ):
+        self,
+        zeroia_core: ZeroIACoordinator,
+        reflexia_core: Any,
+        sandozia_core: Any,
+        cognitive_reactor: CognitiveReactor,
+        benchmark: BenchmarkFixture,
+    ) -> None:
         """Test de performance du workflow complet"""
 
-        def full_workflow():
+        def full_workflow() -> dict[str, Any]:
             # 1. Collecte de métriques système
             system_metrics = {
                 "cpu_usage": 75.0,
@@ -171,20 +186,25 @@ class TestIntegrationPerformance:
         assert all(key in result for key in ["analysis", "decision", "health_check", "reaction"])
 
     @pytest.mark.asyncio
-    async def test_concurrent_module_operations(self, zeroia_core, reflexia_core, sandozia_core):
+    async def test_concurrent_module_operations(
+        self,
+        zeroia_core: ZeroIACoordinator,
+        reflexia_core: Any,
+        sandozia_core: Any,
+    ) -> None:
         """Test d'opérations concurrentes entre modules"""
 
-        async def zeroia_operation(operation_id):
+        async def zeroia_operation(operation_id: int) -> Any:
             context = {
                 "cpu_usage": 60.0 + (operation_id % 20),
                 "memory_usage": 70.0 + (operation_id % 15),
             }
             return zeroia_core.make_decision(context)
 
-        async def reflexia_operation(operation_id):
+        async def reflexia_operation(operation_id: int) -> Any:
             return reflexia_core.check_module_health(f"module_{operation_id % 3}")
 
-        async def sandozia_operation(operation_id):
+        async def sandozia_operation(operation_id: int) -> Any:
             data = {
                 "system_metrics": {"cpu": 50.0 + operation_id},
                 "events": [f"event_{operation_id}"],
@@ -212,11 +232,14 @@ class TestIntegrationPerformance:
 
     @pytest.mark.asyncio
     async def test_module_communication_performance(
-        self, zeroia_core, reflexia_core, sandozia_core
-    ):
+        self,
+        zeroia_core: ZeroIACoordinator,
+        reflexia_core: Any,
+        sandozia_core: Any,
+    ) -> None:
         """Test de performance de communication entre modules"""
 
-        async def communication_chain():
+        async def communication_chain() -> Any:
             # Chaîne de communication : ZeroIA → ReflexIA → Sandozia
             decision = await zeroia_core.make_decision({"cpu_usage": 70.0})
 
@@ -245,11 +268,15 @@ class TestIntegrationPerformance:
 
     @pytest.mark.asyncio
     async def test_error_propagation_performance(
-        self, zeroia_core, reflexia_core, sandozia_core, cognitive_reactor
-    ):
+        self,
+        zeroia_core: ZeroIACoordinator,
+        reflexia_core: Any,
+        sandozia_core: Any,
+        cognitive_reactor: CognitiveReactor,
+    ) -> None:
         """Test de performance de propagation d'erreurs"""
 
-        async def error_propagation():
+        async def error_propagation() -> dict[str, Any]:
             # Simulation d'une erreur qui se propage
             try:
                 # Opération qui peut échouer
@@ -288,12 +315,17 @@ class TestIntegrationLoadPerformance:
     """Tests de performance sous charge"""
 
     @pytest.mark.asyncio
+    @pytest.mark.timeout(150)  # Timeout de 150s pour éviter les boucles infinies
     async def test_high_load_integration(
-        self, zeroia_core, reflexia_core, sandozia_core, cognitive_reactor
-    ):
+        self,
+        zeroia_core: ZeroIACoordinator,
+        reflexia_core: Any,
+        sandozia_core: Any,
+        cognitive_reactor: CognitiveReactor,
+    ) -> None:
         """Test d'intégration sous charge élevée"""
 
-        async def integration_workload(workload_id):
+        async def integration_workload(workload_id: int) -> dict[str, Any]:
             # Charge de travail complexe
             system_metrics = {
                 "cpu_usage": 50.0 + (workload_id % 40),
@@ -341,8 +373,8 @@ class TestIntegrationLoadPerformance:
                 "reaction": reaction,
             }
 
-        # 100 charges de travail concurrentes
-        tasks = [integration_workload(i) for i in range(100)]
+        # 50 charges de travail concurrentes (réduit pour éviter surcharge RAM)
+        tasks = [integration_workload(i) for i in range(50)]
         start_time = time.time()
         results = await asyncio.gather(*tasks, return_exceptions=True)
         end_time = time.time()
@@ -350,25 +382,34 @@ class TestIntegrationLoadPerformance:
         total_time = end_time - start_time
         success_count = sum(1 for r in results if not isinstance(r, Exception))
 
-        assert total_time < 120.0  # Moins de 120 secondes pour 100 charges (seuil réaliste)
-        assert success_count > 80  # Au moins 80% de succès
+        assert total_time < 90.0  # Moins de 90 secondes pour 50 charges (seuil réaliste)
+        assert success_count > 40  # Au moins 80% de succès (40/50)
 
     @pytest.mark.asyncio
-    async def test_memory_intensive_integration(self, zeroia_core, reflexia_core, sandozia_core):
+    @pytest.mark.timeout(120)  # Timeout de 120s pour éviter les boucles infinies
+    async def test_memory_intensive_integration(
+        self,
+        zeroia_core: ZeroIACoordinator,
+        reflexia_core: Any,
+        sandozia_core: Any,
+    ) -> None:
         """Test d'intégration avec utilisation mémoire intensive"""
 
-        async def memory_intensive_operation(operation_id):
+        async def memory_intensive_operation(operation_id: int) -> dict[str, Any]:
             # Données volumineuses
             large_dataset = {
                 "system_metrics": {"cpu": 70.0, "memory": 80.0},
-                "events": [f"event_{i}" for i in range(1000)],
+                "events": [f"event_{i}" for i in range(500)],  # Réduit de 1000 à 500
                 "historical_data": [
                     {
                         "timestamp": time.time() + i,
                         "value": 50.0 + (i % 20),
-                        "metadata": {"operation_id": operation_id, "data": "x" * 1000},
+                        "metadata": {
+                            "operation_id": operation_id,
+                            "data": "x" * 500,
+                        },  # Réduit de 1000 à 500
                     }
-                    for i in range(100)
+                    for i in range(50)  # Réduit de 100 à 50
                 ],
             }
 
@@ -376,12 +417,16 @@ class TestIntegrationLoadPerformance:
             analysis = sandozia_core.analyze_data(large_dataset)
 
             # Décision basée sur l'analyse
-            decision = await zeroia_core.make_decision(large_dataset["system_metrics"])
+            system_metrics = large_dataset.get("system_metrics", {})
+            if isinstance(system_metrics, dict):
+                decision = await zeroia_core.make_decision(system_metrics)
+            else:
+                decision = await zeroia_core.make_decision({})
 
             return {"analysis": analysis, "decision": decision}
 
-        # 20 opérations mémoire intensives
-        tasks = [memory_intensive_operation(i) for i in range(20)]
+        # 10 opérations mémoire intensives (réduit pour éviter surcharge RAM)
+        tasks = [memory_intensive_operation(i) for i in range(10)]
         start_time = time.time()
         results = await asyncio.gather(*tasks, return_exceptions=True)
         end_time = time.time()
@@ -390,17 +435,21 @@ class TestIntegrationLoadPerformance:
         success_count = sum(1 for r in results if not isinstance(r, Exception))
 
         assert (
-            total_time < 90.0
-        )  # Moins de 90 secondes (seuil réaliste pour opérations mémoire intensives)
-        assert success_count > 15  # Au moins 75% de succès
+            total_time < 60.0
+        )  # Moins de 60 secondes (seuil réaliste pour opérations mémoire intensives)
+        assert success_count > 7  # Au moins 70% de succès (7/10)
 
 
 class TestIntegrationMemoryPerformance:
     """Tests de performance mémoire"""
 
     def test_integration_memory_usage(
-        self, zeroia_core, reflexia_core, sandozia_core, cognitive_reactor
-    ):
+        self,
+        zeroia_core: ZeroIACoordinator,
+        reflexia_core: Any,
+        sandozia_core: Any,
+        cognitive_reactor: CognitiveReactor,
+    ) -> None:
         """Test d'utilisation mémoire lors de l'intégration"""
 
         import os

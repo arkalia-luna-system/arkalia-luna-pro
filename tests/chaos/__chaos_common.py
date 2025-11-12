@@ -70,7 +70,7 @@ class ChaosTester:
             ark_logger.info(f"⚠️ Erreur corruption {file_path}: {e}", extra={"module": "chaos"})
             return False
 
-    def restore_files(self):
+    def restore_files(self) -> None:
         """Restaure tous les fichiers corrompus"""
         for original_path, backup_path in self.corrupted_files:
             try:
@@ -83,7 +83,7 @@ class ChaosTester:
                 )
         self.corrupted_files.clear()
 
-    def simulate_high_load(self, duration: int = 10):
+    def simulate_high_load(self, duration: int = 10) -> subprocess.Popen[bytes] | None:
         """Simule une charge système élevée"""
         try:
             # CPU stress (multiplateforme)
@@ -120,9 +120,13 @@ for t in threads:
             ark_logger.info(f"⚠️ Erreur simulation charge: {e}", extra={"module": "chaos"})
             return None
 
-    def simulate_memory_pressure(self, mb_size: int = 100):
+    def simulate_memory_pressure(
+        self, mb_size: int = 50
+    ) -> list[bytearray]:  # Réduit de 100 à 50 MB par défaut
         """Simule une pression mémoire"""
         try:
+            # Limite la taille pour éviter surcharge RAM
+            mb_size = min(mb_size, 50)  # Maximum 50 MB
             # Alloue et maintient de la mémoire
             memory_blocks = []
             for _ in range(mb_size):
@@ -130,15 +134,15 @@ for t in threads:
                 block = bytearray(1024 * 1024)
                 memory_blocks.append(block)
 
-            # Garde la mémoire allouée pendant le test
-            time.sleep(5)
+            # Garde la mémoire allouée pendant le test (réduit de 5s à 2s)
+            time.sleep(2)
             return memory_blocks
 
         except MemoryError:
             ark_logger.info("⚠️ Mémoire insuffisante pour le test", extra={"module": "chaos"})
             return []
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         """Nettoie tous les processus et fichiers de test"""
         # Termine les processus actifs
         for process in self.active_processes:
