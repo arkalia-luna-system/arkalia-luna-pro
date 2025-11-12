@@ -135,9 +135,8 @@ class ConfigManager:
         if "core" in self._config:
             core_config = self._config["core"]
             if "log_level" in core_config:
-                ark_logger.setLevel(
-                    getattr(logging, core_config["log_level"]), extra={"arkalia_module": "core"}
-                )
+                log_level = getattr(logging, core_config["log_level"], logging.INFO)
+                logging.getLogger("ark_logger.core").setLevel(log_level)
 
     def get_config(self, section: str | None = None) -> dict[str, Any]:
         """
@@ -149,9 +148,11 @@ class ConfigManager:
             self.initialize()
 
         if section is None:
-            return self._config.copy()
+            result = self._config.copy()
+            return result if isinstance(result, dict) else {}
 
-        return self._config.get(section, {}).copy()
+        result = self._config.get(section, {}).copy()
+        return result if isinstance(result, dict) else {}
 
     def get_module_config(self, module_name: str) -> dict[str, Any]:
         """
@@ -160,7 +161,8 @@ class ConfigManager:
         :return: Configuration du module
         """
         modules_config = self.get_config("modules")
-        return modules_config.get(module_name, {})
+        result = modules_config.get(module_name, {})
+        return result if isinstance(result, dict) else {}
 
     def get_watchdog_config(self, watchdog_name: str) -> dict[str, Any]:
         """
@@ -169,7 +171,8 @@ class ConfigManager:
         :return: Configuration du watchdog
         """
         watchdogs_config = self.get_config("watchdogs")
-        return watchdogs_config.get(watchdog_name, {})
+        result = watchdogs_config.get(watchdog_name, {})
+        return result if isinstance(result, dict) else {}
 
     def set_config(self, section: str, key: str, value: Any) -> bool:
         """
@@ -256,12 +259,14 @@ class ConfigManager:
 
         for env_var, config_path in env_mappings.items():
             if env_var in os.environ:
-                value = os.environ[env_var]
+                value_str = os.environ[env_var]
                 # Conversion des types
                 if config_path.endswith("debug_mode"):
-                    value = value.lower() in ("true", "1", "yes")
+                    value: bool | str = value_str.lower() in ("true", "1", "yes")
                 elif config_path.endswith(("max_retries", "timeout")):
-                    value = float(value) if "." in value else int(value)
+                    value = float(value_str) if "." in value_str else int(value_str)
+                else:
+                    value = value_str
 
                 env_config[config_path] = value
 

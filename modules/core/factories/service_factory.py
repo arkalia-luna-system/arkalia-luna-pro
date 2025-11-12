@@ -14,7 +14,7 @@ class ServiceFactory:
     🏭 Factory pour créer et injecter des services du Core
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._services: dict[str, Any] = {}
         self._registry: dict[str, type] = {}
 
@@ -40,7 +40,7 @@ class ServiceFactory:
     def get_service(self, name: str) -> Any | None:
         return self._services.get(name)
 
-    def create_service(self, name: str, **kwargs) -> Any | None:
+    def create_service(self, name: str, **kwargs: Any) -> Any | None:
         if name not in self._registry:
             ark_logger.error(f"Classe service inconnue : {name}", extra={"arkalia_module": "core"})
             return None

@@ -14,7 +14,7 @@ class ModuleFactory:
     🏭 Factory pour créer des modules compatibles IModule
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._registry: dict[str, type[IModule]] = {}
         self._register_default_modules()
 
@@ -67,7 +67,7 @@ class ModuleFactory:
             return True
         return False
 
-    def create_module(self, name: str, **kwargs) -> IModule | None:
+    def create_module(self, name: str, **kwargs: Any) -> IModule | None:
         if name not in self._registry:
             ark_logger.error(f"Classe module inconnue : {name}", extra={"arkalia_module": "core"})
             return None
