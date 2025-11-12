@@ -23,7 +23,7 @@ __all__ = [
 ]
 
 
-def log(msg: str, silent: bool = False):
+def log(msg: str, silent: bool = False) -> None:
     """Log message to rollback.log and print if not silent."""
     try:
         with LOG_FILE.open("a", encoding="utf-8") as f:

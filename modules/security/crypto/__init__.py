@@ -1,3 +1,13 @@
+"""
+Module crypto de sécurité.
+
+Ce module contient les composants de cryptographie et de gestion des secrets :
+- Vault manager pour le stockage sécurisé
+- Rotation de secrets
+- Gestion du cycle de vie des tokens
+- Validation d'intégrité des builds
+"""
+
 # 🔐 modules/security/crypto/__init__.py
 # Cryptographie et intégrité Arkalia-LUNA
 

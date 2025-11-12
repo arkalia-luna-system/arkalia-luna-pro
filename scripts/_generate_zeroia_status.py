@@ -1,3 +1,10 @@
+"""
+Script de génération automatique du statut ZeroIA.
+
+Ce script génère un fichier Markdown avec le statut actuel de ZeroIA,
+incluant les logs Docker et les dernières décisions prises.
+"""
+
 # scripts/generate_zeroia_status.py
 
 import datetime
@@ -86,11 +93,14 @@ def write_markdown(status: str, decisions: list[str]) -> None:
     ark_logger.info(f"✅ Statut écrit dans {OUTPUT_FILE}", extra={"arkalia_module": "scripts"})
 
 
-def get_file_info(filepath) -> None:
+def get_file_info(filepath: str) -> str:
     """Affiche les informations d'un fichier.
 
     Args:
         filepath: Chemin du fichier.
+
+    Returns:
+        str: Informations sur le fichier.
     """
     p = Path(filepath)
     if not p.exists():

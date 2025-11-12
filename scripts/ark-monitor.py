@@ -3,6 +3,7 @@
 Ce script fournit un monitoring en temps réel de l'état des modules IA
 et des conteneurs Docker.
 """
+
 import json
 import subprocess  # nosec
 import sys
@@ -61,7 +62,7 @@ def display_recent_errors() -> None:
         with LOG_FILE.open("r", encoding="utf-8") as f:
             lines = f.readlines()
             ark_logger.info(
-                "".join(lines[-5:], extra={"arkalia_module": "scripts"})
+                "".join(lines[-5:]), extra={"arkalia_module": "scripts"}
             )  # Affiche les 5 dernières lignes du fichier de log
     else:
         ark_logger.info("Aucune erreur connue.", extra={"arkalia_module": "scripts"})
@@ -71,7 +72,7 @@ if __name__ == "__main__":
     ark_logger.info("\n📄 ZeroIA — TOML State", extra={"arkalia_module": "scripts"})
     try:
         data = toml.load(STATE_PATH)
-        ark_logger.info(toml.dumps(data, extra={"arkalia_module": "scripts"}))
+        ark_logger.info(toml.dumps(data), extra={"arkalia_module": "scripts"})
     except Exception as e:
         ark_logger.info(f"💥 Erreur lecture TOML : {e}", extra={"arkalia_module": "scripts"})
 

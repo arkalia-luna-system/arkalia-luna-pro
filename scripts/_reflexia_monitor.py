@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""
+Monitor ReflexIA State — Arkalia LUNA
+
+Ce script surveille l'état de Reflexia et peut exporter les métriques
+vers Grafana pour visualisation.
+"""
 # 🧠 Monitor ReflexIA State — Arkalia LUNA
 
 import json
@@ -61,7 +67,7 @@ def display_info(result: dict) -> None:
     )
 
 
-def export_to_grafana(data) -> None:
+def export_to_grafana(data: dict) -> None:
     """Exporte les données Reflexia vers Grafana.
 
     Args:
@@ -100,7 +106,7 @@ def export_to_grafana(data) -> None:
         ark_logger.info("✅ Exportation vers Grafana réussie.", extra={"arkalia_module": "scripts"})
     else:
         ark_logger.info(
-            f"❌ Erreur lors de l'exportation vers Grafana : {response.content}",
+            f"❌ Erreur lors de l'exportation vers Grafana : {response.content.decode('utf-8', errors='replace')}",
             extra={"arkalia_module": "scripts"},
         )
 

@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+Healthcheck IA ZeroIA — Vérification de l'état cognitif
+
+Ce script vérifie l'état de santé de ZeroIA en validant :
+- L'existence et la validité du fichier d'état TOML
+- La présence des champs requis dans l'état
+"""
 # ✅ Healthcheck IA ZeroIA — Vérification de l'état cognitif
 
 import datetime

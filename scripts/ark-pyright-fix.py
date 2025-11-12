@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+Script de correction pour Pyright/Cursor.
+
+Ce script corrige les problèmes de configuration Pyright en :
+- Créant le fichier __init__.py manquant dans modules/
+- Ajoutant PYTHONPATH dans .env si nécessaire
+"""
 from pathlib import Path
 
 from core.ark_logger import ark_logger
@@ -9,6 +16,9 @@ ENV_FILE = ROOT / ".env"
 
 
 def ensure_init_py() -> None:
+    """
+    Vérifie et crée le fichier __init__.py dans modules/ si nécessaire.
+    """
     init_path = MODULES / "__init__.py"
     if not init_path.exists():
         init_path.touch()
@@ -18,6 +28,9 @@ def ensure_init_py() -> None:
 
 
 def ensure_env_py_path() -> None:
+    """
+    Vérifie et ajoute PYTHONPATH dans .env si nécessaire.
+    """
     if ENV_FILE.exists():
         content = ENV_FILE.read_text()
         if "PYTHONPATH" in content:
@@ -31,6 +44,9 @@ def ensure_env_py_path() -> None:
 
 
 def main() -> None:
+    """
+    Fonction principale exécutant les corrections Pyright.
+    """
     ark_logger.info("🔧 Patch Pyright / Cursor en cours…", extra={"arkalia_module": "scripts"})
     ensure_init_py()
     ensure_env_py_path()

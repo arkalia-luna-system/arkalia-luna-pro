@@ -1,3 +1,10 @@
+"""
+Script de génération de la page des dernières mises à jour.
+
+Ce script génère automatiquement une page listant les dernières mises à jour
+depuis l'historique Git.
+"""
+
 # scripts/generate_updates_page.py
 
 import subprocess  # nosec
@@ -10,7 +17,7 @@ for file in Path("docs/releases").glob("._*"):
     file.unlink()
 
 
-def main(**kwargs) -> None:
+def main(**kwargs: dict) -> None:
     """Génère la page des dernières mises à jour depuis Git.
 
     Args:

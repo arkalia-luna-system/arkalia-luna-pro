@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+Pre-push ZeroIA Validator — Arkalia LUNA v2.6.x
+
+Ce script valide l'état de ZeroIA avant un push Git :
+- Vérifie la validité du fichier TOML d'état
+- Détecte l'exposition de tokens PAT GitHub
+"""
 # 🚫 Pre-push ZeroIA Validator — Arkalia LUNA v2.6.x
 
 import re
@@ -10,16 +17,17 @@ except ImportError:
     # Fallback si l'import échoue
     import logging
 
-    ark_logger = logging.getLogger("arkalia")
-    ark_logger.setLevel(logging.INFO)
+    _fallback_logger = logging.getLogger("arkalia")
+    _fallback_logger.setLevel(logging.INFO)
     handler = logging.StreamHandler()
     handler.setFormatter(logging.Formatter("%(levelname)s - %(message)s"))
-    ark_logger.addHandler(handler)
+    _fallback_logger.addHandler(handler)
+    ark_logger = _fallback_logger  # type: ignore[assignment]
 
 try:
-    import tomllib  # type: ignore
+    import tomllib
 except ModuleNotFoundError:
-    import tomli as tomllib  # type: ignore
+    import tomli as tomllib
 
 STATE_FILE = Path("modules/zeroia/state/zeroia_state.toml")
 DASHBOARD_FILE = Path("state/zeroia_dashboard.json")
