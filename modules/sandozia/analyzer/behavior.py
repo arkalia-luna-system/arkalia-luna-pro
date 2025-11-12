@@ -146,6 +146,11 @@ class BehaviorAnalyzer:
             }
 
     def detect_statistical_anomalies(self) -> list[BehaviorPattern]:
+        """Détecte les anomalies statistiques dans les métriques.
+
+        Returns:
+            list: Liste des patterns d'anomalies détectés.
+        """
         patterns: list[Any] = []
         now = datetime.now()
         threshold = self.config["anomaly_threshold"]
@@ -203,6 +208,11 @@ class BehaviorAnalyzer:
         return patterns
 
     def detect_performance_regression(self) -> list[BehaviorPattern]:
+        """Détecte les régressions de performance dans les modules.
+
+        Returns:
+            list: Liste des patterns de régression détectés.
+        """
         patterns: list[Any] = []
 
         # Analyser les métriques de performance connues
@@ -274,6 +284,11 @@ class BehaviorAnalyzer:
         return patterns
 
     def detect_decision_patterns(self) -> list[BehaviorPattern]:
+        """Détecte les patterns suspects dans les décisions des modules.
+
+        Returns:
+            list: Liste des patterns de décision détectés.
+        """
         patterns: list[Any] = []
 
         if len(self.decision_history) < 10:
@@ -352,6 +367,11 @@ class BehaviorAnalyzer:
         return patterns
 
     def detect_correlation_anomalies(self) -> list[BehaviorPattern]:
+        """Détecte les anomalies de corrélation entre modules.
+
+        Returns:
+            list: Liste des patterns de corrélation anormaux détectés.
+        """
         patterns: list[Any] = []
 
         # Analyser les corrélations de confiance entre modules
@@ -398,6 +418,11 @@ class BehaviorAnalyzer:
         return patterns
 
     def analyze_behavior(self) -> dict[str, Any]:
+        """Exécute une analyse complète du comportement des modules.
+
+        Returns:
+            dict: Résumé de l'analyse avec score de santé comportementale.
+        """
         logger.info("🔍 Starting behavior analysis...")
 
         # Exécuter toutes les analyses
@@ -450,10 +475,23 @@ class BehaviorAnalyzer:
         return summary
 
     def get_pattern_history(self, limit: int | None = None) -> list[dict]:
+        """Récupère l'historique des patterns détectés.
+
+        Args:
+            limit: Nombre maximum de patterns à retourner (optionnel).
+
+        Returns:
+            list: Liste des patterns sous forme de dictionnaires.
+        """
         patterns = self.pattern_history[-limit:] if limit else self.pattern_history
         return [p.to_dict() for p in patterns]
 
     def get_metrics_summary(self) -> dict[str, Any]:
+        """Récupère un résumé des métriques collectées.
+
+        Returns:
+            dict: Résumé des métriques par module et type.
+        """
         summary: dict[str, Any] = {}
 
         for metric_key, samples in self.metrics_buffer.items():

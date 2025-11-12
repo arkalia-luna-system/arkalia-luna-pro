@@ -77,7 +77,7 @@ async def metrics_middleware(
 ) -> Response:
     start_time = time.time()
 
-    response = await call_next(request)
+    response: Response = await call_next(request)
 
     # Calculer la durée
     duration = time.time() - start_time

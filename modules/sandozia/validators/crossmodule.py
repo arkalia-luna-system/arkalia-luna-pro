@@ -222,7 +222,7 @@ class CrossModuleValidator:
         """
         logger.info("🔍 Starting data consistency validation...")
 
-        consistency_result = {
+        consistency_result: dict[str, Any] = {
             "status": "completed",
             "consistency_score": 1.0,
             "inconsistencies": [],
@@ -342,6 +342,11 @@ class CrossModuleValidator:
         logger.info("🧹 Validation history cleared")
 
     def load_module_states(self) -> dict[str, dict]:
+        """Charge les états de tous les modules depuis les fichiers TOML.
+
+        Returns:
+            dict: Dictionnaire des états des modules par nom.
+        """
         states: dict[str, Any] = {}
 
         for module_name, state_path in self.state_paths.items():
@@ -362,6 +367,14 @@ class CrossModuleValidator:
         return states
 
     def validate_temporal_coherence(self, states: dict[str, dict]) -> list[ValidationResult]:
+        """Valide la cohérence temporelle entre les modules.
+
+        Args:
+            states: États des modules à valider.
+
+        Returns:
+            list: Liste des résultats de validation temporelle.
+        """
         results: list[Any] = []
         now = datetime.now()
         tolerance = timedelta(minutes=self.config["temporal_tolerance_minutes"])
@@ -437,6 +450,14 @@ class CrossModuleValidator:
         return results
 
     def validate_confidence_coherence(self, states: dict[str, dict]) -> list[ValidationResult]:
+        """Valide la cohérence des scores de confiance entre modules.
+
+        Args:
+            states: États des modules à valider.
+
+        Returns:
+            list: Liste des résultats de validation de confiance.
+        """
         results: list[Any] = []
         now = datetime.now()
 
@@ -488,6 +509,14 @@ class CrossModuleValidator:
         return results
 
     def validate_logical_consistency(self, states: dict[str, dict]) -> list[ValidationResult]:
+        """Valide la cohérence logique entre les décisions des modules.
+
+        Args:
+            states: États des modules à valider.
+
+        Returns:
+            list: Liste des résultats de validation logique.
+        """
         results: list[Any] = []
         now = datetime.now()
 
@@ -541,6 +570,14 @@ class CrossModuleValidator:
         return results
 
     def validate_behavioral_patterns(self, states: dict[str, dict]) -> list[ValidationResult]:
+        """Valide les patterns comportementaux suspects.
+
+        Args:
+            states: États des modules à valider.
+
+        Returns:
+            list: Liste des résultats de validation comportementale.
+        """
         results: list[Any] = []
         now = datetime.now()
 
@@ -577,6 +614,11 @@ class CrossModuleValidator:
         return results
 
     def run_full_validation(self) -> dict[str, Any]:
+        """Exécute une validation complète croisée entre tous les modules.
+
+        Returns:
+            dict: Résumé de la validation avec score de cohérence.
+        """
         logger.info("🔍 Starting cross-module validation...")
 
         # Charger les états
@@ -681,6 +723,15 @@ class CrossModuleValidator:
             return {"status": "error", "error": str(e), "coherence_score": 0.0}
 
     def get_validation_report(self) -> dict[str, Any]:
+        """
+        Génère un rapport complet de validation.
+
+        Returns:
+            dict: Rapport contenant :
+                - total_validations_run: Nombre total de validations exécutées
+                - recent_validations: Dernières validations (max 50)
+                - summary: Résumé des résultats
+        """
         recent_validations = self.validation_history[-50:] if self.validation_history else []
 
         return {

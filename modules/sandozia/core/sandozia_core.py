@@ -507,6 +507,11 @@ class SandoziaCore:
             json.dump(metrics.to_dict(), f, indent=2)
 
     def get_current_status(self) -> dict:
+        """Récupère le statut actuel de SandoziaCore.
+
+        Returns:
+            dict: Statut avec informations sur l'état d'exécution et les modules.
+        """
         return {
             "is_running": self.is_running,
             "snapshots_count": self.snapshots_counter,

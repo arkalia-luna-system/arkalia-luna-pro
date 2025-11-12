@@ -75,12 +75,22 @@ class ModuleQuarantine:
 
     @property
     def is_expired(self) -> bool:
+        """Vérifie si la réaction a expiré.
+
+        Returns:
+            bool: True si expirée, False sinon.
+        """
         if self.until is None:
             return False
         return datetime.now() > self.until
 
     @property
     def can_retry(self) -> bool:
+        """Vérifie si la réaction peut être réessayée.
+
+        Returns:
+            bool: True si le nombre max de tentatives n'est pas atteint.
+        """
         return self.attempts_count < self.max_attempts
 
 
