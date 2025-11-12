@@ -2,7 +2,7 @@
 
 Bienvenue dans le dépôt `arkalia-luna-pro`. Ce guide décrit les bonnes pratiques à respecter pour contribuer efficacement et de manière professionnelle.
 
-## 📊 **ÉTAT ACTUEL DU SYSTÈME (Mise à jour 27/01/2025)**
+## 📊 **ÉTAT ACTUEL DU SYSTÈME (Mise à jour novembre 2025)**
 
 ### ✅ **SUCCÈS MAJEUR - CI/CD 100% Verte !**
 - **671 tests passés** (642 unitaires + 29 intégration) ✅
@@ -103,9 +103,9 @@ pytest tests/security/ -v
 
 ## 📅 Mise à jour
 
-Fichier généré le : `2025-01-27`
+Fichier généré le : `novembre 2025`
 Merci de contribuer à un projet IA propre et durable ✨
 
 © Athalia — Arkalia System
 
-*Dernière mise à jour : 27 Janvier 2025 - 18:50*
+*Dernière mise à jour : novembre 2025 - 18:50*

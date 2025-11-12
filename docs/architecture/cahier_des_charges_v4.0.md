@@ -615,7 +615,7 @@ Ce cahier des charges **n'est pas un objectif à tout faire d'un coup**. Il sert
 
 **Document à relire chaque trimestre** — Version : v4.2-Janvier-2025
 
-**Dernière mise à jour** : Janvier 2025 - Intégration de la méthodologie & discipline de travail Arkalia
+**Dernière mise à jour** : novembre 2025 - Intégration de la méthodologie & discipline de travail Arkalia
 
 Signé :
 

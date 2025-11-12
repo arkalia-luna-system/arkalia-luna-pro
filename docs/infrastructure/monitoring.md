@@ -350,6 +350,6 @@ curl http://localhost:8000/metrics
 
 ---
 
-*Dernière mise à jour : 27 Janvier 2025 - 18:50*
+*Dernière mise à jour : novembre 2025 - 18:50*
 *Version : v2.8.0*
 *Mainteneur : Arkalia-LUNA Team*
