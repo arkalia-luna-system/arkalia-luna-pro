@@ -43,7 +43,7 @@ echo "✅ Directives noqa corrigées"
 # 5. Formatage final avec black (isort désactivé)
 echo ""
 echo "🎨 Formatage final..."
-black . --exclude "/(generated|venv|\.venv|__pycache__)/" || true
+black . --exclude archive/ --exclude "._*" --exclude "/(generated|venv|\.venv|__pycache__)/" || true
 # isort . --profile black --skip-glob "*/generated/*" --skip-glob "*/venv/*" || true
 # DÉSACTIVÉ - isort cause des problèmes de performance
 

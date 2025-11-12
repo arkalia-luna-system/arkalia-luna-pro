@@ -31,14 +31,16 @@ test-e2e:
 # 🎨 Formatage et linting
 format:
 	@echo "🎨 Formatage du code..."
-	black .
-	ruff check . --fix
+	@find . -name "._*.py" -type f -delete || true
+	black . --exclude archive/ --exclude "._*"
+	ruff check . --fix --exclude archive/ --exclude "._*"
 	# isort .  # DÉSACTIVÉ - cause des problèmes
 
 format-check:
 	@echo "🔍 Vérification du formatage..."
-	black --check --diff .
-	ruff check .
+	@find . -name "._*.py" -type f -delete || true
+	black --check --diff . --exclude archive/ --exclude "._*"
+	ruff check . --exclude archive/ --exclude "._*"
 	# isort --check-only --diff .  # DÉSACTIVÉ - cause des problèmes
 
 # 🧹 Nettoyage

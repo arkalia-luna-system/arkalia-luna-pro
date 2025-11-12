@@ -61,14 +61,14 @@ echo "✅ Caches Python supprimés"
 # 4. Formatage avec black
 echo ""
 echo "🎨 Formatage avec black..."
-black . --exclude "/(generated|venv|\.venv|__pycache__)/" || {
+black . --exclude archive/ --exclude "._*" --exclude "/(generated|venv|\.venv|__pycache__)/" || {
     echo "⚠️ Erreur black, continuation..."
 }
 
 # 5. Correction automatique avec ruff
 echo ""
 echo "🔧 Correction automatique avec ruff..."
-ruff check . --fix || {
+ruff check . --fix --exclude archive/ --exclude "._*" || {
     echo "⚠️ Erreur ruff, continuation..."
 }
 
@@ -97,7 +97,7 @@ echo "🔍 Vérification finale..."
 
 # Vérifier s'il reste des erreurs critiques
 echo "📊 Rapport d'erreurs restantes:"
-ruff check . --output-format=concise || {
+ruff check . --output-format=concise --exclude archive/ --exclude "._*" || {
     echo "⚠️ Il reste des erreurs de linting"
 }
 
