@@ -108,10 +108,20 @@ skip_glob = [
 ]
 
 [tool.coverage.run]
-source = ["modules", "scripts", "helloria", "core", "app", "arkalia"]
+source = [
+    "modules",
+    "scripts",
+    "helloria",
+    "core",
+    "app",
+    "arkalia"
+]
 omit = [
     "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
     "*/venv/*",
+    "*/.venv/*",
     "*/generated/*",
     "*/cache/*",
     "*/logs/*",
@@ -121,8 +131,19 @@ omit = [
     "*/temp/*",
     "*/demo_*/*",
     "*/node_modules/*",
-    "*/site/*"
+    "*/site/*",
+    "*/archive/*",
+    "*/build/*",
+    "*/dist/*",
+    "*/.eggs/*",
+    "*/.mypy_cache/*",
+    "*/.pytest_cache/*",
+    "*/.ruff_cache/*",
+    "*/generative_ai/generated/*",
+    "*/security/sandbox/*",
+    "*/security/watchdog/*"
 ]
+branch = true
 
 [tool.coverage.report]
 exclude_lines = [
@@ -137,6 +158,10 @@ exclude_lines = [
     "class .*\\bProtocol\\):",
     "@(abc\\.)?abstractmethod",
 ]
+show_missing = true
+skip_covered = false
+precision = 2
+skip_empty = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
