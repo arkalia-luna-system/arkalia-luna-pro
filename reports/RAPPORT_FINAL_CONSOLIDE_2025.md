@@ -35,8 +35,8 @@
 ---
 
 ## 📊 Récapitulatif des fichiers clés
-- **Démo interactive** : `demo_global.py`
-- **Score cognitif** : `arkalia_score.py`, `arkalia_score.toml`
+- **Démo interactive** : `scripts/demo/demo_global.py`
+- **Score cognitif** : `scripts/tools/arkalia_score.py`, `arkalia_score.toml`
 - **Tests intermodules** : `tests/integration/test_zeroia_reflexia_sync.py`, `tests/integration/test_api_guardian_behavior.py`
 - **Benchmarks** : `scripts/ark-performance-benchmark.py`
 - **README technique** : `README.md`
