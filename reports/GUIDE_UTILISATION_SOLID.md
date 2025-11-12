@@ -390,4 +390,4 @@ Le module `taskia` est maintenant un **exemple parfait de code SOLID** :
 
 ---
 
-*Guide généré le 27 janvier 2025*
+*Guide généré en novembre 2025*

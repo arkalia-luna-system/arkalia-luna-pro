@@ -1,4 +1,4 @@
-# Sandozia — Intelligence croisée Enterprise v2.8.0
+# Sandozia — Intelligence croisée Production-Ready v2.8.0
 
 Sandozia est le module d'intelligence croisée du kernel Arkalia-LUNA. Il fonctionne en mode daemon (pas d'API HTTP publique) et prend en charge :
 
@@ -25,4 +25,4 @@ Sandozia est le module d'intelligence croisée du kernel Arkalia-LUNA. Il foncti
 
 **Pas d'API HTTP publique** : toute interaction passe par arkalia-api (port 8000) ou les fichiers d'état internes.
 
-**Statut actuel** : ✅ Opérationnel avec Enterprise v2.8.0
+**Statut actuel** : ✅ Opérationnel avec Production-Ready v2.8.0
