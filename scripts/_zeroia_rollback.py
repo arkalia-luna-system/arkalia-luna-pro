@@ -34,11 +34,13 @@ def get_failure_log() -> Path:
 
 
 # Pour compatibilité avec les tests qui patch ces variables
-STATE_FILE = get_state_file()
-SNAPSHOT_FILE = get_snapshot_file()
-BACKUP_FILE = get_backup_file()
-LOG_FILE = get_log_file()
-FAILURE_LOG = get_failure_log()
+# Ne pas initialiser ici car Path.cwd() est résolu au moment de l'import
+# Les tests peuvent patcher ces variables, sinon elles seront résolues dynamiquement
+STATE_FILE: Path | None = None
+SNAPSHOT_FILE: Path | None = None
+BACKUP_FILE: Path | None = None
+LOG_FILE: Path | None = None
+FAILURE_LOG: Path | None = None
 
 __all__ = [
     "backup_current_state",
@@ -55,7 +57,7 @@ def log(msg: str, silent: bool = False) -> None:
     """Log message to rollback.log and print if not silent."""
     try:
         # Résoudre le chemin dynamiquement
-        if LOG_FILE.is_absolute():
+        if LOG_FILE is not None and LOG_FILE.is_absolute():
             log_file = LOG_FILE
         else:
             log_file = get_log_file()
@@ -80,9 +82,9 @@ def backup_current_state(silent: bool = False) -> None:
     # Toujours utiliser les fonctions de résolution pour garantir le bon chemin
     # Utiliser Path.cwd() pour résoudre depuis le répertoire de travail actuel
     # Si STATE_FILE est un Path absolu (patché par les tests), l'utiliser tel quel
-    if STATE_FILE.is_absolute():
+    if STATE_FILE is not None and STATE_FILE.is_absolute():
         state_file = STATE_FILE
-        if BACKUP_FILE.is_absolute():
+        if BACKUP_FILE is not None and BACKUP_FILE.is_absolute():
             backup_file = BACKUP_FILE
         else:
             backup_file = get_backup_file()
@@ -114,9 +116,9 @@ def restore_snapshot(silent: bool = False) -> bool:
         bool: True si la restauration a réussi, False sinon.
     """
     # Résoudre les chemins dynamiquement
-    if SNAPSHOT_FILE.is_absolute():
+    if SNAPSHOT_FILE is not None and SNAPSHOT_FILE.is_absolute():
         snapshot_file = SNAPSHOT_FILE
-        state_file = STATE_FILE if STATE_FILE.is_absolute() else get_state_file()
+        state_file = STATE_FILE if (STATE_FILE is not None and STATE_FILE.is_absolute()) else get_state_file()
     else:
         snapshot_file = get_snapshot_file()
         state_file = get_state_file()
@@ -134,10 +136,10 @@ def restore_snapshot(silent: bool = False) -> bool:
 def log_failure() -> None:
     """Enregistre un échec dans le log de failures."""
     # Résoudre le chemin dynamiquement
-    if FAILURE_LOG.is_absolute():
+    if FAILURE_LOG is not None and FAILURE_LOG.is_absolute():
         failure_log = FAILURE_LOG
     else:
-        failure_log = Path.cwd() / FAILURE_LOG
+        failure_log = get_failure_log()
 
     failure_log.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -156,9 +158,9 @@ def rollback_from_backup(silent: bool = False) -> None:
         silent: Mode silencieux (défaut: False).
     """
     # Résoudre les chemins dynamiquement
-    if BACKUP_FILE.is_absolute():
+    if BACKUP_FILE is not None and BACKUP_FILE.is_absolute():
         backup_file = BACKUP_FILE
-        state_file = STATE_FILE if STATE_FILE.is_absolute() else get_state_file()
+        state_file = STATE_FILE if (STATE_FILE is not None and STATE_FILE.is_absolute()) else get_state_file()
     else:
         backup_file = get_backup_file()
         state_file = get_state_file()
