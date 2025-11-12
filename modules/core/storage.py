@@ -4,14 +4,14 @@ Provides unified storage interface for all modules
 """
 
 import json
-import os
-import pickle
 import sqlite3
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
-from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any
+
+import tomli
+import tomli_w
 
 from core.ark_logger import ark_logger
 
@@ -112,6 +112,75 @@ class JSONFileBackend(StorageBackend):
             return [f.stem for f in files]
         except Exception as e:
             ark_logger.error(f"Erreur listage clés: {e}", extra={"arkalia_module": "core"})
+            return []
+
+
+class TOMLFileBackend(StorageBackend):
+    """TOML file-based storage backend"""
+
+    def __init__(self, base_path: str = "state"):
+        self.base_path = Path(base_path)
+        self.base_path.mkdir(exist_ok=True)
+        self._cache = {}
+
+    def _get_file_path(self, key: str) -> Path:
+        """Get file path for key"""
+        return self.base_path / f"{key}.toml"
+
+    def get(self, key: str, default: Any = None) -> Any:
+        """Get value from TOML file"""
+        try:
+            file_path = self._get_file_path(key)
+            if not file_path.exists():
+                return default
+
+            data = read_state_safe(file_path)
+            if data:
+                self._cache[key] = data
+                return data
+            return default
+        except Exception as e:
+            ark_logger.error(f"Erreur lecture TOML {key}: {e}", extra={"arkalia_module": "core"})
+            return default
+
+    def set(self, key: str, value: Any) -> bool:
+        """Set value to TOML file"""
+        try:
+            file_path = self._get_file_path(key)
+            save_toml_safe(value, file_path)
+            self._cache[key] = value
+            return True
+        except Exception as e:
+            ark_logger.error(f"Erreur écriture TOML {key}: {e}", extra={"arkalia_module": "core"})
+            return False
+
+    def delete(self, key: str) -> bool:
+        """Delete TOML file"""
+        try:
+            file_path = self._get_file_path(key)
+            if file_path.exists():
+                file_path.unlink()
+                self._cache.pop(key, None)
+                return True
+            return False
+        except Exception as e:
+            ark_logger.error(
+                f"Erreur suppression TOML {key}: {e}", extra={"arkalia_module": "core"}
+            )
+            return False
+
+    def exists(self, key: str) -> bool:
+        """Check if TOML file exists"""
+        return self._get_file_path(key).exists()
+
+    def list_keys(self, prefix: str = "") -> list[str]:
+        """List all TOML files with prefix"""
+        try:
+            pattern = f"{prefix}*.toml" if prefix else "*.toml"
+            files = list(self.base_path.glob(pattern))
+            return [f.stem for f in files]
+        except Exception as e:
+            ark_logger.error(f"Erreur listage clés TOML: {e}", extra={"arkalia_module": "core"})
             return []
 
 
@@ -225,6 +294,8 @@ class StorageManager:
         self.backend_type = backend
         if backend == "sqlite":
             self.backend = SQLiteBackend(**kwargs)
+        elif backend == "toml":
+            self.backend = TOMLFileBackend(**kwargs)
         else:
             self.backend = JSONFileBackend(**kwargs)
 
@@ -313,8 +384,12 @@ class StorageManager:
     def restore_module(self, module: str, backup_path: str) -> bool:
         """Restore module data from backup"""
         try:
-            with open(backup_path, encoding="utf-8") as f:
-                data = json.load(f)
+            backup_file = Path(backup_path)
+            if backup_file.suffix == ".toml":
+                data = read_state_safe(backup_file)
+            else:
+                with open(backup_file, encoding="utf-8") as f:
+                    data = json.load(f)
 
             for key, value in data.items():
                 self.backend.set(key, value)
@@ -328,6 +403,14 @@ class StorageManager:
                 f"Erreur restauration module {module}: {e}", extra={"arkalia_module": "core"}
             )
             return False
+
+    def get_helloria_state(self) -> dict[str, Any]:
+        """Get Helloria state (compatibilité avec HelloriaStateManager)"""
+        return self.get_state("helloria", "state", {"status": "inactive"})
+
+    def save_helloria_state(self, state: dict[str, Any]) -> bool:
+        """Save Helloria state (compatibilité avec HelloriaStateManager)"""
+        return self.save_state("helloria", state, "state")
 
 
 # Global storage instance

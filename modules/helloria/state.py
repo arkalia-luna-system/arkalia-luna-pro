@@ -2,72 +2,38 @@
 Module state.
 
 Ce module fait partie du système Arkalia Luna Pro.
+Utilise StorageManager pour la gestion d'état (Phase 4 - fusionné).
 """
 
-from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
-import toml
+from modules.core.storage import get_storage
 
-from core.ark_logger import ark_logger
-from modules.utils.helpers import read_state_safe, save_toml_safe
-
-
-class HelloriaStateManager:
-    """
-    Classe HelloriaStateManager.
-
-    Cette classe fait partie du système Arkalia Luna Pro.
-    """
-
-    def __init__(self, path: str = "state/helloria_state.toml") -> None:
-        """
-        Fonction __init__.
-
-        Cette fonction fait partie du système Arkalia Luna Pro.
-        """
-        self.path = path
-        self.state: dict[str, Any] = {}
-
-    def load(self) -> None:
-        """
-        Fonction load.
-
-        Cette fonction fait partie du système Arkalia Luna Pro.
-        """
-        self.state = read_state_safe(Path(self.path))
-
-    def save(self) -> None:
-        """
-        Fonction save.
-
-        Cette fonction fait partie du système Arkalia Luna Pro.
-        """
-        save_toml_safe(self.state, Path(self.path))
+# Compatibilité : HelloriaStateManager fusionné avec StorageManager
+# Utilise StorageManager.get_helloria_state() et save_helloria_state()
 
 
-def load_helloria_state(state: dict[str, Any]) -> dict[str, Any]:
-    """Charge l'état Helloria depuis le fichier TOML.
+def load_helloria_state(state: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Charge l'état Helloria depuis StorageManager.
 
     Args:
         state: État par défaut (non utilisé, conservé pour compatibilité).
 
     Returns:
-        dict: État Helloria chargé depuis le fichier ou état par défaut.
+        dict: État Helloria chargé depuis StorageManager ou état par défaut.
     """
-    loaded = read_state_safe(Path("state/helloria_state.toml"))
-    if not loaded:
-        return {"status": "inactive"}
-    return loaded
+    storage = get_storage()
+    return storage.get_helloria_state()
 
 
 def save_helloria_state(state: dict[str, Any]) -> None:
-    """Sauvegarde l'état Helloria dans le fichier TOML.
+    """Sauvegarde l'état Helloria via StorageManager.
 
     Args:
         state: État à sauvegarder.
     """
-    save_toml_safe(state, Path("state/helloria_state.toml"))
+    storage = get_storage()
+    storage.save_helloria_state(state)
 
 
 IS_HELLORIA = True
