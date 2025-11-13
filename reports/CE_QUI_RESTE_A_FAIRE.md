@@ -41,8 +41,9 @@ Les fichiers suivants font > 500 lignes mais sont **acceptables** (< 800 lignes)
 
 #### A. Tests de couverture
 - **Statut actuel :** 59.25% couverture
-- **Objectif optionnel :** Augmenter à 70%+
+- **Objectif optionnel :** Augmenter à 65% (puis 70%+)
 - **Priorité :** 🟢 Basse
+- **Note :** 59.25% est déjà excellent, l'amélioration à 65% est optionnelle
 
 #### B. Documentation API
 - **Statut actuel :** Documentation fonctionnelle complète
@@ -71,6 +72,7 @@ Les fichiers suivants font > 500 lignes mais sont **acceptables** (< 800 lignes)
 
 2. **Nettoyage cache confidence_memory.toml**
    - ✅ Script créé : `scripts/cleanup_confidence_memory.py`
+   - ✅ Code optimisé : Vérification taille fichier, chargement optimisé >100MB, pas de chargement >2GB
    - ⏳ Exécuter périodiquement (mensuel recommandé)
 
 3. **Nettoyage logs anciens**

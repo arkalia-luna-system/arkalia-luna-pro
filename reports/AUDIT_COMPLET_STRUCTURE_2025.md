@@ -46,9 +46,10 @@
 - `CrossModuleValidator` est défini dans `modules/utils/validators/`
 - Le dossier `modules/sandozia/validators/` semble inutile
 
-**Action recommandée :**
-- Supprimer `modules/sandozia/validators/` si non utilisé
-- Ou créer un wrapper dans `sandozia/validators/__init__.py` qui importe depuis `utils/validators`
+**✅ ACTION RÉALISÉE :**
+- ✅ Wrapper créé dans `sandozia/validators/__init__.py` qui importe depuis `utils/validators`
+- ✅ Tous les imports fonctionnent correctement
+- ✅ Aucune action supplémentaire nécessaire
 
 ---
 
