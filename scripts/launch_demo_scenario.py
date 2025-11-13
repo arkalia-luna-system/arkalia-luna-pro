@@ -143,9 +143,8 @@ class ArkaliaDemoCLI:
             scenario["steps"].append(
                 {"step": "sandozia_analysis", "result": analysis_result, "timestamp": time.time()}
             )
-            print(
-                f"   🔍 Score santé comportementale: {analysis_result.get('behavioral_health_score', 0):.2f}"
-            )
+            health_score = analysis_result.get("behavioral_health_score", 0)
+            print(f"   🔍 Score santé comportementale: {health_score:.2f}")
         except Exception as e:
             print(f"   ⚠️ Erreur analyse Sandozia: {e}")
 
@@ -300,9 +299,9 @@ class ArkaliaDemoCLI:
                 {"step": "behavior_adaptation", "data": adaptation_result, "timestamp": time.time()}
             )
 
-            print(
-                f"   🔄 Seuil adapté: {adaptation_result['old_threshold']} → {adaptation_result['new_threshold']}"
-            )
+            old_threshold = adaptation_result["old_threshold"]
+            new_threshold = adaptation_result["new_threshold"]
+            print(f"   🔄 Seuil adapté: {old_threshold} → {new_threshold}")
         except Exception as e:
             print(f"   ⚠️ Erreur adaptation: {e}")
 

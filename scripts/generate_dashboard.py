@@ -186,7 +186,10 @@ def create_arkalia_overview_dashboard() -> dict[str, Any]:
                         "refId": "A",
                     },
                     {
-                        "expr": "histogram_quantile(0.95, rate(arkalia_assistantia_response_time_seconds_bucket[5m])) * 1000",
+                        "expr": (
+                            "histogram_quantile(0.95, "
+                            "rate(arkalia_assistantia_response_time_seconds_bucket[5m])) * 1000"
+                        ),
                         "interval": "",
                         "legendFormat": "Temps Réponse AssistantIA (95e percentile)",
                         "refId": "B",

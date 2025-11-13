@@ -217,7 +217,10 @@ class JSONDiagnostic:
 """
 
         if self.analysis["summary"]["cache_files"] > 1000:
-            report += "- **Nettoyer les caches** : Supprimer `.pytest_cache/`, `.mypy_cache/`, `.ruff_cache/`\n"
+            report += (
+                "- **Nettoyer les caches** : "
+                "Supprimer `.pytest_cache/`, `.mypy_cache/`, `.ruff_cache/`\n"
+            )
 
         if self.analysis["summary"]["large_files"] > 10:
             report += (
@@ -225,7 +228,10 @@ class JSONDiagnostic:
             )
 
         if self.analysis["summary"]["total_files"] > 10000:
-            report += "- **Optimiser Git** : Ajouter `*.json` au `.gitignore` sauf les configs importantes\n"
+            report += (
+                "- **Optimiser Git** : "
+                "Ajouter `*.json` au `.gitignore` sauf les configs importantes\n"
+            )
 
         report += """### 🔄 Actions à moyen terme :
 - Mettre en place une rotation automatique des rapports

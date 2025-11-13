@@ -407,15 +407,15 @@ class ArkaliaVisualizer:
             <title>Arkalia-LUNA Pro - Rapport de Synthèse</title>
             <style>
                 body {{ font-family: Arial, sans-serif; margin: 40px; }}
-                .header {{ background: linear-gradient(135deg, {self.colors["primary"]}, 
+                .header {{ background: linear-gradient(135deg, {self.colors["primary"]},
                           {self.colors["secondary"]});
                           color: white; padding: 20px; border-radius: 10px; }}
-                .stats {{ display: grid; 
+                .stats {{ display: grid;
                          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                          gap: 20px; margin: 20px 0; }}
                 .stat-card {{ background: #f8f9fa; padding: 20px; border-radius: 8px;
                              border-left: 4px solid {self.colors["primary"]}; }}
-                .stat-value {{ font-size: 24px; font-weight: bold; 
+                .stat-value {{ font-size: 24px; font-weight: bold;
                                color: {self.colors["primary"]}; }}
                 .stat-label {{ color: #666; margin-top: 5px; }}
             </style>

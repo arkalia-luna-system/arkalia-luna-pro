@@ -258,9 +258,9 @@ class ArkaliaGlobalDemo:
             {"step": "verification", "improved_metrics": improved_metrics, "timestamp": time.time()}
         )
 
-        print(
-            f"   📈 Amélioration: {performance_data['response_time']}ms → {improved_metrics['response_time']}ms"
-        )
+        old_time = performance_data["response_time"]
+        new_time = improved_metrics["response_time"]
+        print(f"   📈 Amélioration: {old_time}ms → {new_time}ms")
 
         scenario["end_time"] = time.time()
         scenario["duration"] = scenario["end_time"] - scenario["start_time"]

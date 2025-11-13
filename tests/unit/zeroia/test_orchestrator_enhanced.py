@@ -2,6 +2,7 @@
 # 🧪 tests/unit/zeroia/test_orchestrator_enhanced.py
 """Tests unitaires pour zeroia/orchestrator_enhanced.py"""
 
+import asyncio
 import time
 from unittest.mock import Mock, patch
 
@@ -170,7 +171,7 @@ class TestZeroIAOrchestrator:
             orchestrator.loop_count = 5
 
             with patch("time.sleep") as mock_sleep:
-                orchestrator._handle_system_reboot()
+                asyncio.run(orchestrator._handle_system_reboot())
 
         mock_sleep.assert_called_once_with(mock_circuit_breaker.timeout)
         mock_event_store.add_event.assert_called_once()
