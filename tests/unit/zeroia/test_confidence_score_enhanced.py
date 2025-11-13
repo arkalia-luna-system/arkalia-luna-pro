@@ -69,10 +69,13 @@ class TestConfidenceScoreEnhanced:
             "last_update": datetime.now().isoformat(),
         }
 
-        with patch("builtins.open", mock_open(read_data=toml.dumps(mock_memory))):
-            with patch("pathlib.Path.exists", return_value=True):
-                memory = self.scorer._load_memory()
-                assert memory["decision_patterns"] == {"test": "monitor"}
+        # Créer le fichier réellement pour le test
+        self.state_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(self.state_file, "w") as f:
+            toml.dump(mock_memory, f)
+
+        memory = self.scorer._load_memory()
+        assert memory["decision_patterns"] == {"test": "monitor"}
 
     def test_save_memory_success(self) -> None:
         """Test de la sauvegarde réussie de la mémoire"""
