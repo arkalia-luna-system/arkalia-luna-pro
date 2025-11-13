@@ -92,12 +92,7 @@
 
 | Priorité | Tâche | Temps | Statut |
 |-----------|-------|-------|--------|
-| 🔴 CRITIQUE | Badge Codecov | 15 min | ✅ **FAIT** |
-| 🔴 CRITIQUE | Doc 5 containers | 1h | ✅ **FAIT** |
 | 🟠 HAUTE | Screenshots dashboard | 2h | ❌ **À FAIRE** (intervention manuelle) |
-| 🟠 HAUTE | Cas d'usage métier | 2-3h | ✅ **FAIT** |
-| 🟠 HAUTE | Vue d'ensemble README | 2h | ✅ **FAIT** |
-| 🟡 MOYENNE | Doc containers dédiée | 1h | ✅ **FAIT** |
 
 **Temps total restant** : **2h** (screenshots uniquement)
 
@@ -141,10 +136,7 @@
 
 - **Screenshots** : Nécessite que Docker et Grafana soient démarrés pour capturer
 - **Tout le reste est terminé** ✅
-- **Qualité code** : Black, Ruff, Bandit, Pre-commit tous OK ✅
-- **Documentation** : Complète et à jour ✅
 
 ---
 
 **Dernière mise à jour** : novembre 2025
-**Basé sur** : AUDIT_VERIFICATION_PLAN_ACTION_V2.md
