@@ -16,7 +16,7 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, NoReturn
+from typing import Any
 
 from core.ark_logger import ark_logger
 
@@ -80,7 +80,7 @@ class ArkaliaDemoCLI:
         """Scénario 1: Incident de sécurité"""
         self.print_header("SCÉNARIO 1: INCIDENT DE SÉCURITÉ")
 
-        scenario = {
+        scenario: dict[str, Any] = {
             "name": "security_incident",
             "steps": [],
             "start_time": time.time(),
@@ -89,30 +89,35 @@ class ArkaliaDemoCLI:
 
         # 1. Simulation d'une tentative d'intrusion
         self.print_step("1. Simulation tentative d'intrusion SQL Injection")
-        suspicious_request = {
+        suspicious_request: dict[str, Any] = {
             "client_ip": "192.168.1.100",
             "endpoint": "/admin/delete",
             "method": "POST",
             "payload": "'; DROP TABLE users; --",
             "timestamp": time.time(),
         }
-        scenario["steps"].append(
+        steps_list: list[dict[str, Any]] = scenario.get("steps", [])
+        steps_list.append(
             {"step": "simulate_attack", "data": suspicious_request, "timestamp": time.time()}
         )
+        scenario["steps"] = steps_list
 
         # 2. Scan de sécurité
         self.print_step("2. Scan de sécurité")
         try:
             # Simulation d'un scan de sécurité
-            scan_result = {
-                "threat_level": "high" if "DROP TABLE" in suspicious_request["payload"] else "low",
+            payload_str: str = str(suspicious_request.get("payload", ""))
+            scan_result: dict[str, Any] = {
+                "threat_level": "high" if "DROP TABLE" in payload_str else "low",
                 "blocked": True,
                 "reason": "SQL injection detected",
                 "timestamp": time.time(),
             }
-            scenario["steps"].append(
+            steps_list = scenario.get("steps", [])
+            steps_list.append(
                 {"step": "security_scan", "result": scan_result, "timestamp": time.time()}
             )
+            scenario["steps"] = steps_list
             ark_logger.warning(
                 f"   🚨 Niveau de menace: {scan_result.get('threat_level', 'unknown')}",
                 extra={"arkalia_module": "scripts"},
@@ -128,14 +133,16 @@ class ArkaliaDemoCLI:
         self.print_step("3. Décision ZeroIA")
         try:
             # Simulation d'une décision
-            decision_result = {
+            decision_result: dict[str, Any] = {
                 "decision": "block_ip",
                 "confidence": 0.95,
                 "reason": "security_threat_detected",
             }
-            scenario["steps"].append(
+            steps_list = scenario.get("steps", [])
+            steps_list.append(
                 {"step": "zeroia_decision", "result": decision_result, "timestamp": time.time()}
             )
+            scenario["steps"] = steps_list
             ark_logger.info(
                 f"   🧠 Décision: {decision_result.get('decision', 'unknown')}",
                 extra={"arkalia_module": "scripts"},
@@ -150,10 +157,12 @@ class ArkaliaDemoCLI:
         try:
             # Utiliser le behavior analyzer
             self.behavior_analyzer.add_metric_sample("security", "threat_level", 0.9)
-            analysis_result = self.behavior_analyzer.analyze_behavior()
-            scenario["steps"].append(
+            analysis_result: dict[str, Any] = self.behavior_analyzer.analyze_behavior()
+            steps_list = scenario.get("steps", [])
+            steps_list.append(
                 {"step": "sandozia_analysis", "result": analysis_result, "timestamp": time.time()}
             )
+            scenario["steps"] = steps_list
             health_score = analysis_result.get("behavioral_health_score", 0)
             ark_logger.info(
                 f"   🔍 Score santé comportementale: {health_score:.2f}",
@@ -164,17 +173,21 @@ class ArkaliaDemoCLI:
                 f"   ⚠️ Erreur analyse Sandozia: {e}", extra={"arkalia_module": "scripts"}
             )
 
-        scenario["end_time"] = time.time()
-        scenario["duration"] = scenario["end_time"] - scenario["start_time"]
+        start_time = float(scenario.get("start_time", time.time()))
+        end_time = time.time()
+        scenario["end_time"] = end_time
+        scenario["duration"] = end_time - start_time
 
-        self.results["scenarios"].append(scenario)
+        scenarios_list = self.results.get("scenarios", [])
+        scenarios_list.append(scenario)
+        self.results["scenarios"] = scenarios_list
         return scenario
 
     def scenario_performance_optimization(self) -> dict[str, Any]:
         """Scénario 2: Optimisation de performance"""
         self.print_header("SCÉNARIO 2: OPTIMISATION DE PERFORMANCE")
 
-        scenario = {
+        scenario: dict[str, Any] = {
             "name": "performance_optimization",
             "steps": [],
             "start_time": time.time(),
@@ -183,11 +196,14 @@ class ArkaliaDemoCLI:
 
         # 1. Collecte métriques système
         self.print_step("1. Collecte métriques système")
+        metrics_data: dict[str, Any] = {}
         try:
-            system_metrics = launch_reflexia_check()
-            scenario["steps"].append(
+            system_metrics: dict[str, Any] = launch_reflexia_check()
+            steps_list = scenario.get("steps", [])
+            steps_list.append(
                 {"step": "collect_metrics", "data": system_metrics, "timestamp": time.time()}
             )
+            scenario["steps"] = steps_list
 
             metrics_data = system_metrics.get("metrics", {})
             ark_logger.info(
@@ -208,7 +224,7 @@ class ArkaliaDemoCLI:
         # 2. Analyse performance
         self.print_step("2. Analyse performance")
         try:
-            performance_analysis = {
+            performance_analysis: dict[str, Any] = {
                 "cpu_usage": metrics_data.get("cpu", 0),
                 "ram_usage": metrics_data.get("ram", 0),
                 "latency": metrics_data.get("latency", 0),
@@ -216,7 +232,7 @@ class ArkaliaDemoCLI:
             }
 
             # Détection de problèmes
-            issues = []
+            issues: list[str] = []
             if performance_analysis["cpu_usage"] > 80:
                 issues.append("CPU élevé")
             if performance_analysis["ram_usage"] > 85:
@@ -224,7 +240,8 @@ class ArkaliaDemoCLI:
             if performance_analysis["latency"] > 100:
                 issues.append("Latence élevée")
 
-            scenario["steps"].append(
+            steps_list = scenario.get("steps", [])
+            steps_list.append(
                 {
                     "step": "performance_analysis",
                     "data": performance_analysis,
@@ -232,6 +249,7 @@ class ArkaliaDemoCLI:
                     "timestamp": time.time(),
                 }
             )
+            scenario["steps"] = steps_list
 
             if issues:
                 ark_logger.warning(
@@ -248,14 +266,18 @@ class ArkaliaDemoCLI:
         # 3. Décision d'optimisation
         self.print_step("3. Décision d'optimisation")
         try:
-            optimization_decision = self.zeroia.make_decision("performance_optimization")
-            scenario["steps"].append(
+            optimization_decision: dict[str, Any] = self.zeroia.make_decision(
+                "performance_optimization"
+            )
+            steps_list = scenario.get("steps", [])
+            steps_list.append(
                 {
                     "step": "optimization_decision",
                     "result": optimization_decision,
                     "timestamp": time.time(),
                 }
             )
+            scenario["steps"] = steps_list
             ark_logger.info(
                 f"   🧠 Action recommandée: {optimization_decision.get('action', 'monitor')}",
                 extra={"arkalia_module": "scripts"},
@@ -265,17 +287,21 @@ class ArkaliaDemoCLI:
                 f"   ⚠️ Erreur décision optimisation: {e}", extra={"arkalia_module": "scripts"}
             )
 
-        scenario["end_time"] = time.time()
-        scenario["duration"] = scenario["end_time"] - scenario["start_time"]
+        start_time = float(scenario.get("start_time", time.time()))
+        end_time = time.time()
+        scenario["end_time"] = end_time
+        scenario["duration"] = end_time - start_time
 
-        self.results["scenarios"].append(scenario)
+        scenarios_list = self.results.get("scenarios", [])
+        scenarios_list.append(scenario)
+        self.results["scenarios"] = scenarios_list
         return scenario
 
     def scenario_adaptive_learning(self) -> dict[str, Any]:
         """Scénario 3: Apprentissage adaptatif"""
         self.print_header("SCÉNARIO 3: APPRENTISSAGE ADAPTATIF")
 
-        scenario = {
+        scenario: dict[str, Any] = {
             "name": "adaptive_learning",
             "steps": [],
             "start_time": time.time(),
@@ -286,14 +312,16 @@ class ArkaliaDemoCLI:
         self.print_step("1. Initialisation Cognitive Reactor")
         try:
             # Simulation d'un état cognitif
-            cognitive_status = {
+            cognitive_status: dict[str, Any] = {
                 "status": "active",
                 "reactions_enabled": True,
                 "confidence_score": 0.85,
             }
-            scenario["steps"].append(
+            steps_list = scenario.get("steps", [])
+            steps_list.append(
                 {"step": "cognitive_init", "data": cognitive_status, "timestamp": time.time()}
             )
+            scenario["steps"] = steps_list
             ark_logger.info(
                 f"   🧠 État cognitif: {cognitive_status.get('status', 'unknown')}",
                 extra={"arkalia_module": "scripts"},
@@ -306,7 +334,7 @@ class ArkaliaDemoCLI:
         # 2. Simulation d'apprentissage
         self.print_step("2. Simulation d'apprentissage")
         try:
-            learning_data = {
+            learning_data: dict[str, Any] = {
                 "pattern_type": "user_behavior",
                 "data_points": 100,
                 "accuracy": 0.85,
@@ -314,11 +342,14 @@ class ArkaliaDemoCLI:
             }
 
             # Simulation d'amélioration
-            learning_data["accuracy"] += 0.02  # Amélioration simulée
+            current_accuracy: float = float(learning_data.get("accuracy", 0.0))
+            learning_data["accuracy"] = current_accuracy + 0.02  # Amélioration simulée
 
-            scenario["steps"].append(
+            steps_list = scenario.get("steps", [])
+            steps_list.append(
                 {"step": "learning_simulation", "data": learning_data, "timestamp": time.time()}
             )
+            scenario["steps"] = steps_list
 
             ark_logger.info(
                 f"   📈 Précision: {learning_data['accuracy']:.2f}",
@@ -336,16 +367,18 @@ class ArkaliaDemoCLI:
         # 3. Adaptation du comportement
         self.print_step("3. Adaptation du comportement")
         try:
-            adaptation_result = {
+            adaptation_result: dict[str, Any] = {
                 "old_threshold": 0.8,
                 "new_threshold": 0.82,
                 "adaptation_reason": "amélioration_précision",
                 "timestamp": time.time(),
             }
 
-            scenario["steps"].append(
+            steps_list = scenario.get("steps", [])
+            steps_list.append(
                 {"step": "behavior_adaptation", "data": adaptation_result, "timestamp": time.time()}
             )
+            scenario["steps"] = steps_list
 
             old_threshold = adaptation_result["old_threshold"]
             new_threshold = adaptation_result["new_threshold"]
@@ -356,39 +389,48 @@ class ArkaliaDemoCLI:
         except Exception as e:
             ark_logger.error(f"   ⚠️ Erreur adaptation: {e}", extra={"arkalia_module": "scripts"})
 
-        scenario["end_time"] = time.time()
-        scenario["duration"] = scenario["end_time"] - scenario["start_time"]
+        start_time = float(scenario.get("start_time", time.time()))
+        end_time = time.time()
+        scenario["end_time"] = end_time
+        scenario["duration"] = end_time - start_time
 
-        self.results["scenarios"].append(scenario)
+        scenarios_list = self.results.get("scenarios", [])
+        scenarios_list.append(scenario)
+        self.results["scenarios"] = scenarios_list
         return scenario
 
-    def collect_final_metrics(self):
+    def collect_final_metrics(self) -> None:
         """Collecte les métriques finales"""
         self.print_header("MÉTRIQUES FINALES")
 
         try:
             # Métriques système
-            system_metrics = launch_reflexia_check()
-            self.results["metrics"]["system"] = system_metrics.get("metrics", {})
+            system_metrics: dict[str, Any] = launch_reflexia_check()
+            metrics_dict: dict[str, Any] = self.results.get("metrics", {})
+            metrics_dict["system"] = system_metrics.get("metrics", {})
+            self.results["metrics"] = metrics_dict
 
             # Métriques Prometheus
             metrics.generate_metrics()
-            self.results["metrics"]["prometheus"] = "collected"
+            metrics_dict["prometheus"] = "collected"
+            self.results["metrics"] = metrics_dict
 
             # Statistiques des scénarios
-            total_duration = sum(s["duration"] for s in self.results["scenarios"])
-            total_steps = sum(len(s["steps"]) for s in self.results["scenarios"])
+            scenarios_list: list[dict[str, Any]] = self.results.get("scenarios", [])
+            total_duration: float = sum(
+                float(s.get("duration", 0.0)) for s in scenarios_list
+            )
+            total_steps: int = sum(len(s.get("steps", [])) for s in scenarios_list)
 
-            self.results["metrics"]["demo_stats"] = {
-                "total_scenarios": len(self.results["scenarios"]),
+            metrics_dict["demo_stats"] = {
+                "total_scenarios": len(scenarios_list),
                 "total_duration": total_duration,
                 "total_steps": total_steps,
                 "avg_duration": (
-                    total_duration / len(self.results["scenarios"])
-                    if self.results["scenarios"]
-                    else 0
+                    total_duration / len(scenarios_list) if scenarios_list else 0.0
                 ),
             }
+            self.results["metrics"] = metrics_dict
 
             ark_logger.info(
                 f"📊 Scénarios exécutés: {len(self.results['scenarios'])}",
@@ -406,7 +448,7 @@ class ArkaliaDemoCLI:
                 f"⚠️ Erreur collecte métriques finales: {e}", extra={"arkalia_module": "scripts"}
             )
 
-    def save_results(self, filename: str = "demo_cli_results.json"):
+    def save_results(self, filename: str = "demo_cli_results.json") -> None:
         """Sauvegarde les résultats"""
         try:
             with open(filename, "w") as f:
@@ -417,9 +459,9 @@ class ArkaliaDemoCLI:
         except Exception as e:
             ark_logger.error(f"⚠️ Erreur sauvegarde: {e}", extra={"arkalia_module": "scripts"})
 
-    def run_scenario(self, scenario_name: str):
+    def run_scenario(self, scenario_name: str) -> None:
         """Exécute un scénario spécifique"""
-        scenarios = {
+        scenarios: dict[str, Any] = {
             "security": self.scenario_security_incident,
             "performance": self.scenario_performance_optimization,
             "learning": self.scenario_adaptive_learning,
@@ -436,7 +478,7 @@ class ArkaliaDemoCLI:
                 extra={"arkalia_module": "scripts"},
             )
 
-    def run_all_scenarios(self):
+    def run_all_scenarios(self) -> None:
         """Exécute tous les scénarios"""
         ark_logger.info("🚀 EXÉCUTION DE TOUS LES SCÉNARIOS", extra={"arkalia_module": "scripts"})
 
@@ -448,7 +490,7 @@ class ArkaliaDemoCLI:
         self.save_results()
 
 
-def main():
+def main() -> None:
     """Point d'entrée principal"""
     parser = argparse.ArgumentParser(description="Arkalia-LUNA Demo CLI")
     parser.add_argument(
