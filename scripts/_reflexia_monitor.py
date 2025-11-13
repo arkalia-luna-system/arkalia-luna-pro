@@ -105,8 +105,9 @@ def export_to_grafana(data: dict) -> None:
     if response.status_code == 200:
         ark_logger.info("✅ Exportation vers Grafana réussie.", extra={"arkalia_module": "scripts"})
     else:
+        error_content = response.content.decode("utf-8", errors="replace")
         ark_logger.info(
-            f"❌ Erreur lors de l'exportation vers Grafana : {response.content.decode('utf-8', errors='replace')}",
+            f"❌ Erreur lors de l'exportation vers Grafana : {error_content}",
             extra={"arkalia_module": "scripts"},
         )
 
