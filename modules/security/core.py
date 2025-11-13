@@ -9,7 +9,7 @@
 
 import asyncio
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, TypeGuard
 
 from fastapi import FastAPI
 
@@ -48,6 +48,11 @@ class UsecurityCore:
         """Initialisation du core"""
         ark_logger.info("🧠 UsecurityCore initialisé", extra={"arkalia_module": "security"})
 
+    @staticmethod
+    def _is_dict(data: Any) -> TypeGuard[dict[str, Any]]:
+        """Type guard pour vérifier si data est un dict"""
+        return isinstance(data, dict)
+
     async def process(self, data: Any) -> dict[str, Any]:
         """
         Traitement principal avec validation et sanitization de sécurité
@@ -62,7 +67,7 @@ class UsecurityCore:
             ark_logger.info(f"🧠 Traitement sécurité: {data}", extra={"arkalia_module": "security"})
 
             # Validation des données d'entrée
-            if not isinstance(data, dict):
+            if not self._is_dict(data):
                 return {
                     "status": "error",
                     "error": "Invalid data type: expected dict",
