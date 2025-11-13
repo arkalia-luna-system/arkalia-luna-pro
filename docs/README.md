@@ -40,9 +40,8 @@
 </header>
 
 <div style="display: flex; justify-content: flex-end; align-items: center; margin: 1rem 0 2rem 0;">
-    Dashboard React (Port 5173)
-  </a>
-    Documentation (Port 8081)
+  <a href="http://localhost:8000/docs" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, rgba(126, 203, 255, 0.2) 0%, rgba(30, 58, 138, 0.3) 100%); color: #7ecbff; font-family: 'Orbitron', monospace; font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border-radius: 9999px; border: 1px solid rgba(126, 203, 255, 0.3); transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    Documentation API
   </a>
 </div>
 

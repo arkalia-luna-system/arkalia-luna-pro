@@ -416,7 +416,24 @@ async def log_chat_interaction(
 
 @router.get("/health", response_model=HealthResponse)
 async def health() -> HealthResponse:
-    """Endpoint de santé avec informations détaillées"""
+    """
+    Endpoint de santé avec informations détaillées.
+
+    Vérifie l'état du service AssistantIA et des dépendances (Ollama, modules Arkalia).
+
+    Returns:
+        HealthResponse: État de santé du service avec détails.
+
+    Examples:
+        >>> GET /api/v1/health
+        >>> {
+        ...     "status": "healthy",
+        ...     "ollama_available": true,
+        ...     "arkalia_modules": {"ZeroIA": "active"},
+        ...     "uptime": "2:30:15",
+        ...     "version": "2.8.0"
+        ... }
+    """
     try:
         # Vérifier Ollama
         ollama_available = check_ollama_health()
@@ -450,7 +467,20 @@ async def health() -> HealthResponse:
 
 @router.get("/metrics", response_model=None)
 async def get_metrics() -> PlainTextResponse | JSONResponse:
-    """📊 Endpoint métriques Prometheus pour AssistantIA"""
+    """
+    Endpoint métriques Prometheus pour AssistantIA.
+
+    Retourne les métriques Prometheus au format texte pour le scraping.
+
+    Returns:
+        PlainTextResponse: Métriques Prometheus au format texte.
+        JSONResponse: Erreur en JSON si problème.
+
+    Examples:
+        >>> GET /api/v1/metrics
+        >>> # assistantia_prompts_total{status="success"} 42
+        >>> # assistantia_response_time_seconds_bucket{le="0.5"} 35
+    """
     try:
         prometheus_data = generate_latest()
         return PlainTextResponse(content=prometheus_data, media_type=CONTENT_TYPE_LATEST)
@@ -464,7 +494,24 @@ async def get_metrics() -> PlainTextResponse | JSONResponse:
 
 @router.get("/models", response_model=None)
 async def get_available_models() -> dict | JSONResponse:
-    """Récupère la liste des modèles disponibles"""
+    """
+    Récupère la liste des modèles disponibles.
+
+    Interroge Ollama pour obtenir la liste des modèles IA disponibles.
+
+    Returns:
+        dict: Dictionnaire contenant la liste des modèles.
+        JSONResponse: Erreur en JSON si problème.
+
+    Examples:
+        >>> GET /api/v1/models
+        >>> {
+        ...     "models": [
+        ...         {"name": "mistral:latest", "size": "4.1GB"},
+        ...         {"name": "llama2:latest", "size": "3.8GB"}
+        ...     ]
+        ... }
+    """
     try:
         from .utils.ollama_connector import get_available_models
 
@@ -507,7 +554,25 @@ app.include_router(router, prefix="/api/v1", tags=["assistantia"])
 # Routes racine
 @app.get("/")
 async def root() -> dict:
-    """Endpoint racine de l'application AssistantIA"""
+    """
+    Endpoint racine de l'application AssistantIA.
+
+    Retourne les informations de base sur le service.
+
+    Returns:
+        dict: Informations du service (nom, version, endpoints).
+
+    Examples:
+        >>> GET /
+        >>> {
+        ...     "service": "AssistantIA",
+        ...     "version": "2.8.0",
+        ...     "status": "active",
+        ...     "docs": "/docs",
+        ...     "health": "/health",
+        ...     "metrics": "/metrics"
+        ... }
+    """
     return {
         "service": "AssistantIA",
         "version": "2.8.0",

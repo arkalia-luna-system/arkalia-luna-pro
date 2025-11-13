@@ -185,9 +185,9 @@ def fix_file(file_path: Path) -> bool:
                     line = re.sub(
                         r"\bnotion\b",
                         "documentation",
-                    line,
-                    flags=re.IGNORECASE,
-                )
+                        line,
+                        flags=re.IGNORECASE,
+                    )
 
             # Pour Slack, remplacer par "notifications" ou "alertes"
             if re.search(r"\bslack\b", line, re.IGNORECASE):
@@ -203,9 +203,9 @@ def fix_file(file_path: Path) -> bool:
                     line = re.sub(
                         r"\bslack\b",
                         "notifications",
-                    line,
-                    flags=re.IGNORECASE,
-                )
+                        line,
+                        flags=re.IGNORECASE,
+                    )
 
             # Pour les autres services obsolètes (Trello, Jira, etc.), supprimer les lignes simples
             for service in ["trello", "jira", "confluence", "atlassian"]:

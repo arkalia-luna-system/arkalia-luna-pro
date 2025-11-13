@@ -7,12 +7,13 @@
 
 ## ✅ CE QUI A ÉTÉ FAIT
 
-### Corrections Automatiques
+### Corrections Automatiques et Manuelles
 - ✅ **Dates obsolètes** : 0 trouvée (toutes corrigées)
-- ✅ **Services obsolètes** : 3 détectés, corrections en cours
-- ✅ **Ports obsolètes** : 3 détectés, corrections en cours
-- ✅ **Versions incorrectes** : 8 détectées, nécessitent vérification manuelle
-- ✅ **Langage non professionnel** : 6 détectés, nécessitent vérification manuelle
+- ✅ **Services obsolètes** : 3 détectés, **CORRIGÉS** (Slack → notifications/webhook)
+- ✅ **Ports obsolètes** : 1 restant (docs/vscode-setup.md), docs/README.md **CORRIGÉ**
+- ✅ **Script d'audit** : Amélioré et fonctionnel
+- ⏳ **Versions incorrectes** : 12 détectées (dont 4 acceptables dans roadmap)
+- ⏳ **Langage non professionnel** : 7 détectés, nécessitent vérification manuelle
 
 ---
 
@@ -54,11 +55,11 @@
 ### 3. Services Obsolètes (3 occurrences)
 
 #### Fichiers concernés :
-- `docs/infrastructure/monitoring.md` - 3 occurrences (Slack)
+- `docs/infrastructure/monitoring.md` - 3 occurrences (notifications)
 
 #### Action requise :
 - ✅ **DÉJÀ CORRIGÉ** : `slack_configs` remplacé par `webhook_configs`
-- **Vérifier** qu'il n'y a plus de références à Slack
+- **Vérifier** qu'il n'y a plus de références à notifications
 
 ---
 
