@@ -227,8 +227,13 @@ def reason_loop_enhanced_with_recovery(
         raise CognitiveOverloadError(f"Erreur critique dans reason_loop: {e}") from e
 
 
-def main_loop_enhanced() -> None:
-    """Boucle principale avec gestion d'erreurs et récupération"""
+def main_loop_enhanced(max_iterations: int | None = None) -> None:
+    """
+    Boucle principale avec gestion d'erreurs et récupération
+
+    Args:
+        max_iterations: Nombre maximum d'itérations (None = infini, déconseillé)
+    """
     global circuit_breaker, event_store
 
     from .initialization import circuit_breaker, event_store
@@ -238,55 +243,76 @@ def main_loop_enhanced() -> None:
         circuit_breaker = cb
         event_store = es
 
-    try:
-        decision, score = reason_loop_enhanced_with_recovery()
+    iteration_count = 0
 
-        # Event sourcing de succès
-        if event_store is not None:
-            event_store.add_event(
-                EventType.CIRCUIT_SUCCESS,
-                {"decision": decision, "confidence": score, "loop_iteration": "successful"},
+    # Boucle principale avec limite pour éviter boucles infinies
+    while True:
+        try:
+            # Vérifier limite d'itérations
+            if max_iterations is not None and iteration_count >= max_iterations:
+                ark_logger.info(
+                    f"⏹️ Limite d'itérations atteinte ({max_iterations})",
+                    extra={"arkalia_module": "zeroia"},
+                )
+                break
+
+            iteration_count += 1
+            decision, score = reason_loop_enhanced_with_recovery()
+
+            # Event sourcing de succès
+            if event_store is not None:
+                event_store.add_event(
+                    EventType.CIRCUIT_SUCCESS,
+                    {"decision": decision, "confidence": score, "loop_iteration": iteration_count},
+                )
+
+            # Ajouter un délai pour éviter les boucles trop rapides
+            time.sleep(2)
+
+        except SystemRebootRequired as e:
+            ark_logger.info(
+                f"[ZeroIA Enhanced] 🔄 REDÉMARRAGE REQUIS: {e}", extra={"arkalia_module": "zeroia"}
             )
 
-        # Ajouter un délai pour éviter les boucles trop rapides
-        time.sleep(2)
+            # Event sourcing critique
+            if event_store is not None:
+                event_store.add_event(
+                    EventType.SYSTEM_ERROR,
+                    {
+                        "error_type": "reboot_required",
+                        "error": str(e),
+                        "severity": "critical",
+                        "action_required": "system_restart",
+                    },
+                )
 
-    except SystemRebootRequired as e:
-        ark_logger.info(
-            f"[ZeroIA Enhanced] 🔄 REDÉMARRAGE REQUIS: {e}", extra={"arkalia_module": "zeroia"}
-        )
+            # Attendre avant retry
+            time.sleep(60)
+            # Continuer la boucle après recovery
 
-        # Event sourcing critique
-        if event_store is not None:
-            event_store.add_event(
-                EventType.SYSTEM_ERROR,
-                {
-                    "error_type": "reboot_required",
-                    "error": str(e),
-                    "severity": "critical",
-                    "action_required": "system_restart",
-                },
+        except (CognitiveOverloadError, DecisionIntegrityError) as e:
+            ark_logger.info(f"[ZeroIA Enhanced] ⚠️ SURCHARGE: {e}")
+
+            # Graceful degradation
+            time.sleep(30)
+            # Continuer la boucle après recovery
+
+        except KeyboardInterrupt:
+            ark_logger.info("⏹️ Arrêt demandé (Ctrl+C)", extra={"arkalia_module": "zeroia"})
+            break
+
+        except Exception as e:
+            ark_logger.error(
+                f"❌ Erreur inattendue dans main_loop: {e}", extra={"arkalia_module": "zeroia"}
             )
-
-        # Attendre avant retry
-        time.sleep(60)
-
-    except (CognitiveOverloadError, DecisionIntegrityError) as e:
-        ark_logger.info(f"[ZeroIA Enhanced] ⚠️ SURCHARGE: {e}")
-
-        # Graceful degradation
-        time.sleep(30)
-
-    except Exception as e:
-        ark_logger.error(
-            f"❌ Erreur inattendue dans main_loop: {e}", extra={"arkalia_module": "zeroia"}
-        )
-        time.sleep(10)
+            time.sleep(10)
+            # Continuer la boucle après erreur
 
 
 if __name__ == "__main__":
     try:
-        main_loop_enhanced()
+        # Limite par défaut pour éviter boucles infinies en mode test
+        main_loop_enhanced(max_iterations=1000)
     except KeyboardInterrupt:
         ark_logger.info("\n🛑 Arrêt manuel détecté", extra={"module": "zeroia"})
 
