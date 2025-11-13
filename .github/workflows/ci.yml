@@ -350,11 +350,15 @@ jobs:
 
       - name: 📋 Upload final report
         uses: actions/upload-artifact@v4
+        continue-on-error: true
+        timeout-minutes: 5
         with:
           name: ci-report
           path: report.md
           retention-days: 90
           if-no-files-found: ignore
+        env:
+          ACTIONS_STEP_DEBUG: false
 
       - name: 🚨 Notify on failure
         if: failure()

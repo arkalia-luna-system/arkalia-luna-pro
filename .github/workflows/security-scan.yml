@@ -86,12 +86,17 @@ jobs:
 
       - name: 📊 Upload Security Reports
         uses: actions/upload-artifact@v4
+        continue-on-error: true
+        timeout-minutes: 5
         with:
           name: security-reports
           path: |
             *-report.json
             *-report.txt
           retention-days: 30
+          if-no-files-found: warn
+        env:
+          ACTIONS_STEP_DEBUG: false
 
       - name: 🚨 Security Summary
         run: |
@@ -175,9 +180,14 @@ jobs:
 
       - name: 📊 Upload Dependency Reports
         uses: actions/upload-artifact@v4
+        continue-on-error: true
+        timeout-minutes: 5
         with:
           name: dependency-reports
           path: |
             dependency-updates.txt
             npm-outdated.json
           retention-days: 7
+          if-no-files-found: warn
+        env:
+          ACTIONS_STEP_DEBUG: false
