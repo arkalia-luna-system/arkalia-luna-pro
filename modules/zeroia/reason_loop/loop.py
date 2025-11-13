@@ -230,18 +230,17 @@ def reason_loop_enhanced_with_recovery(
 def main_loop_enhanced(max_iterations: int | None = None) -> None:
     """
     Boucle principale avec gestion d'erreurs et récupération
-
+    
     Args:
         max_iterations: Nombre maximum d'itérations (None = infini, déconseillé)
     """
-    global circuit_breaker, event_store
-
     from .initialization import circuit_breaker, event_store
 
-    if circuit_breaker is None or event_store is None:
+    # Initialiser les composants si nécessaire
+    cb = circuit_breaker
+    es = event_store
+    if cb is None or es is None:
         cb, es, _, _ = initialize_components_with_recovery()
-        circuit_breaker = cb
-        event_store = es
 
     iteration_count = 0
 
@@ -260,8 +259,8 @@ def main_loop_enhanced(max_iterations: int | None = None) -> None:
             decision, score = reason_loop_enhanced_with_recovery()
 
             # Event sourcing de succès
-            if event_store is not None:
-                event_store.add_event(
+            if es is not None:
+                es.add_event(
                     EventType.CIRCUIT_SUCCESS,
                     {"decision": decision, "confidence": score, "loop_iteration": iteration_count},
                 )
@@ -275,8 +274,8 @@ def main_loop_enhanced(max_iterations: int | None = None) -> None:
             )
 
             # Event sourcing critique
-            if event_store is not None:
-                event_store.add_event(
+            if es is not None:
+                es.add_event(
                     EventType.SYSTEM_ERROR,
                     {
                         "error_type": "reboot_required",

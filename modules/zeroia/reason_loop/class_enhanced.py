@@ -116,22 +116,22 @@ class ReasonLoopEnhanced:
     def run_loop(self, max_iterations: int | None = None) -> None:
         """
         Exécute la boucle de raisonnement
-        
+
         Args:
             max_iterations: Nombre maximum d'itérations (None = infini, déconseillé)
         """
         iteration_count = 0
-        
+
         while True:
             try:
                 # Vérifier limite d'itérations pour éviter boucles infinies
                 if max_iterations is not None and iteration_count >= max_iterations:
                     ark_logger.info(
                         f"⏹️ Limite d'itérations atteinte ({max_iterations})",
-                        extra={"arkalia_module": "zeroia"}
+                        extra={"arkalia_module": "zeroia"},
                     )
                     break
-                
+
                 iteration_count += 1
                 decision, score = reason_loop_enhanced_with_recovery()
                 self.decision_count += 1
@@ -148,6 +148,8 @@ class ReasonLoopEnhanced:
                 ark_logger.info("⏹️ Arrêt demandé (Ctrl+C)", extra={"arkalia_module": "zeroia"})
                 break
             except Exception as e:
-                ark_logger.error(f"🚨 Erreur dans la boucle: {e}", extra={"arkalia_module": "zeroia"})
+                ark_logger.error(
+                    f"🚨 Erreur dans la boucle: {e}", extra={"arkalia_module": "zeroia"}
+                )
                 time.sleep(10)
                 # Continuer la boucle après erreur
