@@ -279,9 +279,12 @@ class CollaborativeReasoning:
             return 0.0
 
         confidences = [
-            r["selected_insight"].get("confidence", 0) for r in resolution["resolved_conflicts"]
+            float(r["selected_insight"].get("confidence", 0.0))
+            for r in resolution["resolved_conflicts"]
         ]
-        return sum(confidences) / len(confidences)
+        if not confidences:
+            return 0.0
+        return float(sum(confidences) / len(confidences))
 
     def _create_consensus(self, analysis: dict) -> dict[str, Any]:
         """
@@ -396,5 +399,5 @@ if __name__ == "__main__":
             },
         }
 
-        result = collaborative.run_collaborative_reasoning(test_decisions)
+        result = collaborative.coordinate_reasoning(test_decisions)
         ark_logger.info(json.dumps(result, indent=2, extra={"module": "reasoning"}))

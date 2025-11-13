@@ -10,6 +10,7 @@
 from typing import Any
 
 from modules.taskia.factories.service_factory import ServiceFactory
+from modules.taskia.interfaces.health_check_interface import IHealthChecker
 from modules.taskia.interfaces.task_processor_interface import ITaskProcessor
 
 
@@ -31,7 +32,7 @@ class TaskIACore:
         """
         self._service_factory = service_factory or ServiceFactory()
         self._task_processor: ITaskProcessor | None = None
-        self._health_checker = None
+        self._health_checker: IHealthChecker | None = None
         self._logger_service = self._service_factory.get_logger_service()
         self._logger = self._logger_service.get_logger()
 
@@ -45,7 +46,7 @@ class TaskIACore:
         self._logger.info("🌕 Services TaskIA initialisés")
 
     def process_task(
-        self, context: dict[str, Any], format_type: str = "summary", **formatter_kwargs
+        self, context: dict[str, Any], format_type: str = "summary", **formatter_kwargs: Any
     ) -> str:
         """
         Traite une tâche avec le formatage spécifié.
@@ -78,7 +79,7 @@ class TaskIACore:
         Returns:
             Statut de santé
         """
-        if self._health_checker:
+        if self._health_checker is not None:
             return self._health_checker.check_health()
         return {"error": "Health checker not initialized"}
 
@@ -98,12 +99,12 @@ class TaskIACore:
         Args:
             status: Nouveau statut
         """
-        if self._health_checker and hasattr(self._health_checker, "set_status"):
+        if self._health_checker is not None and hasattr(self._health_checker, "set_status"):
             self._health_checker.set_status(status)
         else:
             self._logger.warning("Health checker does not support set_status")
 
-    def get_logger(self):
+    def get_logger(self) -> Any:
         """
         Retourne le logger du service.
 

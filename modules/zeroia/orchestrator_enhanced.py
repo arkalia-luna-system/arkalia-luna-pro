@@ -15,11 +15,11 @@ from typing import Any
 from core.ark_logger import ark_logger
 
 from .circuit_breaker import CognitiveOverloadError, DecisionIntegrityError, SystemRebootRequired
+from .event_store import EventType
+from .reason_loop_enhanced import cleanup_components, initialize_components, reason_loop_enhanced
 
 # Exporter logger pour les tests
 logger = ark_logger
-from .event_store import EventType
-from .reason_loop_enhanced import cleanup_components, initialize_components, reason_loop_enhanced
 
 
 class ZeroIAOrchestrator:

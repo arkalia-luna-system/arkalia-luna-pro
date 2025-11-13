@@ -155,16 +155,6 @@ class ConfigManager:
         result = self._config.get(section, {}).copy()
         return result if isinstance(result, dict) else {}
 
-    def get_module_config(self, module_name: str) -> dict[str, Any]:
-        """
-        📄 Configuration d'un module spécifique
-        :param module_name: Nom du module
-        :return: Configuration du module
-        """
-        modules_config = self.get_config("modules")
-        result = modules_config.get(module_name, {})
-        return result if isinstance(result, dict) else {}
-
     def get_watchdog_config(self, watchdog_name: str) -> dict[str, Any]:
         """
         🛡️ Configuration d'un watchdog spécifique
@@ -305,8 +295,9 @@ class ConfigManager:
         Returns:
             Configuration du module
         """
-        modules_config = self.get_config("modules", {})
-        return modules_config.get(module_name, {})
+        modules_config = self.get_config("modules")
+        result = modules_config.get(module_name, {})
+        return result if isinstance(result, dict) else {}
 
 
 # Instance par défaut (lazy loading pour économiser la RAM)
