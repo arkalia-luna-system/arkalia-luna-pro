@@ -142,7 +142,7 @@ class ZeroIAOrchestrator:
                     loop.run_until_complete(self._handle_system_reboot())
             except RuntimeError:
                 # Pas de boucle d'événements, utiliser time.sleep comme fallback
-                time.sleep(min(self.circuit_breaker.timeout, 5))
+                await asyncio.sleep(min(self.circuit_breaker.timeout, 60))
 
         except (CognitiveOverloadError, DecisionIntegrityError) as e:
             ark_logger.warning(f"⚠️ Erreur gérée: {e}", extra={"arkalia_module": "zeroia"})

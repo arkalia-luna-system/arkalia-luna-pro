@@ -59,9 +59,9 @@ class ConfidenceScorer:
                 data = toml.load(f)
                 config = data if isinstance(data, dict) else {}
         except FileNotFoundError:
-            config = {"threshold": 0.7, "decay_rate": 0.1}
+            config = {"threshold": 0.8, "decay_rate": 0.15}
         except Exception:
-            config = {"threshold": 0.7, "decay_rate": 0.1}
+            config = {"threshold": 0.8, "decay_rate": 0.15}
 
         # Mettre à jour le cache
         self._config_cache = config
