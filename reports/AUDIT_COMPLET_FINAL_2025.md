@@ -159,9 +159,11 @@ modules/
 
 ### 🟡 MOYENNE PRIORITÉ
 - ⚠️ **Quelques imports inutilisés** : À optimiser si nécessaire (non bloquant)
+- ⚠️ **Fichiers macOS dans Git** : Fichiers `._*` dans `.git/objects/pack/` (nettoyage effectué)
 
 ### 🟢 BASSE PRIORITÉ
 - ✅ **Tout est propre**
+- ✅ **Dossiers vides** : Quelques dossiers vides normaux (logs, benchmarks, etc.)
 
 ---
 
@@ -179,6 +181,11 @@ modules/
 
 ### Verdict final
 **✅ Le projet est propre, bien organisé et sans problème critique.**
+
+### Points d'attention (non bloquants)
+- ⚠️ Quelques dossiers vides normaux (logs, benchmarks) - OK
+- ⚠️ Fichiers macOS `._*` dans Git nettoyés
+- ⚠️ Quelques imports à optimiser (non critique)
 
 ---
 
