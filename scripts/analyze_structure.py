@@ -259,7 +259,9 @@ class StructureAnalyzer:
             issues.append(
                 {
                     "type": "backup_files",
-                    "description": f"{len(self.analysis['backup_files'])} fichiers de backup détectés",
+                    "description": (
+                        f"{len(self.analysis['backup_files'])} fichiers de backup détectés"
+                    ),
                     "files": self.analysis["backup_files"],
                 }
             )
