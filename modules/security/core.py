@@ -137,7 +137,7 @@ class UsecurityCore:
                 # Échapper les caractères dangereux
                 clean_value = value.replace("<", "&lt;").replace(">", "&gt;")
                 clean_value = clean_value.replace("'", "&#39;").replace('"', "&quot;")
-            elif isinstance(value, (int, float, bool)):
+            elif isinstance(value, int | float | bool):
                 clean_value = value
             elif isinstance(value, dict):
                 clean_value = self._sanitize_payload(value)
