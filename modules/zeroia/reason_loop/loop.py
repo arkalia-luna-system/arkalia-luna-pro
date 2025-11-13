@@ -15,14 +15,11 @@ from modules.zeroia.circuit_breaker import (
 )
 from modules.zeroia.event_store import EventType
 
-from .conflict import check_for_ia_conflict_enhanced
+from .conflict import DEFAULT_CONTRADICTION_LOG, check_for_ia_conflict_enhanced
 from .decision import decide_protected, should_process_decision
 from .initialization import initialize_components_with_recovery
 from .loaders import CTX_PATH, REFLEXIA_STATE, load_context, load_reflexia_state
 from .persistence import persist_state_enhanced, update_dashboard_enhanced
-
-# === Chemins par défaut ===
-DEFAULT_CONTRADICTION_LOG = Path("logs/zeroia_contradictions.log")
 
 # === NOUVELLE INTÉGRATION COGNITIVE REACTOR ===
 try:
@@ -193,9 +190,7 @@ def reason_loop_enhanced_with_recovery(
         return decision, score
 
     except SystemRebootRequired as e:
-        ark_logger.error(
-            f"🔄 REDÉMARRAGE REQUIS: {e}", extra={"arkalia_module": "zeroia"}
-        )
+        ark_logger.error(f"🔄 REDÉMARRAGE REQUIS: {e}", extra={"arkalia_module": "zeroia"})
         es.add_event(
             EventType.SYSTEM_ERROR,
             {
@@ -208,9 +203,7 @@ def reason_loop_enhanced_with_recovery(
         raise
 
     except (CognitiveOverloadError, DecisionIntegrityError) as e:
-        ark_logger.error(
-            f"⚠️ ERREUR CRITIQUE: {e}", extra={"arkalia_module": "zeroia"}
-        )
+        ark_logger.error(f"⚠️ ERREUR CRITIQUE: {e}", extra={"arkalia_module": "zeroia"})
         es.add_event(
             EventType.SYSTEM_ERROR,
             {
@@ -315,4 +308,3 @@ if __name__ == "__main__":
     except Exception as e:
         ark_logger.info(f"❌ Erreur fatale: {e}", extra={"module": "zeroia"})
         sys.exit(1)
-

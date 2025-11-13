@@ -194,4 +194,3 @@ def load_reflexia_state(path: Path = REFLEXIA_STATE) -> dict:
     if isinstance(result, dict):
         return result
     return {}
-

@@ -47,4 +47,3 @@ def initialize_components_with_recovery() -> tuple[Any, Any, Any, Any]:
             f"❌ Erreur initialisation composants: {e}", extra={"arkalia_module": "zeroia"}
         )
         raise
-

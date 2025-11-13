@@ -101,4 +101,3 @@ def get_degradation_status() -> dict:
         return {"status": "unavailable", "reason": "module_not_loaded"}
     except Exception as e:
         return {"status": "error", "error": str(e)}
-

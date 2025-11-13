@@ -8,6 +8,7 @@ from pathlib import Path
 
 from core.ark_logger import ark_logger
 
+# === Chemins par défaut ===
 DEFAULT_CONTRADICTION_LOG = Path("logs/zeroia_contradictions.log")
 
 
@@ -45,4 +46,3 @@ def check_for_ia_conflict_enhanced(
         return True
 
     return False
-

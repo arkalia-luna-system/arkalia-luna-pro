@@ -92,4 +92,3 @@ def should_lower_cpu_threshold() -> bool:
     Ici, on retourne False par défaut (comportement safe).
     """
     return False
-

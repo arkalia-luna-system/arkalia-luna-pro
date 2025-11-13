@@ -117,4 +117,3 @@ def update_dashboard_enhanced(
     }
 
     save_json_if_changed(dashboard_data, str(dashboard_path))
-
