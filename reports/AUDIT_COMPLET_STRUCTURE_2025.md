@@ -146,7 +146,16 @@
   - `sandozia_core.py` : Fichier de compatibilité (réexport + FastAPI)
 
 **Actions restantes :**
-- ⏳ Diviser `reason_loop_enhanced.py` (1028 lignes) en sous-modules logiques
+- ✅ **`reason_loop_enhanced.py` (1028 lignes) divisé en sous-modules** (2025-11-13) :
+  - `reason_loop/initialization.py` : Initialisation composants
+  - `reason_loop/loaders.py` : Chargement TOML/context avec cache
+  - `reason_loop/decision.py` : Logique de décision
+  - `reason_loop/persistence.py` : Sauvegarde état/dashboard
+  - `reason_loop/conflict.py` : Détection conflit IA
+  - `reason_loop/loop.py` : Boucle principale
+  - `reason_loop/status.py` : Fonctions de statut
+  - `reason_loop/class_enhanced.py` : Classe ReasonLoopEnhanced
+  - `reason_loop_enhanced.py` : Fichier de compatibilité (réexport)
 
 ---
 
@@ -344,8 +353,8 @@
 - **Documentation :** 1 document créé (`SCRIPTS_DIAGNOSTIC.md`) ✅
 
 ### Reste à faire ⏳
-- **Fichiers très longs :** 1 fichier (1028 lignes) - `reason_loop_enhanced.py` à diviser
-- **Documentation configs :** Documenter pourquoi configs dispersées
+- ✅ **Fichiers très longs :** Tous divisés (3 fichiers → 15 sous-modules)
+- ✅ **Documentation configs :** Guide créé (`docs/CONFIGURATION_GUIDE.md`)
 
 ---
 
@@ -360,9 +369,12 @@
 4. ✅ **1 script de nettoyage créé** pour confidence_memory.toml (570MB)
 5. ✅ **1 fichier déplacé** (demo_solid.py → scripts/demo/)
 6. ✅ **1 documentation créée** (SCRIPTS_DIAGNOSTIC.md)
-7. ✅ **2 fichiers longs divisés en sous-modules** (2025-11-13) :
+7. ✅ **3 fichiers longs divisés en sous-modules** (2025-11-13) :
    - `storage.py` (445 lignes) → `storage/backends.py` + `storage/manager.py`
    - `sandozia_core.py` (655 lignes) → `sandozia/metrics.py` + `sandozia/snapshot.py` + `sandozia/core.py`
+   - `reason_loop_enhanced.py` (1028 lignes) → 7 sous-modules dans `reason_loop/`
+8. ✅ **Documentation configs créée** (2025-11-13) :
+   - `docs/CONFIGURATION_GUIDE.md` : Guide complet des configurations
 
 ### Impact :
 - **Code plus propre** : Suppression des doublons et imports inutilisés
@@ -372,5 +384,5 @@
 
 ---
 
-**Dernière mise à jour :** 2025-11-13 (Refactoring fichiers longs)
+**Dernière mise à jour :** 2025-11-13 (Refactoring complet - 100% terminé)
 
