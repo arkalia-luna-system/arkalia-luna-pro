@@ -263,9 +263,9 @@ route:
 
 receivers:
   - name: 'arkalia-team'
-    slack_configs:
-      - api_url: 'https://hooks.slack.com/services/...'
-        channel: '#arkalia-alerts'
+    webhook_configs:
+      - url: 'https://hooks.example.com/services/...'
+        send_resolved: true
 ```
 
 ---

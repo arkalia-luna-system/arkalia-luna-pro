@@ -152,7 +152,7 @@ sequenceDiagram
 - Authentification API généralisée (token, user_id)
 - Historique conversationnel stocké
 - Mode debug IA interactif (debug_mode = true)
-- Monitoring avancé (alertes Slack, auto-recovery)
+- Monitoring avancé (alertes notifications, auto-recovery)
 
 ---
 

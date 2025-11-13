@@ -320,7 +320,7 @@ Aucun test en dehors de ce dossier. Convention : `test_*.py`, markers `@pytest.m
 
 * /metrics Prometheus par module
 * Dashboards Grafana dynamiques
-* Alertes Slack/mail (CPU > 80 %, ZeroIA KO, etc.)
+* Alertes notifications/mail (CPU > 80 %, ZeroIA KO, etc.)
 * Tracing avec OpenTelemetry
 * **NOUVEAU** : Logging structuré `ark_logger` pour tous les modules
 

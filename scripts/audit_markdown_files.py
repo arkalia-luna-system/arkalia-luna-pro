@@ -13,13 +13,39 @@ ARGOT_WORDS = [
     "vachement",
     "d'aller",
     "daller",
-    "trop",
     "pas pro",
     "pas professionnel",
     "super",
     "génial",
     "cool",
     "sympa",
+]
+
+# Outils/services obsolètes à supprimer ou remplacer
+OBSOLETE_SERVICES = [
+    r"notion",
+    r"Notion",
+    r"NOTION",
+    r"slack",
+    r"Slack",
+    r"SLACK",
+    r"trello",
+    r"jira",
+    r"confluence",
+    r"atlassian",
+]
+
+# Ports obsolètes à vérifier
+OBSOLETE_PORTS = [
+    r":9000",
+    r"port 9000",
+    r"localhost:9000",
+    r":8081",
+    r"port 8081",
+    r"localhost:8081",
+    r":5173",
+    r"port 5173",
+    r"localhost:5173",
 ]
 
 # Dates obsolètes à remplacer
@@ -67,7 +93,14 @@ def find_markdown_files(root_dir: Path) -> list[Path]:
 
 def check_file(file_path: Path) -> dict:
     """Analyse un fichier .md et retourne les problèmes trouvés"""
-    issues = {"old_dates": [], "argot": [], "wrong_version": [], "lines": []}
+    issues = {
+        "old_dates": [],
+        "argot": [],
+        "wrong_version": [],
+        "obsolete_services": [],
+        "obsolete_ports": [],
+        "lines": [],
+    }
 
     try:
         content = file_path.read_text(encoding="utf-8")
@@ -88,6 +121,16 @@ def check_file(file_path: Path) -> dict:
             if "v2.9.0" in line or "v3.0" in line or "v3.x" in line:
                 if CURRENT_VERSION not in line:
                     issues["wrong_version"].append((i, line.strip()))
+
+            # Vérifier les services obsolètes
+            for service in OBSOLETE_SERVICES:
+                if re.search(service, line, re.IGNORECASE):
+                    issues["obsolete_services"].append((i, line.strip()))
+
+            # Vérifier les ports obsolètes
+            for port in OBSOLETE_PORTS:
+                if re.search(port, line, re.IGNORECASE):
+                    issues["obsolete_ports"].append((i, line.strip()))
 
         return issues
     except Exception as e:
@@ -122,6 +165,85 @@ def fix_file(file_path: Path) -> bool:
         ):
             content = re.sub(r"v3\.x", CURRENT_VERSION, content)
 
+        # Supprimer les références aux services obsolètes (Notion, Slack, etc.)
+        lines = content.split("\n")
+        new_lines = []
+
+        for line in lines:
+            # Pour Notion, supprimer ou remplacer
+            if re.search(r"\bnotion\b", line, re.IGNORECASE):
+                line_lower = line.lower()
+                # Si la ligne ne contient que la référence à Notion, la supprimer
+                if (
+                    len(line.strip()) < 100
+                    and "http" not in line_lower
+                    and line.strip().count("notion") == 1
+                ):
+                    continue  # Supprimer cette ligne
+                else:
+                    # Remplacer la référence par "documentation"
+                    line = re.sub(
+                        r"\bnotion\b",
+                        "documentation",
+                    line,
+                    flags=re.IGNORECASE,
+                )
+
+            # Pour Slack, remplacer par "notifications" ou "alertes"
+            if re.search(r"\bslack\b", line, re.IGNORECASE):
+                # Dans un contexte d'alertes, remplacer par "alertes"
+                if "alerte" in line.lower() or "notification" in line.lower():
+                    line = re.sub(
+                        r"\bslack\b",
+                        "alertes",
+                        line,
+                        flags=re.IGNORECASE,
+                    )
+                else:
+                    line = re.sub(
+                        r"\bslack\b",
+                        "notifications",
+                    line,
+                    flags=re.IGNORECASE,
+                )
+
+            # Pour les autres services obsolètes (Trello, Jira, etc.), supprimer les lignes simples
+            for service in ["trello", "jira", "confluence", "atlassian"]:
+                if re.search(rf"\b{service}\b", line, re.IGNORECASE):
+                    if len(line.strip()) < 80 and line.strip().count(service) == 1:
+                        continue  # Supprimer cette ligne
+
+            # Toujours ajouter la ligne (modifiée ou non)
+            new_lines.append(line)
+
+        content = "\n".join(new_lines)
+
+        # Supprimer les références aux ports obsolètes (9000, 8081, 5173)
+        lines = content.split("\n")
+        new_lines = []
+        for line in lines:
+            should_skip = False
+            for port_pattern in OBSOLETE_PORTS:
+                if re.search(port_pattern, line, re.IGNORECASE):
+                    # Si c'est une ligne de lien HTML ou référence, la supprimer
+                    if (
+                        "http://localhost" in line
+                        or "href" in line.lower()
+                        or "<a" in line.lower()
+                        or "port" in line.lower()
+                    ):
+                        # Vérifier si c'est une ligne complète de lien
+                        if (
+                            line.strip().startswith("<a")
+                            or line.strip().startswith("http://localhost")
+                            or (line.strip().startswith("-") and "port" in line.lower())
+                        ):
+                            should_skip = True
+                            break
+            if not should_skip:
+                new_lines.append(line)
+        content = "\n".join(new_lines)
+
         if content != original:
             file_path.write_text(content, encoding="utf-8")
             return True
@@ -138,7 +260,14 @@ def main():
 
     print(f"📋 Analyse de {len(md_files)} fichiers Markdown...\n")
 
-    total_issues = {"old_dates": 0, "argot": 0, "wrong_version": 0, "fixed": 0}
+    total_issues = {
+        "old_dates": 0,
+        "argot": 0,
+        "wrong_version": 0,
+        "obsolete_services": 0,
+        "obsolete_ports": 0,
+        "fixed": 0,
+    }
 
     files_with_issues = []
 
@@ -150,6 +279,8 @@ def main():
             total_issues["old_dates"] += len(issues["old_dates"])
             total_issues["argot"] += len(issues["argot"])
             total_issues["wrong_version"] += len(issues["wrong_version"])
+            total_issues["obsolete_services"] += len(issues["obsolete_services"])
+            total_issues["obsolete_ports"] += len(issues["obsolete_ports"])
 
     # Afficher les résultats
     if files_with_issues:
@@ -162,6 +293,10 @@ def main():
                 print(f"   💬 Langage non professionnel: {len(issues['argot'])}")
             if issues["wrong_version"]:
                 print(f"   🔢 Version incorrecte: {len(issues['wrong_version'])}")
+            if issues["obsolete_services"]:
+                print(f"   🔌 Services obsolètes: {len(issues['obsolete_services'])}")
+            if issues["obsolete_ports"]:
+                print(f"   🔌 Ports obsolètes: {len(issues['obsolete_ports'])}")
             print()
     else:
         print("✅ Aucun problème détecté!\n")
@@ -177,6 +312,8 @@ def main():
     print(f"   - Dates obsolètes trouvées: {total_issues['old_dates']}")
     print(f"   - Langage non professionnel: {total_issues['argot']}")
     print(f"   - Versions incorrectes: {total_issues['wrong_version']}")
+    print(f"   - Services obsolètes: {total_issues['obsolete_services']}")
+    print(f"   - Ports obsolètes: {total_issues['obsolete_ports']}")
     print(f"   - Fichiers corrigés: {total_issues['fixed']}")
 
 

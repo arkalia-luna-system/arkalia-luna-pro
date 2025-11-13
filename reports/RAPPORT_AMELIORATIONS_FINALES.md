@@ -197,7 +197,7 @@ Le projet est **prêt pour la production**. Voici les améliorations optionnelle
 
 ### 1. Alertes Prometheus
 - Configuration d'alertes automatiques
-- Notifications Slack/Email
+- Notifications notifications/Email
 - Escalade des incidents
 
 ### 2. Déploiement Kubernetes

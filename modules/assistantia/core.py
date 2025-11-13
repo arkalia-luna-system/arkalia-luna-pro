@@ -54,9 +54,21 @@ router = APIRouter()
 
 class MessageInput(BaseModel):
     """
-    Classe MessageInput.
+    Modèle d'entrée pour les messages de chat.
 
-    Cette classe fait partie du système Arkalia Luna Pro.
+    Attributes:
+        message: Message utilisateur à traiter (1-2000 caractères).
+        model: Modèle IA à utiliser (défaut: "mistral:latest").
+        temperature: Température de génération (0.0-2.0, défaut: 0.7).
+        include_context: Inclure le contexte Arkalia dans la requête (défaut: True).
+
+    Examples:
+        >>> input_data = MessageInput(
+        ...     message="Bonjour, comment ça va ?",
+        ...     model="mistral:latest",
+        ...     temperature=0.7,
+        ...     include_context=True
+        ... )
     """
 
     message: str = Field(..., min_length=1, max_length=2000, description="Message utilisateur")
@@ -69,9 +81,23 @@ class MessageInput(BaseModel):
 
 class ChatResponse(BaseModel):
     """
-    Classe ChatResponse.
+    Modèle de réponse pour les messages de chat.
 
-    Cette classe fait partie du système Arkalia Luna Pro.
+    Attributes:
+        response: Réponse générée par le modèle IA.
+        model_used: Nom du modèle utilisé pour générer la réponse.
+        processing_time: Temps de traitement en secondes.
+        context_quality: Score de qualité du contexte Arkalia (0-100).
+        arkalia_context: Contexte Arkalia utilisé si demandé, None sinon.
+
+    Examples:
+        >>> response = ChatResponse(
+        ...     response="Bonjour ! Je vais bien, merci.",
+        ...     model_used="mistral:latest",
+        ...     processing_time=0.5,
+        ...     context_quality=85.0,
+        ...     arkalia_context="ZeroIA: active | Reflexia: monitoring"
+        ... )
     """
 
     response: str
@@ -83,9 +109,23 @@ class ChatResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     """
-    Classe HealthResponse.
+    Modèle de réponse pour le health check.
 
-    Cette classe fait partie du système Arkalia Luna Pro.
+    Attributes:
+        status: Statut du service ("healthy", "degraded", "unhealthy").
+        ollama_available: Indique si Ollama est disponible.
+        arkalia_modules: État des modules Arkalia (nom -> statut).
+        uptime: Temps de fonctionnement depuis le démarrage.
+        version: Version de l'API (défaut: "2.8.0").
+
+    Examples:
+        >>> health = HealthResponse(
+        ...     status="healthy",
+        ...     ollama_available=True,
+        ...     arkalia_modules={"ZeroIA": "active", "Reflexia": "monitoring"},
+        ...     uptime="2:30:15",
+        ...     version="2.8.0"
+        ... )
     """
 
     status: str
@@ -127,7 +167,22 @@ def get_query_ollama() -> Callable[[str, str, float], str]:
 
 
 async def get_arkalia_context() -> tuple[str, float]:
-    """Récupère le contexte des autres modules Arkalia avec score de qualité"""
+    """
+    Récupère le contexte des autres modules Arkalia avec score de qualité.
+
+    Collecte l'état de tous les modules Arkalia (ZeroIA, Reflexia, Sandozia,
+    Cognitive Reactor) et calcule un score de qualité du contexte.
+
+    Returns:
+        tuple[str, float]: Tuple contenant :
+            - Contexte formaté (str) : "Module1: status | Module2: status"
+            - Score de qualité (float) : Score entre 0 et 100
+
+    Examples:
+        >>> context, quality = await get_arkalia_context()
+        >>> print(context)  # "ZeroIA: active | Reflexia: monitoring"
+        >>> print(quality)  # 85.0
+    """
     context_parts = []
     quality_score = 0.0
     max_score = 100.0
@@ -230,7 +285,33 @@ async def post_chat(
     background_tasks: BackgroundTasks,
     query_ollama: Callable[[str, str, float], str] = Depends(get_query_ollama),
 ) -> ChatResponse:
-    """Endpoint principal pour le chat avec AssistantIA"""
+    """
+    Endpoint principal pour le chat avec AssistantIA.
+
+    Traite un message utilisateur et génère une réponse via le modèle IA configuré.
+    Peut inclure le contexte Arkalia pour enrichir la réponse.
+
+    Args:
+        data: Données du message utilisateur (MessageInput).
+        background_tasks: Tâches en arrière-plan pour le logging.
+        query_ollama: Fonction d'interrogation Ollama (injection de dépendance).
+
+    Returns:
+        ChatResponse: Réponse générée avec métadonnées.
+
+    Raises:
+        HTTPException: 400 si message vide, 503 si Ollama indisponible,
+                       504 si timeout, 500 en cas d'erreur interne.
+
+    Examples:
+        >>> POST /api/v1/chat
+        >>> {
+        ...     "message": "Bonjour, comment ça va ?",
+        ...     "model": "mistral:latest",
+        ...     "temperature": 0.7,
+        ...     "include_context": true
+        ... }
+    """
     global active_connections
 
     # Gestion des connexions actives

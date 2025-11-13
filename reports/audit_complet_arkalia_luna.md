@@ -94,7 +94,7 @@
 ### 📊 **Monitoring Stack**
 - **Prometheus** : Scraping toutes les 5-15s
 - **Grafana** : Dashboards provisionnés
-- **AlertManager** : Configuration Slack prête
+- **AlertManager** : Configuration notifications prête
 - **Loki** : Centralisation logs
 - **cAdvisor** : Métriques conteneurs temps réel
 
@@ -152,7 +152,7 @@ Le projet Arkalia-LUNA Pro a **DÉPASSÉ** tous les objectifs initiaux de fin ju
 
 ### 🎯 **Prochaines Étapes**
 1. **Surveiller** les métriques Grafana
-2. **Tester** les alertes Slack
+2. **Tester** les alertes notifications
 3. **Documenter** les procédures d'utilisation
 4. **Former** les utilisateurs
 

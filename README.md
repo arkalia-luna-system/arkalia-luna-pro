@@ -587,7 +587,6 @@ make clean
 
 - **Docs techniques** : [docs/](docs/)
 - **API** : Swagger (<http://localhost:8000/docs>)
-- **Architecture** : MkDocs (<http://localhost:9000>)
 
 ## Maintenance & CI/CD
 

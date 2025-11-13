@@ -71,9 +71,9 @@ class ConfidenceScorer:
     async def load_config_async(self) -> dict[str, Any]:
         """Charge la configuration de manière asynchrone (optimisé pour performance)."""
         import time as time_module
-        
+
         try:
-            import aiofiles  # type: ignore[import-untyped]
+            import aiofiles  # type: ignore
         except ImportError:
             # Fallback vers méthode synchrone si aiofiles non disponible
             return self.load_config()
@@ -213,14 +213,14 @@ class ConfidenceScorer:
     async def _save_memory_async(self) -> None:
         """Sauvegarde asynchrone de la mémoire décisionnelle (optimisé pour performance)"""
         try:
-            import aiofiles  # type: ignore[import-untyped]
-            
+            import aiofiles
+
             self.memory["last_update"] = datetime.now().isoformat()
             self.state_file.parent.mkdir(parents=True, exist_ok=True)
-            
+
             # Utiliser aiofiles pour I/O asynchrone
             content = toml.dumps(self.memory)
-            async with aiofiles.open(self.state_file, "w") as f:  # type: ignore[attr-defined]
+            async with aiofiles.open(self.state_file, "w") as f:
                 await f.write(content)
 
         except ImportError:

@@ -62,7 +62,7 @@ modules/monitoring/
 - **Fonctionnalités :**
   - Groupement d'alertes
   - Inhibition et silence
-  - Notifications multiples (email, Slack, etc.)
+  - Notifications multiples (email, notifications, etc.)
   - Interface web de gestion
 
 ### **4. Loki - Centralisation Logs**

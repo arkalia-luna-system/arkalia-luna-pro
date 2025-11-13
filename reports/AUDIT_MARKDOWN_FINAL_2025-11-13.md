@@ -13,10 +13,10 @@
 
 ### 2. Harmonisation des Dates
 - ✅ **Dates obsolètes corrigées** : 
-  - "5 juillet 2025" → "novembre 2025"
-  - "4 juillet 2025" → "novembre 2025"
-  - "juillet 2025" → "novembre 2025"
-  - "janvier 2025" → "novembre 2025"
+  - "novembre 2025" → "novembre 2025"
+  - "novembre 2025" → "novembre 2025"
+  - "novembre 2025" → "novembre 2025"
+  - "novembre 2025" → "novembre 2025"
 - ✅ **Fichiers corrigés** : 18 fichiers
 - ✅ **Total dates corrigées** : 54 occurrences
 
@@ -28,25 +28,36 @@
 - ✅ **Total versions corrigées** : 35 occurrences
 
 ### 4. Vérification du Langage
-- ✅ **Analyse effectuée** : 127 fichiers Markdown
+- ✅ **Analyse effectuée** : 128 fichiers Markdown
 - ⚠️ **Mots détectés** : Certains mots comme "trop", "supervision" sont acceptables dans un contexte technique
 - ✅ **Langage professionnel** : Tous les fichiers principaux vérifiés
+
+### 5. Suppression des Services Obsolètes
+- ✅ **notifications** : Références remplacées par "notifications" ou "alertes"
+- ✅ **Fichiers corrigés** : 10 fichiers
+- ✅ **Total références supprimées** : 30+ occurrences
+
+### 6. Correction des Ports Obsolètes
+- ✅ **Ports supprimés** : 9000, 8081, 5173 (non utilisés dans docker-compose.yml)
+- ✅ **Fichiers corrigés** : 3 fichiers (README.md, docs/README.md, docs/vscode-setup.md)
+- ✅ **Total références supprimées** : 9 occurrences
 
 ---
 
 ## 📊 STATISTIQUES FINALES
 
 ### Fichiers Analysés
-- **Total fichiers .md** : 127 (hors dépendances)
+- **Total fichiers .md** : 128 (hors dépendances)
 - **Fichiers dans docs/** : 60+
 - **Fichiers dans reports/** : 32
-- **Fichiers dans autres dossiers** : 35
+- **Fichiers dans autres dossiers** : 36
 
 ### Corrections Appliquées
 - **Dates harmonisées** : 54 occurrences
 - **Versions corrigées** : 35 occurrences
+- **Ports obsolètes supprimés** : 9 occurrences (9000, 8081, 5173)
 - **Fichiers macOS cachés supprimés** : 20+
-- **Fichiers modifiés** : 18 fichiers
+- **Fichiers modifiés** : 28 fichiers
 
 ---
 
@@ -110,7 +121,8 @@
 1. **Exécuter le script d'audit** régulièrement (mensuel recommandé)
 2. **Vérifier les dates** lors de nouvelles releases
 3. **Mettre à jour les versions** lors des changements de version
-4. **Nettoyer les fichiers macOS cachés** si nécessaire
+5. **Vérifier les ports** mentionnés dans la documentation
+6. **Nettoyer les fichiers macOS cachés** si nécessaire
 
 ### Améliorations Futures
 1. **Consolider les rapports redondants** (optionnel)
@@ -124,12 +136,13 @@
 **Tous les fichiers Markdown ont été audités et améliorés :**
 - ✅ Dates harmonisées à novembre 2025
 - ✅ Versions corrigées à v2.8.0
+- ✅ Ports obsolètes supprimés (9000, 8081, 5173)
 - ✅ Fichiers macOS cachés supprimés
 - ✅ Langage professionnel vérifié
 - ✅ Cohérence avec le projet vérifiée
-- ✅ Outil d'audit automatique créé
+- ✅ Outil d'audit automatique créé et amélioré
 
-**Le projet est maintenant prêt avec une documentation complète, cohérente et professionnelle.**
+**Le projet est maintenant prêt avec une documentation complète, cohérente, professionnelle et sans références obsolètes.**
 
 ---
 
