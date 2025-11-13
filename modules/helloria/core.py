@@ -190,23 +190,14 @@ def _get_fallback_metrics() -> dict:
         "modules/taskia/core.py": Path("modules/taskia/core.py").exists(),
     }
 
-    # Lecture état ZeroIA si disponible (async pour performance)
+    # Lecture état ZeroIA si disponible (synchrone - fonction non async)
     zeroia_confidence = 0.0
     try:
         dashboard_path = Path("state/zeroia_dashboard.json")
         if dashboard_path.exists():
-            try:
-                import aiofiles
-
-                async with aiofiles.open(dashboard_path, encoding="utf-8") as f:
-                    content = await f.read()
-                    dashboard = json.loads(content)
-                    zeroia_confidence = dashboard.get("confidence", 0.0)
-            except ImportError:
-                # Fallback synchrone si aiofiles non disponible
-                with open(dashboard_path, encoding="utf-8") as f:
-                    dashboard = json.load(f)
-                    zeroia_confidence = dashboard.get("confidence", 0.0)
+            with open(dashboard_path, encoding="utf-8") as f:
+                dashboard = json.load(f)
+                zeroia_confidence = dashboard.get("confidence", 0.0)
     except Exception:  # nosec B110
         pass
 

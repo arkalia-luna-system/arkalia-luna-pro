@@ -43,6 +43,7 @@
   - ✅ Tous les endpoints documentés avec Args, Returns, Raises, Examples
   - ✅ FastAPI génère automatiquement OpenAPI/Swagger depuis les docstrings
   - ✅ Documentation interactive disponible sur `/docs` et `/redoc`
+  - ✅ **Toutes les APIs documentées** : assistantia, helloria, app/main, reflexia (2025-11-13)
 - ✅ **Workflows** : Upload artifacts GitHub Actions robustes (continue-on-error, timeout)
 
 ---

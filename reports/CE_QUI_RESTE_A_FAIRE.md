@@ -47,11 +47,12 @@ Les fichiers suivants font > 500 lignes mais sont **acceptables** (< 800 lignes)
 
 #### B. Documentation API
 - **Statut actuel :** ✅ Documentation complète avec docstrings Sphinx/Google style
-- **Objectif optionnel :** ✅ **FAIT** - Docstrings améliorées dans `modules/assistantia/core.py`
+- **Objectif optionnel :** ✅ **FAIT** - Docstrings améliorées dans tous les modules API
 - **Priorité :** ✅ **TERMINÉ** (2025-11-13)
 - **Détails :**
   - ✅ FastAPI avec OpenAPI/Swagger automatique (déjà configuré)
   - ✅ Docstrings au format Sphinx/Google style pour toutes les classes et endpoints
+  - ✅ **Toutes les APIs documentées** : assistantia, helloria, app/main, reflexia
   - ✅ Documentation interactive disponible sur `/docs` et `/redoc`
   - ✅ OpenAPI JSON disponible sur `/openapi.json`
 
