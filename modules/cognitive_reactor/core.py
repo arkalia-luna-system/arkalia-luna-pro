@@ -466,15 +466,15 @@ class CognitiveReactor:
         # Limiter la taille de l'historique (réduit à 500 pour économiser RAM)
         if len(self.reaction_history) > 500:
             self.reaction_history = self.reaction_history[-500:]
-        
+
         # Limiter learned_patterns (garder 200 plus récents)
         if len(self.learned_patterns) > 200:
             self.learned_patterns = self.learned_patterns[-200:]
-        
+
         # Limiter stimuli_queue (garder 100 plus récents)
         if len(self.stimuli_queue) > 100:
             self.stimuli_queue = self.stimuli_queue[-100:]
-        
+
         return {"cleaned": True}
 
     def serialize(self) -> dict[str, Any]:

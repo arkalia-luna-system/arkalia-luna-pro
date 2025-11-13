@@ -158,7 +158,7 @@ class ArkaliaGlobalDemo:
 
         # 4. Décision ZeroIA
         self.print_step("4. Décision ZeroIA")
-        decision_result = self.zeroia.make_decision("security_incident")
+        self.zeroia.make_decision("security_incident")
         decision_id = f"decision_{len(self.zeroia.state.get('decisions', [])) + 1}"
         scenario["steps"].append(
             {"step": "zeroia_decision", "decision_id": decision_id, "timestamp": time.time()}

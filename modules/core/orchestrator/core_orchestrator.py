@@ -219,7 +219,7 @@ class CoreOrchestrator(IOrchestrator):
                 if module_instance:
                     # Initialiser le module (exécuter dans un thread pour éviter blocage)
                     init_success = await asyncio.to_thread(module_instance.initialize)
-                    
+
                     if init_success:
                         wrapper = ModuleWrapper(module_name, module_instance)
                         wrapper.update_success()

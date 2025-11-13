@@ -353,7 +353,7 @@ async def demo_complete_workflow():
     # Test cycles normaux
     ark_logger.info("🔄 Exécution 5 cycles normaux...", extra={"arkalia_module": "scripts"})
     for _i in range(5):
-        result = await engine.run_enhanced_cycle()
+        await engine.run_enhanced_cycle()
 
     ark_logger.info("")
 

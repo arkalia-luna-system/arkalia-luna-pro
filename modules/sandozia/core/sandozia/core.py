@@ -413,10 +413,10 @@ class SandoziaCore:
                 )
 
                 self.metrics_history.append(metrics)
-                
+
                 # Limiter l'historique pour économiser la RAM
                 if len(self.metrics_history) > self.max_metrics_history:
-                    self.metrics_history = self.metrics_history[-self.max_metrics_history:]
+                    self.metrics_history = self.metrics_history[-self.max_metrics_history :]
 
                 # Sauvegarder état
                 await self._save_state(snapshot, metrics)

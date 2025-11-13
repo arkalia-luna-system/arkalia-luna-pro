@@ -230,14 +230,12 @@ def reason_loop_enhanced_with_recovery(
 def main_loop_enhanced(max_iterations: int | None = None) -> None:
     """
     Boucle principale avec gestion d'erreurs et récupération
-    
+
     Args:
         max_iterations: Nombre maximum d'itérations (None = infini, déconseillé)
     """
-    from .initialization import circuit_breaker, event_store
-
     # Initialiser les composants si nécessaire
-    from .initialization import initialize_components_with_recovery
+    from .initialization import circuit_breaker, event_store, initialize_components_with_recovery
 
     cb = circuit_breaker
     es = event_store
