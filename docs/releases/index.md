@@ -88,7 +88,7 @@ Historique des versions et releases d'Arkalia-LUNA Pro.
 
 - [📝 CHANGELOG Détaillé](../releases/v2.8.0.md)
 - [🔄 Dernières Updates](v2.8.0.md)
-- [🗺️ Roadmap](../planning/roadmap/index.md)
+- [🗺️ Roadmap](../planning/index.md)
 - [🔒 Sécurité](../security/security.md)
 
 ---
