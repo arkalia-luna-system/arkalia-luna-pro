@@ -11,7 +11,7 @@ import os
 import sys
 from typing import Any
 
-from modules.taskia.core_refactored import TaskIACore
+from modules.taskia.core import TaskIACore
 from modules.taskia.factories.formatter_factory import FormatterFactory
 from modules.taskia.factories.service_factory import ServiceFactory
 from modules.taskia.interfaces.formatter_interface import IFormatter
