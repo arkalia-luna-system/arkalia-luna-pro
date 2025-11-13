@@ -248,7 +248,7 @@ class ConfigManager:
         :return: True si sauvegarde réussie
         """
         try:
-            import aiofiles  # type: ignore
+            import aiofiles
 
             # Création du répertoire si nécessaire
             config_dir = Path(self.config_path).parent

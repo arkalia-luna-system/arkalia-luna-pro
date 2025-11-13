@@ -90,9 +90,9 @@ def find_markdown_files(root_dir: Path) -> list[Path]:
     return sorted(md_files)
 
 
-def check_file(file_path: Path) -> dict:
+def check_file(file_path: Path) -> dict[str, list]:
     """Analyse un fichier .md et retourne les problèmes trouvés"""
-    issues = {
+    issues: dict[str, list] = {
         "old_dates": [],
         "argot": [],
         "wrong_version": [],
@@ -252,7 +252,7 @@ def fix_file(file_path: Path) -> bool:
         return False
 
 
-def main():
+def main() -> None:
     """Fonction principale"""
     root_dir = Path(__file__).parent.parent
     md_files = find_markdown_files(root_dir)
