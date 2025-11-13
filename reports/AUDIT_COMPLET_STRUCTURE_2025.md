@@ -122,23 +122,31 @@
 
 ### 6. FICHIERS VOLUMINEUX - OPTIMISATION EN COURS
 
-#### ✅ PARTIELLEMENT CORRIGÉ (2025-11-12)
+#### ✅ PARTIELLEMENT CORRIGÉ (2025-11-12 → 2025-11-13)
 
 | Fichier | Lignes | Taille | Recommandation | Statut |
 |---------|--------|--------|----------------|--------|
 | `modules/zeroia/state/confidence_memory.toml` | 10117 | **570MB** | ⚠️ **TRÈS VOLUMINEUX** | ✅ **SCRIPT CRÉÉ** |
-| `modules/zeroia/reason_loop_enhanced.py` | ~2000+ | - | ⚠️ **TRÈS LONG** - Diviser en sous-modules | ⏳ **À FAIRE** |
-| `modules/core/storage.py` | ~500+ | - | ⚠️ **LONG** - Peut être divisé | ⏳ **À FAIRE** |
-| `modules/sandozia/core/sandozia_core.py` | ~500+ | - | ⚠️ **LONG** - Peut être divisé | ⏳ **À FAIRE** |
+| `modules/zeroia/reason_loop_enhanced.py` | 1028 | - | ⚠️ **LONG** - Diviser en sous-modules | ⏳ **À FAIRE** |
+| `modules/core/storage.py` | 445 | - | ⚠️ **LONG** - Peut être divisé | ✅ **DIVISÉ** |
+| `modules/sandozia/core/sandozia_core.py` | 655 | - | ⚠️ **LONG** - Peut être divisé | ✅ **DIVISÉ** |
 
 **Actions réalisées :**
 - ✅ Créé `scripts/cleanup_confidence_memory.py` pour nettoyer `confidence_memory.toml`
 - ✅ Script permet de garder seulement les entrées récentes (30 jours, max 1000 entrées)
 - ✅ Script crée automatiquement un backup avant nettoyage
+- ✅ **`storage.py` (445 lignes) divisé en sous-modules** (2025-11-13) :
+  - `storage/backends.py` : JSONFileBackend, TOMLFileBackend, SQLiteBackend
+  - `storage/manager.py` : StorageManager et fonctions globales
+  - `storage.py` : Fichier de compatibilité (réexport)
+- ✅ **`sandozia_core.py` (655 lignes) divisé en sous-modules** (2025-11-13) :
+  - `sandozia/metrics.py` : SandoziaMetrics dataclass
+  - `sandozia/snapshot.py` : IntelligenceSnapshot dataclass
+  - `sandozia/core.py` : SandoziaCore classe principale
+  - `sandozia_core.py` : Fichier de compatibilité (réexport + FastAPI)
 
 **Actions restantes :**
-- ⏳ Diviser `reason_loop_enhanced.py` en sous-modules logiques
-- ⏳ Refactoriser les fichiers > 500 lignes
+- ⏳ Diviser `reason_loop_enhanced.py` (1028 lignes) en sous-modules logiques
 
 ---
 
@@ -336,7 +344,7 @@
 - **Documentation :** 1 document créé (`SCRIPTS_DIAGNOSTIC.md`) ✅
 
 ### Reste à faire ⏳
-- **Fichiers très longs :** 3 fichiers (>500 lignes) - Refactoring recommandé
+- **Fichiers très longs :** 1 fichier (1028 lignes) - `reason_loop_enhanced.py` à diviser
 - **Documentation configs :** Documenter pourquoi configs dispersées
 
 ---
@@ -352,14 +360,17 @@
 4. ✅ **1 script de nettoyage créé** pour confidence_memory.toml (570MB)
 5. ✅ **1 fichier déplacé** (demo_solid.py → scripts/demo/)
 6. ✅ **1 documentation créée** (SCRIPTS_DIAGNOSTIC.md)
+7. ✅ **2 fichiers longs divisés en sous-modules** (2025-11-13) :
+   - `storage.py` (445 lignes) → `storage/backends.py` + `storage/manager.py`
+   - `sandozia_core.py` (655 lignes) → `sandozia/metrics.py` + `sandozia/snapshot.py` + `sandozia/core.py`
 
 ### Impact :
 - **Code plus propre** : Suppression des doublons et imports inutilisés
-- **Architecture améliorée** : Config centralisée, logging unifié
-- **Maintenance facilitée** : Scripts de nettoyage et documentation complète
-- **Performance** : Script pour réduire taille fichiers état
+- **Architecture améliorée** : Config centralisée, logging unifié, modules modulaires
+- **Maintenance facilitée** : Scripts de nettoyage, documentation complète, code organisé
+- **Performance** : Script pour réduire taille fichiers état, lazy loading optimisé
 
 ---
 
-**Dernière mise à jour :** 2025-11-12 (Corrections complètes)
+**Dernière mise à jour :** 2025-11-13 (Refactoring fichiers longs)
 
