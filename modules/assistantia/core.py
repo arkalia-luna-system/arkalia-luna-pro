@@ -106,8 +106,10 @@ _query_ollama_func: Callable[[str, str, float], str] | None = None
 
 def _create_query_ollama_func() -> Callable[[str, str, float], str]:
     """Crée la fonction de requête Ollama."""
+
     def query_func(prompt: str, model: str, temp: float) -> str:
         return real_query_ollama(prompt, model, temp)
+
     return query_func
 
 
@@ -258,8 +260,12 @@ async def post_chat(
         # Prétraiter le message
         processed_message = process_input(enriched_message)
 
+        # Valeurs par défaut pour model et temperature
+        model = data.model or "mistral:latest"
+        temperature = data.temperature if data.temperature is not None else 0.7
+
         # Appeler Ollama
-        response = query_ollama(processed_message, data.model, data.temperature)
+        response = query_ollama(processed_message, model, temperature)
 
         # Calculer le temps de traitement
         processing_time = asyncio.get_event_loop().time() - start_time
@@ -267,17 +273,15 @@ async def post_chat(
 
         # Enregistrer métriques de succès
         assistantia_prompts_total.labels(
-            status="success", security_level="medium", model=data.model
+            status="success", security_level="medium", model=model
         ).inc()
 
         # Tâche en arrière-plan pour le logging
-        background_tasks.add_task(
-            log_chat_interaction, message, response, processing_time, data.model
-        )
+        background_tasks.add_task(log_chat_interaction, message, response, processing_time, model)
 
         return ChatResponse(
             response=response,
-            model_used=data.model,
+            model_used=model,
             processing_time=processing_time,
             context_quality=context_quality,
             arkalia_context=arkalia_context if data.include_context else None,
@@ -303,7 +307,9 @@ async def post_chat(
         assistantia_active_connections.set(active_connections)
 
 
-async def log_chat_interaction(message: str, response: str, processing_time: float, model: str):
+async def log_chat_interaction(
+    message: str, response: str, processing_time: float, model: str
+) -> None:
     """Log l'interaction en arrière-plan"""
     try:
         log_entry = {
@@ -361,8 +367,8 @@ async def health() -> HealthResponse:
         )
 
 
-@router.get("/metrics")
-async def get_metrics():
+@router.get("/metrics", response_model=None)
+async def get_metrics() -> PlainTextResponse | JSONResponse:
     """📊 Endpoint métriques Prometheus pour AssistantIA"""
     try:
         prometheus_data = generate_latest()
@@ -375,8 +381,8 @@ async def get_metrics():
         )
 
 
-@router.get("/models")
-async def get_available_models():
+@router.get("/models", response_model=None)
+async def get_available_models() -> dict | JSONResponse:
     """Récupère la liste des modèles disponibles"""
     try:
         from .utils.ollama_connector import get_available_models
@@ -419,7 +425,8 @@ app.include_router(router, prefix="/api/v1", tags=["assistantia"])
 
 # Routes racine
 @app.get("/")
-async def root():
+async def root() -> dict:
+    """Endpoint racine de l'application AssistantIA"""
     return {
         "service": "AssistantIA",
         "version": "2.8.0",
