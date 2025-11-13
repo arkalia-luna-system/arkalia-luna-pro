@@ -174,7 +174,7 @@ nav:
       - Endpoints: reference/endpoints.md
       - Metrics: reference/metrics.md
   - Operations:
-      - Chaos Testing: chaos/chaos_test_suite.md
+      - Chaos Testing: infrastructure/chaos_test_suite.md
   - Releases:
       - v2.8.0: releases/v2.8.0.md
       - All Releases: releases/index.md
@@ -187,6 +187,6 @@ nav:
       - VSCode Setup: support/vscode-setup.md
       - Documentation Status: support/documentation-status.md
   - Legal:
-      - License: legal/license.md
+      - License: credits/license.md
       - Contributing: credits/CONTRIBUTING.md
       - Credits: credits/credits.md

@@ -89,7 +89,7 @@ Arkalia-LUNA Pro est une **IA personnelle, cognitive et 100 % locale**, conçue 
 ## 📜 Licence
 
 Le projet Arkalia-LUNA Pro est sous licence propriétaire.
-Pour plus de détails, veuillez consulter le fichier [/legal/license.md](../legal/license.md).
+Pour plus de détails, veuillez consulter le fichier [license.md](license.md).
 
 ---
 
