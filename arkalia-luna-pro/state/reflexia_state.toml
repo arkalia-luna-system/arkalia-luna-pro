@@ -1,9 +1,0 @@
-[status]
-cpu = 91.2
-ram = 78.4
-latency = 2.3
-severity = "critical"
-
-[reflexia]
-last_snapshot = "🛑 surcharge CPU"
-last_decision = "alert"

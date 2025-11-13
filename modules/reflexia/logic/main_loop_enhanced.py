@@ -10,7 +10,7 @@ Boucle principale améliorée avec :
 - Logs structurés
 """
 
-import time
+import asyncio
 from datetime import datetime
 from typing import Any
 
@@ -170,7 +170,7 @@ def generate_recommendations(analysis: dict[str, str], metrics: dict[str, Any]) 
     return recommendations
 
 
-def reflexia_loop_enhanced(
+async def reflexia_loop_enhanced(
     max_iterations: int | None = None,
     sleep_seconds: float = 10.0,
     verbose: bool = True,
@@ -257,7 +257,7 @@ def reflexia_loop_enhanced(
             if verbose:
                 ark_logger.info(f"❌ Erreur cycle Reflexia: {e}", extra={"module": "logic"})
 
-        time.sleep(sleep_seconds)
+        await asyncio.sleep(sleep_seconds)
         iteration += 1
 
         if max_iterations is not None and iteration >= max_iterations:
@@ -281,10 +281,10 @@ def reflexia_loop(max_iterations: int | None = None, sleep_seconds: float = 5.0)
     Cette fonction remplace l'ancien main_loop.py pour maintenir
     la compatibilité avec le code existant.
     """
-    reflexia_loop_enhanced(max_iterations, sleep_seconds, verbose=True)
+    asyncio.run(reflexia_loop_enhanced(max_iterations, sleep_seconds, verbose=True))
 
 
 if __name__ == "__main__":
     # Test de la boucle enhanced
     ark_logger.info("🧪 Test Reflexia Enhanced Loop (3 cycles)", extra={"module": "logic"})
-    reflexia_loop_enhanced(max_iterations=3, sleep_seconds=2, verbose=True)
+    asyncio.run(reflexia_loop_enhanced(max_iterations=3, sleep_seconds=2, verbose=True))

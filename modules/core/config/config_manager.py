@@ -78,7 +78,7 @@ class ConfigManager:
             return False
 
     def _load_config(self) -> None:
-        """Chargement de la configuration depuis le fichier"""
+        """Chargement de la configuration depuis le fichier (synchrone)"""
         try:
             if os.path.exists(self.config_path):
                 with open(self.config_path, encoding="utf-8") as f:
@@ -95,6 +95,32 @@ class ConfigManager:
                 self._load_default_config()
         except Exception as e:
             ark_logger.error(f"❌ Erreur chargement config : {e}", extra={"arkalia_module": "core"})
+            self._load_default_config()
+    
+    async def _load_config_async(self) -> None:
+        """Chargement asynchrone de la configuration (optimisé pour performance)"""
+        try:
+            import aiofiles
+            
+            if os.path.exists(self.config_path):
+                async with aiofiles.open(self.config_path, "r", encoding="utf-8") as f:
+                    content = await f.read()
+                    self._config = json.loads(content)
+                ark_logger.info(
+                    f"📄 Configuration chargée async depuis {self.config_path}",
+                    extra={"arkalia_module": "core"},
+                )
+            else:
+                ark_logger.warning(
+                    f"⚠️ Fichier de config non trouvé : {self.config_path}",
+                    extra={"arkalia_module": "core"},
+                )
+                self._load_default_config()
+        except ImportError:
+            # Fallback vers méthode synchrone si aiofiles non disponible
+            self._load_config()
+        except Exception as e:
+            ark_logger.error(f"❌ Erreur chargement config async : {e}", extra={"arkalia_module": "core"})
             self._load_default_config()
 
     def _load_default_config(self) -> None:
@@ -192,7 +218,7 @@ class ConfigManager:
 
     def save_config(self) -> bool:
         """
-        💾 Sauvegarde de la configuration
+        💾 Sauvegarde de la configuration (synchrone)
         :return: True si sauvegarde réussie
         """
         try:
@@ -211,6 +237,35 @@ class ConfigManager:
 
         except Exception as e:
             ark_logger.error(f"❌ Erreur sauvegarde config : {e}", extra={"arkalia_module": "core"})
+            return False
+    
+    async def save_config_async(self) -> bool:
+        """
+        💾 Sauvegarde asynchrone de la configuration (optimisé pour performance)
+        :return: True si sauvegarde réussie
+        """
+        try:
+            import aiofiles
+            
+            # Création du répertoire si nécessaire
+            config_dir = Path(self.config_path).parent
+            config_dir.mkdir(parents=True, exist_ok=True)
+
+            content = json.dumps(self._config, indent=2, ensure_ascii=False)
+            async with aiofiles.open(self.config_path, "w", encoding="utf-8") as f:
+                await f.write(content)
+
+            ark_logger.info(
+                f"💾 Configuration sauvegardée async : {self.config_path}",
+                extra={"arkalia_module": "core"},
+            )
+            return True
+
+        except ImportError:
+            # Fallback vers méthode synchrone si aiofiles non disponible
+            return self.save_config()
+        except Exception as e:
+            ark_logger.error(f"❌ Erreur sauvegarde config async : {e}", extra={"arkalia_module": "core"})
             return False
 
     def reload_config(self) -> bool:

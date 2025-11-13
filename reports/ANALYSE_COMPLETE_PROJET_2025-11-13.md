@@ -25,20 +25,20 @@
 
 ### Performance et Robustesse
 - ✅ **Fichier confidence_memory.toml** : 
-  - Vérification taille avant chargement
-  - Chargement optimisé pour fichiers >100MB
-  - Pas de chargement pour fichiers >2GB
-  - Singleton pour éviter multiples chargements
+  - Vérification taille avant chargement (ligne 76)
+  - Chargement optimisé pour fichiers >100MB (ligne 80-86)
+  - Pas de chargement pour fichiers >2GB (ligne 113-129, retourne mémoire vide)
+  - Singleton via `get_scorer()` pour éviter multiples chargements (ligne 608-620)
 - ✅ **Boucles infinies** : 
-  - `max_loops` implémenté dans `orchestrator_enhanced.py`
-  - `max_iterations` implémenté dans `main_loop_enhanced()` et `class_enhanced.py`
-  - Valeur par défaut : 1000 itérations
+  - `max_loops` implémenté dans `orchestrator_enhanced.py` (ligne 39, 44, 165)
+  - `max_iterations` implémenté dans `main_loop_enhanced()` (ligne 230, 251) et `class_enhanced.py` (ligne 116, 128)
+  - Valeur par défaut : 1000 itérations dans `coordinator.py` (ligne 58)
 - ✅ **Tests** : 
   - Erreurs tests orchestrator corrigées (SystemRebootRequired, Mock objects)
   - Erreurs tests confidence_score corrigées (valeurs par défaut)
 - ✅ **Workflows GitHub Actions** : 
-  - Upload artifacts robustes (continue-on-error, timeout, if-no-files-found)
-  - Tous les workflows corrigés
+  - Upload artifacts robustes (continue-on-error, timeout-minutes, if-no-files-found)
+  - Tous les workflows corrigés (docs.yml, deploy.yml, ci.yml, performance-tests.yml, security-scan.yml)
 
 ### Code Quality
 - ✅ **Ruff** : Toutes les erreurs corrigées
@@ -46,7 +46,7 @@
   - F841 (variables non utilisées) : 0 erreur
   - F401 (imports non utilisés) : 0 erreur
 - ✅ **Imports** : 0 import inutilisé restant
-- ✅ **Mock objects** : Gestion correcte dans `cleanup_components`
+- ✅ **Mock objects** : Gestion correcte dans `cleanup_components` (status.py ligne 54-88, vérification isinstance avant accès)
 - ✅ **Type hints** : Complets
 
 ### Architecture

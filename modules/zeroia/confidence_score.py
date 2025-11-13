@@ -45,7 +45,7 @@ class ConfidenceScorer:
         self.load_config()
 
     def load_config(self) -> dict[str, Any]:
-        """Charge la configuration depuis le fichier TOML avec cache pour performance."""
+        """Charge la configuration depuis le fichier TOML avec cache."""
         import time as time_module
 
         # Vérifier le cache
@@ -57,6 +57,37 @@ class ConfidenceScorer:
         try:
             with open("config/confidence.toml") as f:
                 data = toml.load(f)
+                config = data if isinstance(data, dict) else {}
+        except FileNotFoundError:
+            config = {"threshold": 0.7, "decay_rate": 0.1}
+        except Exception:
+            config = {"threshold": 0.7, "decay_rate": 0.1}
+
+        # Mettre à jour le cache
+        self._config_cache = config
+        self._config_cache_time = now
+        return config
+    
+    async def load_config_async(self) -> dict[str, Any]:
+        """Charge la configuration de manière asynchrone (optimisé pour performance)."""
+        import time as time_module
+        
+        try:
+            import aiofiles
+        except ImportError:
+            # Fallback vers méthode synchrone si aiofiles non disponible
+            return self.load_config()
+
+        # Vérifier le cache
+        now = time_module.time()
+        if self._config_cache and (now - self._config_cache_time) < self._config_cache_ttl:
+            return self._config_cache  # Retourner le cache si valide
+
+        # Recharger depuis le fichier de manière asynchrone
+        try:
+            async with aiofiles.open("config/confidence.toml") as f:
+                content = await f.read()
+                data = toml.loads(content)
                 config = data if isinstance(data, dict) else {}
         except FileNotFoundError:
             config = {"threshold": 0.7, "decay_rate": 0.1}
@@ -167,7 +198,7 @@ class ConfidenceScorer:
         return data
 
     def _save_memory(self) -> None:
-        """Sauvegarde la mémoire décisionnelle"""
+        """Sauvegarde la mémoire décisionnelle (synchrone pour compatibilité)"""
         try:
             self.memory["last_update"] = datetime.now().isoformat()
             self.state_file.parent.mkdir(parents=True, exist_ok=True)
@@ -177,6 +208,27 @@ class ConfidenceScorer:
         except Exception as e:
             ark_logger.info(
                 f"❌ [CONFIDENCE] Erreur sauvegarde mémoire: {e}", extra={"module": "zeroia"}
+            )
+    
+    async def _save_memory_async(self) -> None:
+        """Sauvegarde asynchrone de la mémoire décisionnelle (optimisé pour performance)"""
+        try:
+            import aiofiles
+            
+            self.memory["last_update"] = datetime.now().isoformat()
+            self.state_file.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Utiliser aiofiles pour I/O asynchrone
+            content = toml.dumps(self.memory)
+            async with aiofiles.open(self.state_file, "w") as f:
+                await f.write(content)
+                
+        except ImportError:
+            # Fallback vers méthode synchrone si aiofiles non disponible
+            self._save_memory()
+        except Exception as e:
+            ark_logger.info(
+                f"❌ [CONFIDENCE] Erreur sauvegarde mémoire async: {e}", extra={"module": "zeroia"}
             )
 
     def calculate_confidence(

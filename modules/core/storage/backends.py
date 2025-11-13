@@ -55,7 +55,7 @@ class JSONFileBackend(StorageBackend):
         return self.base_path / f"{key}.json"
 
     def get(self, key: str, default: Any = None) -> Any:
-        """Get value from JSON file"""
+        """Get value from JSON file (synchrone)"""
         try:
             file_path = self._get_file_path(key)
             if not file_path.exists():
@@ -68,9 +68,30 @@ class JSONFileBackend(StorageBackend):
         except Exception as e:
             ark_logger.error(f"Erreur lecture {key}: {e}", extra={"arkalia_module": "core"})
             return default
+    
+    async def get_async(self, key: str, default: Any = None) -> Any:
+        """Get value from JSON file (asynchrone, optimisé pour performance)"""
+        try:
+            import aiofiles
+            
+            file_path = self._get_file_path(key)
+            if not file_path.exists():
+                return default
+
+            async with aiofiles.open(file_path, "r", encoding="utf-8") as f:
+                content = await f.read()
+                data = json.loads(content)
+                self._cache[key] = data
+                return data
+        except ImportError:
+            # Fallback vers méthode synchrone si aiofiles non disponible
+            return self.get(key, default)
+        except Exception as e:
+            ark_logger.error(f"Erreur lecture async {key}: {e}", extra={"arkalia_module": "core"})
+            return default
 
     def set(self, key: str, value: Any) -> bool:
-        """Set value to JSON file"""
+        """Set value to JSON file (synchrone)"""
         try:
             file_path = self._get_file_path(key)
             file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -82,6 +103,27 @@ class JSONFileBackend(StorageBackend):
             return True
         except Exception as e:
             ark_logger.error(f"Erreur écriture {key}: {e}", extra={"arkalia_module": "core"})
+            return False
+    
+    async def set_async(self, key: str, value: Any) -> bool:
+        """Set value to JSON file (asynchrone, optimisé pour performance)"""
+        try:
+            import aiofiles
+            
+            file_path = self._get_file_path(key)
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+
+            content = json.dumps(value, indent=2, ensure_ascii=False, default=str)
+            async with aiofiles.open(file_path, "w", encoding="utf-8") as f:
+                await f.write(content)
+
+            self._cache[key] = value
+            return True
+        except ImportError:
+            # Fallback vers méthode synchrone si aiofiles non disponible
+            return self.set(key, value)
+        except Exception as e:
+            ark_logger.error(f"Erreur écriture async {key}: {e}", extra={"arkalia_module": "core"})
             return False
 
     def delete(self, key: str) -> bool:

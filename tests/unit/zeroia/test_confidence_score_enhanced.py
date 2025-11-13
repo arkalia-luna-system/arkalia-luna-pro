@@ -27,6 +27,8 @@ class TestConfidenceScoreEnhanced:
 
     def test_load_config_success(self) -> None:
         """Test du chargement réussi de la configuration"""
+        # Réinitialiser le cache avant le test
+        self.scorer._config_cache = None
         mock_config = {"threshold": 0.8, "decay_rate": 0.15}
         with patch("builtins.open", mock_open(read_data=toml.dumps(mock_config))):
             result = self.scorer.load_config()
@@ -34,6 +36,8 @@ class TestConfidenceScoreEnhanced:
 
     def test_load_config_file_not_found(self) -> None:
         """Test du chargement avec fichier introuvable"""
+        # Réinitialiser le cache avant le test
+        self.scorer._config_cache = None
         with patch("builtins.open", side_effect=FileNotFoundError):
             result = self.scorer.load_config()
             assert result == {"threshold": 0.7, "decay_rate": 0.1}
@@ -74,7 +78,10 @@ class TestConfidenceScoreEnhanced:
         with open(self.state_file, "w") as f:
             toml.dump(mock_memory, f)
 
+        # Réinitialiser la mémoire pour forcer le rechargement
         memory = self.scorer._load_memory()
+        # Vérifier que decision_patterns est bien chargé
+        assert "decision_patterns" in memory
         assert memory["decision_patterns"] == {"test": "monitor"}
 
     def test_save_memory_success(self) -> None:
