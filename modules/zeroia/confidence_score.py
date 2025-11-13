@@ -264,8 +264,10 @@ class ConfidenceScorer:
 
     def _score_context_relevance(self, decision: str, context: dict) -> tuple[float, str]:
         """Score la pertinence du contexte pour la décision"""
+        # Chercher dans context directement ou dans context["status"]
+        status = context.get("status", {})
         required_fields = ["cpu", "ram"]
-        present_fields = sum(1 for field in required_fields if field in context)
+        present_fields = sum(1 for field in required_fields if field in context or field in status)
 
         # Score de base sur complétude du contexte
         completeness = present_fields / len(required_fields)

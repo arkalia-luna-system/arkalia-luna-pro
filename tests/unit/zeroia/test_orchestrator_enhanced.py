@@ -307,12 +307,14 @@ class TestZeroIAOrchestratorIntegration:
             ]
 
             with patch("time.sleep") as mock_sleep:
-                with patch("modules.zeroia.orchestrator_enhanced.logger") as mock_logger:
+                with patch("modules.zeroia.orchestrator_enhanced.ark_logger") as mock_logger:
                     orchestrator.run()
 
         assert orchestrator.loop_count == 2  # PATCH : la boucle tourne 2 fois en pratique
         assert orchestrator.session_stats["successful_decisions"] == 1
-        mock_logger.info.assert_any_call("⏹️ Arrêt orchestration (Ctrl+C)")
+        mock_logger.info.assert_any_call(
+            "⏹️ Arrêt orchestration (Ctrl+C)", extra={"arkalia_module": "zeroia"}
+        )
 
     def test_orchestration_with_system_exit(self) -> None:
         """Test orchestration avec SystemExit."""
@@ -330,12 +332,14 @@ class TestZeroIAOrchestratorIntegration:
             ]
 
             with patch("time.sleep") as mock_sleep:
-                with patch("modules.zeroia.orchestrator_enhanced.logger") as mock_logger:
+                with patch("modules.zeroia.orchestrator_enhanced.ark_logger") as mock_logger:
                     orchestrator.run()
 
         assert orchestrator.loop_count == 2  # PATCH : la boucle tourne 2 fois en pratique
         assert orchestrator.session_stats["successful_decisions"] == 1
-        mock_logger.info.assert_any_call("⏹️ Arrêt orchestration (SystemExit)")
+        mock_logger.info.assert_any_call(
+            "⏹️ Arrêt orchestration (SystemExit)", extra={"arkalia_module": "zeroia"}
+        )
 
     def test_orchestration_with_fatal_error(self) -> None:
         """Test orchestration avec erreur fatale."""
@@ -350,7 +354,7 @@ class TestZeroIAOrchestratorIntegration:
             mock_circuit_breaker.call.side_effect = RuntimeError("Fatal error")
 
             with patch("time.sleep") as mock_sleep:
-                with patch("modules.zeroia.orchestrator_enhanced.logger") as mock_logger:
+                with patch("modules.zeroia.orchestrator_enhanced.ark_logger") as mock_logger:
                     orchestrator.run()
 
         assert (
@@ -359,7 +363,9 @@ class TestZeroIAOrchestratorIntegration:
         assert (
             orchestrator.session_stats["failed_decisions"] == 10
         )  # PATCH : toutes les boucles échouent
-        mock_logger.error.assert_any_call("💥 Erreur inattendue loop #1: Fatal error")
+        mock_logger.error.assert_any_call(
+            "💥 Erreur inattendue loop #1: Fatal error", extra={"arkalia_module": "zeroia"}
+        )
 
 
 class TestZeroIAOrchestratorRobustness:
