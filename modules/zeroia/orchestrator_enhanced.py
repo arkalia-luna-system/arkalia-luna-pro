@@ -9,6 +9,7 @@ CHANGEMENTS v2.6.0:
 - Monitoring et métriques temps réel
 """
 
+import asyncio
 import time
 from typing import Any
 
@@ -66,7 +67,12 @@ class ZeroIAOrchestrator:
         )
 
     def run(self) -> None:
-        """Exécute la boucle orchestrée avec resilience patterns"""
+        """Exécute la boucle orchestrée avec resilience patterns (synchrone pour compatibilité)"""
+        # Utiliser la version async via asyncio.run pour éviter blocage
+        asyncio.run(self.async_run())
+
+    async def async_run(self) -> None:
+        """Exécute la boucle orchestrée avec resilience patterns (version async optimisée)"""
         ark_logger.info(
             f"🎯 Démarrage orchestration (max_loops={self.max_loops})",
             extra={"arkalia_module": "zeroia"},
@@ -75,7 +81,7 @@ class ZeroIAOrchestrator:
         try:
             while self._should_continue():
                 self._execute_single_loop()
-                time.sleep(self.interval_seconds)
+                await asyncio.sleep(self.interval_seconds)  # Utilise asyncio.sleep au lieu de time.sleep
 
         except KeyboardInterrupt:
             ark_logger.info("⏹️ Arrêt orchestration (Ctrl+C)", extra={"arkalia_module": "zeroia"})
@@ -125,7 +131,17 @@ class ZeroIAOrchestrator:
         except SystemRebootRequired as e:
             ark_logger.warning(f"🔄 System reboot requis: {e}", extra={"arkalia_module": "zeroia"})
             self.session_stats["circuit_openings"] += 1
-            self._handle_system_reboot()
+            # Note: _handle_system_reboot est maintenant async mais appelé depuis méthode sync
+            # On utilise asyncio.create_task pour ne pas bloquer
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_running():
+                    asyncio.create_task(self._handle_system_reboot())
+                else:
+                    loop.run_until_complete(self._handle_system_reboot())
+            except RuntimeError:
+                # Pas de boucle d'événements, utiliser time.sleep comme fallback
+                time.sleep(min(self.circuit_breaker.timeout, 5))
 
         except (CognitiveOverloadError, DecisionIntegrityError) as e:
             ark_logger.warning(f"⚠️ Erreur gérée: {e}", extra={"arkalia_module": "zeroia"})
@@ -150,14 +166,14 @@ class ZeroIAOrchestrator:
             return False
         return True
 
-    def _handle_system_reboot(self) -> None:
-        """Gère la procédure de reboot système"""
+    async def _handle_system_reboot(self) -> None:
+        """Gère la procédure de reboot système (version async)"""
         ark_logger.warning(
             "🔄 Procédure reboot système en cours...", extra={"arkalia_module": "zeroia"}
         )
 
-        # Attendre recovery du circuit breaker
-        time.sleep(self.circuit_breaker.timeout)
+        # Attendre recovery du circuit breaker (utilise asyncio.sleep)
+        await asyncio.sleep(self.circuit_breaker.timeout)
 
         # Log event
         self.event_store.add_event(

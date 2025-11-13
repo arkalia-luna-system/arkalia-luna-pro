@@ -27,6 +27,7 @@ class ConfidenceScorer:
     def __init__(self, state_file: str = "modules/zeroia/state/confidence_memory.toml") -> None:
         self.state_file = Path(state_file)
         self.decision_history: list[dict[str, Any]] = []
+        self.max_decision_history = 500  # Limite pour économiser la RAM
         self.pattern_weights = {
             "consistency": 0.25,  # Cohérence avec historique
             "system_health": 0.20,  # État système
@@ -40,25 +41,57 @@ class ConfidenceScorer:
         self.load_config()
 
     def load_config(self) -> dict[str, Any]:
-        """Charge la configuration depuis le fichier TOML."""
+        """Charge la configuration depuis le fichier TOML avec cache pour performance."""
+        import time as time_module
+
+        # Vérifier le cache
+        now = time_module.time()
+        if self._config_cache and (now - self._config_cache_time) < self._config_cache_ttl:
+            return self._config_cache  # Retourner le cache si valide
+
+        # Recharger depuis le fichier
         try:
             with open("config/confidence.toml") as f:
                 data = toml.load(f)
-                return data if isinstance(data, dict) else {}
+                config = data if isinstance(data, dict) else {}
         except FileNotFoundError:
-            return {"threshold": 0.7, "decay_rate": 0.1}
+            config = {"threshold": 0.7, "decay_rate": 0.1}
         except Exception:
-            return {"threshold": 0.7, "decay_rate": 0.1}
+            config = {"threshold": 0.7, "decay_rate": 0.1}
+
+        # Mettre à jour le cache
+        self._config_cache = config
+        self._config_cache_time = now
+        return config
 
     def _load_memory(self) -> dict:
-        """Charge la mémoire décisionnelle"""
+        """Charge la mémoire décisionnelle avec optimisation RAM"""
         if self.state_file.exists():
             try:
+                # Vérifier la taille du fichier avant chargement
+                file_size_mb = self.state_file.stat().st_size / (1024 * 1024)
+
+                # Si le fichier est trop volumineux (> 100MB),
+                # charger seulement les parties essentielles
+                if file_size_mb > 100:
+                    ark_logger.warning(
+                        f"⚠️ [CONFIDENCE] Fichier volumineux ({file_size_mb:.1f}MB) - "
+                        "Chargement optimisé pour économiser la RAM",
+                        extra={"arkalia_module": "zeroia"},
+                    )
+                    return self._load_memory_optimized()
+
+                # Chargement normal pour petits fichiers
                 with open(self.state_file) as f:
-                    return toml.load(f)
+                    data = toml.load(f)
+
+                    # Limiter la taille des données en mémoire
+                    return self._limit_memory_size(data)
+
             except Exception as e:
                 ark_logger.info(
-                    f"⚠️ [CONFIDENCE] Erreur chargement mémoire: {e}", extra={"module": "zeroia"}
+                    f"⚠️ [CONFIDENCE] Erreur chargement mémoire: {e}",
+                    extra={"arkalia_module": "zeroia"},
                 )
 
         return {
@@ -70,7 +103,66 @@ class ConfidenceScorer:
             "last_update": datetime.now().isoformat(),
         }
 
-    def _save_memory(self):
+    def _load_memory_optimized(self) -> dict:
+        """Charge seulement les parties essentielles du fichier volumineux"""
+        try:
+            # Pour les fichiers très volumineux (> 2GB), ne pas charger du tout
+            # Retourner une mémoire vide pour éviter de planter le système
+            ark_logger.warning(
+                "⚠️ [CONFIDENCE] Fichier trop volumineux - "
+                "Utilisation mémoire vide pour protéger le système",
+                extra={"arkalia_module": "zeroia"},
+            )
+
+            # Retourner une mémoire minimale sans charger le fichier
+            return {
+                "learning_weights": self.pattern_weights.copy(),
+                "last_update": datetime.now().isoformat(),
+                "decision_patterns": {},
+                "successful_contexts": [],
+                "error_contexts": [],
+                "performance_metrics": [],
+            }
+        except Exception as e:
+            ark_logger.warning(
+                f"⚠️ [CONFIDENCE] Erreur chargement optimisé: {e} - Utilisation mémoire par défaut",
+                extra={"arkalia_module": "zeroia"},
+            )
+            return {
+                "decision_patterns": {},
+                "successful_contexts": [],
+                "error_contexts": [],
+                "performance_metrics": [],
+                "learning_weights": self.pattern_weights.copy(),
+                "last_update": datetime.now().isoformat(),
+            }
+
+    def _limit_memory_size(self, data: dict) -> dict:
+        """Limite la taille des données en mémoire pour éviter surcharge RAM"""
+        # Limiter decision_patterns (réduit à 500 pour économiser RAM)
+        decision_patterns = data.get("decision_patterns", {})
+        if isinstance(decision_patterns, dict) and len(decision_patterns) > 500:
+            items = list(decision_patterns.items())
+            data["decision_patterns"] = dict(items[-500:])
+
+        # Limiter performance_metrics (réduit à 500 pour économiser RAM)
+        performance_metrics = data.get("performance_metrics", [])
+        if isinstance(performance_metrics, list) and len(performance_metrics) > 500:
+            data["performance_metrics"] = performance_metrics[-500:]
+
+        # Limiter successful_contexts (réduit à 300 pour économiser RAM)
+        successful_contexts = data.get("successful_contexts", [])
+        if isinstance(successful_contexts, list) and len(successful_contexts) > 300:
+            data["successful_contexts"] = successful_contexts[-300:]
+
+        # Limiter error_contexts (réduit à 300 pour économiser RAM)
+        error_contexts = data.get("error_contexts", [])
+        if isinstance(error_contexts, list) and len(error_contexts) > 300:
+            data["error_contexts"] = error_contexts[-300:]
+
+        return data
+
+    def _save_memory(self) -> None:
         """Sauvegarde la mémoire décisionnelle"""
         try:
             self.memory["last_update"] = datetime.now().isoformat()
@@ -362,7 +454,7 @@ class ConfidenceScorer:
 
         return recommendations
 
-    def _update_memory(self, decision: str, context: dict, score: float, explanation: dict):
+    def _update_memory(self, decision: str, context: dict, score: float, explanation: dict) -> None:
         """Met à jour la mémoire décisionnelle"""
         try:
             # Ajouter à l'historique des patterns
@@ -383,9 +475,15 @@ class ConfidenceScorer:
 
             self.memory["performance_metrics"].append(metric_entry)
 
-            # Limiter l'historique (garder 1000 dernières entrées)
-            if len(self.memory["performance_metrics"]) > 1000:
-                self.memory["performance_metrics"] = self.memory["performance_metrics"][-1000:]
+            # Limiter l'historique (garder 500 dernières entrées pour économiser RAM)
+            if len(self.memory["performance_metrics"]) > 500:
+                self.memory["performance_metrics"] = self.memory["performance_metrics"][-500:]
+
+            # Limiter decision_patterns aussi (garder 500 derniers pour économiser RAM)
+            decision_patterns = self.memory.get("decision_patterns", {})
+            if isinstance(decision_patterns, dict) and len(decision_patterns) > 500:
+                items = list(decision_patterns.items())
+                self.memory["decision_patterns"] = dict(items[-500:])
 
             # Apprentissage adaptatif des poids
             self._adaptive_weight_learning(score, explanation["factor_scores"])
@@ -398,7 +496,7 @@ class ConfidenceScorer:
                 f"❌ [CONFIDENCE] Erreur mise à jour mémoire: {e}", extra={"module": "zeroia"}
             )
 
-    def _adaptive_weight_learning(self, final_score: float, factor_scores: dict):
+    def _adaptive_weight_learning(self, final_score: float, factor_scores: dict) -> None:
         """Apprentissage adaptatif des poids basé sur la performance"""
         if final_score > 0.8:  # Bonne décision
             # Renforcer les facteurs qui ont bien scoré
@@ -454,11 +552,15 @@ class ConfidenceScorer:
                 decision["updated_at"] = datetime.now().isoformat()
                 break
 
+        # Limiter la taille après mise à jour pour économiser RAM
+        if len(self.decision_history) > self.max_decision_history:
+            self.decision_history = self.decision_history[-self.max_decision_history :]
+
     def get_average_confidence(self) -> float:
         """Retourne la moyenne des scores de confiance."""
         if not self.decision_history:
             return 0.0
-        total = sum(d.get("confidence", 0.0) for d in self.decision_history)
+        total = sum(float(d.get("confidence", 0.0)) for d in self.decision_history)
         return total / len(self.decision_history)
 
     def decay_confidence(self, days: int = 7) -> None:
@@ -472,29 +574,51 @@ class ConfidenceScorer:
                 decision["confidence"] = max(0.1, decayed_confidence)
 
     def save_confidence_data(self) -> None:
-        """Sauvegarde les données de confiance."""
+        """Sauvegarde les données de confiance avec limite pour économiser RAM."""
         try:
+            # Limiter avant sauvegarde pour économiser RAM
+            limited_history = self.decision_history[-self.max_decision_history :]
             with open("state/confidence_data.json", "w") as f:
-                json.dump(self.decision_history, f, indent=2)
+                json.dump(limited_history, f, indent=2)
         except Exception:
             pass  # Ignore les erreurs d'écriture
 
     def load_confidence_data(self) -> None:
-        """Charge les données de confiance."""
+        """Charge les données de confiance avec limite pour économiser RAM."""
         try:
             with open("state/confidence_data.json") as f:
                 data = json.load(f)
                 if isinstance(data, list):
-                    self.decision_history = data
+                    # Limiter à max_decision_history pour économiser RAM
+                    self.decision_history = data[-self.max_decision_history :]
         except FileNotFoundError:
             self.decision_history = []
         except Exception:
             self.decision_history = []
 
 
-def main():
+# Instance globale du scorer (singleton pour économiser la RAM)
+_scorer_instance: ConfidenceScorer | None = None
+
+
+def get_scorer(state_file: str = "modules/zeroia/state/confidence_memory.toml") -> ConfidenceScorer:
+    """
+    Retourne l'instance globale du ConfidenceScorer (singleton)
+
+    Évite de créer plusieurs instances qui chargeraient toutes le fichier de 2.2GB en mémoire.
+    """
+    global _scorer_instance
+    if _scorer_instance is None:
+        _scorer_instance = ConfidenceScorer(state_file)
+        ark_logger.info(
+            "✅ [CONFIDENCE] Instance singleton créée", extra={"arkalia_module": "zeroia"}
+        )
+    return _scorer_instance
+
+
+def main() -> None:
     """Test du système de scoring de confiance"""
-    scorer = ConfidenceScorer()
+    scorer = get_scorer()
 
     # Test avec un contexte exemple
     test_context = {

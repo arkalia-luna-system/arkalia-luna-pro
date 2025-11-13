@@ -52,9 +52,10 @@ class SandoziaCore:
 
         # Métriques et état
         self.metrics_history: list[SandoziaMetrics] = []
+        self.max_metrics_history = 500  # Limite pour économiser la RAM
         self.intelligence_snapshots = diskcache.Cache(
-            "./cache/sandozia_snapshots", size_limit=100_000_000
-        )  # 100MB limit (réduit de 500MB pour économiser la RAM)
+            "./cache/sandozia_snapshots", size_limit=50_000_000
+        )  # 50MB limit (réduit pour économiser la RAM)
         self.snapshots_counter = 0  # Compteur simple pour le suivi
         self.active_correlations: dict[str, Any] = {}
 
@@ -412,6 +413,10 @@ class SandoziaCore:
                 )
 
                 self.metrics_history.append(metrics)
+                
+                # Limiter l'historique pour économiser la RAM
+                if len(self.metrics_history) > self.max_metrics_history:
+                    self.metrics_history = self.metrics_history[-self.max_metrics_history:]
 
                 # Sauvegarder état
                 await self._save_state(snapshot, metrics)

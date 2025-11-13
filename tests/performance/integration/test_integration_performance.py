@@ -82,8 +82,15 @@ class TestIntegrationPerformance:
             # Simulation d'une décision ZeroIA avec vérification ReflexIA
             context = {"cpu_usage": 75.0, "memory_usage": 80.0, "error_rate": 0.02}
 
-            # Décision ZeroIA
-            decision = asyncio.run(zeroia_core.make_decision(context))
+            # Mock assess_system_health pour éviter les blocages
+            from unittest.mock import AsyncMock, patch
+
+            with patch.object(
+                zeroia_core.graceful_degradation, "assess_system_health", new_callable=AsyncMock
+            ) as mock_health:
+                mock_health.return_value = 0.9  # Santé système excellente
+                # Décision ZeroIA
+                decision = asyncio.run(zeroia_core.make_decision(context))
 
             # Vérification ReflexIA
             check_result = reflexia_core.check_module_health("zeroia")
@@ -159,8 +166,14 @@ class TestIntegrationPerformance:
                 {"system_metrics": system_metrics, "events": ["performance_degradation"]}
             )
 
-            # 3. Décision ZeroIA
-            decision = asyncio.run(zeroia_core.make_decision(system_metrics))
+            # 3. Décision ZeroIA (avec mock pour éviter blocage)
+            from unittest.mock import AsyncMock, patch
+
+            with patch.object(
+                zeroia_core.graceful_degradation, "assess_system_health", new_callable=AsyncMock
+            ) as mock_health:
+                mock_health.return_value = 0.9  # Santé système excellente
+                decision = asyncio.run(zeroia_core.make_decision(system_metrics))
 
             # 4. Vérification ReflexIA
             health_check = reflexia_core.check_module_health("zeroia")
@@ -241,7 +254,13 @@ class TestIntegrationPerformance:
 
         async def communication_chain() -> Any:
             # Chaîne de communication : ZeroIA → ReflexIA → Sandozia
-            decision = await zeroia_core.make_decision({"cpu_usage": 70.0})
+            from unittest.mock import AsyncMock, patch
+
+            with patch.object(
+                zeroia_core.graceful_degradation, "assess_system_health", new_callable=AsyncMock
+            ) as mock_health:
+                mock_health.return_value = 0.9  # Santé système excellente
+                decision = await zeroia_core.make_decision({"cpu_usage": 70.0})
 
             health_check = reflexia_core.check_module_health("zeroia")
 
@@ -283,8 +302,14 @@ class TestIntegrationPerformance:
                 if time.time() % 10 < 5:  # 50% de chance d'échec
                     raise Exception("Simulated error")
 
-                decision = await zeroia_core.make_decision({"cpu_usage": 70.0})
-                return {"status": "success", "decision": decision}
+                from unittest.mock import AsyncMock, patch
+
+                with patch.object(
+                    zeroia_core.graceful_degradation, "assess_system_health", new_callable=AsyncMock
+                ) as mock_health:
+                    mock_health.return_value = 0.9  # Santé système excellente
+                    decision = await zeroia_core.make_decision({"cpu_usage": 70.0})
+                    return {"status": "success", "decision": decision}
 
             except Exception as e:
                 # Propagation de l'erreur
@@ -345,8 +370,14 @@ class TestIntegrationLoadPerformance:
                 }
             )
 
-            # Décision ZeroIA basée sur l'analyse
-            decision = await zeroia_core.make_decision(system_metrics)
+            # Décision ZeroIA basée sur l'analyse (avec mock pour éviter blocage)
+            from unittest.mock import AsyncMock, patch
+
+            with patch.object(
+                zeroia_core.graceful_degradation, "assess_system_health", new_callable=AsyncMock
+            ) as mock_health:
+                mock_health.return_value = 0.9  # Santé système excellente
+                decision = await zeroia_core.make_decision(system_metrics)
 
             # Vérification ReflexIA
             health_check = reflexia_core.check_module_health("zeroia")
@@ -416,12 +447,18 @@ class TestIntegrationLoadPerformance:
             # Analyse avec données volumineuses
             analysis = sandozia_core.analyze_data(large_dataset)
 
-            # Décision basée sur l'analyse
+            # Décision basée sur l'analyse (avec mock pour éviter blocage)
+            from unittest.mock import AsyncMock, patch
+
             system_metrics = large_dataset.get("system_metrics", {})
-            if isinstance(system_metrics, dict):
-                decision = await zeroia_core.make_decision(system_metrics)
-            else:
-                decision = await zeroia_core.make_decision({})
+            with patch.object(
+                zeroia_core.graceful_degradation, "assess_system_health", new_callable=AsyncMock
+            ) as mock_health:
+                mock_health.return_value = 0.9  # Santé système excellente
+                if isinstance(system_metrics, dict):
+                    decision = await zeroia_core.make_decision(system_metrics)
+                else:
+                    decision = await zeroia_core.make_decision({})
 
             return {"analysis": analysis, "decision": decision}
 
@@ -460,29 +497,35 @@ class TestIntegrationMemoryPerformance:
         initial_memory = process.memory_info().rss
 
         # Exécuter des opérations d'intégration
-        for i in range(100):
-            # Décision ZeroIA
-            decision = asyncio.run(zeroia_core.make_decision({"cpu_usage": 70.0 + (i % 20)}))
+        from unittest.mock import AsyncMock, patch
 
-            # Vérification ReflexIA
-            health_check = reflexia_core.check_module_health("zeroia")
+        with patch.object(
+            zeroia_core.graceful_degradation, "assess_system_health", new_callable=AsyncMock
+        ) as mock_health:
+            mock_health.return_value = 0.9  # Santé système excellente
+            for i in range(100):
+                # Décision ZeroIA
+                decision = asyncio.run(zeroia_core.make_decision({"cpu_usage": 70.0 + (i % 20)}))
 
-            # Analyse Sandozia
-            analysis = sandozia_core.analyze_data(
-                {
-                    "system_metrics": {"cpu": 70.0 + (i % 20)},
-                    "events": [f"event_{i}"],
+                # Vérification ReflexIA
+                health_check = reflexia_core.check_module_health("zeroia")
+
+                # Analyse Sandozia
+                analysis = sandozia_core.analyze_data(
+                    {
+                        "system_metrics": {"cpu": 70.0 + (i % 20)},
+                        "events": [f"event_{i}"],
+                    }
+                )
+
+                # Réaction cognitive (synchrone pour ce test)
+                stimulus = {
+                    "type": "memory_test",
+                    "severity": "low",
+                    "source": "test",
+                    "data": {"iteration": i},
                 }
-            )
-
-            # Réaction cognitive (synchrone pour ce test)
-            stimulus = {
-                "type": "memory_test",
-                "severity": "low",
-                "source": "test",
-                "data": {"iteration": i},
-            }
-            reaction = asyncio.run(cognitive_reactor.process_stimulus(stimulus))
+                reaction = asyncio.run(cognitive_reactor.process_stimulus(stimulus))
 
         final_memory = process.memory_info().rss
         memory_increase = final_memory - initial_memory

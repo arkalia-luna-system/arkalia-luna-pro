@@ -18,7 +18,7 @@ from typing import Any
 
 from core.ark_logger import ark_logger
 
-from .confidence_score import ConfidenceScorer
+from .confidence_score import get_scorer
 from .decision_engine import DecisionEngine
 from .error_recovery_system import ErrorRecoverySystem, ErrorType
 from .graceful_degradation import DegradationLevel, GracefulDegradationSystem
@@ -40,7 +40,7 @@ class ZeroIACoordinator:
     - Enhanced Orchestrator : Orchestration avec Circuit Breaker
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise le coordinateur avec tous les systèmes"""
         ark_logger.info(
             "🚀 Initialisation ZeroIA Coordinator Enhanced", extra={"arkalia_module": "zeroia"}
@@ -51,16 +51,19 @@ class ZeroIACoordinator:
         self.state_manager = StateManager()
 
         # Systèmes avancés
-        self.confidence_scorer = ConfidenceScorer()
+        # Utiliser le singleton pour éviter de charger 2.2GB plusieurs fois en RAM
+        self.confidence_scorer = get_scorer()
         self.graceful_degradation = GracefulDegradationSystem()
         self.error_recovery = ErrorRecoverySystem()
+        # max_loops=1000 par défaut pour éviter les boucles infinies
+        # Peut être changé via start() si besoin
         self.orchestrator = ZeroIAOrchestrator(
-            max_loops=None, interval_seconds=10.0, circuit_failure_threshold=8, timeout=45
+            max_loops=1000, interval_seconds=10.0, circuit_failure_threshold=8, timeout=45
         )
 
         # État du coordinateur
         self.is_running = False
-        self.start_time = None
+        self.start_time: datetime | None = None
         self.session_stats = {
             "total_decisions": 0,
             "successful_decisions": 0,
@@ -130,10 +133,10 @@ class ZeroIACoordinator:
         ark_logger.info("✅ Orchestrateur démarré", extra={"arkalia_module": "zeroia"})
 
     async def _run_orchestrator(self) -> None:
-        """Exécute l'orchestrateur avec monitoring"""
+        """Exécute l'orchestrateur avec monitoring (version async optimisée)"""
         try:
-            # Utiliser l'orchestrateur enhanced existant
-            self.orchestrator.run()
+            # Utiliser la version async de l'orchestrateur pour meilleure performance
+            await self.orchestrator.async_run()
         except Exception as e:
             ark_logger.error(f"💥 Erreur orchestrateur: {e}", extra={"arkalia_module": "zeroia"})
             await self.error_recovery.handle_error(ErrorType.UNKNOWN, str(e))
@@ -284,7 +287,7 @@ def get_coordinator() -> ZeroIACoordinator:
     return _coordinator_instance
 
 
-async def main():
+async def main() -> None:
     """Point d'entrée principal"""
     coordinator = get_coordinator()
 

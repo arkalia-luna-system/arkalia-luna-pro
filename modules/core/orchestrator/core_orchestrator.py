@@ -204,41 +204,63 @@ class CoreOrchestrator(IOrchestrator):
             return False
 
     async def _initialize_modules(self) -> None:
-        """Initialise tous les modules via la factory"""
+        """Initialise tous les modules via la factory en parallèle pour performance"""
         ark_logger.info(
-            f"🔌 Initializing {len(self.config.enabled_modules)} modules...",
+            f"🔌 Initializing {len(self.config.enabled_modules)} modules in parallel...",
             extra={"arkalia_module": "core"},
         )
 
-        for module_name in self.config.enabled_modules:
+        async def init_single_module(module_name: str) -> tuple[str, ModuleWrapper | None]:
+            """Initialise un seul module"""
             try:
                 # Créer le module via la factory
                 module_instance = self.module_factory.create_module(module_name)
 
                 if module_instance:
-                    # Initialiser le module
-                    if module_instance.initialize():
+                    # Initialiser le module (exécuter dans un thread pour éviter blocage)
+                    init_success = await asyncio.to_thread(module_instance.initialize)
+                    
+                    if init_success:
                         wrapper = ModuleWrapper(module_name, module_instance)
                         wrapper.update_success()
-                        self.modules[module_name] = wrapper
                         ark_logger.info(
                             f"✅ {module_name} initialized successfully",
                             extra={"arkalia_module": "core"},
                         )
+                        return (module_name, wrapper)
                     else:
                         ark_logger.warning(
                             f"⚠️ {module_name} failed to initialize",
                             extra={"arkalia_module": "core"},
                         )
+                        return (module_name, None)
                 else:
                     ark_logger.warning(
                         f"⚠️ {module_name} not available", extra={"arkalia_module": "core"}
                     )
+                    return (module_name, None)
 
             except Exception as e:
                 ark_logger.error(
                     f"❌ Error initializing {module_name}: {e}", extra={"arkalia_module": "core"}
                 )
+                return (module_name, None)
+
+        # Initialiser tous les modules en parallèle
+        tasks = [init_single_module(name) for name in self.config.enabled_modules]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+
+        # Enregistrer les modules initialisés avec succès
+        for result in results:
+            if isinstance(result, Exception):
+                ark_logger.error(
+                    f"❌ Exception during module initialization: {result}",
+                    extra={"arkalia_module": "core"},
+                )
+            elif isinstance(result, tuple) and len(result) == 2:
+                module_name, wrapper = result
+                if wrapper is not None:
+                    self.modules[module_name] = wrapper
 
     async def _start_monitoring_tasks(self) -> None:
         """Démarre les tasks de monitoring"""

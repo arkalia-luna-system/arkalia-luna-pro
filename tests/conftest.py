@@ -34,8 +34,8 @@ class MockSandoziaCore:
         return {"status": "active", "version": self.version}
 
 
-# Mock des modules qui n'existent pas
-sys.modules["modules.zeroia.reason_loop"] = MagicMock()
+# Mock des modules qui n'existent pas (mais pas reason_loop qui existe maintenant)
+# sys.modules["modules.zeroia.reason_loop"] = MagicMock()  # DÉSACTIVÉ : reason_loop existe maintenant
 sys.modules["modules.sandozia.core.cognitive_reactor"] = MagicMock()
 
 

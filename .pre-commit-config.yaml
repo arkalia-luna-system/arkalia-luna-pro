@@ -62,7 +62,7 @@ repos:
         entry: pytest --tb=short --strict-markers
         language: system
         pass_filenames: false
-        always_run: true
+        always_run: false
         stages: [manual]
 
       - id: version-check

@@ -136,10 +136,12 @@ class EventStore:
         self.events[event_id] = event
         self.event_counter += 1
 
-        # Limiter le nombre d'événements stockés
-        if len(self.events) > 1000:
-            oldest_key = next(iter(self.events))
-            del self.events[oldest_key]
+        # Limiter le nombre d'événements stockés (réduit à 500 pour économiser RAM)
+        if len(self.events) > 500:
+            # Supprimer les 100 plus anciens pour éviter de supprimer un par un
+            keys_to_remove = list(self.events.keys())[:100]
+            for key in keys_to_remove:
+                del self.events[key]
 
         self._save_events()
 
