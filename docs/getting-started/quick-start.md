@@ -1,10 +1,13 @@
-# Démarrage Rapide - Arkalia-LUNA Pro
+# 🚀 Démarrage Rapide
 
-Guide pour démarrer avec Arkalia-LUNA Pro en quelques minutes.
+> Guide pour démarrer avec Arkalia-LUNA Pro en quelques minutes.
 
-## Installation
+---
+
+## 📦 Installation
 
 ### Prérequis
+
 - Python 3.11 ou plus récent
 - Docker et Docker Compose
 - Git
@@ -23,18 +26,24 @@ docker-compose up -d
 curl http://localhost:8000/health
 ```
 
-## Accès aux Services
+---
+
+## 🔗 Accès aux Services
 
 Une fois démarré, accédez aux services :
 
 | Service | URL | Description |
 |---------|-----|-------------|
 | **API principale** | http://localhost:8000 | API centrale |
-| **Grafana** | http://localhost:3000 | Tableaux de bord (admin / arkalia-secure-2025) |
+| **Grafana** | http://localhost:3000 | Tableaux de bord |
 | **Prometheus** | http://localhost:9090 | Métriques système |
 | **Documentation API** | http://localhost:8000/docs | Documentation interactive |
 
-## Premiers Pas
+> 💡 **Identifiants Grafana** : `admin` / `arkalia-secure-2025`
+
+---
+
+## 🎯 Premiers Pas
 
 ### Tester l'API
 
@@ -58,9 +67,12 @@ pytest tests/ -v
 pytest tests/unit/ -v
 ```
 
-## Problèmes Courants
+---
+
+## 🔧 Problèmes Courants
 
 ### Port déjà utilisé
+
 ```bash
 # Trouver le processus
 lsof -i :8000
@@ -70,6 +82,7 @@ kill -9 <PID>
 ```
 
 ### Redémarrer les services
+
 ```bash
 # Arrêter et redémarrer
 docker-compose down
@@ -77,6 +90,7 @@ docker-compose up -d
 ```
 
 ### Vérifier les logs
+
 ```bash
 # Logs de tous les services
 docker-compose logs
@@ -85,7 +99,9 @@ docker-compose logs
 docker-compose logs arkalia-api
 ```
 
-## Prochaines Étapes
+---
+
+## 📚 Prochaines Étapes
 
 1. **Explorer les modules** : [Documentation des modules](../modules/zeroia.md)
 2. **Utiliser l'API** : [Guide d'utilisation](../fonctionnement/utilisation.md)
@@ -94,4 +110,8 @@ docker-compose logs arkalia-api
 
 ---
 
-*Dernière mise à jour : novembre 2025
+<div align="right">
+
+*Dernière mise à jour : novembre 2025*
+
+</div>

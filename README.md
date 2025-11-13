@@ -1,7 +1,6 @@
-# Arkalia-LUNA Pro - Orchestrateur IA
+# 🌙 Arkalia-LUNA Pro
 
-> **English**: AI orchestration platform with FastAPI, advanced monitoring, security, deployment, cognitive modules - reference open-source for production.
-> **Français**: Plateforme d'orchestration IA avec FastAPI, monitoring avancé, sécurité, déploiement, modules cognitifs - référence open-source pour production.
+> **Orchestrateur IA Modulaire** — Plateforme d'orchestration IA avec FastAPI, monitoring avancé, sécurité, déploiement et modules cognitifs.
 
 [![Release](https://img.shields.io/github/v/tag/arkalia-luna-system/arkalia-luna-pro?label=release)](https://github.com/arkalia-luna-system/arkalia-luna-pro/releases)
 [![Status](https://img.shields.io/badge/status-production%20ready-brightgreen.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
@@ -11,7 +10,9 @@
 [![codecov](https://codecov.io/gh/arkalia-luna-system/arkalia-luna-pro/branch/develop/graph/badge.svg)](https://codecov.io/gh/arkalia-luna-system/arkalia-luna-pro)
 [![Workflows](https://img.shields.io/badge/CI%2FCD-8%20workflows-blue.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro/.github/workflows)
 
-## Démarrage Rapide
+---
+
+## 🚀 Démarrage Rapide
 
 ```bash
 # 1. Cloner le projet
@@ -25,36 +26,50 @@ docker-compose up -d
 curl http://localhost:8000/health
 ```
 
-**Accès aux services** :
+### 🔗 Accès aux Services
 
-- **API principale** : http://localhost:8000
-- **Documentation API** : http://localhost:8000/docs
-- **Grafana** : http://localhost:3000 (admin / arkalia-secure-2025)
-- **Prometheus** : http://localhost:9090
+| Service | URL | Description |
+|---------|-----|-------------|
+| **API principale** | http://localhost:8000 | API centrale |
+| **Documentation API** | http://localhost:8000/docs | Documentation interactive |
+| **Grafana** | http://localhost:3000 | Tableaux de bord |
+| **Prometheus** | http://localhost:9090 | Métriques système |
 
-## Modules Principaux
+> 💡 **Identifiants Grafana** : `admin` / `arkalia-secure-2025`
 
-- **ZeroIA** - Système de décision intelligent
-- **Reflexia** - Surveillance et monitoring
-- **Sandozia** - Analyse et validation
-- **AssistantIA** - Interface conversationnelle avec IA
-- **Security** - Protection et audit de sécurité
-- **Monitoring** - Observabilité complète (Prometheus, Grafana)
+---
 
-## Cas d'Usage
+## 🧩 Modules Principaux
 
-**Adapté pour** :
+| Module | Description |
+|--------|-------------|
+| **ZeroIA** | Système de décision intelligent |
+| **Reflexia** | Surveillance et monitoring |
+| **Sandozia** | Analyse et validation croisée |
+| **AssistantIA** | Interface conversationnelle avec IA |
+| **Security** | Protection et audit de sécurité |
+| **Monitoring** | Observabilité complète (Prometheus, Grafana) |
+
+---
+
+## 📊 Cas d'Usage
+
+### ✅ Adapté pour
+
 - Développement et tests
 - Prototypage IA
 - Apprentissage des technologies IA
 - Évaluation de performance
 
-**Limitations** :
+### ⚠️ Limitations
+
 - Nécessite Ollama installé localement
 - Optimisation mémoire en cours
 - Couverture tests : 59% (objectif : 65%)
 
-## Architecture
+---
+
+## 🏗️ Architecture
 
 Le système est organisé en modules qui communiquent entre eux :
 
@@ -74,87 +89,107 @@ Le système est organisé en modules qui communiquent entre eux :
 | **arkalia-sandozia** | - | Analyse et validation |
 | **cognitive** | 8003 | Intelligence avancée |
 
-Pour plus de détails, voir [Architecture complète](docs/architecture.md)
+> 📖 Pour plus de détails, voir [Architecture complète](docs/architecture.md)
 
-## Exemples d'Utilisation
+---
 
-### Détection de Sécurité
+## 💡 Exemples d'Utilisation
+
+### 🔒 Détection de Sécurité
+
 Le système détecte automatiquement les tentatives d'intrusion et bloque les menaces.
 
 ```bash
 python scripts/launch_demo_scenario.py --scenario security
 ```
 
-### Optimisation de Performance
+### ⚡ Optimisation de Performance
+
 Détection automatique des problèmes de performance et optimisation.
 
 ```bash
 python scripts/launch_demo_scenario.py --scenario performance
 ```
 
-### Apprentissage Automatique
+### 🧠 Apprentissage Automatique
+
 Le système apprend des patterns et améliore ses décisions.
 
 ```bash
 python scripts/launch_demo_scenario.py --scenario learning
 ```
 
-### Démo Complète
+### 🎯 Démo Complète
+
 Tester tous les scénarios en une fois :
 
 ```bash
 python scripts/launch_demo_scenario.py --all
 ```
 
+---
 
-## Fonctionnalités Principales
+## ⚙️ Fonctionnalités Principales
 
-### ZeroIA - Système de Décision
+### 🎯 ZeroIA — Système de Décision
+
 - Prise de décision intelligente
 - Calcul de confiance
 - Récupération automatique d'erreurs
 - Surveillance en temps réel
 
-### AssistantIA - Interface Conversationnelle
+### 💬 AssistantIA — Interface Conversationnelle
+
 - Dialogue avec l'IA via API
 - Intégration Ollama (modèles locaux)
 - Contexte adaptatif
 
-### ReflexIA - Surveillance
+### 👁️ ReflexIA — Surveillance
+
 - Monitoring des autres modules
 - Détection de problèmes
 - Analyse comportementale
 
-### Sandozia - Analyse
+### 🔍 Sandozia — Analyse
+
 - Validation croisée entre modules
 - Détection de patterns
 - Intelligence collaborative
 
-### Security - Sécurité
+### 🛡️ Security — Sécurité
+
 - Gestion des secrets
 - Audit automatique
 - Protection contre les attaques
 
-## Monitoring
+---
+
+## 📈 Monitoring
 
 ### Grafana
+
 - **URL** : http://localhost:3000
 - **Tableaux de bord** : État système, performance, sécurité
-- **Identifiants** : admin / arkalia-secure-2025
+- **Identifiants** : `admin` / `arkalia-secure-2025`
 
 ### Prometheus
+
 - **URL** : http://localhost:9090
 - **Métriques** : Collecte en temps réel de toutes les métriques système
 
 ### Logs
+
 - **Loki** : http://localhost:3100
 - **Recherche** : Tous les logs centralisés et consultables
 
 ### Alertes
+
 - **AlertManager** : http://localhost:9093
 - **Alertes automatiques** configurées
 
-## Tests
+---
+
+## 🧪 Tests
 
 ```bash
 # Lancer tous les tests
@@ -167,9 +202,11 @@ make test-unit
 make test-integration
 ```
 
-**Statut** : 442 tests passent (59.25% de couverture)
+**Statut** : ✅ 442 tests passent (59.25% de couverture)
 
-## Sécurité
+---
+
+## 🔐 Sécurité
 
 - Authentification par token
 - Limitation de débit (rate limiting)
@@ -177,22 +214,30 @@ make test-integration
 - Audit automatique
 - Scan de sécurité automatisé
 
-## Documentation
+---
+
+## 📚 Documentation
 
 - **Documentation complète** : [docs/](docs/)
 - **API interactive** : http://localhost:8000/docs
 - **Guide de démarrage** : [Quick Start](docs/getting-started/quick-start.md)
 
-## Contribuer
+---
 
-- Signaler un bug : [GitHub Issues](https://github.com/arkalia-luna-system/arkalia-luna-pro/issues)
-- Proposer une fonctionnalité : Fork → Pull Request
-- Améliorer la documentation : Toute contribution est bienvenue
+## 🤝 Contribuer
 
-**Standards** : Tests obligatoires, formatage avec Black/Ruff, documentation à jour
+- **Signaler un bug** : [GitHub Issues](https://github.com/arkalia-luna-system/arkalia-luna-pro/issues)
+- **Proposer une fonctionnalité** : Fork → Pull Request
+- **Améliorer la documentation** : Toute contribution est bienvenue
+
+> **Standards** : Tests obligatoires, formatage avec Black/Ruff, documentation à jour
 
 ---
 
-## Arkalia-LUNA Pro v2.8.0
+<div align="center">
 
-Orchestrateur IA structuré, ouvert et pensé pour l'apprentissage collectif
+**Arkalia-LUNA Pro v2.8.0**
+
+*Orchestrateur IA structuré, ouvert et pensé pour l'apprentissage collectif*
+
+</div>

@@ -1,10 +1,10 @@
-# Utilisation d'Arkalia-LUNA Pro
+# 📖 Utilisation d'Arkalia-LUNA Pro
 
-Ce guide explique comment utiliser Arkalia-LUNA Pro pour dialoguer avec l'IA, surveiller le système et utiliser les fonctionnalités principales.
+> Guide complet pour utiliser Arkalia-LUNA Pro : dialoguer avec l'IA, surveiller le système et utiliser les fonctionnalités principales.
 
 ---
 
-## Démarrer le système
+## 🚀 Démarrer le système
 
 ### Avec Docker (recommandé)
 
@@ -20,7 +20,7 @@ uvicorn modules.helloria.core:app --reload
 
 ---
 
-## Utiliser l'API
+## 🌐 Utiliser l'API
 
 ### Vérifier l'état du système
 
@@ -28,7 +28,8 @@ uvicorn modules.helloria.core:app --reload
 curl http://localhost:8000/status
 ```
 
-Réponse :
+**Réponse** :
+
 ```json
 {
   "status": "online",
@@ -45,18 +46,19 @@ curl -X POST http://localhost:8000/chat \
   -d '{"message": "Bonjour, comment ça va ?"}'
 ```
 
-Réponse :
+**Réponse** :
+
 ```json
 {
   "response": "Bonjour ! Je vais bien, merci."
 }
 ```
 
-**Note** : L'IA utilise Ollama en local (modèle mistral par défaut).
+> 💡 **Note** : L'IA utilise Ollama en local (modèle mistral par défaut).
 
 ---
 
-## Sécurité
+## 🔐 Sécurité
 
 - Authentification par token (header `X-API-Token`)
 - Monitoring avec Prometheus et Grafana
@@ -65,19 +67,25 @@ Réponse :
 
 ---
 
-## Documentation API
+## 📚 Documentation API
 
 Pour voir tous les endpoints disponibles et tester l'API interactivement :
 
 - **Documentation interactive** : http://localhost:8000/docs
 - **Documentation alternative** : http://localhost:8000/redoc
 
-## Notes
+---
 
-- Port par défaut : 8000
-- Toutes les interactions sont enregistrées dans les logs
-- Le système utilise Ollama pour l'IA locale
+## 📝 Notes
+
+- **Port par défaut** : 8000
+- **Logs** : Toutes les interactions sont enregistrées dans les logs
+- **IA locale** : Le système utilise Ollama pour l'IA locale
 
 ---
 
+<div align="right">
+
 *Dernière mise à jour : novembre 2025*
+
+</div>

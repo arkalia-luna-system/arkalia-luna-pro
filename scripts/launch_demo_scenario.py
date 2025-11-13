@@ -417,18 +417,14 @@ class ArkaliaDemoCLI:
 
             # Statistiques des scénarios
             scenarios_list: list[dict[str, Any]] = self.results.get("scenarios", [])
-            total_duration: float = sum(
-                float(s.get("duration", 0.0)) for s in scenarios_list
-            )
+            total_duration: float = sum(float(s.get("duration", 0.0)) for s in scenarios_list)
             total_steps: int = sum(len(s.get("steps", [])) for s in scenarios_list)
 
             metrics_dict["demo_stats"] = {
                 "total_scenarios": len(scenarios_list),
                 "total_duration": total_duration,
                 "total_steps": total_steps,
-                "avg_duration": (
-                    total_duration / len(scenarios_list) if scenarios_list else 0.0
-                ),
+                "avg_duration": (total_duration / len(scenarios_list) if scenarios_list else 0.0),
             }
             self.results["metrics"] = metrics_dict
 
