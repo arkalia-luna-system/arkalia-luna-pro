@@ -14,9 +14,9 @@ import toml
 from core.ark_logger import ark_logger
 
 # Imports Arkalia existants (functions disponibles)
-from ...reflexia.core import get_metrics as reflexia_get_metrics
-from ...reflexia.core import launch_reflexia_check
-from ...zeroia.reason_loop_enhanced import load_context, load_reflexia_state
+from modules.reflexia.core import get_metrics as reflexia_get_metrics
+from modules.reflexia.core import launch_reflexia_check
+from modules.zeroia.reason_loop_enhanced import load_context, load_reflexia_state
 
 from .metrics import SandoziaMetrics
 from .snapshot import IntelligenceSnapshot
