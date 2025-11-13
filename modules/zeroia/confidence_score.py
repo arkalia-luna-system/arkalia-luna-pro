@@ -36,6 +36,10 @@ class ConfidenceScorer:
             "context_relevance": 0.15,  # Pertinence contexte
             "error_rate": 0.10,  # Taux d'erreur
         }
+        # Cache pour config (évite rechargement)
+        self._config_cache: dict[str, Any] | None = None
+        self._config_cache_time: float = 0.0
+        self._config_cache_ttl: float = 300.0  # 5 minutes
         self.memory = self._load_memory()
         self.confidence_threshold = 0.7
         self.load_config()
@@ -657,5 +661,6 @@ def main() -> None:
         ark_logger.info(f"  • {key}: {value}", extra={"module": "zeroia"})
 
 
-if __name__ == "__main__":
-    main()
+# Désactivé pour éviter les lancements automatiques
+# if __name__ == "__main__":
+#     main()

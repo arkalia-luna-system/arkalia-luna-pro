@@ -81,7 +81,8 @@ class ZeroIAOrchestrator:
         try:
             while self._should_continue():
                 self._execute_single_loop()
-                await asyncio.sleep(self.interval_seconds)  # Utilise asyncio.sleep au lieu de time.sleep
+                # Utilise asyncio.sleep au lieu de time.sleep
+                await asyncio.sleep(self.interval_seconds)
 
         except KeyboardInterrupt:
             ark_logger.info("⏹️ Arrêt orchestration (Ctrl+C)", extra={"arkalia_module": "zeroia"})
