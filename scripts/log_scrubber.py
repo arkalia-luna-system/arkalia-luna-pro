@@ -27,7 +27,6 @@ class LogScrubber:
 
     def __init__(self, config_path: Path | None = None) -> None:
         self.config = self._load_config(config_path)
-        log_files: list[Path] = []
         self.stats: dict[str, Any] = {
             "files_processed": 0,
             "sensitive_data_removed": 0,

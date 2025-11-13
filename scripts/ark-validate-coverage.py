@@ -143,9 +143,9 @@ class CoverageAnalyzer:
         # Identifier les modules sans tests
         for _module_path, info in self.modules_info.items():
             if not info["has_tests"]:
-                suggestions.append(
-                    f"   - Créer tests/unit/{info['module_name'].replace('.', '/')}/test_{info['module_name'].split('.')[-1]}.py"
-                )
+                module_path = info["module_name"].replace(".", "/")
+                module_file = info["module_name"].split(".")[-1]
+                suggestions.append(f"   - Créer tests/unit/{module_path}/test_{module_file}.py")
 
         suggestions.extend(
             [

@@ -197,9 +197,8 @@ class MonitoringValidator:
         # Vérifier les services
         for service_name, service_data in self.results["components"].items():
             if service_data.get("status") != "healthy":
-                recommendations.append(
-                    f"🔧 Corriger le service {service_name}: {service_data.get('error', 'Unknown error')}"
-                )
+                error_msg = service_data.get("error", "Unknown error")
+                recommendations.append(f"🔧 Corriger le service {service_name}: {error_msg}")
 
         # Vérifier les métriques
         metrics_data = self.results.get("metrics", {})
@@ -332,12 +331,18 @@ class MonitoringValidator:
                 f"  🖥️  CPU: {system_data.get('cpu_percent', 0)}%",
                 extra={"arkalia_module": "scripts"},
             )
+            mem_percent = system_data.get("memory_percent", 0)
+            mem_used = system_data.get("memory_used_gb", 0)
+            mem_total = system_data.get("memory_total_gb", 0)
             ark_logger.info(
-                f"  💾 RAM: {system_data.get('memory_percent', 0)}% ({system_data.get('memory_used_gb', 0)}GB/{system_data.get('memory_total_gb', 0)}GB)",
+                f"  💾 RAM: {mem_percent}% ({mem_used}GB/{mem_total}GB)",
                 extra={"arkalia_module": "scripts"},
             )
+            disk_percent = system_data.get("disk_percent", 0)
+            disk_used = system_data.get("disk_used_gb", 0)
+            disk_total = system_data.get("disk_total_gb", 0)
             ark_logger.info(
-                f"  💿 Disque: {system_data.get('disk_percent', 0)}% ({system_data.get('disk_used_gb', 0)}GB/{system_data.get('disk_total_gb', 0)}GB)",
+                f"  💿 Disque: {disk_percent}% ({disk_used}GB/{disk_total}GB)",
                 extra={"arkalia_module": "scripts"},
             )
 

@@ -137,7 +137,7 @@ class ArkaliaDemoCLI:
         # 4. Analyse comportementale Sandozia
         self.print_step("4. Analyse comportementale Sandozia")
         try:
-            behavior_data = {
+            {
                 "event_type": "security_incident",
                 "source_ip": suspicious_request["client_ip"],
                 "threat_level": scan_result.get("threat_level", "unknown"),
@@ -328,7 +328,7 @@ class ArkaliaDemoCLI:
             self.results["metrics"]["system"] = system_metrics.get("metrics", {})
 
             # Métriques Prometheus
-            prometheus_metrics = metrics.generate_metrics()
+            metrics.generate_metrics()
             self.results["metrics"]["prometheus"] = "collected"
 
             # Statistiques des scénarios

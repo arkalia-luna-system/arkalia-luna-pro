@@ -222,7 +222,7 @@ class ArkaliaGlobalDemo:
 
         # 3. Décision ZeroIA
         self.print_step("3. Décision ZeroIA")
-        decision_result = self.zeroia.make_decision("performance_optimization")
+        self.zeroia.make_decision("performance_optimization")
         decision_id = f"decision_{len(self.zeroia.state.get('decisions', [])) + 1}"
         scenario["steps"].append(
             {"step": "zeroia_decision", "decision_id": decision_id, "timestamp": time.time()}
@@ -300,7 +300,7 @@ class ArkaliaGlobalDemo:
 
         # 3. Décision ZeroIA
         self.print_step("3. Décision ZeroIA")
-        decision_result = self.zeroia.make_decision("adaptive_learning")
+        self.zeroia.make_decision("adaptive_learning")
         decision_id = f"decision_{len(self.zeroia.state.get('decisions', [])) + 1}"
         scenario["steps"].append(
             {"step": "zeroia_decision", "decision_id": decision_id, "timestamp": time.time()}
@@ -425,7 +425,7 @@ class ArkaliaGlobalDemo:
             self.collect_metrics()
 
             # Générer le résumé
-            summary = self.generate_summary()
+            self.generate_summary()
 
             # Sauvegarder les résultats
             self.save_demo_results()

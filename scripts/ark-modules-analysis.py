@@ -247,17 +247,21 @@ class ArkaliaModulesAnalyzer:
             )
             for item in high_priority:
                 component_name = item["component"].split(".")[-1]
+                module_key = f"{item['module']}_{component_name.lower()}"
                 ark_logger.info(
-                    f'        initialization_results["{item["module"]}_{component_name.lower()}"] = ModuleWrapper("{item["module"]}_{component_name.lower()}", {item["module"]}_component)',
+                    f'        initialization_results["{module_key}"] = '
+                    f'ModuleWrapper("{module_key}", {item["module"]}_component)',
                     extra={"arkalia_module": "scripts"},
                 )
+                module_key = f"{item['module']}_{component_name.lower()}"
                 ark_logger.info(
-                    f'        initialization_results["{item["module"]}_{component_name.lower()}"] = "✅ SUCCESS"',
+                    f'        initialization_results["{module_key}"] = "✅ SUCCESS"',
                     extra={"arkalia_module": "scripts"},
                 )
                 ark_logger.info("    except Exception as e:", extra={"arkalia_module": "scripts"})
+                module_key = f"{item['module']}_{component_name.lower()}"
                 ark_logger.info(
-                    f'        initialization_results["{item["module"]}_{component_name.lower()}"] = f"❌ ERROR: {{e}}"',
+                    f'        initialization_results["{module_key}"] = f"❌ ERROR: {{e}}"',
                     extra={"arkalia_module": "scripts"},
                 )
                 ark_logger.info("")
