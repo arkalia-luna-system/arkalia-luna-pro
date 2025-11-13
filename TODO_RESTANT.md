@@ -38,6 +38,11 @@
   - ✅ E501 : Lignes trop longues corrigées (config_manager.py, backends.py)
   - ✅ UP038 : isinstance avec tuple corrigé (security/core.py)
   - ✅ Formatage : Black appliqué sur tous les fichiers
+- ✅ **Documentation API** : Docstrings Sphinx/Google style ajoutées (2025-11-13)
+  - ✅ Toutes les classes Pydantic documentées (MessageInput, ChatResponse, HealthResponse)
+  - ✅ Tous les endpoints documentés avec Args, Returns, Raises, Examples
+  - ✅ FastAPI génère automatiquement OpenAPI/Swagger depuis les docstrings
+  - ✅ Documentation interactive disponible sur `/docs` et `/redoc`
 - ✅ **Workflows** : Upload artifacts GitHub Actions robustes (continue-on-error, timeout)
 
 ---

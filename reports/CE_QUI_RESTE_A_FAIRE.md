@@ -46,9 +46,14 @@ Les fichiers suivants font > 500 lignes mais sont **acceptables** (< 800 lignes)
 - **Note :** 59.25% est déjà excellent, l'amélioration à 65% est optionnelle
 
 #### B. Documentation API
-- **Statut actuel :** Documentation fonctionnelle complète
-- **Objectif optionnel :** Ajouter docstrings Sphinx/OpenAPI
-- **Priorité :** 🟢 Basse
+- **Statut actuel :** ✅ Documentation complète avec docstrings Sphinx/Google style
+- **Objectif optionnel :** ✅ **FAIT** - Docstrings améliorées dans `modules/assistantia/core.py`
+- **Priorité :** ✅ **TERMINÉ** (2025-11-13)
+- **Détails :**
+  - ✅ FastAPI avec OpenAPI/Swagger automatique (déjà configuré)
+  - ✅ Docstrings au format Sphinx/Google style pour toutes les classes et endpoints
+  - ✅ Documentation interactive disponible sur `/docs` et `/redoc`
+  - ✅ OpenAPI JSON disponible sur `/openapi.json`
 
 #### C. Performance monitoring
 - **Statut actuel :** Métriques Prometheus implémentées

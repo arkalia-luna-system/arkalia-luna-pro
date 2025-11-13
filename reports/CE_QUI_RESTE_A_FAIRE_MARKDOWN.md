@@ -19,14 +19,15 @@
 
 ## ⚠️ CE QUI RESTE À FAIRE
 
-### 1. Versions Incorrectes (8 occurrences)
+### 1. Versions Incorrectes (12 occurrences)
 
 #### Fichiers concernés :
 - `docs/guides/docker_hardening.md` - 1 occurrence
 - `docs/infrastructure/index.md` - 1 occurrence
-- `docs/planning/roadmap/index.md` - 4 occurrences (v3.x dans roadmap - **ACCEPTABLE**)
+- `docs/planning/roadmap/index.md` - 4 occurrences (v3.x dans roadmap - **ACCEPTABLE - GARDER**)
 - `docs/releases/v2.8.0.md` - 1 occurrence
 - `docs/vscode-setup.md` - 1 occurrence
+- `reports/CE_QUI_RESTE_A_FAIRE_MARKDOWN.md` - 4 occurrences (v3.x dans ce document - **ACCEPTABLE**)
 
 #### Action requise :
 - **Vérifier manuellement** chaque occurrence
@@ -95,18 +96,18 @@
 
 ## 📊 STATISTIQUES FINALES
 
-### Problèmes Détectés
+### Problèmes Détectés (Dernière analyse)
 - **Dates obsolètes** : 0 ✅
-- **Versions incorrectes** : 8 (dont 4 acceptables dans roadmap)
-- **Langage non professionnel** : 6 (nécessitent vérification)
-- **Services obsolètes** : 3 ✅ (corrigés)
-- **Ports obsolètes** : 3 ✅ (corrigés)
+- **Versions incorrectes** : 12 (dont 4 acceptables dans roadmap v3.x)
+- **Langage non professionnel** : 7 (nécessitent vérification)
+- **Services obsolètes** : 3 ✅ (corrigés - Slack → notifications)
+- **Ports obsolètes** : 1 (docs/vscode-setup.md à vérifier)
 
 ### Fichiers Modifiés
-- **Total fichiers analysés** : 128
-- **Fichiers avec problèmes** : 13
-- **Fichiers corrigés automatiquement** : 10+
-- **Fichiers nécessitant vérification manuelle** : 6
+- **Total fichiers analysés** : 129
+- **Fichiers avec problèmes** : 12
+- **Fichiers corrigés** : docs/README.md, docs/infrastructure/monitoring.md
+- **Fichiers nécessitant vérification manuelle** : 10
 
 ---
 
