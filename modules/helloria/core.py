@@ -374,7 +374,7 @@ async def zeroia_status() -> dict[str, Any]:
             return {"status": "error", "error": "dashboard file not found"}
 
         try:
-            import aiofiles
+            import aiofiles  # type: ignore
 
             async with aiofiles.open(dashboard_path, encoding="utf-8") as f:
                 content = await f.read()

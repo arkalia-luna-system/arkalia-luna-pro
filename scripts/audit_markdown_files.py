@@ -5,7 +5,6 @@ Vérifie les dates, le langage professionnel, et la cohérence avec le projet
 """
 
 import re
-from datetime import datetime
 from pathlib import Path
 
 # Mots d'argot à éviter
