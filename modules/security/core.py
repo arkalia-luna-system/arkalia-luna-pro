@@ -48,7 +48,7 @@ class UsecurityCore:
         """Initialisation du core"""
         ark_logger.info("🧠 UsecurityCore initialisé", extra={"arkalia_module": "security"})
 
-    async def process(self, data: dict[str, Any]) -> dict[str, Any]:
+    async def process(self, data: Any) -> dict[str, Any]:
         """
         Traitement principal avec validation et sanitization de sécurité
 
