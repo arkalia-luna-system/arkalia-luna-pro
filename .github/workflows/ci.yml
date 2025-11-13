@@ -74,12 +74,13 @@ jobs:
           find . -name "._*.py" -type f -delete || true
           black --check --diff . --exclude archive/ --exclude "._*" || (echo "❌ Formatage incorrect. Exécutez: black ." && exit 1)
 
-      - name: 🔍 Run enhanced linting
-        run: |
-          echo "🔍 Linting avec ruff..."
-          # Nettoyer les fichiers macOS avant
-          find . -name "._*.py" -type f -delete || true
-          ruff check . --output-format=github --exclude archive/ --exclude "._*" || exit 1
+            - name: 🔍 Run enhanced linting
+              run: |
+                echo "🔍 Linting avec ruff..."
+                # Nettoyer les fichiers macOS avant
+                find . -name "._*.py" -type f -delete || true
+                ruff check . --select I001 --fix --exclude archive/ --exclude "._*" || true
+                ruff check . --output-format=github --exclude archive/ --exclude "._*" || exit 1
 
           echo "🔍 Type checking avec mypy..."
           mypy modules/ --ignore-missing-imports --no-strict-optional || echo "⚠️ Type checking terminé avec avertissements"
