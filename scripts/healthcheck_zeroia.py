@@ -11,8 +11,12 @@ Ce script vérifie l'état de santé de ZeroIA en validant :
 import datetime
 import os
 import sys
+from pathlib import Path
 
 import toml
+
+# Ajouter le chemin du projet pour les imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from core.ark_logger import ark_logger
 
