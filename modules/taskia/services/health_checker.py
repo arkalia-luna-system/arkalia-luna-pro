@@ -7,7 +7,6 @@
 📅 Created: 2025-01-27
 """
 
-import logging
 from datetime import datetime
 from typing import Any
 
@@ -23,13 +22,12 @@ class HealthChecker(IHealthChecker):
     Principe LSP : Implémente l'interface IHealthChecker
     """
 
-    def __init__(self, module_name: str = "taskia", logger: logging.Logger | None = None):
+    def __init__(self, module_name: str = "taskia"):
         """
         Initialise le vérificateur de santé.
 
         Args:
             module_name: Nom du module à vérifier
-            logger: Logger injecté (DIP)
         """
         self._module_name = module_name
 

@@ -14,7 +14,6 @@ Coordonne l'intelligence collaborative entre les modules IA :
 
 import asyncio
 import json
-import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -170,6 +169,13 @@ class SandoziaCore:
         )
 
     def _load_config(self) -> dict:
+        """
+        Charge la configuration Sandozia.
+        
+        Utilise maintenant ConfigManager centralisé pour le chargement TOML.
+        """
+        from modules.core.config.config_manager import get_default_config_manager
+        
         default_config = {
             "monitoring": {
                 "interval_seconds": 30,
@@ -190,10 +196,9 @@ class SandoziaCore:
 
         if self.config_path.exists():
             try:
-                # Cache TOML Enhanced - 94.8% performance boost
-                from modules.utils.helpers import load_toml_cached
-
-                loaded_config = load_toml_cached(self.config_path)
+                # Utiliser ConfigManager centralisé
+                config_manager = get_default_config_manager()
+                loaded_config = config_manager.load_toml_config(self.config_path)
                 # Merge avec defaults
                 default_config.update(loaded_config)
             except Exception as e:
@@ -647,5 +652,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
     asyncio.run(main())

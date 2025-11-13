@@ -7,7 +7,6 @@
 📅 Created: 2025-01-27
 """
 
-import logging
 from typing import Any
 
 from core.ark_logger import ark_logger
@@ -23,13 +22,12 @@ class TaskProcessor(ITaskProcessor):
     Principe DIP : Dépend des interfaces, pas des implémentations
     """
 
-    def __init__(self, formatter: IFormatter, logger: logging.Logger | None = None):
+    def __init__(self, formatter: IFormatter):
         """
         Initialise le processeur de tâches.
 
         Args:
             formatter: Formateur injecté (DIP)
-            logger: Logger injecté (DIP)
         """
         self._formatter = formatter
 

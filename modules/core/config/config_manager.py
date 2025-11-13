@@ -273,6 +273,41 @@ class ConfigManager:
 
         return env_config
 
+    def load_toml_config(self, file_path: str | Path) -> dict[str, Any]:
+        """
+        📄 Charge une configuration TOML avec cache
+        
+        Args:
+            file_path: Chemin vers le fichier TOML
+            
+        Returns:
+            Configuration chargée
+        """
+        from modules.utils.helpers import load_toml_cached
+        
+        file_path_str = str(file_path)
+        try:
+            return load_toml_cached(file_path_str)
+        except Exception as e:
+            ark_logger.warning(
+                f"⚠️ Erreur chargement TOML {file_path_str}: {e}",
+                extra={"arkalia_module": "core"}
+            )
+            return {}
+
+    def get_module_config(self, module_name: str) -> dict[str, Any]:
+        """
+        🔧 Récupère la configuration d'un module spécifique
+        
+        Args:
+            module_name: Nom du module (reflexia, sandozia, etc.)
+            
+        Returns:
+            Configuration du module
+        """
+        modules_config = self.get_config("modules", {})
+        return modules_config.get(module_name, {})
+
 
 # Instance par défaut (lazy loading pour économiser la RAM)
 _default_config_manager: ConfigManager | None = None

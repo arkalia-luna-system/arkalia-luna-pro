@@ -15,6 +15,9 @@ from typing import Any
 from core.ark_logger import ark_logger
 
 from .circuit_breaker import CognitiveOverloadError, DecisionIntegrityError, SystemRebootRequired
+
+# Exporter logger pour les tests
+logger = ark_logger
 from .event_store import EventType
 from .reason_loop_enhanced import cleanup_components, initialize_components, reason_loop_enhanced
 
@@ -33,7 +36,7 @@ class ZeroIAOrchestrator:
     def __init__(
         self,
         max_loops: int | None = None,
-        interval_seconds: float = 10.0,
+        interval_seconds: float = 2.5,
         circuit_failure_threshold: int = 10,
         timeout: int = 60,
     ):
@@ -236,7 +239,7 @@ class ZeroIAOrchestrator:
 
 def orchestrate_zeroia_enhanced(
     max_loops: int | None = None,
-    interval_seconds: float = 10.0,
+    interval_seconds: float = 1.5,
     circuit_failure_threshold: int = 5,
     timeout: int = 30,
 ) -> None:

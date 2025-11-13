@@ -7,7 +7,6 @@ Intégration avec les interfaces SOLID et les factories.
 """
 
 import asyncio
-import logging
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -574,10 +573,5 @@ async def run_core_orchestrator(
 
 
 if __name__ == "__main__":
-    # Configuration de logging
-    logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
-
     # Exécuter l'orchestrateur
     asyncio.run(run_core_orchestrator())

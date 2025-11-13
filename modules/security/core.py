@@ -41,6 +41,7 @@ class UsecurityCore:
 
     def __init__(self, config: UsecurityConfig) -> None:
         self.config = config
+        self.logger = ark_logger
         self._initialize()
 
     def _initialize(self) -> None:
