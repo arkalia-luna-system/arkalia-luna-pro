@@ -12,6 +12,43 @@
 
 ---
 
+## 📑 Sommaire
+
+- [🌙 Arkalia-LUNA Pro](#-arkalia-luna-pro)
+  - [📑 Sommaire](#-sommaire)
+  - [🚀 Démarrage Rapide](#-démarrage-rapide)
+    - [🔗 Accès aux Services](#-accès-aux-services)
+  - [🧩 Modules Principaux](#-modules-principaux)
+  - [📊 Cas d'Usage](#-cas-dusage)
+    - [✅ Adapté pour](#-adapté-pour)
+    - [⚠️ Limitations](#️-limitations)
+  - [🏗️ Architecture](#️-architecture)
+    - [Services Principaux](#services-principaux)
+  - [💡 Exemples d'Utilisation](#-exemples-dutilisation)
+    - [🔒 Détection de Sécurité](#-détection-de-sécurité)
+    - [⚡ Optimisation de Performance](#-optimisation-de-performance)
+    - [🧠 Apprentissage Automatique](#-apprentissage-automatique)
+    - [🎯 Démo Complète](#-démo-complète)
+  - [⚙️ Fonctionnalités Principales](#️-fonctionnalités-principales)
+    - [🎯 ZeroIA — Système de Décision](#-zeroia--système-de-décision)
+    - [💬 AssistantIA — Interface Conversationnelle](#-assistantia--interface-conversationnelle)
+    - [👁️ ReflexIA — Surveillance](#️-reflexia--surveillance)
+    - [🔍 Sandozia — Analyse](#-sandozia--analyse)
+    - [🛡️ Security — Sécurité](#️-security--sécurité)
+  - [📈 Monitoring](#-monitoring)
+    - [Grafana](#grafana)
+    - [Prometheus](#prometheus)
+    - [Logs](#logs)
+    - [Alertes](#alertes)
+  - [🧪 Tests](#-tests)
+  - [🔐 Sécurité](#-sécurité)
+  - [📚 Documentation](#-documentation)
+  - [🤝 Contribuer](#-contribuer)
+
+> 💡 **Astuce** : Utilisez `Ctrl+F` (ou `Cmd+F` sur Mac) pour rechercher rapidement une section dans ce README.
+
+---
+
 ## 🚀 Démarrage Rapide
 
 ```bash
