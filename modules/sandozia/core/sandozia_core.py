@@ -26,6 +26,12 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Gauge, generate_latest
 
 from core.ark_logger import ark_logger
+from modules.reflexia.core import (
+    get_metrics as reflexia_get_metrics,
+)
+from modules.reflexia.core import (
+    launch_reflexia_check,
+)
 
 # Réexport depuis sous-modules
 from .sandozia import IntelligenceSnapshot, SandoziaCore, SandoziaMetrics
@@ -34,10 +40,6 @@ from .sandozia import IntelligenceSnapshot, SandoziaCore, SandoziaMetrics
 from .sandozia.core import (
     load_context,
     load_reflexia_state,
-)
-from modules.reflexia.core import (
-    get_metrics as reflexia_get_metrics,
-    launch_reflexia_check,
 )
 
 # Alias pour compatibilité

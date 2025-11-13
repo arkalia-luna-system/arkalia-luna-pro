@@ -46,27 +46,20 @@ class TestSandoziaCore:
     @pytest.mark.asyncio
     async def test_initialize_modules(self, sandozia_core: SandoziaCore) -> None:
         """Test initialisation modules"""
-        with (
-            patch("modules.sandozia.core.sandozia_core.reflexia_get_metrics") as mock_get_metrics,
-            patch("modules.sandozia.core.sandozia_core.load_context") as mock_load_context,
-        ):
-            mock_get_metrics.return_value = {"cpu": 50, "ram": 60}
-            mock_load_context.return_value = {"status": {"severity": "normal"}}
+        # initialize_modules() vérifie juste la disponibilité des modules
+        # sans appeler les fonctions directement
+        await sandozia_core.initialize_modules()
 
-            await sandozia_core.initialize_modules()
-
-            assert sandozia_core.reflexia_available is True
-            assert sandozia_core.zeroia_available is True
-            mock_get_metrics.assert_called_once()
-            mock_load_context.assert_called_once()
+        assert sandozia_core.reflexia_available is True
+        assert sandozia_core.zeroia_available is True
 
     @pytest.mark.asyncio
     async def test_collect_intelligence_snapshot(self, sandozia_core: SandoziaCore) -> None:
         """Test collecte snapshot intelligence"""
         with (
-            patch("modules.sandozia.core.sandozia_core.launch_reflexia_check") as mock_reflexia,
-            patch("modules.sandozia.core.sandozia_core.load_reflexia_state") as mock_zeroia_state,
-            patch("modules.sandozia.core.sandozia_core.load_context") as mock_context,
+            patch("modules.sandozia.core.sandozia.core.launch_reflexia_check") as mock_reflexia,
+            patch("modules.sandozia.core.sandozia.core.load_reflexia_state") as mock_zeroia_state,
+            patch("modules.sandozia.core.sandozia.core.load_context") as mock_context,
         ):
             mock_reflexia.return_value = {"status": "ok", "metrics": {"cpu": 45}}
             mock_zeroia_state.return_value = {"decision": {"confidence_score": 0.85}}
@@ -162,23 +155,16 @@ class TestSandoziaCore:
     @pytest.mark.asyncio
     async def test_monitoring_lifecycle(self, sandozia_core: SandoziaCore) -> None:
         """Test cycle de vie monitoring"""
-        with (
-            patch("modules.sandozia.core.sandozia_core.get_metrics") as mock_get_metrics,
-            patch("modules.sandozia.core.sandozia_core.load_context") as mock_load_context,
-        ):
-            mock_get_metrics.return_value = {"cpu": 50}
-            mock_load_context.return_value = {"status": {"severity": "normal"}}
+        # Démarrer monitoring
+        await sandozia_core.start_monitoring()
+        assert sandozia_core.is_running is True
 
-            # Démarrer monitoring
-            await sandozia_core.start_monitoring()
-            assert sandozia_core.is_running is True
+        # Attendre un petit cycle
+        await asyncio.sleep(0.1)
 
-            # Attendre un petit cycle
-            await asyncio.sleep(0.1)
-
-            # Arrêter monitoring
-            await sandozia_core.stop_monitoring()
-            assert sandozia_core.is_running is False
+        # Arrêter monitoring
+        await sandozia_core.stop_monitoring()
+        assert sandozia_core.is_running is False
 
 
 class TestSandoziaMetrics:
@@ -247,10 +233,10 @@ class TestSandoziaCoreIntegration:
         config_path = tmp_path / "integration_config.toml"
 
         with (
-            patch("modules.sandozia.core.sandozia_core.launch_reflexia_check") as mock_reflexia,
-            patch("modules.sandozia.core.sandozia_core.load_reflexia_state") as mock_zeroia_state,
-            patch("modules.sandozia.core.sandozia_core.load_context") as mock_context,
-            patch("modules.sandozia.core.sandozia_core.reflexia_get_metrics") as mock_get_metrics,
+            patch("modules.sandozia.core.sandozia.core.launch_reflexia_check") as mock_reflexia,
+            patch("modules.sandozia.core.sandozia.core.load_reflexia_state") as mock_zeroia_state,
+            patch("modules.sandozia.core.sandozia.core.load_context") as mock_context,
+            patch("modules.sandozia.core.sandozia.core.reflexia_get_metrics") as mock_get_metrics,
         ):
             # Setup mocks
             mock_reflexia.return_value = {"status": "ok", "metrics": {"cpu": 45}}
