@@ -11,7 +11,10 @@ def test_client():
 
 
 def test_chat_post_empty_message(test_client: TestClient):
-    """Teste l'endpoint /api/v1/chat avec un message vide → erreur 422 attendue (validation Pydantic)."""
+    """
+    Teste l'endpoint /api/v1/chat avec un message vide.
+    Erreur 422 attendue (validation Pydantic).
+    """
     response = test_client.post("/api/v1/chat", json={"message": ""})
     assert response.status_code == 422
     assert "String should have at least 1 character" in str(response.json()["detail"])
