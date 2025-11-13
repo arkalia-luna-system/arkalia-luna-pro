@@ -60,4 +60,4 @@ from modules.security.watchdog import ...
 
 ---
 
-*Document généré automatiquement lors de la consolidation (juillet 2025)*
+*Document généré automatiquement lors de la consolidation (novembre 2025)*

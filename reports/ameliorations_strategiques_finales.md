@@ -203,5 +203,5 @@ Arkalia-LUNA v2.8.0 est maintenant :
 
 ---
 
-*Rapport généré automatiquement le 5 juillet 2025*
+*Rapport généré automatiquement le novembre 2025*
 *Arkalia-LUNA v2.8.0 - Intelligence Générative Avancée* 🚀

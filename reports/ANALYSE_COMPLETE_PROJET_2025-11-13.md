@@ -41,10 +41,15 @@
   - Tous les workflows corrigés (docs.yml, deploy.yml, ci.yml, performance-tests.yml, security-scan.yml)
 
 ### Code Quality
-- ✅ **Ruff** : Toutes les erreurs corrigées
+- ✅ **Ruff** : Toutes les erreurs corrigées (2025-11-13)
   - E501 (lignes trop longues) : 0 erreur
   - F841 (variables non utilisées) : 0 erreur
   - F401 (imports non utilisés) : 0 erreur
+  - UP015 (mode argument inutile) : Corrigé dans config_manager.py et backends.py
+  - UP038 (isinstance tuple) : Corrigé dans security/core.py
+- ✅ **Black** : Tous les fichiers formatés (3 fichiers reformatés)
+- ✅ **Mypy** : 0 erreur (91 fichiers vérifiés)
+- ✅ **Bandit** : 0 erreur High/Medium (seulement warnings acceptables)
 - ✅ **Imports** : 0 import inutilisé restant
 - ✅ **Mock objects** : Gestion correcte dans `cleanup_components` (status.py ligne 54-88, vérification isinstance avant accès)
 - ✅ **Type hints** : Complets

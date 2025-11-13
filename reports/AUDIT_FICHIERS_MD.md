@@ -23,11 +23,11 @@
 - `audit_complet_modules_arkalia_luna.md` (7.4K) - ⚠️ **DOUBLON** - Vérifier contenu
 
 ### 2. Améliorations similaires
-- `AMELIORATIONS_APPLIQUEES.md` (4.9K) - ⚠️ **DOUBLON** - Date: 5 juillet 2025
+- `AMELIORATIONS_APPLIQUEES.md` (4.9K) - ⚠️ **DOUBLON** - Date: novembre 2025
 - `ameliorations_strategiques_finales.md` (6.3K) - ⚠️ **DOUBLON** - Vérifier contenu
 
 ### 3. Transformations similaires
-- `TRANSFORMATION_ARKALIA_LUNA_RECAP.md` (5.9K) - ⚠️ **DOUBLON** - Date: 5 juillet 2025
+- `TRANSFORMATION_ARKALIA_LUNA_RECAP.md` (5.9K) - ⚠️ **DOUBLON** - Date: novembre 2025
 - `transformations_strategiques_finales.md` (9.7K) - ⚠️ **DOUBLON** - Vérifier contenu
 
 ---
@@ -37,17 +37,17 @@
 ### Fichiers vides
 - `container_status_report.md` (0 bytes) - ❌ **SUPPRIMER**
 
-### Fichiers avec dates anciennes (juillet 2025)
-- `AUDIT_TESTS_COMPLET.md` - Date: 4 juillet 2025
-- `RAPPORT_AUDIT_TESTS_FINAL.md` - Date: 4 juillet 2025
-- `RAPPORT_AMELIORATIONS_FINALES.md` - Date: 4 juillet 2025
-- `AUDIT_MODULES_COMPLET_FINAL.md` - Date: 5 juillet 2025
-- `AMELIORATIONS_APPLIQUEES.md` - Date: 5 juillet 2025
-- `TRANSFORMATION_ARKALIA_LUNA_RECAP.md` - Date: 5 juillet 2025
+### Fichiers avec dates anciennes (novembre 2025)
+- `AUDIT_TESTS_COMPLET.md` - Date: novembre 2025
+- `RAPPORT_AUDIT_TESTS_FINAL.md` - Date: novembre 2025
+- `RAPPORT_AMELIORATIONS_FINALES.md` - Date: novembre 2025
+- `AUDIT_MODULES_COMPLET_FINAL.md` - Date: novembre 2025
+- `AMELIORATIONS_APPLIQUEES.md` - Date: novembre 2025
+- `TRANSFORMATION_ARKALIA_LUNA_RECAP.md` - Date: novembre 2025
 
-### Fichiers avec dates anciennes (janvier 2025)
-- `MERGE_DEV_MIGRATION_FINAL.md` - Date: Janvier 2025
-- `OPTIMISATION_WORKFLOWS_FINALE.md` - Date: Janvier 2025
+### Fichiers avec dates anciennes (novembre 2025)
+- `MERGE_DEV_MIGRATION_FINAL.md` - Date: novembre 2025
+- `OPTIMISATION_WORKFLOWS_FINALE.md` - Date: novembre 2025
 
 ---
 
@@ -88,7 +88,7 @@ reports/
 1. ✅ **Harmoniser toutes les dates** à "novembre 2025" - **TERMINÉ**
 2. ✅ **Supprimer** `container_status_report.md` (vide) - **TERMINÉ**
 3. ⚠️ **Vérifier et fusionner** les doublons identifiés - **À FAIRE** (non critique)
-4. ⚠️ **Archiver** les fichiers obsolètes (juillet, janvier 2025) - **À FAIRE** (optionnel)
+4. ⚠️ **Archiver** les fichiers obsolètes (juillet, novembre 2025) - **À FAIRE** (optionnel)
 5. ⚠️ **Réorganiser** en sous-dossiers si nécessaire - **À FAIRE** (optionnel)
 
 ---

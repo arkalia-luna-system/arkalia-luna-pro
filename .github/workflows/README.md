@@ -34,7 +34,7 @@
 
 ---
 
-## 🧹 **Optimisation Récente (Janvier 2025)**
+## 🧹 **Optimisation Récente (novembre 2025)**
 
 ### **Suppression des Doublons**
 - ❌ **`arkalia-ci-cd.yml`** supprimé (doublon avec `ci.yml` et `deploy.yml`)
@@ -158,6 +158,6 @@ permissions:
 
 ---
 
-**Dernière mise à jour** : 27 Janvier 2025
+**Dernière mise à jour** : 27 novembre 2025
 **Version** : Ultra-Pro v2.0
 **Mainteneur** : Arkalia-LUNA Team

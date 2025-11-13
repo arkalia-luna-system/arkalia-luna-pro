@@ -1,4 +1,4 @@
-# 🛡️ Licence & Mentions Légales — Arkalia-LUNA Pro v3.x
+# 🛡️ Licence & Mentions Légales — Arkalia-LUNA Pro 2.8.0
 
 ## 📊 **ÉTAT ACTUEL DU SYSTÈME (Mise à jour novembre 2025)**
 
@@ -14,7 +14,7 @@
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 ![Coverage](https://img.shields.io/badge/coverage-59%25-brightgreen)
 
-> Ce projet **Arkalia-LUNA Pro v3.x** est distribué sous licence **MIT Enterprise**, avec composants privés, assurant **ouverture contrôlée et sécurité production-ready**.
+> Ce projet **Arkalia-LUNA Pro 2.8.0** est distribué sous licence **MIT Enterprise**, avec composants privés, assurant **ouverture contrôlée et sécurité production-ready**.
 
 ---
 
@@ -25,15 +25,15 @@
 | 🧠 Créatrice     | **Athalia 🌙** (Architecte IA, développeuse système) |
 | 📂 Dépôt GitHub  | [arkalia-luna-system](https://github.com/arkalia-luna-system) |
 | 📜 Objectif      | Système IA production-ready auto-réflexif et intelligence croisée |
-| 🎯 Version       | **v3.x Phase 2 Sandozia Intelligence Croisée** |
+| 🎯 Version       | **2.8.0 Phase 2 Sandozia Intelligence Croisée** |
 
 ---
 
-## 📚 Contexte de Création v3.x
+## 📚 Contexte de Création 2.8.0
 
-Arkalia-LUNA Pro v3.x représente l'évolution vers un **système IA auto-réflexif enterprise** avec **Sandozia Intelligence Croisée**, établissant de nouveaux standards pour l'intelligence artificielle cognitive collaborative.
+Arkalia-LUNA Pro 2.8.0 représente l'évolution vers un **système IA auto-réflexif enterprise** avec **Sandozia Intelligence Croisée**, établissant de nouveaux standards pour l'intelligence artificielle cognitive collaborative.
 
-**Innovation v3.x :**
+**Innovation 2.8.0 :**
 - **Intelligence Croisée** : Validation inter-modules automatique
 - **IA Auto-Réflexive** : Méta-cognition et introspection système
 - **Consensus Multi-Agent** : Collaboration intelligente entre modules
@@ -41,9 +41,9 @@ Arkalia-LUNA Pro v3.x représente l'évolution vers un **système IA auto-réfle
 
 ---
 
-## ⚙️ Stack Technologique v3.x
+## ⚙️ Stack Technologique 2.8.0
 
-| Technologie      | Rôle principal v3.x                            |
+| Technologie      | Rôle principal 2.8.0                            |
 |------------------|------------------------------------------------|
 | **FastAPI**      | API REST enterprise avec JWT et rate limiting  |
 | **Sandozia**     | Intelligence croisée et validation inter-modules |
@@ -81,7 +81,7 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 ```
 
-**Conditions Spéciales v3.x :**
+**Conditions Spéciales 2.8.0 :**
 - **Attribution requise** : Crédit Arkalia-LUNA Pro Team et Athalia 🌙
 - **Sandozia Intelligence** : Composants intelligence croisée protégés
 - **Usage Enterprise** : Support commercial disponible
@@ -89,7 +89,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ---
 
-## 🔒 Architecture Sécurisée & Éthique v3.x
+## 🔒 Architecture Sécurisée & Éthique 2.8.0
 
 ### 🛡️ **Sécurité Enterprise**
 - **Chiffrement AES-256-GCM** : Toutes données sensibles
@@ -111,7 +111,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ---
 
-## 📊 Métriques de Qualité v3.x
+## 📊 Métriques de Qualité 2.8.0
 
 ```yaml
 Code Quality:
@@ -169,11 +169,11 @@ Enterprise Readiness:
 
 ---
 
-🛡️ *"Arkalia-LUNA Pro v3.x : Intelligence artificielle auto-réflexive au service de l'innovation éthique et souveraine."* — Athalia 🌙
+🛡️ *"Arkalia-LUNA Pro 2.8.0 : Intelligence artificielle auto-réflexive au service de l'innovation éthique et souveraine."* — Athalia 🌙
 
 ---
 
-**© 2025 Arkalia-LUNA Pro Team** — Système IA Enterprise v3.x
+**© 2025 Arkalia-LUNA Pro Team** — Système IA Enterprise 2.8.0
 📜 *Powered by Sandozia Intelligence Croisée*
 
 *Dernière mise à jour : novembre 2025

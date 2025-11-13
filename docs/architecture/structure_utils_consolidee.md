@@ -77,5 +77,5 @@ Toutes les fonctionnalités ont été migrées vers `modules/utils/helpers/io_sa
 
 ---
 
-*Document généré automatiquement lors de la consolidation (juillet 2025)*  
+*Document généré automatiquement lors de la consolidation (novembre 2025)*  
 *Dernière mise à jour : 2025-11-12 (Phase 2 terminée)*

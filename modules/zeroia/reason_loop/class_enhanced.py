@@ -2,7 +2,7 @@
 ReasonLoopEnhanced - Classe wrapper pour boucle de raisonnement améliorée
 """
 
-import time
+import asyncio
 from datetime import datetime
 from typing import Any
 
@@ -113,9 +113,9 @@ class ReasonLoopEnhanced:
             ark_logger.error(f"🚨 Erreur lecture état ReflexIA: {e}")
         return None
 
-    def run_loop(self, max_iterations: int | None = None) -> None:
+    async def run_loop(self, max_iterations: int | None = None) -> None:
         """
-        Exécute la boucle de raisonnement
+        Exécute la boucle de raisonnement (async optimisé pour performance)
 
         Args:
             max_iterations: Nombre maximum d'itérations (None = infini, déconseillé)
@@ -141,8 +141,8 @@ class ReasonLoopEnhanced:
                 if reflexia_state and reflexia_state != decision:
                     self.handle_contradiction(decision, reflexia_state)
 
-                # Attendre avant la prochaine itération
-                time.sleep(self.config["sync_interval"])
+                # Attendre avant la prochaine itération (async)
+                await asyncio.sleep(self.config["sync_interval"])
 
             except KeyboardInterrupt:
                 ark_logger.info("⏹️ Arrêt demandé (Ctrl+C)", extra={"arkalia_module": "zeroia"})
@@ -151,5 +151,5 @@ class ReasonLoopEnhanced:
                 ark_logger.error(
                     f"🚨 Erreur dans la boucle: {e}", extra={"arkalia_module": "zeroia"}
                 )
-                time.sleep(10)
+                await asyncio.sleep(10)
                 # Continuer la boucle après erreur

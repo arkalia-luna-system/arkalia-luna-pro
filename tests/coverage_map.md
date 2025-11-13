@@ -1,6 +1,6 @@
 # 🧪 CARTE DE COUVERTURE DES TESTS - ARKALIA-LUNA PRO
 
-**Date** : 5 juillet 2025
+**Date** : novembre 2025
 **Version** : v2.8.0
 **Objectif** : Couverture complète et robustesse professionnelle
 
@@ -344,5 +344,5 @@ monitoring_metrics_collected: "métriques_collectées"
 
 ---
 
-*Carte de couverture générée le 5 juillet 2025*
+*Carte de couverture générée le novembre 2025*
 *Arkalia-LUNA v2.8.0 - Excellence Technique* 🌕

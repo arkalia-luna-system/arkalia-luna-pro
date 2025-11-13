@@ -374,4 +374,4 @@ async def verify_token(token: str = Depends(security)):
 
 **Auditeur :** Assistant IA
 **Date :** 27 Juin 2025
-**Prochaine révision :** 27 Juillet 2025
+**Prochaine révision :** 27 novembre 2025

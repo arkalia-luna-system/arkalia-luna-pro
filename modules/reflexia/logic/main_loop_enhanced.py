@@ -139,7 +139,7 @@ def generate_recommendations(analysis: dict[str, str], metrics: dict[str, Any]) 
         recommendations.append("⚠️ Certains containers instables")
 
     # 🔥 NOUVELLES RECOMMANDATIONS - Modules Arkalia
-    arkalia_modules = analysis.get("arkalia_modules", {})
+    arkalia_modules: Any = analysis.get("arkalia_modules", {})
 
     if isinstance(arkalia_modules, dict):
         for module_name, status in arkalia_modules.items():

@@ -298,7 +298,7 @@ graph TB
 
 ## 🗓️ **Timeline Optimisée**
 
-### **Juillet 2025**
+### **novembre 2025**
 - **Semaine 1** : 🚀 **Phase 2.2 Kubernetes** (priorité haute)
 - **Semaine 2** : Phase 2.2 finalisation + tests
 - **Semaine 3** : **Phase 3.1 API REST** démarrage

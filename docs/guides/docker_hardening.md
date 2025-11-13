@@ -1,4 +1,4 @@
-# 🛡️ Docker Hardening — Sécurité Enterprise v3.x
+# 🛡️ Docker Hardening — Sécurité Enterprise 2.8.0
 
 ## 📊 **ÉTAT ACTUEL DU SYSTÈME (Mise à jour novembre 2025)**
 
@@ -13,11 +13,11 @@
 ![Security](https://img.shields.io/badge/security-enterprise-green)
 ![Compliance](https://img.shields.io/badge/compliance-SOC2-blue)
 
-Guide complet de **sécurisation Docker enterprise** pour Arkalia-LUNA Pro v3.x avec **Sandozia Intelligence Croisée** et mesures de protection avancées.
+Guide complet de **sécurisation Docker enterprise** pour Arkalia-LUNA Pro 2.8.0 avec **Sandozia Intelligence Croisée** et mesures de protection avancées.
 
 ---
 
-## 🎯 **Objectifs Sécurité v3.x**
+## 🎯 **Objectifs Sécurité 2.8.0**
 
 Créer une **forteresse Docker enterprise** avec :
 - **Isolation renforcée** des modules IA
@@ -27,7 +27,7 @@ Créer une **forteresse Docker enterprise** avec :
 
 ---
 
-## 🔐 **Règles Sécurité Appliquées v3.x**
+## 🔐 **Règles Sécurité Appliquées 2.8.0**
 
 ### **1. 📖 read_only: true**
 Système de fichiers containers en lecture seule
@@ -64,7 +64,7 @@ security_opt:
 
 ---
 
-## 🏗️ **Configuration Docker Compose v3.x Sécurisée**
+## 🏗️ **Configuration Docker Compose 2.8.0 Sécurisée**
 
 ### **Service Sandozia Intelligence**
 ```yaml
@@ -142,7 +142,7 @@ services:
 
 ## 🌐 **Réseau Sécurisé Enterprise**
 
-### **Segmentation Réseau v3.x**
+### **Segmentation Réseau 2.8.0**
 ```yaml
 networks:
   # Réseau intelligence croisée (Sandozia + modules)
@@ -210,7 +210,7 @@ volumes:
       propagation: rslave
 ```
 
-### **Gestion Secrets v3.x**
+### **Gestion Secrets 2.8.0**
 ```yaml
 secrets:
   sandozia_key:
@@ -379,7 +379,7 @@ docker exec suspicious_container ps aux > incident_$(date +%s).log
 
 ---
 
-## 📋 **Checklist Hardening v3.x**
+## 📋 **Checklist Hardening 2.8.0**
 
 ### **Pre-Deployment**
 - [ ] Images scannées (Trivy/Anchore)
@@ -411,7 +411,7 @@ docker exec suspicious_container ps aux > incident_$(date +%s).log
 
 ---
 
-**© 2025 Arkalia-LUNA Pro Team** — Docker Hardening Enterprise v3.x
+**© 2025 Arkalia-LUNA Pro Team** — Docker Hardening Enterprise 2.8.0
 🛡️ *Secured by Sandozia Intelligence Croisée*
 
 *Dernière mise à jour : novembre 2025

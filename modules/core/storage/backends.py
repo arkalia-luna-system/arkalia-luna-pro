@@ -68,17 +68,17 @@ class JSONFileBackend(StorageBackend):
         except Exception as e:
             ark_logger.error(f"Erreur lecture {key}: {e}", extra={"arkalia_module": "core"})
             return default
-    
+
     async def get_async(self, key: str, default: Any = None) -> Any:
         """Get value from JSON file (asynchrone, optimisé pour performance)"""
         try:
             import aiofiles
-            
+
             file_path = self._get_file_path(key)
             if not file_path.exists():
                 return default
 
-            async with aiofiles.open(file_path, "r", encoding="utf-8") as f:
+            async with aiofiles.open(file_path, encoding="utf-8") as f:
                 content = await f.read()
                 data = json.loads(content)
                 self._cache[key] = data
@@ -104,12 +104,12 @@ class JSONFileBackend(StorageBackend):
         except Exception as e:
             ark_logger.error(f"Erreur écriture {key}: {e}", extra={"arkalia_module": "core"})
             return False
-    
+
     async def set_async(self, key: str, value: Any) -> bool:
         """Set value to JSON file (asynchrone, optimisé pour performance)"""
         try:
             import aiofiles
-            
+
             file_path = self._get_file_path(key)
             file_path.parent.mkdir(parents=True, exist_ok=True)
 

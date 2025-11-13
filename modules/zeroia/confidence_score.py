@@ -67,13 +67,13 @@ class ConfidenceScorer:
         self._config_cache = config
         self._config_cache_time = now
         return config
-    
+
     async def load_config_async(self) -> dict[str, Any]:
         """Charge la configuration de manière asynchrone (optimisé pour performance)."""
         import time as time_module
         
         try:
-            import aiofiles
+            import aiofiles  # type: ignore[import-untyped]
         except ImportError:
             # Fallback vers méthode synchrone si aiofiles non disponible
             return self.load_config()
@@ -209,20 +209,20 @@ class ConfidenceScorer:
             ark_logger.info(
                 f"❌ [CONFIDENCE] Erreur sauvegarde mémoire: {e}", extra={"module": "zeroia"}
             )
-    
+
     async def _save_memory_async(self) -> None:
         """Sauvegarde asynchrone de la mémoire décisionnelle (optimisé pour performance)"""
         try:
-            import aiofiles
+            import aiofiles  # type: ignore[import-untyped]
             
             self.memory["last_update"] = datetime.now().isoformat()
             self.state_file.parent.mkdir(parents=True, exist_ok=True)
             
             # Utiliser aiofiles pour I/O asynchrone
             content = toml.dumps(self.memory)
-            async with aiofiles.open(self.state_file, "w") as f:
+            async with aiofiles.open(self.state_file, "w") as f:  # type: ignore[attr-defined]
                 await f.write(content)
-                
+
         except ImportError:
             # Fallback vers méthode synchrone si aiofiles non disponible
             self._save_memory()

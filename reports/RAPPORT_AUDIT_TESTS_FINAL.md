@@ -212,5 +212,5 @@ python -m pytest tests/performance/ -v
 
 ---
 
-**Date de fin :** 4 juillet 2025
+**Date de fin :** novembre 2025
 **Statut :** ✅ **TERMINÉ AVEC SUCCÈS**

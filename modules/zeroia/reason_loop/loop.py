@@ -2,6 +2,7 @@
 Loop - Boucle principale de raisonnement Enhanced
 """
 
+import asyncio
 import sys
 import time
 from pathlib import Path
@@ -227,7 +228,7 @@ def reason_loop_enhanced_with_recovery(
         raise CognitiveOverloadError(f"Erreur critique dans reason_loop: {e}") from e
 
 
-def main_loop_enhanced(max_iterations: int | None = None) -> None:
+async def main_loop_enhanced(max_iterations: int | None = None) -> None:
     """
     Boucle principale avec gestion d'erreurs et récupération
 
@@ -266,7 +267,7 @@ def main_loop_enhanced(max_iterations: int | None = None) -> None:
                 )
 
             # Ajouter un délai pour éviter les boucles trop rapides
-            time.sleep(2)
+            await asyncio.sleep(2)
 
         except SystemRebootRequired as e:
             ark_logger.info(
@@ -286,14 +287,14 @@ def main_loop_enhanced(max_iterations: int | None = None) -> None:
                 )
 
             # Attendre avant retry
-            time.sleep(60)
+            await asyncio.sleep(60)
             # Continuer la boucle après recovery
 
         except (CognitiveOverloadError, DecisionIntegrityError) as e:
             ark_logger.info(f"[ZeroIA Enhanced] ⚠️ SURCHARGE: {e}")
 
             # Graceful degradation
-            time.sleep(30)
+            await asyncio.sleep(30)
             # Continuer la boucle après recovery
 
         except KeyboardInterrupt:
@@ -304,14 +305,14 @@ def main_loop_enhanced(max_iterations: int | None = None) -> None:
             ark_logger.error(
                 f"❌ Erreur inattendue dans main_loop: {e}", extra={"arkalia_module": "zeroia"}
             )
-            time.sleep(10)
+            await asyncio.sleep(10)
             # Continuer la boucle après erreur
 
 
 if __name__ == "__main__":
     try:
         # Limite par défaut pour éviter boucles infinies en mode test
-        main_loop_enhanced(max_iterations=1000)
+        asyncio.run(main_loop_enhanced(max_iterations=1000))
     except KeyboardInterrupt:
         ark_logger.info("\n🛑 Arrêt manuel détecté", extra={"module": "zeroia"})
 

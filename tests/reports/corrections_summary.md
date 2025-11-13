@@ -1,6 +1,6 @@
 # 🔧 Rapport des Corrections - Tests Arkalia-LUNA
 
-**Date :** 5 juillet 2025
+**Date :** novembre 2025
 **Branche :** dev
 **Durée des corrections :** ~30 minutes
 

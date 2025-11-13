@@ -96,14 +96,14 @@ class ConfigManager:
         except Exception as e:
             ark_logger.error(f"❌ Erreur chargement config : {e}", extra={"arkalia_module": "core"})
             self._load_default_config()
-    
+
     async def _load_config_async(self) -> None:
         """Chargement asynchrone de la configuration (optimisé pour performance)"""
         try:
             import aiofiles
-            
+
             if os.path.exists(self.config_path):
-                async with aiofiles.open(self.config_path, "r", encoding="utf-8") as f:
+                async with aiofiles.open(self.config_path, encoding="utf-8") as f:
                     content = await f.read()
                     self._config = json.loads(content)
                 ark_logger.info(
@@ -120,7 +120,10 @@ class ConfigManager:
             # Fallback vers méthode synchrone si aiofiles non disponible
             self._load_config()
         except Exception as e:
-            ark_logger.error(f"❌ Erreur chargement config async : {e}", extra={"arkalia_module": "core"})
+            ark_logger.error(
+                f"❌ Erreur chargement config async : {e}",
+                extra={"arkalia_module": "core"},
+            )
             self._load_default_config()
 
     def _load_default_config(self) -> None:
@@ -238,7 +241,7 @@ class ConfigManager:
         except Exception as e:
             ark_logger.error(f"❌ Erreur sauvegarde config : {e}", extra={"arkalia_module": "core"})
             return False
-    
+
     async def save_config_async(self) -> bool:
         """
         💾 Sauvegarde asynchrone de la configuration (optimisé pour performance)
@@ -246,7 +249,7 @@ class ConfigManager:
         """
         try:
             import aiofiles
-            
+
             # Création du répertoire si nécessaire
             config_dir = Path(self.config_path).parent
             config_dir.mkdir(parents=True, exist_ok=True)
@@ -265,7 +268,10 @@ class ConfigManager:
             # Fallback vers méthode synchrone si aiofiles non disponible
             return self.save_config()
         except Exception as e:
-            ark_logger.error(f"❌ Erreur sauvegarde config async : {e}", extra={"arkalia_module": "core"})
+            ark_logger.error(
+                f"❌ Erreur sauvegarde config async : {e}",
+                extra={"arkalia_module": "core"},
+            )
             return False
 
     def reload_config(self) -> bool:

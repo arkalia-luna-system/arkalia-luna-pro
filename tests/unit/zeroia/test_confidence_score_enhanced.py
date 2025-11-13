@@ -29,21 +29,28 @@ class TestConfidenceScoreEnhanced:
         """Test du chargement réussi de la configuration"""
         # Réinitialiser le cache avant le test
         self.scorer._config_cache = None
+        self.scorer._config_cache_time = 0.0
         mock_config = {"threshold": 0.8, "decay_rate": 0.15}
-        with patch("builtins.open", mock_open(read_data=toml.dumps(mock_config))):
-            result = self.scorer.load_config()
-            assert result == mock_config
+        mock_file = mock_open(read_data=toml.dumps(mock_config))
+        with patch("builtins.open", mock_file):
+            with patch("modules.zeroia.confidence_score.toml.load", return_value=mock_config):
+                result = self.scorer.load_config()
+                assert result == mock_config
 
     def test_load_config_file_not_found(self) -> None:
         """Test du chargement avec fichier introuvable"""
         # Réinitialiser le cache avant le test
         self.scorer._config_cache = None
+        self.scorer._config_cache_time = 0.0
         with patch("builtins.open", side_effect=FileNotFoundError):
             result = self.scorer.load_config()
             assert result == {"threshold": 0.7, "decay_rate": 0.1}
 
     def test_load_config_invalid_data(self) -> None:
         """Test du chargement avec données invalides"""
+        # Réinitialiser le cache avant le test
+        self.scorer._config_cache = None
+        self.scorer._config_cache_time = 0.0
         with patch("builtins.open", side_effect=Exception("Invalid data")):
             result = self.scorer.load_config()
             assert result == {"threshold": 0.7, "decay_rate": 0.1}
