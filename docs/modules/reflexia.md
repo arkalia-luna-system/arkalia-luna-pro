@@ -5,6 +5,7 @@
 ## 🎯 Qu'est-ce que Reflexia ?
 
 Reflexia est le **module de monitoring cognitif** du système. Il fonctionne comme les yeux qui :
+
 - 👁️ **Surveillent** : Monitoring avancé des ressources (CPU, RAM, latence)
 - 🔍 **Analysent** : Analyse comportementale des décisions
 - ⚠️ **Alertent** : Détection d'anomalies et contradictions
@@ -59,6 +60,7 @@ graph TB
 ### 📊 Monitoring Avancé
 
 Reflexia surveille en temps réel :
+
 - **CPU** : Utilisation processeur
 - **RAM** : Consommation mémoire
 - **Latence** : Temps de réponse
@@ -96,6 +98,7 @@ curl http://localhost:8002/status
 ## 📊 Métriques Exposées
 
 Reflexia expose **8 métriques Prometheus** :
+
 - `reflexia_cpu_usage`
 - `reflexia_ram_usage`
 - `reflexia_latency_ms`

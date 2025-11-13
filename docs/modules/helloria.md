@@ -1,17 +1,81 @@
-# Helloria — API Centrale FastAPI
+# 🌐 Helloria — API Centrale FastAPI v2.8.0
 
-Helloria est le module central de coordination cognitive de l'application Arkalia-LUNA. Il gère les interactions de base avec l'API et orchestre les requêtes entrantes et sortantes.
+> **Le cœur d'Arkalia-LUNA** : Helloria est l'API centrale qui coordonne tous les modules, comme un hub central qui connecte tous les composants du système.
 
-## Objectif du Module
-Helloria sert de point central pour la coordination des tâches cognitives au sein du système Arkalia-LUNA avec FastAPI optimisé.
+## 🎯 Qu'est-ce que Helloria ?
 
-## Fonctionnalités
-- API REST complète avec FastAPI
-- Gestion des requêtes optimisée
-- Documentation automatique (Swagger)
-- Métriques Prometheus intégrées (34 métriques)
-- Health endpoints automatiques (vérification Python urllib)
-- Performance < 500ms
+Helloria est le **module central de coordination cognitive** du système. Il fonctionne comme le cœur qui :
+- 🌐 **Expose** : API REST complète avec FastAPI
+- 🔗 **Connecte** : Point d'entrée pour tous les modules
+- 📊 **Mesure** : Métriques Prometheus intégrées (34 métriques)
+- ✅ **Vérifie** : Health endpoints automatiques
+- ⚡ **Optimise** : Performance < 500ms
+
+```mermaid
+graph TB
+    subgraph "🌐 Helloria - Le Cœur"
+        HC[Helloria Core<br/>🌐 API Centrale]
+        FR[FastAPI Router<br/>🛣️ Routage]
+        MM[Metrics Manager<br/>📊 Métriques]
+        HM[Health Manager<br/>✅ Health Checks]
+        DM[Doc Manager<br/>📖 Documentation]
+    end
+    
+    subgraph "📥 Entrées"
+        CLIENT[👤 Clients<br/>Requêtes HTTP]
+        MODS[🧩 Modules<br/>ZeroIA, Reflexia, etc.]
+    end
+    
+    subgraph "📤 Sorties"
+        RESP[📤 Réponses]
+        MET[📈 Métriques Prometheus]
+        DOC[📖 Swagger Docs]
+    end
+    
+    CLIENT --> HC
+    MODS --> HC
+    
+    HC --> FR
+    HC --> MM
+    HC --> HM
+    HC --> DM
+    
+    FR --> RESP
+    MM --> MET
+    HM --> RESP
+    DM --> DOC
+    
+    style HC fill:#e74c3c,color:#fff
+    style FR fill:#3498db,color:#fff
+    style MM fill:#2ecc71,color:#fff
+    style HM fill:#f39c12,color:#fff
+    style DM fill:#9b59b6,color:#fff
+```
+
+## 🚀 Fonctionnalités Principales
+
+### 🌐 API REST Complète
+
+Helloria expose une API REST complète avec FastAPI :
+- **Performance optimisée** : < 500ms
+- **Documentation automatique** : Swagger intégré
+- **Validation automatique** : Types et schémas
+- **Gestion d'erreurs** : Réponses structurées
+
+### 📊 Métriques Prometheus
+
+Helloria expose **34 métriques Prometheus** :
+- Métriques système
+- Métriques modules
+- Métriques performance
+- Métriques santé
+
+### ✅ Health Checks
+
+Health endpoints automatiques avec Python urllib natif :
+- Vérification rapide
+- Pas de dépendances externes
+- Performance optimale
 
 ## Exemple de Requête
 ```python
