@@ -12,11 +12,14 @@ __author__ = "Athalia"
 
 # Import des composants principaux
 try:
-    from arkalia.core.ark_logger import ark_logger
+    from core.ark_logger import ark_logger
 
-    from .core import HelloriaAPI, get_helloria_status  # noqa: F401
+    from .core import app  # noqa: F401
 except ImportError:
-    pass
+    try:
+        from modules.helloria.core import app  # noqa: F401
+    except ImportError:
+        pass
 
 # Configuration du logging (utilise ark_logger)
 

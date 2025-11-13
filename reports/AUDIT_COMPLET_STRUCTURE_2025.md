@@ -46,10 +46,7 @@
 - `CrossModuleValidator` est défini dans `modules/utils/validators/`
 - Le dossier `modules/sandozia/validators/` semble inutile
 
-**✅ ACTION RÉALISÉE :**
-- ✅ Wrapper créé dans `sandozia/validators/__init__.py` qui importe depuis `utils/validators`
-- ✅ Tous les imports fonctionnent correctement
-- ✅ Aucune action supplémentaire nécessaire
+✅ **Corrigé** : Wrapper créé, tous les imports fonctionnent
 
 ---
 
@@ -63,11 +60,7 @@
 | `modules/reflexia/utils/config_loader.py` | `/modules/reflexia/utils/` | Wrapper vers `ConfigManager` | ✅ **MIGRÉ** |
 | `modules/sandozia/core/sandozia_core.py` | `/modules/sandozia/core/` | Utilise `ConfigManager` | ✅ **MIGRÉ** |
 
-**Actions réalisées :**
-- ✅ `ConfigManager` ajoute `load_toml_config()` et `get_module_config()`
-- ✅ `reflexia/utils/config_loader.py` utilise maintenant `ConfigManager.load_toml_config()`
-- ✅ `sandozia_core._load_config()` utilise maintenant `ConfigManager.load_toml_config()`
-- ✅ Tous les loaders utilisent maintenant le système centralisé
+✅ **Corrigé** : Tous les loaders utilisent maintenant `ConfigManager` centralisé
 
 ---
 
@@ -80,9 +73,7 @@
 | `modules/taskia/demo_solid.py` | `/modules/taskia/` | Démo SOLID | ⚠️ **DÉMO** | ✅ **DÉPLACÉ** |
 | `scripts/demo/demo_global.py` | `/scripts/demo/` | Démo globale | ✅ OK | ✅ OK |
 
-**Actions réalisées :**
-- ✅ `demo_solid.py` déplacé vers `scripts/demo/demo_solid_taskia.py`
-- ✅ Cohérence avec autres démos dans `scripts/demo/`
+✅ **Corrigé** : Démo déplacée vers `scripts/demo/`
 
 #### Fichiers `__init__.py` vides
 
@@ -95,9 +86,9 @@
 
 ---
 
-### 5. LOGGING - MIGRATION COMPLÈTE ✅
+### 5. LOGGING - MIGRATION COMPLÈTE
 
-#### ✅ CORRIGÉ (2025-11-12)
+✅ **Corrigé**
 
 **Statistiques :**
 - **716+ utilisations** de `ark_logger` dans tout le projet
