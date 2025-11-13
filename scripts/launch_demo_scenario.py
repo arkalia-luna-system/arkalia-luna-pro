@@ -137,12 +137,6 @@ class ArkaliaDemoCLI:
         # 4. Analyse comportementale Sandozia
         self.print_step("4. Analyse comportementale Sandozia")
         try:
-            {
-                "event_type": "security_incident",
-                "source_ip": suspicious_request["client_ip"],
-                "threat_level": scan_result.get("threat_level", "unknown"),
-                "timestamp": time.time(),
-            }
             # Utiliser le behavior analyzer
             self.behavior_analyzer.add_metric_sample("security", "threat_level", 0.9)
             analysis_result = self.behavior_analyzer.analyze_behavior()
