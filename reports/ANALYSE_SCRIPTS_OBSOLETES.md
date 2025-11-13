@@ -2,7 +2,7 @@
 
 ## Arkalia-LUNA Pro - Rapport d'audit complet
 
-**Date d'analyse** : 2025-01-27
+**Date d'analyse** : novembre 2025
 **Méthodologie** : Vérification double des références dans le codebase, documentation, Makefile, et workflows CI/CD
 
 ---

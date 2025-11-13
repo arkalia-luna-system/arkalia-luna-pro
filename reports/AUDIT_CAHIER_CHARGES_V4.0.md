@@ -1,6 +1,6 @@
 # 📋 AUDIT CAHIER DES CHARGES V4.0 - Arkalia-LUNA Pro
 
-**Date d'audit :** 27 Juin 2025
+**Date d'audit :** novembre 2025
 **Auditeur :** Assistant IA
 **Version cahier :** v4.0-Juin-2025
 

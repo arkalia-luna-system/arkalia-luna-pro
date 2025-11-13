@@ -2,7 +2,7 @@
 
 ## 📊 Résumé Exécutif
 
-**Date d'audit :** 4 juillet 2025
+**Date d'audit :** novembre 2025
 **Total tests identifiés :** 313
 **Tests dans /tests/ :** 288
 **Tests éparpillés :** 25

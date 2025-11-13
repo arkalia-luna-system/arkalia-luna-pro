@@ -1,6 +1,6 @@
 # 🔍 Vérification Archivage - Fichiers Obsolètes
 
-**Date :** 2025-11-12  
+**Date :** novembre 2025  
 **Objectif :** Vérifier que tous les fichiers obsolètes ont été correctement archivés ou supprimés
 
 ---
@@ -89,5 +89,5 @@
 **Documentation :** ✅ **Cohérente avec le code actuel**  
 **Nettoyage :** ✅ **Fichiers macOS cachés supprimés et ignorés**  
 **Dernière vérification :** 2025-11-12  
-**Dernière mise à jour :** 2025-11-12 (nettoyage fichiers macOS cachés terminé)
+**Dernière mise à jour :** novembre 2025 (nettoyage fichiers macOS cachés terminé)
 

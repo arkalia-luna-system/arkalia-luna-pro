@@ -1,5 +1,5 @@
 # 🎯 RAPPORT FINAL : MERGE DEV-MIGRATION → MAIN
-## Arkalia-LUNA Pro - Janvier 2025
+## Arkalia-LUNA Pro - novembre 2025
 
 ---
 

@@ -1,6 +1,6 @@
 # 🔍 AUDIT COMPLET FINAL - Arkalia-LUNA Pro
 
-**Date :** 2025-11-13  
+**Date :** novembre 2025  
 **Objectif :** Audit exhaustif pour détecter code mort, doublons, fichiers inutiles et problèmes d'organisation
 
 ---
@@ -189,6 +189,6 @@ modules/
 
 ---
 
-**Dernière mise à jour :** 2025-11-13  
+**Dernière mise à jour :** novembre 2025  
 **Statut :** ✅ Audit complet effectué - Projet propre
 

@@ -1,6 +1,6 @@
 # 🚀 AMÉLIORATIONS APPLIQUÉES - ARKALIA-LUNA
 
-**Date** : 5 juillet 2025
+**Date** : novembre 2025
 **Méthode** : Améliorations manuelles simples et fiables
 **Objectif** : Standardisation et amélioration de la qualité
 
