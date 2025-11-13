@@ -83,7 +83,7 @@ class TestZeroIAOrchestrator:
             orchestrator = ZeroIAOrchestrator()
             mock_circuit_breaker.call.return_value = ("reduce_load", 0.85)
 
-            orchestrator._execute_single_loop()
+            asyncio.run(orchestrator._execute_single_loop())
 
         assert orchestrator.loop_count == 1
         assert orchestrator.session_stats["successful_decisions"] == 1
@@ -103,12 +103,12 @@ class TestZeroIAOrchestrator:
             orchestrator = ZeroIAOrchestrator()
             mock_circuit_breaker.call.side_effect = SystemRebootRequired("Test reboot")
 
-            with patch("time.sleep") as mock_sleep:
-                orchestrator._execute_single_loop()
+            with patch("asyncio.sleep") as mock_sleep:
+                asyncio.run(orchestrator._execute_single_loop())
 
         assert orchestrator.session_stats["circuit_openings"] == 1
         assert orchestrator.session_stats["total_decisions"] == 1
-        mock_sleep.assert_called_once_with(mock_circuit_breaker.timeout)
+        mock_sleep.assert_called_once_with(min(mock_circuit_breaker.timeout, 60))
         assert mock_event_store.add_event.call_count == 1  # PATCH : 1 seul event loggé en pratique
 
     def test_execute_single_loop_cognitive_overload_error(self) -> None:
@@ -123,7 +123,7 @@ class TestZeroIAOrchestrator:
             orchestrator = ZeroIAOrchestrator()
             mock_circuit_breaker.call.side_effect = CognitiveOverloadError("Test overload")
 
-            orchestrator._execute_single_loop()
+            asyncio.run(orchestrator._execute_single_loop())
 
         assert orchestrator.session_stats["failed_decisions"] == 1
         assert orchestrator.session_stats["total_decisions"] == 1
@@ -140,7 +140,7 @@ class TestZeroIAOrchestrator:
             orchestrator = ZeroIAOrchestrator()
             mock_circuit_breaker.call.side_effect = DecisionIntegrityError("Test integrity")
 
-            orchestrator._execute_single_loop()
+            asyncio.run(orchestrator._execute_single_loop())
 
         assert orchestrator.session_stats["failed_decisions"] == 1
         assert orchestrator.session_stats["total_decisions"] == 1
@@ -155,7 +155,7 @@ class TestZeroIAOrchestrator:
             orchestrator = ZeroIAOrchestrator()
             mock_circuit_breaker.call.side_effect = ValueError("Test error")
 
-            orchestrator._execute_single_loop()
+            asyncio.run(orchestrator._execute_single_loop())
 
         assert orchestrator.session_stats["failed_decisions"] == 1
         assert orchestrator.session_stats["total_decisions"] == 1
@@ -170,7 +170,7 @@ class TestZeroIAOrchestrator:
             orchestrator = ZeroIAOrchestrator()
             orchestrator.loop_count = 5
 
-            with patch("time.sleep") as mock_sleep:
+            with patch("asyncio.sleep") as mock_sleep:
                 asyncio.run(orchestrator._handle_system_reboot())
 
         mock_sleep.assert_called_once_with(mock_circuit_breaker.timeout)
@@ -283,7 +283,7 @@ class TestZeroIAOrchestratorIntegration:
                 ("continue", 0.92),
             ]
 
-            with patch("time.sleep") as mock_sleep:
+            with patch("asyncio.sleep") as mock_sleep:
                 orchestrator.run()
 
         assert orchestrator.loop_count == 2
@@ -307,7 +307,7 @@ class TestZeroIAOrchestratorIntegration:
                 KeyboardInterrupt(),
             ]
 
-            with patch("time.sleep") as mock_sleep:
+            with patch("asyncio.sleep") as mock_sleep:
                 with patch("modules.zeroia.orchestrator_enhanced.ark_logger") as mock_logger:
                     orchestrator.run()
 
@@ -332,7 +332,7 @@ class TestZeroIAOrchestratorIntegration:
                 SystemExit(),
             ]
 
-            with patch("time.sleep") as mock_sleep:
+            with patch("asyncio.sleep") as mock_sleep:
                 with patch("modules.zeroia.orchestrator_enhanced.ark_logger") as mock_logger:
                     orchestrator.run()
 
@@ -354,7 +354,7 @@ class TestZeroIAOrchestratorIntegration:
             # Simuler une erreur fatale
             mock_circuit_breaker.call.side_effect = RuntimeError("Fatal error")
 
-            with patch("time.sleep") as mock_sleep:
+            with patch("asyncio.sleep") as mock_sleep:
                 with patch("modules.zeroia.orchestrator_enhanced.ark_logger") as mock_logger:
                     orchestrator.run()
 
@@ -390,7 +390,7 @@ class TestZeroIAOrchestratorRobustness:
                 ValueError("Error 3"),  # Échec
             ]
 
-            with patch("time.sleep") as mock_sleep:
+            with patch("asyncio.sleep") as mock_sleep:
                 orchestrator.run()
 
         assert orchestrator.loop_count == 5
@@ -417,7 +417,7 @@ class TestZeroIAOrchestratorRobustness:
                 ("continue", 0.92),  # Succès
             ]
 
-            with patch("time.sleep") as mock_sleep:
+            with patch("asyncio.sleep") as mock_sleep:
                 orchestrator.run()
 
         assert orchestrator.loop_count == 4

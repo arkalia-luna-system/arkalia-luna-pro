@@ -80,7 +80,7 @@ class ZeroIAOrchestrator:
 
         try:
             while self._should_continue():
-                self._execute_single_loop()
+                await self._execute_single_loop()
                 # Utilise asyncio.sleep au lieu de time.sleep
                 await asyncio.sleep(self.interval_seconds)
 
@@ -102,7 +102,7 @@ class ZeroIAOrchestrator:
         finally:
             self._cleanup_and_report()
 
-    def _execute_single_loop(self) -> None:
+    async def _execute_single_loop(self) -> None:
         """Exécute une seule itération de la boucle avec protection"""
         self.loop_count += 1
         ark_logger.debug(f"🔄 Loop #{self.loop_count}", extra={"arkalia_module": "zeroia"})
@@ -132,17 +132,19 @@ class ZeroIAOrchestrator:
         except SystemRebootRequired as e:
             ark_logger.warning(f"🔄 System reboot requis: {e}", extra={"arkalia_module": "zeroia"})
             self.session_stats["circuit_openings"] += 1
-            # Note: _handle_system_reboot est maintenant async mais appelé depuis méthode sync
-            # On utilise asyncio.create_task pour ne pas bloquer
-            try:
-                loop = asyncio.get_event_loop()
-                if loop.is_running():
-                    asyncio.create_task(self._handle_system_reboot())
-                else:
-                    loop.run_until_complete(self._handle_system_reboot())
-            except RuntimeError:
-                # Pas de boucle d'événements, utiliser time.sleep comme fallback
-                await asyncio.sleep(min(self.circuit_breaker.timeout, 60))
+            # Event Sourcing
+            self.event_store.add_event(
+                EventType.SYSTEM_ERROR,
+                {
+                    "error": str(e),
+                    "error_type": "SystemRebootRequired",
+                    "loop_number": self.loop_count,
+                    "circuit_state": self.circuit_breaker.state,
+                },
+                module="orchestrator",
+            )
+            # Utiliser asyncio.sleep dans le contexte async
+            await asyncio.sleep(min(self.circuit_breaker.timeout, 60))
 
         except (CognitiveOverloadError, DecisionIntegrityError) as e:
             ark_logger.warning(f"⚠️ Erreur gérée: {e}", extra={"arkalia_module": "zeroia"})

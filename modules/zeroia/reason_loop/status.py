@@ -51,28 +51,39 @@ def cleanup_components(circuit_breaker: CircuitBreaker, event_store: EventStore)
     try:
         # Logs finaux du circuit breaker
         status = circuit_breaker.get_status()
-        ark_logger.info(f"🔄 Circuit Breaker final - État: {status['state']}")
-        ark_logger.info(f"📊 Métriques finales - Succès: {status['metrics']['success_rate']:.2f}%")
+        if isinstance(status, dict) and "state" in status:
+            ark_logger.info(f"🔄 Circuit Breaker final - État: {status['state']}")
+            if isinstance(status.get("metrics"), dict) and "success_rate" in status["metrics"]:
+                ark_logger.info(
+                    f"📊 Métriques finales - Succès: {status['metrics']['success_rate']:.2f}%"
+                )
+        else:
+            ark_logger.info(f"🔄 Circuit Breaker final - État: {status}")
 
         # Analytics finaux event store
         analytics = event_store.get_analytics()
-        ark_logger.info(f"📋 Event Store final - {analytics['total_events']} événements")
+        if isinstance(analytics, dict) and "total_events" in analytics:
+            ark_logger.info(f"📋 Event Store final - {analytics['total_events']} événements")
 
-        # Event de cleanup
-        event_store.add_event(
-            EventType.STATE_CHANGE,
-            {
-                "action": "components_cleanup",
-                "circuit_final_state": status["state"],
-                "total_events": analytics["total_events"],
-            },
-            module="reason_loop_enhanced",
-        )
+            # Event de cleanup
+            event_store.add_event(
+                EventType.STATE_CHANGE,
+                {
+                    "action": "components_cleanup",
+                    "circuit_final_state": (
+                        status.get("state") if isinstance(status, dict) else "unknown"
+                    ),
+                    "total_events": analytics["total_events"],
+                },
+                module="reason_loop_enhanced",
+            )
+        else:
+            ark_logger.info(f"📋 Event Store final - {analytics} événements")
 
         ark_logger.info("✅ Cleanup terminé avec succès", extra={"arkalia_module": "zeroia"})
 
     except Exception as e:
-        ark_logger.error(f"⚠️ Erreur pendant cleanup: {e}")
+        ark_logger.error(f"⚠️ Erreur pendant cleanup: {e}", extra={"arkalia_module": "zeroia"})
 
 
 def get_error_recovery_status() -> dict:
