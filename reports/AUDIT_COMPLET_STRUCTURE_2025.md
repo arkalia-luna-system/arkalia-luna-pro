@@ -22,15 +22,7 @@
 
 ### 1. DOUBLONS DE FICHIERS CORE
 
-#### ✅ CORRIGÉ (2025-11-12)
-- `helloria/core.py` → **SUPPRIMÉ** (doublon avec `modules/helloria/core.py`)
-- `modules/taskia/core_refactored.py` → **FUSIONNÉ** dans `modules/taskia/core.py` puis **SUPPRIMÉ**
-- `modules/reflexia/logic/main_loop.py` → **SUPPRIMÉ** (remplacé par `main_loop_enhanced.py` avec alias de compatibilité)
-
-**Actions réalisées :**
-- ✅ Fusionné `taskia/core_refactored.py` dans `core.py` (conservé version SOLID complète)
-- ✅ Supprimé `reflexia/logic/main_loop.py` (alias `reflexia_loop()` ajouté dans `main_loop_enhanced.py`)
-- ✅ Tous les imports mis à jour automatiquement
+✅ **Corrigé** : Doublons supprimés, fichiers fusionnés, imports mis à jour
 
 ---
 

@@ -37,16 +37,7 @@
 | `core/core.py` | `/core/` | ✅ OK - Core principal | OK | OK |
 | `modules/taskia/core.py` | `/modules/taskia/` | ✅ OK - Module spécifique | OK | OK |
 
-**✅ ACTION RÉALISÉE :**
-
-- ✅ **SUPPRIMÉ** `helloria/core.py` (ancien, moins complet, 333 lignes)
-- ✅ **CONSERVÉ** `modules/helloria/core.py` (fusionné avec fonctionnalités de l'ancien)
-- ✅ **MIGRÉ** tous les imports de `helloria.core` vers `modules.helloria.core` (12 fichiers)
-- ✅ **CORRIGÉ** tous les scripts, tests et documentation
-
-**Impact :** 12 fichiers migrés → **TERMINÉ** ✅  
-**Commits :** `c80e9cf9`, `fe82b72e`  
-**Tests :** 6/6 tests helloria passent ✅
+✅ **Corrigé** : Doublon supprimé, 12 fichiers migrés, tous les tests passent
 
 ---
 
@@ -66,17 +57,7 @@
 | `modules/core/utils/` | Core utils | ✅ OK - Utilitaires core | ✅ **GARDER** |
 | `utils/` | Racine | ⚠️ **À VÉRIFIER** | 🔍 **AUDITER** |
 
-**✅ ACTION RÉALISÉE :**
-
-- ✅ **SUPPRIMÉ** `modules/utils_enhanced/` complètement
-- ✅ **MIGRÉ** tous les imports vers `modules.utils.helpers`:
-  - `modules/reflexia/utils/config_loader.py` ✅
-  - `modules/sandozia/core/sandozia_core.py` ✅
-- ✅ **AJOUTÉ** `load_toml_cached()` dans `modules/utils/helpers/io_safe.py` avec cache thread-safe
-
-**Impact :** 2 fichiers migrés → **TERMINÉ** ✅  
-**Commits :** `c80e9cf9`, `fe82b72e`  
-**Fonctions migrées :** `load_toml_cached()` avec cache thread-safe
+✅ **Corrigé** : Module obsolète supprimé, 2 fichiers migrés, cache thread-safe ajouté
 
 ---
 

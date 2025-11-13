@@ -88,7 +88,6 @@ reports/
 - **26 fichiers MD** : dates harmonisées
 - **1 fichier supprimé** : `container_status_report.md` (vide)
 - **Doublons identifiés** : Vérification optionnelle recommandée
-- ✅ **Toutes les dates principales** harmonisées à "novembre 2025"
 
 ---
 
