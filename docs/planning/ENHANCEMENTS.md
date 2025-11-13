@@ -1,6 +1,6 @@
 # ✨ ENHANCEMENTS.md — Améliorations Arkalia-LUNA
 
-[![Version](https://img.shields.io/badge/version-v1.2.1-blue)](https://github.com/arkalia-luna-system/arkalia-luna-pro/releases)
+[![Version](https://img.shields.io/badge/version-v2.8.0-blue)](https://github.com/arkalia-luna-system/arkalia-luna-pro/releases)
 [![Build](https://github.com/arkalia-luna-system/arkalia-luna-pro/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-mkdocs-blueviolet)](https://arkalia-luna-system.github.io/arkalia-luna-pro/)
 

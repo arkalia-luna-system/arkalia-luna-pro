@@ -54,15 +54,8 @@ La documentation est maintenue et cohérente avec la version actuelle v2.8.0 du 
 
 ## Points d'Attention
 
-### 1. Fichiers Temporaires
-- Présence de fichiers `.!*` dans `docs/getting-started/` et `docs/security/`
-- Artefacts temporaires macOS
-
-### 2. Documentation Future
-- Le fichier `plan-ameliorations-futures.md` nécessite une mise à jour après chaque release majeure
-
-### 3. Dernières Updates
-- Le fichier `docs/releases/dernieres_updates.md` contient 3 lignes et peut être enrichi
+### 1. Documentation Future
+- Le fichier `planning/future-improvements.md` nécessite une mise à jour après chaque release majeure
 
 ## 📈 Statistiques Documentation
 
@@ -77,20 +70,14 @@ La documentation est maintenue et cohérente avec la version actuelle v2.8.0 du 
 
 ## Recommandations
 
-### 1. Nettoyage
-```bash
-# Supprimer les fichiers temporaires macOS
-find docs -name ".!*" -type f -delete
-```
-
-### 2. Enrichir les Updates
-Compléter le fichier `dernieres_updates.md` avec un résumé des changements récents
-
-### 3. Automatisation
+### 1. Automatisation
 Ajouter un script de validation automatique de la documentation dans la CI/CD
 
-### 4. Versioning
+### 2. Versioning
 Ajouter des tags de version dans la documentation pour faciliter le suivi des changements
+
+### 3. Enrichissement
+Enrichir les fichiers modules/*.md qui sont actuellement très courts (28-40 lignes)
 
 ## Conclusion
 
@@ -282,8 +269,6 @@ La documentation est maintenue et alignée avec le système réel.
 ### Écarts Identifiés
 
 1. Generative AI Module : Commenté dans Docker (en développement)
-2. Fichiers temporaires macOS : `.!*` à nettoyer
-3. dernieres_updates.md : Seulement 3 lignes
 
 ### Points Forts
 
@@ -305,8 +290,6 @@ La documentation est maintenue et alignée avec le système réel.
 ### Recommandations Finales
 
 1. **Court Terme**
-   - Nettoyer les fichiers `.!*`
-   - Enrichir `dernieres_updates.md`
    - Documenter le statut de Generative AI
 
 2. **Moyen Terme**
