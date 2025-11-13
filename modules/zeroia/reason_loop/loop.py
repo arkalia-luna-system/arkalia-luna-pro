@@ -74,7 +74,6 @@ def reason_loop_enhanced_with_recovery(
             system_health = 0.8
 
         # Décision protégée par Circuit Breaker ET Error Recovery
-        decision_error = None
         try:
             decision, score = cb.call(decide_protected, ctx)
 
