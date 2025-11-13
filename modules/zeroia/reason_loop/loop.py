@@ -78,7 +78,6 @@ def reason_loop_enhanced_with_recovery(
             decision, score = cb.call(decide_protected, ctx)
 
         except Exception as e:
-            decision_error = e
             ark_logger.warning(
                 f"🔄 Erreur dans décision, utilisation Error Recovery: {e}",
                 extra={"arkalia_module": "zeroia"},
