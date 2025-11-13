@@ -19,7 +19,6 @@ Signale :
 """
 
 import json
-import logging
 import statistics
 from collections import defaultdict, deque
 from dataclasses import dataclass
@@ -522,7 +521,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO)
     analyzer = BehaviorAnalyzer()
 
     if args.demo:

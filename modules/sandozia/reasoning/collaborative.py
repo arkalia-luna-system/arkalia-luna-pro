@@ -13,7 +13,6 @@ Coordonne le raisonnement entre modules IA :
 """
 
 import json
-import logging
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
@@ -370,7 +369,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO)
     collaborative = CollaborativeReasoning()
 
     if args.demo:

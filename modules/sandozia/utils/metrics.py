@@ -13,7 +13,6 @@ Collecte et traite les métriques d'intelligence croisée :
 """
 
 import json
-import logging
 import statistics
 from collections import defaultdict
 from dataclasses import dataclass
@@ -354,7 +353,6 @@ def demo_metrics() -> None:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
     demo_metrics()
 
 
