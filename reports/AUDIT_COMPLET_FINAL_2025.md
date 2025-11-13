@@ -177,15 +177,15 @@ modules/
 - ✅ **Gestion propre des fichiers système**
 
 ### Points à améliorer (optionnel)
-- ⚠️ Optimiser quelques imports inutilisés (non critique)
+- ✅ **Optimisation imports inutilisés** : Terminé (Ruff F401)
 
 ### Verdict final
 **✅ Le projet est propre, bien organisé et sans problème critique.**
 
 ### Points d'attention (non bloquants)
-- ⚠️ Quelques dossiers vides normaux (logs, benchmarks) - OK
-- ⚠️ Fichiers macOS `._*` dans Git nettoyés
-- ⚠️ Quelques imports à optimiser (non critique)
+- ✅ Quelques dossiers vides normaux (logs, benchmarks) - OK
+- ✅ Fichiers macOS `._*` dans Git nettoyés
+- ✅ Imports optimisés (Ruff F401 appliqué)
 
 ---
 

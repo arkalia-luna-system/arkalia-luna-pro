@@ -80,7 +80,7 @@
 - ✅ Séparation code/tests
 
 ### Points à améliorer (optionnel)
-- ⚠️ Optimiser quelques imports inutilisés (non critique)
+- ✅ **Optimisation imports inutilisés** : Terminé (Ruff F401 appliqué)
 
 ---
 
