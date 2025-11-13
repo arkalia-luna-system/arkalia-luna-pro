@@ -182,7 +182,12 @@ jobs:
 
       - name: 📋 Upload performance report
         uses: actions/upload-artifact@v4
+        continue-on-error: true
+        timeout-minutes: 5
         with:
           name: performance-report
           path: performance-report.md
           retention-days: 30
+          if-no-files-found: warn
+        env:
+          ACTIONS_STEP_DEBUG: false

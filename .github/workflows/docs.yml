@@ -153,10 +153,15 @@ jobs:
 
       - name: 📋 Upload built documentation
         uses: actions/upload-artifact@v4
+        continue-on-error: true
+        timeout-minutes: 10
         with:
           name: documentation-build
           path: site/
           retention-days: 7
+          if-no-files-found: warn
+        env:
+          ACTIONS_STEP_DEBUG: false
 
   # 🚀 Déploiement de la documentation
   deploy-docs:
@@ -264,10 +269,15 @@ jobs:
 
       - name: 📋 Upload documentation report
         uses: actions/upload-artifact@v4
+        continue-on-error: true
+        timeout-minutes: 5
         with:
           name: docs-report
           path: docs-report.md
           retention-days: 90
+          if-no-files-found: warn
+        env:
+          ACTIONS_STEP_DEBUG: false
 
       - name: 🚨 Notify on documentation failure
         if: failure()

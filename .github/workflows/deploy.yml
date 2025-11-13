@@ -323,10 +323,15 @@ jobs:
 
       - name: 📋 Upload deployment report
         uses: actions/upload-artifact@v4
+        continue-on-error: true
+        timeout-minutes: 5
         with:
           name: deployment-report-optimized
           path: deployment-report.md
           retention-days: 90
+          if-no-files-found: warn
+        env:
+          ACTIONS_STEP_DEBUG: false
 
       - name: 🚨 Notify on deployment failure
         if: failure()
