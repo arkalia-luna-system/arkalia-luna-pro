@@ -104,8 +104,8 @@ docker-compose logs arkalia-api
 ## 📚 Prochaines Étapes
 
 1. **Explorer les modules** : [Documentation des modules](../modules/zeroia.md)
-2. **Utiliser l'API** : [Guide d'utilisation](../fonctionnement/utilisation.md)
-3. **Comprendre l'architecture** : [Architecture du système](../architecture.md)
+2. **Utiliser l'API** : [Guide d'utilisation](../architecture/fonctionnement/utilisation.md)
+3. **Comprendre l'architecture** : [Architecture du système](../architecture/overview.md)
 4. **Contribuer** : [Guide de contribution](../credits/CONTRIBUTING.md)
 
 ---

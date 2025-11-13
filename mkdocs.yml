@@ -119,11 +119,12 @@ nav:
       - Cognitive Levels: getting-started/cognitive-levels.md
       - Use Cases: getting-started/use-cases.md
   - Architecture:
-      - Overview: architecture.md
-      - Structure: fonctionnement/structure.md
-      - Components: fonctionnement/composants.md
-      - Kernel: fonctionnement/kernel.md
-      - Usage: fonctionnement/utilisation.md
+      - Overview: architecture/overview.md
+      - Fonctionnement:
+          - Structure: architecture/fonctionnement/structure.md
+          - Components: architecture/fonctionnement/composants.md
+          - Kernel: architecture/fonctionnement/kernel.md
+          - Usage: architecture/fonctionnement/utilisation.md
       - Containers: architecture/containers.md
       - Decision Flow: architecture/decision_flow.md
       - Cahier des Charges: architecture/cahier_des_charges_v4.0.md
@@ -142,15 +143,23 @@ nav:
       - Security Modules:
           - Security: security/security.md
       - Monitoring Modules:
-          - Infrastructure Monitoring: devops/index.md
+          - Infrastructure Monitoring: infrastructure/devops/index.md
   - Infrastructure:
       - Overview: infrastructure/index.md
       - Configuration: infrastructure/configuration.md
-      - Configuration Guide: CONFIGURATION_GUIDE.md
+      - Configuration Guide: infrastructure/configuration-guide.md
       - Deployment: infrastructure/deployment.md
       - Monitoring: infrastructure/monitoring.md
       - CI/CD: infrastructure/ci-cd.md
       - Automation: infrastructure/automation.md
+      - DevOps:
+          - Overview: infrastructure/devops/index.md
+          - Linting Resolution: infrastructure/devops/linting-resolution.md
+          - Security: infrastructure/devops/security.md
+      - Guides:
+          - Docker Hardening: infrastructure/guides/docker_hardening.md
+          - Operations Guide: infrastructure/guides/ops-guide.md
+          - Rebuild Guide: infrastructure/guides/rebuild-guide.md
   - Security:
       - Overview: security/security.md
       - Architecture: security/architecture.md
@@ -165,26 +174,18 @@ nav:
       - Endpoints: reference/endpoints.md
       - Metrics: reference/metrics.md
   - Operations:
-      - DevOps Overview: devops/index.md
-      - Linting Resolution: devops/linting-resolution.md
-      - DevOps Security: devops/security.md
       - Chaos Testing: chaos/chaos_test_suite.md
-  - Guides:
-      - Docker Hardening: guides/docker_hardening.md
-      - Operations Guide: guides/ops-guide.md
-      - Rebuild Guide: guides/rebuild-guide.md
   - Releases:
       - v2.8.0: releases/v2.8.0.md
       - All Releases: releases/index.md
-      - Latest Updates: releases/dernieres_updates.md
   - Planning:
-      - Future Improvements: plan-ameliorations-futures.md
-      - Roadmap Overview: planning/roadmap/index.md
-      - Enhancements: planning/roadmap/ENHANCEMENTS.md
+      - Future Improvements: planning/future-improvements.md
+      - Roadmap Overview: planning/index.md
+      - Enhancements: planning/ENHANCEMENTS.md
   - Support:
       - FAQ: support/faqs.md
-      - VSCode Setup: vscode-setup.md
-      - Documentation Status: rapport-documentation-etat.md
+      - VSCode Setup: support/vscode-setup.md
+      - Documentation Status: support/documentation-status.md
   - Legal:
       - License: legal/license.md
       - Contributing: credits/CONTRIBUTING.md

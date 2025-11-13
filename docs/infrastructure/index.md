@@ -295,8 +295,8 @@ curl http://localhost:8000/health
 
 ### **Ressources**
 - [❓ FAQ](../support/faqs.md)
-- [🔧 Guide opérationnel](../guides/ops-guide.md)
-- [🐛 Issues](https://github.com/arkalia-luna-system/arkalia-luna-pro/issues)
+- [🔧 Guide opérationnel](guides/ops-guide.md)
+- [🐛 Issues](https://github.com/arkalia-luna-pro/issues)
 
 ### **Contact**
 - **GitHub** : [arkalia-luna-system/arkalia-luna-pro](https://github.com/arkalia-luna-system/arkalia-luna-pro)

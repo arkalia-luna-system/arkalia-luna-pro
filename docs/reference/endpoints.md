@@ -369,7 +369,7 @@ curl -X POST http://localhost:8000/chat \
 
 - [API Documentation](api.md)
 - [Métriques](metrics.md)
-- [Configuration](../devops/index.md)
+- [Configuration](../infrastructure/devops/index.md)
 
 ---
 
