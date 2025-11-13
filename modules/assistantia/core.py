@@ -100,14 +100,28 @@ startup_time = datetime.now()
 active_connections = 0
 
 
+# Variable au niveau module pour éviter B008 (Depends dans argument par défaut)
+_query_ollama_func: Callable[[str, str, float], str] | None = None
+
+
+def _create_query_ollama_func() -> Callable[[str, str, float], str]:
+    """Crée la fonction de requête Ollama."""
+    def query_func(prompt: str, model: str, temp: float) -> str:
+        return real_query_ollama(prompt, model, temp)
+    return query_func
+
+
 def get_query_ollama() -> Callable[[str, str, float], str]:
     """
     Retourne une fonction de requête Ollama.
 
     Returns:
-        Callable: Fonction lambda pour interroger Ollama avec prompt, model et température.
+        Callable: Fonction pour interroger Ollama avec prompt, model et température.
     """
-    return lambda prompt, model, temp: real_query_ollama(prompt, model, temp)
+    global _query_ollama_func
+    if _query_ollama_func is None:
+        _query_ollama_func = _create_query_ollama_func()
+    return _query_ollama_func
 
 
 async def get_arkalia_context() -> tuple[str, float]:

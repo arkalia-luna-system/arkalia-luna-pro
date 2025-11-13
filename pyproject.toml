@@ -64,6 +64,7 @@ ignore = ["E203", "F401", "B008", "C901"]
 "tests/**/*.py" = ["F841", "E402"]
 "modules/**/*.py" = ["W293"]
 "modules/generative_ai/generated/test_core.py" = ["I001", "E", "W", "F", "B", "C4", "UP"]
+"modules/assistantia/core.py" = ["B008"]  # Depends() est un pattern FastAPI standard
 
 # [tool.ruff.lint.isort]
 # known-first-party = ["modules", "scripts"]
