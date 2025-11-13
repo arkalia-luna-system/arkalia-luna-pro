@@ -10,6 +10,7 @@ from collections.abc import AsyncGenerator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 
+import psutil
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse, Response
@@ -111,9 +112,6 @@ async def health() -> dict:
     return {"status": "ok", "service": "arkalia-api"}
 
 
-import psutil
-
-
 @app.get("/status")
 async def get_status() -> dict:
     """Statut détaillé de l'API"""
@@ -194,5 +192,7 @@ class ZeroiaDecisionInput(BaseModel):
 
 
 @app.post("/zeroia/decision")
-async def zeroia_decision(_: ZeroiaDecisionInput) -> dict:
+async def zeroia_decision(_input: ZeroiaDecisionInput) -> dict:
+    """Endpoint de décision ZeroIA minimal pour compatibilité."""
+    del _input  # Non utilisé pour l'instant
     return {"status": "accepted", "module": "zeroia"}
