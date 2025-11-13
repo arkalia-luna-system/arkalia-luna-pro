@@ -30,8 +30,29 @@ from core.ark_logger import ark_logger
 # Réexport depuis sous-modules
 from .sandozia import IntelligenceSnapshot, SandoziaCore, SandoziaMetrics
 
+# Réexport des fonctions utilisées par les tests pour compatibilité
+from .sandozia.core import (
+    load_context,
+    load_reflexia_state,
+)
+from modules.reflexia.core import (
+    get_metrics as reflexia_get_metrics,
+    launch_reflexia_check,
+)
+
 # Alias pour compatibilité
-__all__ = ["SandoziaCore", "SandoziaMetrics", "IntelligenceSnapshot", "app", "get_metrics", "main"]
+__all__ = [
+    "SandoziaCore",
+    "SandoziaMetrics",
+    "IntelligenceSnapshot",
+    "app",
+    "get_metrics",
+    "main",
+    "reflexia_get_metrics",
+    "launch_reflexia_check",
+    "load_context",
+    "load_reflexia_state",
+]
 
 
 # === Métriques Prometheus pour Sandozia ===

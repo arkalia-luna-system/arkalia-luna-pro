@@ -212,7 +212,7 @@ class TestZeroIAOrchestrator:
             orchestrator.session_stats["failed_decisions"] = 2
             orchestrator.session_stats["circuit_openings"] = 1
 
-            with patch("modules.zeroia.orchestrator_enhanced.logger") as mock_logger:
+            with patch("modules.zeroia.orchestrator_enhanced.ark_logger") as mock_logger:
                 orchestrator._cleanup_and_report()
 
         mock_event_store.add_event.assert_called_once()
