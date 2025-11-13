@@ -100,7 +100,7 @@ class ConfigManager:
     async def _load_config_async(self) -> None:
         """Chargement asynchrone de la configuration (optimisé pour performance)"""
         try:
-            import aiofiles
+            import aiofiles  # type: ignore
 
             if os.path.exists(self.config_path):
                 async with aiofiles.open(self.config_path, encoding="utf-8") as f:
@@ -248,7 +248,7 @@ class ConfigManager:
         :return: True si sauvegarde réussie
         """
         try:
-            import aiofiles
+            import aiofiles  # type: ignore
 
             # Création du répertoire si nécessaire
             config_dir = Path(self.config_path).parent

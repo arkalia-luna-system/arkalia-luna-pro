@@ -284,4 +284,4 @@ ark-docker-status
 
 ---
 
-*Configuration VSCode Arkalia-LUNA v3.0-phase1 - L'IA ne dort jamais.* 🌕
+*Configuration VSCode Arkalia-LUNA v2.8.0 - L'IA ne dort jamais.* 🌕

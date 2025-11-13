@@ -114,7 +114,24 @@ Exemples d'utilisation :
             f"📁 Chargement config personnalisée: {args.config}",
             extra={"arkalia_module": "scripts"},
         )
-        # TODO: Implémenter chargement config
+        try:
+            from modules.core.config.config_manager import ConfigManager
+
+            custom_config_manager = ConfigManager(config_path=args.config)
+            # Mettre à jour la config avec les valeurs du fichier personnalisé
+            if hasattr(custom_config_manager, "_config"):
+                for key, value in custom_config_manager._config.items():
+                    if hasattr(config, key):
+                        setattr(config, key, value)
+                ark_logger.info(
+                    "✅ Configuration personnalisée chargée avec succès",
+                    extra={"arkalia_module": "scripts"},
+                )
+        except Exception as e:
+            ark_logger.warning(
+                f"⚠️ Erreur chargement config personnalisée: {e}. Utilisation config par défaut.",
+                extra={"arkalia_module": "scripts"},
+            )
 
     if args.enable_modules:
         config.enabled_modules = args.enable_modules

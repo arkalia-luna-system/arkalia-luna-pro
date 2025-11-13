@@ -95,7 +95,23 @@ async def metrics_middleware(
 
 @app.get("/")
 async def root() -> dict:
-    """Endpoint racine"""
+    """
+    Endpoint racine de l'API principale Arkalia-LUNA Pro.
+
+    Retourne les informations de base sur le service.
+
+    Returns:
+        dict: Informations du service (message, version, modules, uptime).
+
+    Examples:
+        >>> GET /
+        >>> {
+        ...     "message": "🌕 Arkalia-LUNA Pro API",
+        ...     "version": "2.8.0",
+        ...     "status": "active",
+        ...     "modules": ["assistantia", "reflexia", "zeroia"]
+        ... }
+    """
     return {
         "message": "🌕 Arkalia-LUNA Pro API",
         "version": "2.8.0",
@@ -108,13 +124,41 @@ async def root() -> dict:
 
 @app.get("/health")
 async def health() -> dict:
-    """Health check"""
+    """
+    Health check de l'API principale.
+
+    Vérifie que le service est opérationnel.
+
+    Returns:
+        dict: Statut de santé du service.
+
+    Examples:
+        >>> GET /health
+        >>> {"status": "ok", "service": "arkalia-api"}
+    """
     return {"status": "ok", "service": "arkalia-api"}
 
 
 @app.get("/status")
 async def get_status() -> dict:
-    """Statut détaillé de l'API"""
+    """
+    Statut détaillé de l'API principale.
+
+    Retourne l'état complet du service avec métriques système.
+
+    Returns:
+        dict: Statut détaillé avec modules, métriques système, uptime.
+
+    Examples:
+        >>> GET /status
+        >>> {
+        ...     "service": "arkalia-api",
+        ...     "version": "2.8.0",
+        ...     "status": "active",
+        ...     "modules": {"assistantia": "active", ...},
+        ...     "system": {"cpu_percent": 45.2, ...}
+        ... }
+    """
 
     return {
         "service": "arkalia-api",
@@ -134,7 +178,19 @@ async def get_status() -> dict:
 @app.get("/metrics")
 async def get_metrics() -> Response:
     """
-    📊 Endpoint métriques Prometheus pour l'API principale
+    Endpoint métriques Prometheus pour l'API principale.
+
+    Retourne les métriques au format Prometheus pour le scraping.
+
+    Returns:
+        PlainTextResponse: Métriques Prometheus au format texte.
+        JSONResponse: Erreur en JSON si problème.
+
+    Examples:
+        >>> GET /metrics
+        >>> # arkalia_system_uptime 86400.0
+        >>> # arkalia_memory_usage 2147483648
+        >>> # arkalia_cpu_usage 45.2
     """
     try:
         # Mettre à jour les métriques système
@@ -193,6 +249,21 @@ class ZeroiaDecisionInput(BaseModel):
 
 @app.post("/zeroia/decision")
 async def zeroia_decision(_input: ZeroiaDecisionInput) -> dict:
-    """Endpoint de décision ZeroIA minimal pour compatibilité."""
+    """
+    Endpoint de décision ZeroIA minimal pour compatibilité.
+
+    Accepte une demande de décision et retourne un statut.
+
+    Args:
+        _input: Données d'entrée pour la décision (ZeroiaDecisionInput).
+
+    Returns:
+        dict: Statut de la décision acceptée.
+
+    Examples:
+        >>> POST /zeroia/decision
+        >>> {"context": {}, "priority": "high"}
+        >>> {"status": "accepted", "module": "zeroia"}
+    """
     del _input  # Non utilisé pour l'instant
     return {"status": "accepted", "module": "zeroia"}

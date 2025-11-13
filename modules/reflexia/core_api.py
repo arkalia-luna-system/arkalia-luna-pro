@@ -41,8 +41,23 @@ def get_reflexia_status() -> dict:
 @router.get("/check")
 async def check_reflexia_status():
     """
-    ✅ Endpoint de vérification réflexive.
-    Retourne l'état des métriques système (CPU, RAM, etc.)
+    Endpoint de vérification réflexive.
+
+    Retourne l'état des métriques système (CPU, RAM, latence) collectées par Reflexia.
+
+    Returns:
+        JSONResponse: Statut avec métriques système.
+
+    Examples:
+        >>> GET /reflexia/check
+        >>> {
+        ...     "status": "ok",
+        ...     "metrics": {
+        ...         "cpu": 45.2,
+        ...         "ram": 67.8,
+        ...         "latency": 120.5
+        ...     }
+        ... }
     """
     try:
         return JSONResponse(content=get_reflexia_status())
@@ -56,7 +71,19 @@ async def check_reflexia_status():
 @router.get("/metrics")
 async def get_metrics():
     """
-    📊 Endpoint métriques Prometheus pour Reflexia
+    Endpoint métriques Prometheus pour Reflexia.
+
+    Retourne les métriques Reflexia au format Prometheus pour le scraping.
+
+    Returns:
+        PlainTextResponse: Métriques Prometheus au format texte.
+        JSONResponse: Erreur en JSON si problème.
+
+    Examples:
+        >>> GET /reflexia/metrics
+        >>> # reflexia_cpu_usage_percent 45.2
+        >>> # reflexia_ram_usage_percent 67.8
+        >>> # reflexia_latency_ms 120.5
     """
     try:
         # Collecter les métriques actuelles
@@ -85,6 +112,18 @@ async def get_metrics():
 
 @app.get("/health")
 async def health():
+    """
+    Health check pour le service Reflexia.
+
+    Vérifie que le service Reflexia est opérationnel.
+
+    Returns:
+        dict: Statut de santé du service Reflexia.
+
+    Examples:
+        >>> GET /health
+        >>> {"status": "ok", "service": "reflexia"}
+    """
     try:
         return {"status": "ok", "service": "reflexia"}
     except Exception as e:

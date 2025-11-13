@@ -9,7 +9,7 @@
 - **Healthcheck optimisé** : Python urllib natif ✅
 - **Artefacts uploadés** : Conditionnel et robuste ✅
 
-![Version](https://img.shields.io/badge/version-v3.0--phase2-blue)
+![Version](https://img.shields.io/badge/version-v2.8.0-blue)
 ![Security](https://img.shields.io/badge/security-enterprise-green)
 ![Compliance](https://img.shields.io/badge/compliance-SOC2-blue)
 

@@ -31,6 +31,26 @@ router = APIRouter()
 # 🎯 Endpoint principal IA
 @router.post("/chat", tags=["IA"], response_model=None)
 async def chat(request: Request) -> dict[str, Any] | JSONResponse:
+    """
+    Endpoint principal pour le chat IA via Helloria.
+
+    Traite un message utilisateur et génère une réponse IA.
+
+    Args:
+        request: Requête FastAPI contenant le JSON avec le message.
+
+    Returns:
+        dict: Réponse avec le texte généré.
+        JSONResponse: Erreur 400 si message vide.
+
+    Raises:
+        Exception: Erreur interne si problème de traitement.
+
+    Examples:
+        >>> POST /chat
+        >>> {"message": "Bonjour"}
+        >>> {"réponse": "Tu as dit : 'Bonjour' (réponse IA à coder 🎯)"}
+    """
     try:
         data = await request.json()
         prompt = data.get("message", "").strip()
@@ -50,13 +70,42 @@ async def chat(request: Request) -> dict[str, Any] | JSONResponse:
 # 🌐 Racine API
 @router.get("/", tags=["Root"])
 async def root() -> dict:
+    """
+    Endpoint racine de l'API Helloria.
+
+    Retourne un message de confirmation que l'API est active.
+
+    Returns:
+        dict: Message de confirmation.
+
+    Examples:
+        >>> GET /
+        >>> {"message": "Arkalia-LUNA API active"}
+    """
     return {"message": "Arkalia-LUNA API active"}
 
 
 # 📊 Endpoint statut détaillé
 @router.get("/status", tags=["Status"])
 async def status() -> dict:
-    """Statut détaillé de l'API avec métriques système"""
+    """
+    Statut détaillé de l'API avec métriques système.
+
+    Retourne l'état de tous les modules et les métriques système (CPU, RAM, disque).
+
+    Returns:
+        dict: Statut complet avec métriques système et modules.
+
+    Examples:
+        >>> GET /status
+        >>> {
+        ...     "service": "arkalia-api",
+        ...     "version": "2.8.0",
+        ...     "status": "active",
+        ...     "modules": {"assistantia": "active", ...},
+        ...     "system": {"cpu_percent": 45.2, ...}
+        ... }
+    """
     # Métriques système
     cpu_percent = psutil.cpu_percent(interval=0.1)
     memory = psutil.virtual_memory()
@@ -91,8 +140,20 @@ async def status() -> dict:
 @router.get("/metrics", tags=["Monitoring"])
 async def metrics() -> PlainTextResponse:
     """
-    Endpoint Prometheus pour exposition des métriques Arkalia-LUNA
-    Format: OpenMetrics/Prometheus standard
+    Endpoint Prometheus pour exposition des métriques Arkalia-LUNA.
+
+    Retourne les métriques au format OpenMetrics/Prometheus standard pour le scraping.
+
+    Returns:
+        PlainTextResponse: Métriques Prometheus au format texte.
+
+    Raises:
+        Exception: Erreur si problème de génération des métriques.
+
+    Examples:
+        >>> GET /metrics
+        >>> # arkalia_requests_total{method="GET"} 42
+        >>> # arkalia_cpu_usage 45.2
     """
     try:
         # Version JSON simplifiée des métriques pour compatibilité
@@ -129,14 +190,23 @@ def _get_fallback_metrics() -> dict:
         "modules/taskia/core.py": Path("modules/taskia/core.py").exists(),
     }
 
-    # Lecture état ZeroIA si disponible
+    # Lecture état ZeroIA si disponible (async pour performance)
     zeroia_confidence = 0.0
     try:
         dashboard_path = Path("state/zeroia_dashboard.json")
         if dashboard_path.exists():
-            with open(dashboard_path) as f:
-                dashboard = json.load(f)
-            zeroia_confidence = dashboard.get("confidence", 0.0)
+            try:
+                import aiofiles
+
+                async with aiofiles.open(dashboard_path, encoding="utf-8") as f:
+                    content = await f.read()
+                    dashboard = json.loads(content)
+                    zeroia_confidence = dashboard.get("confidence", 0.0)
+            except ImportError:
+                # Fallback synchrone si aiofiles non disponible
+                with open(dashboard_path, encoding="utf-8") as f:
+                    dashboard = json.load(f)
+                    zeroia_confidence = dashboard.get("confidence", 0.0)
     except Exception:  # nosec B110
         pass
 
@@ -301,18 +371,33 @@ def sandozia_health() -> dict:
 
 
 @app.get("/zeroia/status", tags=["ZeroIA"])
-def zeroia_status() -> dict[str, Any]:
-    """Récupère le statut détaillé du module ZeroIA.
+async def zeroia_status() -> dict[str, Any]:
+    """Récupère le statut détaillé du module ZeroIA (async optimisé).
 
     Returns:
         dict: Statut détaillé de ZeroIA depuis le dashboard.
     """
     try:
-        with open("state/zeroia_dashboard.json") as f:
-            data = json.load(f)
-            if isinstance(data, dict):
-                return data
-            return {"status": "error", "error": "invalid dashboard format"}
+        dashboard_path = Path("state/zeroia_dashboard.json")
+        if not dashboard_path.exists():
+            return {"status": "error", "error": "dashboard file not found"}
+
+        try:
+            import aiofiles
+
+            async with aiofiles.open(dashboard_path, encoding="utf-8") as f:
+                content = await f.read()
+                data = json.loads(content)
+                if isinstance(data, dict):
+                    return data
+                return {"status": "error", "error": "invalid dashboard format"}
+        except ImportError:
+            # Fallback synchrone si aiofiles non disponible
+            with open(dashboard_path, encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, dict):
+                    return data
+                return {"status": "error", "error": "invalid dashboard format"}
     except Exception as e:
         return {"status": "error", "error": str(e)}
 
