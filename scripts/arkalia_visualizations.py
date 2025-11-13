@@ -490,7 +490,7 @@ class ArkaliaVisualizer:
             )
 
 
-def main():
+def main() -> None:
     """Fonction principale"""
     ark_logger.info(
         "🌕 Arkalia-LUNA Pro - Générateur de Visualisations", extra={"arkalia_module": "scripts"}
