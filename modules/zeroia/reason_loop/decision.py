@@ -3,7 +3,6 @@ Decision - Logique de décision protégée par circuit breaker
 """
 
 from datetime import datetime
-from typing import Any
 
 from modules.zeroia.circuit_breaker import CognitiveOverloadError, DecisionIntegrityError
 

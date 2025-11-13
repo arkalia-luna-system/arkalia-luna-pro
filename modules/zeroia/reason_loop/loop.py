@@ -5,7 +5,6 @@ Loop - Boucle principale de raisonnement Enhanced
 import sys
 import time
 from pathlib import Path
-from typing import Any
 
 from core.ark_logger import ark_logger
 from modules.zeroia.circuit_breaker import (

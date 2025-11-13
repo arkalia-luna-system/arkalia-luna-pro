@@ -146,6 +146,7 @@ nav:
   - Infrastructure:
       - Overview: infrastructure/index.md
       - Configuration: infrastructure/configuration.md
+      - Configuration Guide: CONFIGURATION_GUIDE.md
       - Deployment: infrastructure/deployment.md
       - Monitoring: infrastructure/monitoring.md
       - CI/CD: infrastructure/ci-cd.md

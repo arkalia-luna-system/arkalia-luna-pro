@@ -282,4 +282,3 @@ class SQLiteBackend(StorageBackend):
         except Exception as e:
             ark_logger.error(f"Erreur listage SQLite: {e}", extra={"arkalia_module": "core"})
             return []
-

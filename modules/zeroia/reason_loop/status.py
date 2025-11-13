@@ -2,7 +2,6 @@
 Status - Fonctions de statut et monitoring
 """
 
-from typing import Any
 
 from core.ark_logger import ark_logger
 from modules.zeroia.circuit_breaker import CircuitBreaker

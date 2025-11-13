@@ -43,21 +43,19 @@ def cleanup_confidence_memory(
 
     # Créer backup si demandé
     if backup:
-        backup_path = file_path.with_suffix(f".toml.backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+        backup_path = file_path.with_suffix(
+            f".toml.backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        )
         import shutil
 
         shutil.copy2(file_path, backup_path)
-        ark_logger.info(
-            f"📦 Backup créé: {backup_path}", extra={"arkalia_module": "scripts"}
-        )
+        ark_logger.info(f"📦 Backup créé: {backup_path}", extra={"arkalia_module": "scripts"})
 
     # Charger le fichier
     try:
         data = toml.load(file_path)
     except Exception as e:
-        ark_logger.error(
-            f"❌ Erreur chargement TOML: {e}", extra={"arkalia_module": "scripts"}
-        )
+        ark_logger.error(f"❌ Erreur chargement TOML: {e}", extra={"arkalia_module": "scripts"})
         return 0, size_before_mb, size_before_mb
 
     # Filtrer les métriques de performance
@@ -86,9 +84,7 @@ def cleanup_confidence_memory(
     # Limiter le nombre d'entrées (garder les plus récentes)
     if len(filtered_metrics) > max_entries:
         # Trier par timestamp (plus récent en premier)
-        filtered_metrics.sort(
-            key=lambda x: x.get("timestamp", ""), reverse=True
-        )
+        filtered_metrics.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
         filtered_metrics = filtered_metrics[:max_entries]
 
     # Mettre à jour les données
@@ -100,9 +96,7 @@ def cleanup_confidence_memory(
         with open(file_path, "w") as f:
             toml.dump(data, f)
     except Exception as e:
-        ark_logger.error(
-            f"❌ Erreur sauvegarde TOML: {e}", extra={"arkalia_module": "scripts"}
-        )
+        ark_logger.error(f"❌ Erreur sauvegarde TOML: {e}", extra={"arkalia_module": "scripts"})
         return 0, size_before_mb, size_before_mb
 
     # Taille après
@@ -154,9 +148,7 @@ def main() -> None:
     file_path = project_root / args.file
 
     if not file_path.exists():
-        ark_logger.error(
-            f"❌ Fichier non trouvé: {file_path}", extra={"arkalia_module": "scripts"}
-        )
+        ark_logger.error(f"❌ Fichier non trouvé: {file_path}", extra={"arkalia_module": "scripts"})
         return
 
     entries_removed, size_before, size_after = cleanup_confidence_memory(
@@ -166,7 +158,7 @@ def main() -> None:
         backup=not args.no_backup,
     )
 
-    print(f"\n✅ Nettoyage terminé !")
+    print("\n✅ Nettoyage terminé !")
     print(f"   Entrées supprimées: {entries_removed}")
     print(f"   Taille avant: {size_before:.2f}MB")
     print(f"   Taille après: {size_after:.2f}MB")
@@ -175,4 +167,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

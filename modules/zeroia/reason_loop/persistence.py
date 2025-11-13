@@ -4,9 +4,7 @@ Persistence - Sauvegarde état et dashboard
 
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
-from core.ark_logger import ark_logger
 from modules.utils.helpers import save_json_if_changed, save_toml_if_changed
 from modules.zeroia.event_store import EventType
 from modules.zeroia.utils.backup import save_backup

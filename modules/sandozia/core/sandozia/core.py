@@ -457,4 +457,3 @@ class SandoziaCore:
             },
             "last_update": datetime.now().isoformat(),
         }
-

@@ -239,9 +239,9 @@ env_config = config_manager.get_environment_config()
 
 ## 🔗 LIENS UTILES
 
-- [ConfigManager source](../modules/core/config/config_manager.py)
-- [Exemple ReflexIA](../modules/reflexia/utils/config_loader.py)
-- [Exemple Sandozia](../modules/sandozia/core/sandozia/core.py)
+- **ConfigManager** : Voir le code source dans `modules/core/config/config_manager.py`
+- **Exemple ReflexIA** : Voir le code source dans `modules/reflexia/utils/config_loader.py`
+- **Exemple Sandozia** : Voir le code source dans `modules/sandozia/core/sandozia_core.py`
 
 ---
 

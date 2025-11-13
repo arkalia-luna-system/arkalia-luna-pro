@@ -43,4 +43,3 @@ class SandoziaMetrics:
             "throughput": self.throughput,
             "error_rate": self.error_rate,
         }
-

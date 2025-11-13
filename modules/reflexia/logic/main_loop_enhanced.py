@@ -277,7 +277,7 @@ def reflexia_loop_enhanced(
 def reflexia_loop(max_iterations: int | None = None, sleep_seconds: float = 5.0) -> None:
     """
     Alias de compatibilité avec l'ancienne boucle.
-    
+
     Cette fonction remplace l'ancien main_loop.py pour maintenir
     la compatibilité avec le code existant.
     """

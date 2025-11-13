@@ -49,4 +49,3 @@ class IntelligenceSnapshot:
             "adaptation_rate": self.adaptation_rate,
             "timestamp": self.timestamp.isoformat(),
         }
-
