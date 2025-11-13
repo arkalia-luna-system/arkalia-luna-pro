@@ -43,7 +43,8 @@ def test_chat_post(test_client: TestClient) -> None:
             assert "response" in json_data
             # La réponse peut contenir le contexte système ou juste le message
             response_text = json_data["response"]
-            # Vérifie que la réponse contient soit "Bonjour", soit le message mocké, soit un message système
+            # Vérifie que la réponse contient soit "Bonjour",
+            # soit le message mocké, soit un message système
             # En CI, Ollama n'est pas disponible, donc on accepte les erreurs de connexion
             assert (
                 "Bonjour" in response_text

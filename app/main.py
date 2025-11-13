@@ -8,7 +8,7 @@ import logging
 import time
 from collections.abc import AsyncGenerator, Awaitable, Callable
 from contextlib import asynccontextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,8 +20,6 @@ from core.ark_logger import ark_logger
 from modules.assistantia.core import router as assistantia_router
 from modules.monitoring.prometheus_metrics import ArkaliaMetrics
 from modules.reflexia.core_api import router as reflexia_router
-
-# from modules.zeroia.core import router as zeroia_router  # Module core n'existe pas
 
 # Configuration logging
 logging.basicConfig(level=logging.INFO)
@@ -35,7 +33,7 @@ start_time = time.time()
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
     """Gestion du cycle de vie de l'application"""
     logger.info("🚀 Démarrage Arkalia-LUNA API")
 
@@ -103,7 +101,7 @@ async def root() -> dict:
         "status": "active",
         "modules": ["assistantia", "reflexia", "zeroia"],
         "uptime": time.time() - start_time,
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
 
@@ -113,10 +111,12 @@ async def health() -> dict:
     return {"status": "ok", "service": "arkalia-api"}
 
 
+import psutil
+
+
 @app.get("/status")
 async def get_status() -> dict:
     """Statut détaillé de l'API"""
-    import psutil
 
     return {
         "service": "arkalia-api",
@@ -140,8 +140,6 @@ async def get_metrics() -> Response:
     """
     try:
         # Mettre à jour les métriques système
-        import psutil
-
         # Uptime
         metrics.arkalia_system_uptime.set(time.time() - start_time)
 
@@ -158,17 +156,16 @@ async def get_metrics() -> Response:
 
         return PlainTextResponse(content=prometheus_data, media_type=CONTENT_TYPE_LATEST)
     except Exception as e:
-        logger.error(f"Erreur métriques : {e}")
+        logger.exception("Erreur métriques")
         return JSONResponse(
             status_code=500,
-            content={"error": f"Erreur métriques : {str(e)}"},
+            content={"error": f"Erreur métriques : {e!s}"},
         )
 
 
 # Inclusion des routers
 app.include_router(assistantia_router, prefix="/assistantia")
 app.include_router(reflexia_router, prefix="/reflexia")
-# app.include_router(zeroia_router, prefix="/zeroia")  # Module core n'existe pas
 
 
 def print_status() -> None:

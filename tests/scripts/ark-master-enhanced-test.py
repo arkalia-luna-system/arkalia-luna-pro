@@ -79,8 +79,9 @@ async def test_enhanced_orchestrator():
                 f"{_cycle_result['operations_executed']}",
                 extra={"module": "scripts"},
             )
+            cognitive_events = _cycle_result["enhanced_features"]["cognitive_events"]
             ark_logger.info(
-                f"🧠 Événements cognitifs: {_cycle_result['enhanced_features']['cognitive_events']}",
+                f"🧠 Événements cognitifs: {cognitive_events}",
                 extra={"module": "scripts"},
             )
             ark_logger.info(

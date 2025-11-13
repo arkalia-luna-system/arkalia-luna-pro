@@ -41,7 +41,7 @@ class JSONDiagnostic:
             "report_files": [],
         }
 
-    def scan_json_files(self):
+    def scan_json_files(self) -> None:
         """Scanne tous les fichiers JSON du projet"""
         print("🔍 Scan des fichiers JSON en cours...")
 
@@ -156,7 +156,7 @@ class JSONDiagnostic:
         ]
         return any(re.search(pattern, str(file_path)) for pattern in report_patterns)
 
-    def generate_report(self, output_file: str = "json_diagnostic_report.md"):
+    def generate_report(self, output_file: str = "json_diagnostic_report.md") -> str:
         """Génère un rapport markdown"""
         self.scan_json_files()
 
@@ -255,7 +255,7 @@ class JSONDiagnostic:
         print(f"✅ Rapport généré : {output_file}")
         return output_file
 
-    def generate_csv(self, output_file: str = "json_files.csv"):
+    def generate_csv(self, output_file: str = "json_files.csv") -> str:
         """Génère un fichier CSV avec tous les fichiers JSON"""
         self.scan_json_files()
 
@@ -292,7 +292,7 @@ class JSONDiagnostic:
         return output_file
 
 
-def main():
+def main() -> None:
     """Point d'entrée principal"""
     import argparse
 

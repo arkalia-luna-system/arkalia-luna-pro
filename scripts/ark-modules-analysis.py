@@ -34,7 +34,7 @@ class ArkaliaModulesAnalyzer:
         self.discovered_modules: dict[str, list[str]] = {}
         self.missing_integrations: list[dict] = []
 
-    def scan_all_modules(self):
+    def scan_all_modules(self) -> None:
         """Scan complet de tous les modules disponibles"""
         ark_logger.info(
             "🔍 ANALYSE COMPLÈTE DES MODULES ARKALIA", extra={"arkalia_module": "scripts"}
@@ -55,7 +55,7 @@ class ArkaliaModulesAnalyzer:
         # Analyser les résultats
         self.analyze_integration_gaps()
 
-    def scan_module_directory(self, module_path: Path, root_level: bool = False):
+    def scan_module_directory(self, module_path: Path, root_level: bool = False) -> None:
         """Scan un répertoire de module spécifique"""
         module_name = module_path.name
         components = []
@@ -71,7 +71,7 @@ class ArkaliaModulesAnalyzer:
         # Identifier les composants spéciaux
         self.identify_special_components(module_name, components)
 
-    def identify_special_components(self, module_name: str, components: list[str]):
+    def identify_special_components(self, module_name: str, components: list[str]) -> None:
         """Identifie les composants spéciaux qui pourraient être intégrés"""
 
         special_patterns = {
@@ -175,7 +175,7 @@ class ArkaliaModulesAnalyzer:
 
         return f"Évaluer intégration dans {module_name.upper()}"
 
-    def analyze_integration_gaps(self):
+    def analyze_integration_gaps(self) -> None:
         """Analyse les lacunes d'intégration"""
         ark_logger.info(
             f"\n📊 MODULES DÉCOUVERTS : {len(self.discovered_modules)}",
@@ -190,7 +190,7 @@ class ArkaliaModulesAnalyzer:
             extra={"arkalia_module": "scripts"},
         )
 
-    def print_detailed_report(self):
+    def print_detailed_report(self) -> None:
         """Affiche le rapport détaillé"""
         ark_logger.info(
             "\n🔍 RAPPORT DÉTAILLÉ - MODULES NON INTÉGRÉS", extra={"arkalia_module": "scripts"}
@@ -224,7 +224,7 @@ class ArkaliaModulesAnalyzer:
                     )
                     ark_logger.info("")
 
-    def generate_integration_code(self):
+    def generate_integration_code(self) -> None:
         """Génère le code d'intégration suggéré"""
         ark_logger.info("\n🚀 CODE D'INTÉGRATION SUGGÉRÉ", extra={"arkalia_module": "scripts"})
         ark_logger.info("=" * 60, extra={"arkalia_module": "scripts"})
@@ -267,7 +267,7 @@ class ArkaliaModulesAnalyzer:
                 ark_logger.info("")
 
 
-def main():
+def main() -> None:
     """Point d'entrée principal"""
     analyzer = ArkaliaModulesAnalyzer()
     analyzer.scan_all_modules()

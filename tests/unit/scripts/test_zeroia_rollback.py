@@ -127,9 +127,10 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
     )
 
     # Vérifier que le script s'est exécuté avec succès
-    assert (
-        result.returncode == 0
-    ), f"Script a échoué avec code {result.returncode}\nstdout: {result.stdout}\nstderr: {result.stderr}"
+    assert result.returncode == 0, (
+        f"Script a échoué avec code {result.returncode}\n"
+        f"stdout: {result.stdout}\nstderr: {result.stderr}"
+    )
 
     # Vérifier qu'un backup a été créé dans le bon emplacement
     # Le script crée le backup seulement si STATE_FILE.exists()
@@ -155,9 +156,10 @@ def test_zeroia_rollback_script_runs(tmp_path: Path) -> None:
     if backup_file.exists():
         backup_content = toml.loads(backup_file.read_text(encoding="utf-8"))
         # Le backup doit contenir soit "status" (format test), soit les champs du format réel
-        assert (
-            "status" in backup_content or "last_decision" in backup_content
-        ), f"Le backup ne contient ni 'status' ni 'last_decision'. Contenu: {list(backup_content.keys())}"
+        assert "status" in backup_content or "last_decision" in backup_content, (
+            f"Le backup ne contient ni 'status' ni 'last_decision'. "
+            f"Contenu: {list(backup_content.keys())}"
+        )
         # Si c'est le format test, vérifier status
         if "status" in backup_content:
             assert (
