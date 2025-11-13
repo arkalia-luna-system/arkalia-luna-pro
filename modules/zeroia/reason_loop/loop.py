@@ -237,6 +237,8 @@ def main_loop_enhanced(max_iterations: int | None = None) -> None:
     from .initialization import circuit_breaker, event_store
 
     # Initialiser les composants si nécessaire
+    from .initialization import initialize_components_with_recovery
+
     cb = circuit_breaker
     es = event_store
     if cb is None or es is None:
