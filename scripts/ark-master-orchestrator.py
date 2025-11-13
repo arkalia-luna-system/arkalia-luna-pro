@@ -7,7 +7,6 @@ Coordonne l'écosystème complet Arkalia-LUNA
 """
 
 import asyncio
-import logging
 import sys
 from pathlib import Path
 
@@ -23,22 +22,14 @@ from modules.arkalia_master.orchestrator_ultimate import (
 )
 
 
-def setup_logging(verbose: bool = False):
-    """Configure le logging"""
-    log_level = logging.DEBUG if verbose else logging.INFO
-
-    logging.basicConfig(
-        level=log_level,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        datefmt="%H:%M:%S",
-        handlers=[
-            logging.StreamHandler(),
-            logging.FileHandler("logs/arkalia_master.log", mode="a"),
-        ],
-    )
+def setup_logging(verbose: bool = False) -> None:
+    """Configure le logging (utilise ark_logger)"""
+    # ark_logger gère déjà la configuration, le niveau est géré automatiquement
+    # Le paramètre verbose est utilisé pour les messages détaillés dans le code
+    pass
 
 
-def print_banner():
+def print_banner() -> None:
     """Affiche le banner de démarrage"""
     ark_logger.info("=" * 80, extra={"arkalia_module": "scripts"})
     ark_logger.info(
@@ -71,7 +62,7 @@ def print_banner():
     ark_logger.info("=" * 80, extra={"arkalia_module": "scripts"})
 
 
-async def main():
+async def main() -> None:
     """Point d'entrée principal"""
     import argparse
 

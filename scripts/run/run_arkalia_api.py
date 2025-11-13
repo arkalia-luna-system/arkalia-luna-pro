@@ -4,14 +4,11 @@
 Gestion d'erreurs et healthcheck intégré
 """
 
-import logging
 import os
 import sys
 from pathlib import Path
 
-# Configuration logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
+from core.ark_logger import ark_logger
 
 
 def check_dependencies() -> bool:
@@ -20,10 +17,10 @@ def check_dependencies() -> bool:
         import fastapi  # noqa: F401
         import uvicorn  # noqa: F401
 
-        logger.info("✅ FastAPI et Uvicorn disponibles")
+        ark_logger.info("✅ FastAPI et Uvicorn disponibles", extra={"arkalia_module": "scripts"})
         return True
     except ImportError as e:
-        logger.error(f"❌ Dépendance manquante: {e}")
+        ark_logger.error(f"❌ Dépendance manquante: {e}", extra={"arkalia_module": "scripts"})
         return False
 
 
@@ -42,10 +39,12 @@ def check_modules() -> bool:
             missing_modules.append(module)
 
     if missing_modules:
-        logger.warning(f"⚠️ Modules manquants: {missing_modules}")
+        ark_logger.warning(
+            f"⚠️ Modules manquants: {missing_modules}", extra={"arkalia_module": "scripts"}
+        )
         return False
 
-    logger.info("✅ Tous les modules critiques présents")
+    ark_logger.info("✅ Tous les modules critiques présents", extra={"arkalia_module": "scripts"})
     return True
 
 
@@ -56,7 +55,7 @@ def create_directories() -> None:
     for directory in directories:
         Path(directory).mkdir(parents=True, exist_ok=True)
 
-    logger.info("✅ Répertoires créés")
+    ark_logger.info("✅ Répertoires créés", extra={"arkalia_module": "scripts"})
 
 
 def start_api() -> None:
@@ -64,11 +63,14 @@ def start_api() -> None:
     try:
         # Vérifications préalables
         if not check_dependencies():
-            logger.error("❌ Dépendances manquantes")
+            ark_logger.error("❌ Dépendances manquantes", extra={"arkalia_module": "scripts"})
             sys.exit(1)
 
         if not check_modules():
-            logger.warning("⚠️ Certains modules manquants, démarrage en mode dégradé")
+            ark_logger.warning(
+                "⚠️ Certains modules manquants, démarrage en mode dégradé",
+                extra={"arkalia_module": "scripts"},
+            )
 
         create_directories()
 
@@ -76,7 +78,9 @@ def start_api() -> None:
         # Utilise app.main (API centrale) afin d'exposer les endpoints attendus par les tests
         from app.main import app
 
-        logger.info("🚀 Démarrage de l'API Arkalia-LUNA...")
+        ark_logger.info(
+            "🚀 Démarrage de l'API Arkalia-LUNA...", extra={"arkalia_module": "scripts"}
+        )
 
         # Configuration uvicorn
         import uvicorn
@@ -93,7 +97,7 @@ def start_api() -> None:
         )
 
     except Exception as e:
-        logger.error(f"❌ Erreur de démarrage: {e}")
+        ark_logger.error(f"❌ Erreur de démarrage: {e}", extra={"arkalia_module": "scripts"})
         sys.exit(1)
 
 

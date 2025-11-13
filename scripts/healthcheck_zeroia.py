@@ -14,17 +14,7 @@ import sys
 
 import toml
 
-try:
-    from core.ark_logger import ark_logger
-except ImportError:
-    # Fallback si l'import échoue
-    import logging
-
-    ark_logger = logging.getLogger("arkalia")
-    ark_logger.setLevel(logging.INFO)
-    handler = logging.StreamHandler()
-    handler.setFormatter(logging.Formatter("%(levelname)s - %(message)s"))
-    ark_logger.addHandler(handler)
+from core.ark_logger import ark_logger
 
 DEFAULT_STATE_PATH = "modules/zeroia/state/zeroia_state.toml"
 REQUIRED_FIELDS = ["last_decision", "confidence_score", "justification", "timestamp"]

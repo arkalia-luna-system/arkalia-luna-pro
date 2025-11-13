@@ -12,12 +12,13 @@ Usage:
 
 import argparse
 import json
-import logging
 import sys
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, NoReturn
+
+from core.ark_logger import ark_logger
 
 # Ajout du chemin des modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -30,22 +31,21 @@ try:
     from modules.security.crypto.vault_manager import ArkaliaVault
     from modules.zeroia import ZeroIACoordinator
 except ImportError as e:
-    print(f"❌ Erreur import modules: {e}")
-    print("Assurez-vous d'être dans le répertoire arkalia-luna-pro")
+    ark_logger.error(f"❌ Erreur import modules: {e}", extra={"arkalia_module": "scripts"})
+    ark_logger.error(
+        "Assurez-vous d'être dans le répertoire arkalia-luna-pro",
+        extra={"arkalia_module": "scripts"},
+    )
     sys.exit(1)
 
-# Configuration logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger(__name__)
+# Utilise ark_logger au lieu de logging
 
 
 class ArkaliaDemoCLI:
     """Démo CLI Arkalia-LUNA avec scénarios reproductibles"""
 
-    def __init__(self):
-        self.results = {
+    def __init__(self) -> None:
+        self.results: dict[str, Any] = {
             "timestamp": datetime.now().isoformat(),
             "scenarios": [],
             "metrics": {},
@@ -58,23 +58,23 @@ class ArkaliaDemoCLI:
         self.security = ArkaliaVault()
         self.behavior_analyzer = BehaviorAnalyzer()
 
-        print("🌕 Arkalia-LUNA Demo CLI initialisé")
+        ark_logger.info("🌕 Arkalia-LUNA Demo CLI initialisé", extra={"arkalia_module": "scripts"})
 
-    def print_header(self, title: str):
+    def print_header(self, title: str) -> None:
         """Affiche un en-tête de section"""
-        print(f"\n{'=' * 60}")
-        print(f"🎯 {title}")
-        print(f"{'=' * 60}")
+        ark_logger.info(f"\n{'=' * 60}", extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"🎯 {title}", extra={"arkalia_module": "scripts"})
+        ark_logger.info(f"{'=' * 60}", extra={"arkalia_module": "scripts"})
 
-    def print_step(self, step: str, status: str = "✅"):
+    def print_step(self, step: str, status: str = "✅") -> None:
         """Affiche une étape"""
-        print(f"{status} {step}")
+        ark_logger.info(f"{status} {step}", extra={"arkalia_module": "scripts"})
 
-    def print_metrics(self, metrics_data: dict[str, Any]):
+    def print_metrics(self, metrics_data: dict[str, Any]) -> None:
         """Affiche les métriques"""
-        print("\n📊 Métriques:")
+        ark_logger.info("\n📊 Métriques:", extra={"arkalia_module": "scripts"})
         for key, value in metrics_data.items():
-            print(f"   • {key}: {value}")
+            ark_logger.info(f"   • {key}: {value}", extra={"arkalia_module": "scripts"})
 
     def scenario_security_incident(self) -> dict[str, Any]:
         """Scénario 1: Incident de sécurité"""
@@ -113,10 +113,16 @@ class ArkaliaDemoCLI:
             scenario["steps"].append(
                 {"step": "security_scan", "result": scan_result, "timestamp": time.time()}
             )
-            print(f"   🚨 Niveau de menace: {scan_result.get('threat_level', 'unknown')}")
-            print(f"   🛡️ Bloqué: {scan_result.get('blocked', False)}")
+            ark_logger.warning(
+                f"   🚨 Niveau de menace: {scan_result.get('threat_level', 'unknown')}",
+                extra={"arkalia_module": "scripts"},
+            )
+            ark_logger.info(
+                f"   🛡️ Bloqué: {scan_result.get('blocked', False)}",
+                extra={"arkalia_module": "scripts"},
+            )
         except Exception as e:
-            print(f"   ⚠️ Erreur scan sécurité: {e}")
+            ark_logger.error(f"   ⚠️ Erreur scan sécurité: {e}", extra={"arkalia_module": "scripts"})
 
         # 3. Décision ZeroIA
         self.print_step("3. Décision ZeroIA")
@@ -130,9 +136,14 @@ class ArkaliaDemoCLI:
             scenario["steps"].append(
                 {"step": "zeroia_decision", "result": decision_result, "timestamp": time.time()}
             )
-            print(f"   🧠 Décision: {decision_result.get('decision', 'unknown')}")
+            ark_logger.info(
+                f"   🧠 Décision: {decision_result.get('decision', 'unknown')}",
+                extra={"arkalia_module": "scripts"},
+            )
         except Exception as e:
-            print(f"   ⚠️ Erreur décision ZeroIA: {e}")
+            ark_logger.error(
+                f"   ⚠️ Erreur décision ZeroIA: {e}", extra={"arkalia_module": "scripts"}
+            )
 
         # 4. Analyse comportementale Sandozia
         self.print_step("4. Analyse comportementale Sandozia")
@@ -144,9 +155,14 @@ class ArkaliaDemoCLI:
                 {"step": "sandozia_analysis", "result": analysis_result, "timestamp": time.time()}
             )
             health_score = analysis_result.get("behavioral_health_score", 0)
-            print(f"   🔍 Score santé comportementale: {health_score:.2f}")
+            ark_logger.info(
+                f"   🔍 Score santé comportementale: {health_score:.2f}",
+                extra={"arkalia_module": "scripts"},
+            )
         except Exception as e:
-            print(f"   ⚠️ Erreur analyse Sandozia: {e}")
+            ark_logger.error(
+                f"   ⚠️ Erreur analyse Sandozia: {e}", extra={"arkalia_module": "scripts"}
+            )
 
         scenario["end_time"] = time.time()
         scenario["duration"] = scenario["end_time"] - scenario["start_time"]
@@ -174,11 +190,20 @@ class ArkaliaDemoCLI:
             )
 
             metrics_data = system_metrics.get("metrics", {})
-            print(f"   💻 CPU: {metrics_data.get('cpu', 0)}%")
-            print(f"   🧠 RAM: {metrics_data.get('ram', 0)}%")
-            print(f"   ⏱️ Latence: {metrics_data.get('latency', 0)}ms")
+            ark_logger.info(
+                f"   💻 CPU: {metrics_data.get('cpu', 0)}%", extra={"arkalia_module": "scripts"}
+            )
+            ark_logger.info(
+                f"   🧠 RAM: {metrics_data.get('ram', 0)}%", extra={"arkalia_module": "scripts"}
+            )
+            ark_logger.info(
+                f"   ⏱️ Latence: {metrics_data.get('latency', 0)}ms",
+                extra={"arkalia_module": "scripts"},
+            )
         except Exception as e:
-            print(f"   ⚠️ Erreur collecte métriques: {e}")
+            ark_logger.error(
+                f"   ⚠️ Erreur collecte métriques: {e}", extra={"arkalia_module": "scripts"}
+            )
 
         # 2. Analyse performance
         self.print_step("2. Analyse performance")
@@ -209,11 +234,16 @@ class ArkaliaDemoCLI:
             )
 
             if issues:
-                print(f"   ⚠️ Problèmes détectés: {', '.join(issues)}")
+                ark_logger.warning(
+                    f"   ⚠️ Problèmes détectés: {', '.join(issues)}",
+                    extra={"arkalia_module": "scripts"},
+                )
             else:
-                print("   ✅ Performance normale")
+                ark_logger.info("   ✅ Performance normale", extra={"arkalia_module": "scripts"})
         except Exception as e:
-            print(f"   ⚠️ Erreur analyse performance: {e}")
+            ark_logger.error(
+                f"   ⚠️ Erreur analyse performance: {e}", extra={"arkalia_module": "scripts"}
+            )
 
         # 3. Décision d'optimisation
         self.print_step("3. Décision d'optimisation")
@@ -226,9 +256,14 @@ class ArkaliaDemoCLI:
                     "timestamp": time.time(),
                 }
             )
-            print(f"   🧠 Action recommandée: {optimization_decision.get('action', 'monitor')}")
+            ark_logger.info(
+                f"   🧠 Action recommandée: {optimization_decision.get('action', 'monitor')}",
+                extra={"arkalia_module": "scripts"},
+            )
         except Exception as e:
-            print(f"   ⚠️ Erreur décision optimisation: {e}")
+            ark_logger.error(
+                f"   ⚠️ Erreur décision optimisation: {e}", extra={"arkalia_module": "scripts"}
+            )
 
         scenario["end_time"] = time.time()
         scenario["duration"] = scenario["end_time"] - scenario["start_time"]
@@ -259,9 +294,14 @@ class ArkaliaDemoCLI:
             scenario["steps"].append(
                 {"step": "cognitive_init", "data": cognitive_status, "timestamp": time.time()}
             )
-            print(f"   🧠 État cognitif: {cognitive_status.get('status', 'unknown')}")
+            ark_logger.info(
+                f"   🧠 État cognitif: {cognitive_status.get('status', 'unknown')}",
+                extra={"arkalia_module": "scripts"},
+            )
         except Exception as e:
-            print(f"   ⚠️ Erreur Cognitive Reactor: {e}")
+            ark_logger.error(
+                f"   ⚠️ Erreur Cognitive Reactor: {e}", extra={"arkalia_module": "scripts"}
+            )
 
         # 2. Simulation d'apprentissage
         self.print_step("2. Simulation d'apprentissage")
@@ -280,10 +320,18 @@ class ArkaliaDemoCLI:
                 {"step": "learning_simulation", "data": learning_data, "timestamp": time.time()}
             )
 
-            print(f"   📈 Précision: {learning_data['accuracy']:.2f}")
-            print(f"   📊 Points de données: {learning_data['data_points']}")
+            ark_logger.info(
+                f"   📈 Précision: {learning_data['accuracy']:.2f}",
+                extra={"arkalia_module": "scripts"},
+            )
+            ark_logger.info(
+                f"   📊 Points de données: {learning_data['data_points']}",
+                extra={"arkalia_module": "scripts"},
+            )
         except Exception as e:
-            print(f"   ⚠️ Erreur simulation apprentissage: {e}")
+            ark_logger.error(
+                f"   ⚠️ Erreur simulation apprentissage: {e}", extra={"arkalia_module": "scripts"}
+            )
 
         # 3. Adaptation du comportement
         self.print_step("3. Adaptation du comportement")
@@ -301,9 +349,12 @@ class ArkaliaDemoCLI:
 
             old_threshold = adaptation_result["old_threshold"]
             new_threshold = adaptation_result["new_threshold"]
-            print(f"   🔄 Seuil adapté: {old_threshold} → {new_threshold}")
+            ark_logger.info(
+                f"   🔄 Seuil adapté: {old_threshold} → {new_threshold}",
+                extra={"arkalia_module": "scripts"},
+            )
         except Exception as e:
-            print(f"   ⚠️ Erreur adaptation: {e}")
+            ark_logger.error(f"   ⚠️ Erreur adaptation: {e}", extra={"arkalia_module": "scripts"})
 
         scenario["end_time"] = time.time()
         scenario["duration"] = scenario["end_time"] - scenario["start_time"]
@@ -339,21 +390,32 @@ class ArkaliaDemoCLI:
                 ),
             }
 
-            print(f"📊 Scénarios exécutés: {len(self.results['scenarios'])}")
-            print(f"⏱️ Durée totale: {total_duration:.2f}s")
-            print(f"📋 Étapes totales: {total_steps}")
+            ark_logger.info(
+                f"📊 Scénarios exécutés: {len(self.results['scenarios'])}",
+                extra={"arkalia_module": "scripts"},
+            )
+            ark_logger.info(
+                f"⏱️ Durée totale: {total_duration:.2f}s", extra={"arkalia_module": "scripts"}
+            )
+            ark_logger.info(
+                f"📋 Étapes totales: {total_steps}", extra={"arkalia_module": "scripts"}
+            )
 
         except Exception as e:
-            print(f"⚠️ Erreur collecte métriques finales: {e}")
+            ark_logger.error(
+                f"⚠️ Erreur collecte métriques finales: {e}", extra={"arkalia_module": "scripts"}
+            )
 
     def save_results(self, filename: str = "demo_cli_results.json"):
         """Sauvegarde les résultats"""
         try:
             with open(filename, "w") as f:
                 json.dump(self.results, f, indent=2, default=str)
-            print(f"💾 Résultats sauvegardés: {filename}")
+            ark_logger.info(
+                f"💾 Résultats sauvegardés: {filename}", extra={"arkalia_module": "scripts"}
+            )
         except Exception as e:
-            print(f"⚠️ Erreur sauvegarde: {e}")
+            ark_logger.error(f"⚠️ Erreur sauvegarde: {e}", extra={"arkalia_module": "scripts"})
 
     def run_scenario(self, scenario_name: str):
         """Exécute un scénario spécifique"""
@@ -366,12 +428,17 @@ class ArkaliaDemoCLI:
         if scenario_name in scenarios:
             scenarios[scenario_name]()
         else:
-            print(f"❌ Scénario inconnu: {scenario_name}")
-            print(f"Scénarios disponibles: {', '.join(scenarios.keys())}")
+            ark_logger.error(
+                f"❌ Scénario inconnu: {scenario_name}", extra={"arkalia_module": "scripts"}
+            )
+            ark_logger.info(
+                f"Scénarios disponibles: {', '.join(scenarios.keys())}",
+                extra={"arkalia_module": "scripts"},
+            )
 
     def run_all_scenarios(self):
         """Exécute tous les scénarios"""
-        print("🚀 EXÉCUTION DE TOUS LES SCÉNARIOS")
+        ark_logger.info("🚀 EXÉCUTION DE TOUS LES SCÉNARIOS", extra={"arkalia_module": "scripts"})
 
         self.scenario_security_incident()
         self.scenario_performance_optimization()
@@ -404,17 +471,21 @@ def main():
             demo.collect_final_metrics()
             demo.save_results(args.output)
         else:
-            print("❌ Spécifiez --scenario ou --all")
+            ark_logger.error(
+                "❌ Spécifiez --scenario ou --all", extra={"arkalia_module": "scripts"}
+            )
             parser.print_help()
             sys.exit(1)
 
-        print("\n✅ Démo terminée avec succès!")
+        ark_logger.info("\n✅ Démo terminée avec succès!", extra={"arkalia_module": "scripts"})
 
     except KeyboardInterrupt:
-        print("\n⚠️ Démo interrompue par l'utilisateur")
+        ark_logger.warning(
+            "\n⚠️ Démo interrompue par l'utilisateur", extra={"arkalia_module": "scripts"}
+        )
         sys.exit(1)
     except Exception as e:
-        print(f"\n❌ Erreur lors de la démo: {e}")
+        ark_logger.error(f"\n❌ Erreur lors de la démo: {e}", extra={"arkalia_module": "scripts"})
         sys.exit(1)
 
 

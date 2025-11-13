@@ -53,7 +53,7 @@ class UsecurityCore:
         Traitement principal avec validation et sanitization de sécurité
 
         Args:
-            data: Données à traiter (doit contenir 'action' et 'payload')
+            data: Données à traiter (peut contenir 'action' et 'payload', ou simplement des données)
 
         Returns:
             Résultat du traitement avec validation de sécurité
@@ -66,6 +66,23 @@ class UsecurityCore:
                 return {
                     "status": "error",
                     "error": "Invalid data type: expected dict",
+                    "module": "security",
+                }
+
+            # Si pas d'action spécifiée, traitement simple (retour des données sanitizées)
+            if "action" not in data:
+                # Sanitization des données (protection injection)
+                sanitized_data = self._sanitize_payload(data)
+
+                # Audit log
+                ark_logger.info(
+                    "✅ Données traitées avec succès (mode simple)",
+                    extra={"arkalia_module": "security"},
+                )
+
+                return {
+                    "status": "success",
+                    "data": sanitized_data,
                     "module": "security",
                 }
 

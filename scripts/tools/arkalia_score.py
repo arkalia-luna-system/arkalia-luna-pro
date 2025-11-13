@@ -3,17 +3,17 @@ Arkalia Score Generator
 Génère un score cognitif global en temps réel
 """
 
-import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 import toml
 
+from core.ark_logger import ark_logger
 from modules.core.optimizations.optimization_integrator import OptimizationIntegrator
 from modules.core.storage import get_storage
 
-logger = logging.getLogger(__name__)
+# Utilise ark_logger au lieu de logging
 
 
 class ArkaliaScoreGenerator:
@@ -36,18 +36,18 @@ class ArkaliaScoreGenerator:
         }
 
         self._load_config()
-        logger.info("ArkaliaScoreGenerator initialisé")
+        ark_logger.info("ArkaliaScoreGenerator initialisé", extra={"arkalia_module": "scripts"})
 
-    def _load_config(self):
+    def _load_config(self) -> None:
         """Charge la configuration des seuils"""
         try:
             if self.config_path.exists():
                 config = toml.load(self.config_path)
                 if "thresholds" in config:
                     self.thresholds.update(config["thresholds"])
-                logger.info("Configuration des seuils chargée")
+                ark_logger.info("Configuration des seuils chargée")
         except Exception as e:
-            logger.warning(f"Erreur chargement config: {e}")
+            ark_logger.warning(f"Erreur chargement config: {e}")
 
     def get_zeroia_confidence(self) -> float:
         """Récupère le niveau de confiance ZeroIA"""
@@ -79,7 +79,9 @@ class ArkaliaScoreGenerator:
             return min(max(final_confidence, 0.0), 1.0)
 
         except Exception as e:
-            logger.error(f"Erreur calcul confiance ZeroIA: {e}")
+            ark_logger.error(
+                f"Erreur calcul confiance ZeroIA: {e}", extra={"arkalia_module": "scripts"}
+            )
             return 0.3  # Confiance faible en cas d'erreur
 
     def get_reflexia_alerts(self) -> int:
@@ -89,7 +91,9 @@ class ArkaliaScoreGenerator:
             alerts = self.storage.get_state("reflexia", "active_alerts", [])
             return len(alerts)
         except Exception as e:
-            logger.error(f"Erreur récupération alertes Reflexia: {e}")
+            ark_logger.error(
+                f"Erreur récupération alertes Reflexia: {e}", extra={"arkalia_module": "scripts"}
+            )
             return 0
 
     def get_sandozia_integrity(self) -> float:
@@ -115,10 +119,12 @@ class ArkaliaScoreGenerator:
             consistency_score = metrics.get("consistency_score", 0.8)
 
             final_integrity = (integrity * 0.6) + (consistency_score * 0.4)
-            return min(max(final_integrity, 0.0), 1.0)
+            return float(min(max(final_integrity, 0.0), 1.0))
 
         except Exception as e:
-            logger.error(f"Erreur calcul intégrité Sandozia: {e}")
+            ark_logger.error(
+                f"Erreur calcul intégrité Sandozia: {e}", extra={"arkalia_module": "scripts"}
+            )
             return 0.4  # Intégrité faible en cas d'erreur
 
     def get_cognitive_load(self) -> float:
@@ -166,12 +172,14 @@ class ArkaliaScoreGenerator:
             # Moyenne pondérée des facteurs
             if factors:
                 cognitive_load = sum(factors) / len(factors)
-                return min(max(cognitive_load, 0.0), 1.0)
+                return float(min(max(cognitive_load, 0.0), 1.0))
 
             return 0.5  # Charge neutre
 
         except Exception as e:
-            logger.error(f"Erreur calcul charge cognitive: {e}")
+            ark_logger.error(
+                f"Erreur calcul charge cognitive: {e}", extra={"arkalia_module": "scripts"}
+            )
             return 0.5
 
     def get_system_health(self) -> float:
@@ -222,7 +230,9 @@ class ArkaliaScoreGenerator:
             return 0.8  # Santé par défaut
 
         except Exception as e:
-            logger.error(f"Erreur calcul santé système: {e}")
+            ark_logger.error(
+                f"Erreur calcul santé système: {e}", extra={"arkalia_module": "scripts"}
+            )
             return 0.6
 
     def calculate_global_score(self) -> dict[str, Any]:
@@ -339,7 +349,9 @@ class ArkaliaScoreGenerator:
             return score_data
 
         except Exception as e:
-            logger.error(f"Erreur calcul score global: {e}")
+            ark_logger.error(
+                f"Erreur calcul score global: {e}", extra={"arkalia_module": "scripts"}
+            )
             return {
                 "timestamp": datetime.now().isoformat(),
                 "global_score": 0.0,
@@ -347,7 +359,7 @@ class ArkaliaScoreGenerator:
                 "error": str(e),
             }
 
-    def generate_score_file(self, output_path: str = "arkalia_score.toml"):
+    def generate_score_file(self, output_path: str = "arkalia_score.toml") -> str | None:
         """Génère le fichier de score au format TOML"""
         try:
             score_data = self.calculate_global_score()
@@ -371,11 +383,13 @@ class ArkaliaScoreGenerator:
             with open(output_file, "w", encoding="utf-8") as f:
                 toml.dump(toml_data, f)
 
-            logger.info(f"Score généré: {output_path}")
+            ark_logger.info(f"Score généré: {output_path}", extra={"arkalia_module": "scripts"})
             return output_path
 
         except Exception as e:
-            logger.error(f"Erreur génération fichier score: {e}")
+            ark_logger.error(
+                f"Erreur génération fichier score: {e}", extra={"arkalia_module": "scripts"}
+            )
             return None
 
     def get_score_history(self, limit: int = 10) -> list:
@@ -405,39 +419,48 @@ class ArkaliaScoreGenerator:
             return "stable"
 
 
-def main():
+def main() -> None:
     """Fonction principale pour générer le score"""
-    print("🧠 Arkalia Score Generator")
-    print("=" * 40)
+    ark_logger.info("🧠 Arkalia Score Generator", extra={"arkalia_module": "scripts"})
+    ark_logger.info("=" * 40, extra={"arkalia_module": "scripts"})
 
     generator = ArkaliaScoreGenerator()
 
     # Générer le score
     score = generator.calculate_global_score()
 
-    print(f"📊 Score Global: {score['global_score']:.3f}")
-    print(f"📈 Statut: {score['status']}")
-    print(f"⏰ Timestamp: {score['timestamp']}")
+    ark_logger.info(
+        f"📊 Score Global: {score['global_score']:.3f}", extra={"arkalia_module": "scripts"}
+    )
+    ark_logger.info(f"📈 Statut: {score['status']}", extra={"arkalia_module": "scripts"})
+    ark_logger.info(f"⏰ Timestamp: {score['timestamp']}", extra={"arkalia_module": "scripts"})
 
-    print("\n🔍 Composants:")
+    ark_logger.info("\n🔍 Composants:", extra={"arkalia_module": "scripts"})
     for component, value in score["components"].items():
-        print(f"   {component}: {value}")
+        ark_logger.info(f"   {component}: {value}", extra={"arkalia_module": "scripts"})
 
     if score["alerts"]:
-        print(f"\n🚨 Alertes ({len(score['alerts'])}):")
+        ark_logger.warning(
+            f"\n🚨 Alertes ({len(score['alerts'])}):", extra={"arkalia_module": "scripts"}
+        )
         for alert in score["alerts"]:
-            print(f"   - {alert['type']}: {alert['value']} (seuil: {alert['threshold']})")
+            ark_logger.warning(
+                f"   - {alert['type']}: {alert['value']} (seuil: {alert['threshold']})",
+                extra={"arkalia_module": "scripts"},
+            )
 
     # Générer le fichier
     output_file = generator.generate_score_file()
     if output_file:
-        print(f"\n💾 Score sauvegardé: {output_file}")
+        ark_logger.info(
+            f"\n💾 Score sauvegardé: {output_file}", extra={"arkalia_module": "scripts"}
+        )
 
     # Afficher la tendance
     trend = generator.get_trend()
-    print(f"📈 Tendance: {trend}")
+    ark_logger.info(f"📈 Tendance: {trend}", extra={"arkalia_module": "scripts"})
 
-    print("\n✅ Score généré avec succès!")
+    ark_logger.info("\n✅ Score généré avec succès!", extra={"arkalia_module": "scripts"})
 
 
 if __name__ == "__main__":

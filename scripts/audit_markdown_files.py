@@ -7,6 +7,8 @@ Vérifie les dates, le langage professionnel, et la cohérence avec le projet
 import re
 from pathlib import Path
 
+from core.ark_logger import ark_logger
+
 # Mots d'argot à éviter
 ARGOT_WORDS = [
     "vachement",
@@ -133,7 +135,7 @@ def check_file(file_path: Path) -> dict[str, list]:
 
         return issues
     except Exception as e:
-        print(f"Erreur lecture {file_path}: {e}")
+        ark_logger.error(f"Erreur lecture {file_path}: {e}", extra={"arkalia_module": "scripts"})
         return issues
 
 
@@ -248,7 +250,7 @@ def fix_file(file_path: Path) -> bool:
             return True
         return False
     except Exception as e:
-        print(f"Erreur correction {file_path}: {e}")
+        ark_logger.error(f"Erreur correction {file_path}: {e}", extra={"arkalia_module": "scripts"})
         return False
 
 
@@ -257,7 +259,10 @@ def main() -> None:
     root_dir = Path(__file__).parent.parent
     md_files = find_markdown_files(root_dir)
 
-    print(f"📋 Analyse de {len(md_files)} fichiers Markdown...\n")
+    ark_logger.info(
+        f"📋 Analyse de {len(md_files)} fichiers Markdown...",
+        extra={"arkalia_module": "scripts"},
+    )
 
     total_issues = {
         "old_dates": 0,
@@ -283,37 +288,76 @@ def main() -> None:
 
     # Afficher les résultats
     if files_with_issues:
-        print("⚠️  Fichiers avec problèmes:\n")
+        ark_logger.warning(
+            "⚠️  Fichiers avec problèmes détectés", extra={"arkalia_module": "scripts"}
+        )
         for file_path, issues in files_with_issues:
-            print(f"📄 {file_path.relative_to(root_dir)}")
+            ark_logger.warning(
+                f"📄 {file_path.relative_to(root_dir)}", extra={"arkalia_module": "scripts"}
+            )
             if issues["old_dates"]:
-                print(f"   📅 Dates obsolètes: {len(issues['old_dates'])}")
+                ark_logger.warning(
+                    f"   📅 Dates obsolètes: {len(issues['old_dates'])}",
+                    extra={"arkalia_module": "scripts"},
+                )
             if issues["argot"]:
-                print(f"   💬 Langage non professionnel: {len(issues['argot'])}")
+                ark_logger.warning(
+                    f"   💬 Langage non professionnel: {len(issues['argot'])}",
+                    extra={"arkalia_module": "scripts"},
+                )
             if issues["wrong_version"]:
-                print(f"   🔢 Version incorrecte: {len(issues['wrong_version'])}")
+                ark_logger.warning(
+                    f"   🔢 Version incorrecte: {len(issues['wrong_version'])}",
+                    extra={"arkalia_module": "scripts"},
+                )
             if issues["obsolete_services"]:
-                print(f"   🔌 Services obsolètes: {len(issues['obsolete_services'])}")
+                ark_logger.warning(
+                    f"   🔌 Services obsolètes: {len(issues['obsolete_services'])}",
+                    extra={"arkalia_module": "scripts"},
+                )
             if issues["obsolete_ports"]:
-                print(f"   🔌 Ports obsolètes: {len(issues['obsolete_ports'])}")
-            print()
+                ark_logger.warning(
+                    f"   🔌 Ports obsolètes: {len(issues['obsolete_ports'])}",
+                    extra={"arkalia_module": "scripts"},
+                )
     else:
-        print("✅ Aucun problème détecté!\n")
+        ark_logger.info("✅ Aucun problème détecté!", extra={"arkalia_module": "scripts"})
 
     # Corriger les fichiers
-    print("🔧 Correction des fichiers...\n")
+    ark_logger.info("🔧 Correction des fichiers...", extra={"arkalia_module": "scripts"})
     for md_file in md_files:
         if fix_file(md_file):
             total_issues["fixed"] += 1
-            print(f"✅ Corrigé: {md_file.relative_to(root_dir)}")
+            ark_logger.info(
+                f"✅ Corrigé: {md_file.relative_to(root_dir)}",
+                extra={"arkalia_module": "scripts"},
+            )
 
-    print("\n📊 Résumé:")
-    print(f"   - Dates obsolètes trouvées: {total_issues['old_dates']}")
-    print(f"   - Langage non professionnel: {total_issues['argot']}")
-    print(f"   - Versions incorrectes: {total_issues['wrong_version']}")
-    print(f"   - Services obsolètes: {total_issues['obsolete_services']}")
-    print(f"   - Ports obsolètes: {total_issues['obsolete_ports']}")
-    print(f"   - Fichiers corrigés: {total_issues['fixed']}")
+    ark_logger.info("📊 Résumé de l'audit:", extra={"arkalia_module": "scripts"})
+    ark_logger.info(
+        f"   - Dates obsolètes trouvées: {total_issues['old_dates']}",
+        extra={"arkalia_module": "scripts"},
+    )
+    ark_logger.info(
+        f"   - Langage non professionnel: {total_issues['argot']}",
+        extra={"arkalia_module": "scripts"},
+    )
+    ark_logger.info(
+        f"   - Versions incorrectes: {total_issues['wrong_version']}",
+        extra={"arkalia_module": "scripts"},
+    )
+    ark_logger.info(
+        f"   - Services obsolètes: {total_issues['obsolete_services']}",
+        extra={"arkalia_module": "scripts"},
+    )
+    ark_logger.info(
+        f"   - Ports obsolètes: {total_issues['obsolete_ports']}",
+        extra={"arkalia_module": "scripts"},
+    )
+    ark_logger.info(
+        f"   - Fichiers corrigés: {total_issues['fixed']}",
+        extra={"arkalia_module": "scripts"},
+    )
 
 
 if __name__ == "__main__":
