@@ -28,7 +28,7 @@ Bienvenue dans le dépôt `arkalia-luna-pro`. Ce guide décrit les bonnes pratiq
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/athalia-siwek/arkalia-luna-pro.git
+git clone https://github.com/arkalia-luna-system/arkalia-luna-pro.git
 cd arkalia-luna-pro
 
 # 2. Activer l’environnement Python

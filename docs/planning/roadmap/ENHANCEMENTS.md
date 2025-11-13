@@ -1,10 +1,10 @@
 # ✨ ENHANCEMENTS.md — Améliorations Arkalia-LUNA
 
-[![Version](https://img.shields.io/badge/version-v1.2.1-blue)](https://github.com/athalia-siwek/arkalia-luna-pro/releases)
-[![Build](https://github.com/athalia-siwek/arkalia-luna-pro/actions/workflows/ci.yml/badge.svg)](https://github.com/athalia-siwek/arkalia-luna-pro/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/docs-mkdocs-blueviolet)](https://athalia-siwek.github.io/arkalia-luna-pro/)
+[![Version](https://img.shields.io/badge/version-v1.2.1-blue)](https://github.com/arkalia-luna-system/arkalia-luna-pro/releases)
+[![Build](https://github.com/arkalia-luna-system/arkalia-luna-pro/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-mkdocs-blueviolet)](https://arkalia-luna-system.github.io/arkalia-luna-pro/)
 
-Fichier de suivi des améliorations techniques et qualité pour le dépôt [`arkalia-luna-pro`](https://github.com/athalia-siwek/arkalia-luna-pro).
+Fichier de suivi des améliorations techniques et qualité pour le dépôt [`arkalia-luna-pro`](https://github.com/arkalia-luna-system/arkalia-luna-pro).
 
 🗓️ Dernière mise à jour : novembre 2025
 

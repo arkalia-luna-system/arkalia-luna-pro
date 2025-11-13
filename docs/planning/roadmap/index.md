@@ -10,7 +10,7 @@
 - **Artefacts uploadés** : Conditionnel et robuste ✅
 
 ![Version](https://img.shields.io/badge/version-v2.8.0-blue)
-![CI](https://github.com/athalia-siwek/arkalia-luna-pro/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/arkalia-luna-system/arkalia-luna-pro/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 ![Coverage](https://img.shields.io/badge/coverage-59%25-brightgreen)
 

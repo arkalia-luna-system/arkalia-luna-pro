@@ -35,6 +35,6 @@ print(response.json())
 - **Couverture tests** : 59.25% (global)
 
 ## Documentation Générale
-Pour plus de détails, consultez la [documentation générale](https://athalia-siwek.github.io/arkalia-luna-pro/).
+Pour plus de détails, consultez la [documentation générale](https://arkalia-luna-system.github.io/arkalia-luna-pro/).
 
 **Statut actuel** : ✅ Opérationnel avec FastAPI optimisé
