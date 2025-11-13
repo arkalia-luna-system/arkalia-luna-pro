@@ -1,4 +1,4 @@
-from modules.reflexia.logic.main_loop import reflexia_loop
+from modules.reflexia.logic.main_loop_enhanced import reflexia_loop
 
 
 def test_reflexia_loop_limited() -> None:
