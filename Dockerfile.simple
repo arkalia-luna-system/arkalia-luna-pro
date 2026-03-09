@@ -23,6 +23,7 @@ COPY --chown=arkalia:arkalia requirements-docker.txt ./
 COPY --chown=arkalia:arkalia helloria ./helloria
 COPY --chown=arkalia:arkalia modules ./modules
 COPY --chown=arkalia:arkalia core ./core
+COPY --chown=arkalia:arkalia app ./app
 COPY --chown=arkalia:arkalia scripts ./scripts
 
 # Installation des dépendances

@@ -1,6 +1,6 @@
 # 📦 Makefile Arkalia IA Devstation - Enhanced
 
-.PHONY: all test format bump patch minor major zeroia clean install dev-setup security-check performance-check docs-build docker-build docker-test
+.PHONY: all test test-full format bump patch minor major zeroia clean install dev-setup security-check performance-check docs-build docker-build docker-test
 
 # Variables
 PYTHON := python3
@@ -12,8 +12,9 @@ DOCKER_COMPOSE := docker-compose
 all: test
 
 # 🧪 Tests
-test:
-	@echo "🧪 Exécution des tests complets..."
+# `test-full` conserve l'ancien comportement basé sur le script shell.
+test-full:
+	@echo "🧪 Exécution des tests complets (script ark-test-full.sh)..."
 	bash ./scripts/shell/ark-test-full.sh
 
 test-unit:
@@ -29,19 +30,18 @@ test-e2e:
 	pytest tests/e2e/ -v
 
 # 🎨 Formatage et linting
+# Remarque : isort est volontairement désactivé (voir historique projet).
 format:
 	@echo "🎨 Formatage du code..."
 	@find . -name "._*.py" -type f -delete || true
 	black . --exclude archive/ --exclude "._*"
 	ruff check . --fix --exclude archive/ --exclude "._*"
-	# isort .  # DÉSACTIVÉ - cause des problèmes
 
 format-check:
 	@echo "🔍 Vérification du formatage..."
 	@find . -name "._*.py" -type f -delete || true
 	black --check --diff . --exclude archive/ --exclude "._*"
 	ruff check . --exclude archive/ --exclude "._*"
-	# isort --check-only --diff .  # DÉSACTIVÉ - cause des problèmes
 
 # 🧹 Nettoyage
 clean:
@@ -106,7 +106,7 @@ run:
 	@echo "🚀 Lancement Arkalia-LUNA..."
 	$(DOCKER_COMPOSE) -f docker-compose.yml up --build
 
-# 🧪 Tests avec couverture
+# 🧪 Tests avec couverture (cible principale `test`)
 test:
 	@echo "🧪 Tests avec couverture..."
 	pytest --cov=modules --cov-report=term-missing --cov-report=html
@@ -165,7 +165,8 @@ help:
 	@echo "📦 Makefile Arkalia IA Devstation - Commandes disponibles:"
 	@echo ""
 	@echo "🧪 Tests:"
-	@echo "  test          - Tests complets"
+	@echo "  test          - Tests complets avec couverture"
+	@echo "  test-full     - Tests complets (script ark-test-full.sh)"
 	@echo "  test-unit     - Tests unitaires"
 	@echo "  test-integration - Tests d'intégration"
 	@echo "  test-e2e      - Tests end-to-end"

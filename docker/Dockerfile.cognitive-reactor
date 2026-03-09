@@ -11,6 +11,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV COGNITIVE_REACTOR_ENV=production
 ENV COGNITIVE_LOG_LEVEL=INFO
+ENV PYTHONPATH=/app
 
 # === Installation des dépendances système ===
 RUN apt-get update && apt-get install -y \
@@ -43,6 +44,8 @@ COPY modules/taskia/ ./modules/taskia/
 COPY modules/monitoring/ ./modules/monitoring/
 COPY modules/security/ ./modules/security/
 COPY modules/utils/ ./modules/utils/
+COPY core/ ./core/
+COPY app/ ./app/
 COPY scripts ./scripts
 
 # === Création des répertoires nécessaires ===

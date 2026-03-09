@@ -51,6 +51,7 @@ COPY --chown=reflexia:reflexia modules/reflexia ./modules/reflexia
 COPY --chown=reflexia:reflexia modules/monitoring ./modules/monitoring
 COPY --chown=reflexia:reflexia modules/utils ./modules/utils
 COPY --chown=reflexia:reflexia modules/__init__.py ./modules/
+COPY --chown=reflexia:reflexia core ./core
 COPY --chown=reflexia:reflexia scripts ./scripts
 COPY --chown=reflexia:reflexia config ./config
 COPY --chown=reflexia:reflexia state ./state

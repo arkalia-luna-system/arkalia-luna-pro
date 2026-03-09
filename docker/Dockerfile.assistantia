@@ -36,9 +36,13 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements-docker.txt
 
 # Copier le code source
+COPY modules/__init__.py ./modules/
 COPY modules/assistantia/ ./modules/assistantia/
+COPY modules/memoria/ ./modules/memoria/
 COPY modules/utils/ ./modules/utils/
 COPY utils/ ./utils/
+COPY core/ ./core/
+COPY app/ ./app/
 
 # Créer les répertoires nécessaires
 RUN mkdir -p /app/logs /app/state /app/cache && \
