@@ -84,6 +84,7 @@ curl http://localhost:8000/health
 | **Reflexia** | Surveillance et monitoring |
 | **Sandozia** | Analyse et validation croisée |
 | **AssistantIA** | Interface conversationnelle avec IA |
+| **Memoria** | Mémoire vectorielle locale (souvenirs long terme) |
 | **Security** | Protection et audit de sécurité |
 | **Monitoring** | Observabilité complète (Prometheus, Grafana) |
 
@@ -114,7 +115,7 @@ Le système est organisé en modules qui communiquent entre eux :
 - **Intelligence** : Modules de décision et d'analyse (ZeroIA, Sandozia, Cognitive Reactor)
 - **Sécurité** : Protection et audit (Vault, Sandbox, Scanner)
 - **Monitoring** : Observabilité (Prometheus, Grafana, Loki)
-- **Stockage** : Gestion des données (JSON, SQLite)
+- **Stockage** : Gestion des données (JSON, SQLite, Memoria)
 
 ### Services Principaux
 
@@ -180,6 +181,14 @@ python scripts/launch_demo_scenario.py --all
 - Dialogue avec l'IA via API
 - Intégration Ollama (modèles locaux)
 - Contexte adaptatif
+- Intégration avec **Memoria** pour une mémoire à long terme vectorielle locale (souvenirs de chat, idées de projets, décisions)
+
+### 🧠 Memoria — Mémoire Long Terme
+
+- Stockage local dans `state/memoria.db` (SQLite)
+- Index vectoriel léger (embeddings via Ollama si disponible, sinon fallback déterministe)
+- Rappel sémantique de souvenirs pertinents dans le prompt d'AssistantIA
+- Activation via variable d'environnement `MEMORIA_ENABLED=true`
 
 ### 👁️ ReflexIA — Surveillance
 

@@ -6,9 +6,11 @@ Ce module fait partie du système Arkalia Luna Pro.
 
 import asyncio
 import json
+import os
 from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import requests
 from fastapi import APIRouter, BackgroundTasks, Depends, FastAPI, HTTPException
@@ -18,6 +20,7 @@ from prometheus_client import CONTENT_TYPE_LATEST, Counter, Gauge, Histogram, ge
 from pydantic import BaseModel, Field
 
 from core.ark_logger import ark_logger
+from modules.memoria.service import MemoryRecord, get_vector_memory_service
 
 from .utils.ollama_connector import check_ollama_health
 from .utils.ollama_connector import query_ollama as real_query_ollama
@@ -77,6 +80,13 @@ class MessageInput(BaseModel):
         default=0.7, ge=0.0, le=2.0, description="Température de génération"
     )
     include_context: bool | None = Field(default=True, description="Inclure le contexte Arkalia")
+    user_id: str | None = Field(
+        default=None,
+        description=(
+            "Identifiant utilisateur ou session pour la mémoire longue. "
+            "Si non fourni, un identifiant par défaut est utilisé."
+        ),
+    )
 
 
 class ChatResponse(BaseModel):
@@ -142,6 +152,7 @@ active_connections = 0
 
 # Variable au niveau module pour éviter B008 (Depends dans argument par défaut)
 _query_ollama_func: Callable[[str, str, float], str] | None = None
+_memoria_enabled: bool | None = None
 
 
 def _create_query_ollama_func() -> Callable[[str, str, float], str]:
@@ -164,6 +175,17 @@ def get_query_ollama() -> Callable[[str, str, float], str]:
     if _query_ollama_func is None:
         _query_ollama_func = _create_query_ollama_func()
     return _query_ollama_func
+
+
+def is_memoria_enabled() -> bool:
+    """
+    Indique si la mémoire vectorielle Memoria est activée.
+    """
+    global _memoria_enabled
+    if _memoria_enabled is None:
+        value = os.getenv("MEMORIA_ENABLED", "false").lower()
+        _memoria_enabled = value in {"1", "true", "yes", "on"}
+    return _memoria_enabled
 
 
 async def get_arkalia_context() -> tuple[str, float]:
@@ -279,6 +301,43 @@ async def get_arkalia_context() -> tuple[str, float]:
     return context_str, final_quality
 
 
+def _build_memoria_user_id(data: MessageInput) -> str:
+    """
+    Construit un identifiant utilisateur pour la mémoire longue.
+
+    Pour l'instant, on utilise un ID explicite si fourni, sinon un identifiant
+    global par défaut.
+    """
+    if data.user_id and data.user_id.strip():
+        return data.user_id.strip()
+    return "default_user"
+
+
+def _format_memoria_context(memories: list[MemoryRecord]) -> str:
+    """
+    Formate les souvenirs Memoria pour injection dans le prompt.
+    """
+    if not memories:
+        return ""
+
+    lines: list[str] = []
+    for idx, mem in enumerate(memories, start=1):
+        title: str | None = None
+        if hasattr(mem, "metadata") and isinstance(mem.metadata, dict):
+            title = mem.metadata.get("title")  # type: ignore[assignment]
+        if getattr(mem, "title", None):
+            # Priorité au titre explicite
+            title = mem.title  # type: ignore[assignment]
+        header = f"[Souvenir {idx} - {mem.memory_type}]"
+        if title:
+            header += f" {title}"
+        lines.append(header)
+        lines.append(mem.content)
+        lines.append("")  # ligne vide séparatrice
+
+    return "\n".join(lines).strip()
+
+
 @router.post("/chat", response_model=ChatResponse)
 async def post_chat(
     data: MessageInput,
@@ -334,9 +393,35 @@ async def post_chat(
         context_quality = 0.0
         if data.include_context:
             arkalia_context, context_quality = await get_arkalia_context()
-            enriched_message = f"{message}\n\nContexte système Arkalia-LUNA: {arkalia_context}"
+            enriched_message = (
+                f"{message}\n\nContexte système Arkalia-LUNA: {arkalia_context}"
+            )
         else:
             enriched_message = message
+
+        # Contexte mémoire vectorielle (Memoria) si activé
+        memoria_context = ""
+        memoria_user_id = _build_memoria_user_id(data)
+        if is_memoria_enabled():
+            try:
+                memoria_service = get_vector_memory_service()
+                memories = memoria_service.search_memory(
+                    user_id=memoria_user_id,
+                    query=message,
+                    top_k=5,
+                )
+                memoria_context = _format_memoria_context(memories)
+            except Exception as e:  # pragma: no cover - protection ultime
+                ark_logger.error(
+                    f"Erreur Memoria (search_memory): {e}",
+                    extra={"arkalia_module": "assistantia"},
+                )
+
+        if memoria_context:
+            enriched_message = (
+                f"{enriched_message}\n\nSouvenirs pertinents (mémoire longue):\n"
+                f"{memoria_context}"
+            )
 
         # Prétraiter le message
         processed_message = process_input(enriched_message)
@@ -358,7 +443,19 @@ async def post_chat(
         ).inc()
 
         # Tâche en arrière-plan pour le logging
-        background_tasks.add_task(log_chat_interaction, message, response, processing_time, model)
+        background_tasks.add_task(
+            log_chat_interaction, message, response, processing_time, model
+        )
+
+        # Tâche en arrière-plan pour la mémoire vectorielle (non bloquante)
+        if is_memoria_enabled():
+            background_tasks.add_task(
+                save_memoria_interaction,
+                memoria_user_id,
+                message,
+                response,
+                arkalia_context,
+            )
 
         return ChatResponse(
             response=response,
@@ -411,6 +508,62 @@ async def log_chat_interaction(
     except Exception as e:
         ark_logger.error(
             f"Erreur logging AssistantIA: {e}", extra={"arkalia_module": "assistantia"}
+        )
+
+
+def save_memoria_interaction(
+    user_id: str,
+    message: str,
+    response: str,
+    arkalia_context: str | None,
+) -> None:
+    """
+    Enregistre une interaction de chat complète dans la mémoire vectorielle.
+
+    Cette fonction est prévue pour être appelée en tâche de fond.
+    """
+    try:
+        memoria_service = get_vector_memory_service()
+
+        # Contenu combiné message + réponse + contexte système
+        parts: list[str] = [f"Utilisateur: {message}", f"Luna: {response}"]
+        if arkalia_context:
+            parts.append(f"Contexte système: {arkalia_context}")
+        combined = "\n".join(parts)
+
+        metadata = {
+            "source": "assistantia_chat",
+            "timestamp": datetime.now().isoformat(),
+        }
+
+        # Heuristique simple pour classer certaines interactions
+        lower_msg = message.lower()
+        if "memoire long terme" in lower_msg or "mémoire long terme" in lower_msg:
+            memoria_service.add_project_memory(
+                user_id=user_id,
+                content=combined,
+                metadata=metadata,
+                title="Project idea (explicit)",
+            )
+        elif "note ça" in lower_msg or "note ca" in lower_msg:
+            memoria_service.add_decision_memory(
+                user_id=user_id,
+                content=combined,
+                metadata=metadata,
+                title="Decision (explicit)",
+            )
+        else:
+            memoria_service.add_memory(
+                user_id=user_id,
+                memory_type="chat",
+                content=combined,
+                metadata=metadata,
+                title=None,
+            )
+    except Exception as e:  # pragma: no cover - protection ultime
+        ark_logger.error(
+            f"Erreur save_memoria_interaction: {e}",
+            extra={"arkalia_module": "assistantia"},
         )
 
 

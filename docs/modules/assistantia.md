@@ -15,6 +15,7 @@ Le module `assistantia/` est l’interface d’assistance IA locale d’Arkalia-
 - Réponses contextuelles personnalisées
 - Interface évolutive vers l’IA autonome embarquée
 - Support aux modules (Helloria, Reflexia…)
+- Connexion à **Memoria** pour la mémoire à long terme (souvenirs vectoriels persistants)
 
 ---
 
@@ -30,10 +31,10 @@ uvicorn modules.assistantia.core:app --port 8001
 
 ## 🔄 Endpoints disponibles
 
-| Méthode | URL    | Description                      |
-|---------|--------|----------------------------------|
-| POST    | /api/v1/chat  | Envoie un message à l'IA locale  |
-| GET     | /status| État du module assistantia        |
+| Méthode | URL           | Description                                      |
+|---------|----------------|--------------------------------------------------|
+| POST    | /api/v1/chat   | Envoie un message à l'IA locale                 |
+| GET     | /status        | État du module assistantia                      |
 
 ---
 
@@ -71,7 +72,7 @@ Le module est connecté à :
 
 ---
 
-## 🧠 AssistantIA — Utilisation et Intégration LLM
+## 🧠 AssistantIA — Utilisation, LLM & Mémoire Long Terme
 
 L'AssistantIA est conçu pour offrir une interaction fluide et intelligente avec les utilisateurs, en intégrant des modèles de langage de pointe (LLM) pour comprendre et répondre aux requêtes de manière contextuelle.
 
@@ -82,21 +83,17 @@ L'AssistantIA est conçu pour offrir une interaction fluide et intelligente avec
 - **Réponses Contextuelles** : Grâce à l'intégration de modèles LLM comme Mistral et Llama2, l'AssistantIA peut fournir des réponses précises et adaptées au contexte de la conversation.
 - **Personnalisation** : L'AssistantIA s'adapte aux préférences de l'utilisateur, offrant une expérience personnalisée.
 - **Intégration Facile** : Peut être intégré dans diverses applications via des API REST, facilitant l'interaction avec d'autres systèmes.
+- **Mémoire Long Terme (Memoria)** : Enregistre les interactions et certains échanges marqués comme idées de projet ou décisions pour les réutiliser plus tard.
 
 ---
 
 ## 🌐 Exemple d'Utilisation
 
 ```bash
-# Via Helloria (port 8000)
-curl -X POST http://localhost:8000/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message": "Quelle est la philosophie d'Arkalia ?"}'
-
 # Via AssistantIA directement (port 8001)
-curl -X POST http://localhost:8001/chat \
+curl -X POST http://localhost:8001/api/v1/chat \
   -H "Content-Type: application/json" \
-  -d '{"message": "Quelle est la philosophie d'Arkalia ?"}'
+  -d '{"message": "Quelle est la philosophie d\"Arkalia ?", "user_id": "athalia"}'
 ```
 
 ---
@@ -107,16 +104,17 @@ L'AssistantIA utilise des modèles LLM locaux pour garantir la confidentialité 
 
 ---
 
-## 📊 Structure JSON Entrante/Sortante
+## 📊 Structure JSON Entrante/Sortante (chat)
 
 ### Requête
 
 ```json
 {
   "message": "Bonjour Arkalia",
-  "mode": "empathique",
-  "lang": "fr",
-  "user_id": "12345"
+  "model": "mistral:latest",
+  "temperature": 0.7,
+  "include_context": true,
+  "user_id": "athalia"
 }
 ```
 
@@ -124,17 +122,34 @@ L'AssistantIA utilise des modèles LLM locaux pour garantir la confidentialité 
 
 ```json
 {
-  "réponse": "Bonjour ! Je suis AssistantIA, prêt à vous aider."
+  "response": "Bonjour ! Je suis AssistantIA, prêt à vous aider.",
+  "model_used": "mistral:latest",
+  "processing_time": 0.42,
+  "context_quality": 85.0,
+  "arkalia_context": "ZeroIA: active | Reflexia: monitoring"
 }
 ```
 
 ---
 
-## ⚙️ Paramètres Optionnels
+## ⚙️ Paramètres Optionnels & Mémoire
 
-- **mode** : Définit le mode de raisonnement de l'IA (ex: neutre, empathique).
-- **lang** : Langue de réponse attendue (ex: fr, en).
-- **user_id** : Identifiant utilisateur pour personnalisation.
+- **include_context** : Inclut le contexte Arkalia (ZeroIA, Reflexia, etc.) dans le prompt.
+- **user_id** : Identifiant utilisateur ou de session pour lier la mémoire longue (Memoria).
+
+### Activer la mémoire vectorielle (Memoria)
+
+Dans l'environnement:
+
+```bash
+export MEMORIA_ENABLED=true
+```
+
+Optionnellement, pour utiliser un modèle d'embeddings Ollama:
+
+```bash
+export OLLAMA_EMBEDDING_MODEL=nomic-embed-text
+```
 
 ---
 
