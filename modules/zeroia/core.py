@@ -14,7 +14,7 @@ ZeroIA Enhanced existante, afin de :
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 from . import (
     ConfidenceScorer,
@@ -44,7 +44,7 @@ class ZeroIACore:
     def __init__(self) -> None:
         self._orchestrator = ZeroIAOrchestrator()
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """
         Retourne le statut courant de ZeroIA, en se basant sur get_zeroia_status().
         """
