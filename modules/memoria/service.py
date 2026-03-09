@@ -7,6 +7,8 @@ vectoriels persistés dans une base SQLite locale.
 
 from __future__ import annotations
 
+import json
+import math
 import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -99,13 +101,23 @@ class VectorMemoryService:
     ) -> int:
         """
         Ajoute un souvenir vectoriel dans la base.
+
+        Le contenu est encodé en vecteur via `get_embedding`, puis sérialisé
+        en JSON avant d'être persisté dans la base SQLite.
+
+        Args:
+            user_id: Identifiant logique de l'utilisateur ou de la session.
+            memory_type: Type fonctionnel du souvenir (project_idea, decision, etc.).
+            content: Texte brut à encoder et stocker.
+            metadata: Métadonnées JSON sérialisables associées au souvenir.
+            title: Titre optionnel pour faciliter le debug ou l'affichage.
+
+        Returns:
+            Identifiant auto-incrémenté du souvenir inséré, ou -1 en cas d'erreur.
         """
         try:
             embedding_vec = get_embedding(content)
             embedding_raw = serialize_embedding(embedding_vec)
-
-            import json
-
             metadata_json = json.dumps(metadata or {}, ensure_ascii=False)
 
             with self._connection_ctx() as conn:
@@ -133,13 +145,12 @@ class VectorMemoryService:
             return -1
 
     def _cosine_similarity(self, a: list[float], b: list[float]) -> float:
+        """Calcule la similarité cosinus entre deux vecteurs numériques."""
         if not a or not b or len(a) != len(b):
             return 0.0
         num = sum(x * y for x, y in zip(a, b, strict=False))
         if num == 0.0:
             return 0.0
-        import math
-
         na = math.sqrt(sum(x * x for x in a))
         nb = math.sqrt(sum(x * x for x in b))
         if na == 0.0 or nb == 0.0:
@@ -155,6 +166,19 @@ class VectorMemoryService:
     ) -> list[MemoryRecord]:
         """
         Recherche les souvenirs les plus pertinents pour une requête.
+
+        La fonction sélectionne d'abord un sous-ensemble récent de souvenirs
+        pour l'utilisateur donné, calcule la similarité cosinus avec la
+        requête et retourne les `top_k` résultats les mieux scorés.
+
+        Args:
+            user_id: Identifiant logique de l'utilisateur ou de la session.
+            query: Texte décrivant ce que l'on cherche dans la mémoire.
+            top_k: Nombre maximum de souvenirs à retourner (triés par score).
+            memory_type: Filtre facultatif sur le type de souvenir.
+
+        Returns:
+            Liste triée de `MemoryRecord` avec un score de similarité rempli.
         """
         if not query.strip():
             return []
