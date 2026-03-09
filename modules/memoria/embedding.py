@@ -12,7 +12,8 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from typing import Iterable, List
+from collections.abc import Iterable
+from typing import Any, cast
 
 import requests
 
@@ -72,10 +73,14 @@ def get_embedding(text: str) -> list[float]:
             data = response.json()
 
             # Format attendu par Ollama: {"embedding": [floats...] }
-            embedding = data.get("embedding")
-            if isinstance(embedding, list) and embedding:
-                # S'assurer qu'on renvoie des floats
-                return [float(x) for x in embedding]
+            raw_embedding_any: Any = data.get("embedding")
+            if isinstance(raw_embedding_any, list) and raw_embedding_any:
+                raw_embedding = cast(list[float], raw_embedding_any)
+                floats: list[float] = []
+                for value in raw_embedding:
+                    floats.append(float(value))
+                if floats:
+                    return floats
         except Exception:
             # On tombe sur le fallback silencieusement
             pass
@@ -95,9 +100,10 @@ def deserialize_embedding(raw: str | bytes | None) -> list[float]:
     try:
         if isinstance(raw, bytes):
             raw = raw.decode("utf-8")
-        data = json.loads(raw)
-        if isinstance(data, list):
-            return [float(x) for x in data]
+        loaded: Any = json.loads(raw)
+        if isinstance(loaded, list):
+            values = cast(list[float], loaded)
+            return [float(x) for x in values]
         return []
     except Exception:
         return []

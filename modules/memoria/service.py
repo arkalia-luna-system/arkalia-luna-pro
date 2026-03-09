@@ -8,11 +8,12 @@ vectoriels persistés dans une base SQLite locale.
 from __future__ import annotations
 
 import sqlite3
+from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Iterable, List
+from typing import Any
 
 from core.ark_logger import ark_logger
 
@@ -54,12 +55,7 @@ class VectorMemoryService:
         self._init_db()
 
     @contextmanager
-    def _get_connection(self) -> sqlite3.Connection:
-        conn = sqlite3.connect(self.db_path)
-        return conn
-
-    @contextmanager
-    def _connection_ctx(self) -> Iterable[sqlite3.Connection]:
+    def _connection_ctx(self) -> Iterator[sqlite3.Connection]:
         conn = sqlite3.connect(self.db_path)
         try:
             yield conn
@@ -115,13 +111,21 @@ class VectorMemoryService:
             with self._connection_ctx() as conn:
                 cursor = conn.execute(
                     """
-                    INSERT INTO memories (user_id, memory_type, title, content, embedding, metadata_json)
+                    INSERT INTO memories (
+                        user_id,
+                        memory_type,
+                        title,
+                        content,
+                        embedding,
+                        metadata_json
+                    )
                     VALUES (?, ?, ?, ?, ?, ?)
                     """,
                     (user_id, memory_type, title, content, embedding_raw, metadata_json),
                 )
                 conn.commit()
-                return int(cursor.lastrowid)
+                last_id = cursor.lastrowid or 0
+                return int(last_id)
         except Exception as exc:
             ark_logger.error(
                 f"Erreur add_memory: {exc}", extra={"arkalia_module": "memoria"}
@@ -131,7 +135,7 @@ class VectorMemoryService:
     def _cosine_similarity(self, a: list[float], b: list[float]) -> float:
         if not a or not b or len(a) != len(b):
             return 0.0
-        num = sum(x * y for x, y in zip(a, b))
+        num = sum(x * y for x, y in zip(a, b, strict=False))
         if num == 0.0:
             return 0.0
         import math
@@ -185,7 +189,14 @@ class VectorMemoryService:
                 emb = deserialize_embedding(row[5])
                 score = self._cosine_similarity(query_vec, emb)
                 try:
-                    metadata = json.loads(row[6]) if row[6] else {}
+                    raw_metadata = row[6]
+                    metadata: dict[str, Any] = {}
+                    if raw_metadata:
+                        loaded: Any = json.loads(raw_metadata)
+                        if isinstance(loaded, dict):
+                            metadata = {
+                                str(k): v for (k, v) in loaded.items()  # type: ignore[misc]
+                            }
                 except Exception:
                     metadata = {}
 
