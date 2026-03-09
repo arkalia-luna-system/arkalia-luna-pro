@@ -265,14 +265,14 @@ except Exception as e:
     fi
 
     # Test Sandozia
-    if [ -f "modules/sandozia/core.py" ]; then
+    if [ -f "modules/sandozia/core/sandozia/core.py" ]; then
         print_status "Test du module Sandozia..."
         python -c "
 import sys
 sys.path.append('.')
 try:
-    from modules.sandozia.core import UsandoziaCore
-core = UsandoziaCore()
+    from modules.sandozia.core.sandozia.core import SandoziaCore
+    core = SandoziaCore()
     print('✅ Sandozia Core initialisé avec succès')
 except Exception as e:
     print(f'❌ Erreur Sandozia: {e}')
@@ -323,8 +323,8 @@ main() {
     fi
 
     # Tests de CPU
-    if [ -f "modules/zeroia/reason_loop.py" ]; then
-        run_cpu_test "ZeroIA Reason Loop" "modules/zeroia/reason_loop.py"
+    if [ -f "modules/zeroia/reason_loop_enhanced.py" ]; then
+        run_cpu_test "ZeroIA Reason Loop" "modules/zeroia/reason_loop_enhanced.py"
     fi
 
     # Tests de performance pytest

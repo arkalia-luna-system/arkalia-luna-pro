@@ -178,11 +178,12 @@ class ConfigManager:
             self.initialize()
 
         if section is None:
-            result = self._config.copy()
-            return result if isinstance(result, dict) else {}
+            # Copie défensive pour éviter les mutations externes
+            return dict(self._config)
 
-        result = self._config.get(section, {}).copy()
-        return result if isinstance(result, dict) else {}
+        raw_section = self._config.get(section, {})
+        # On force un dict propre même si le JSON d'origine était mal typé
+        return dict(raw_section) if isinstance(raw_section, dict) else {}
 
     def get_watchdog_config(self, watchdog_name: str) -> dict[str, Any]:
         """
@@ -192,7 +193,7 @@ class ConfigManager:
         """
         watchdogs_config = self.get_config("watchdogs")
         result = watchdogs_config.get(watchdog_name, {})
-        return result if isinstance(result, dict) else {}
+        return dict(result) if isinstance(result, dict) else {}
 
     def set_config(self, section: str, key: str, value: Any) -> bool:
         """
@@ -357,7 +358,7 @@ class ConfigManager:
         """
         modules_config = self.get_config("modules")
         result = modules_config.get(module_name, {})
-        return result if isinstance(result, dict) else {}
+        return dict(result) if isinstance(result, dict) else {}
 
 
 # Instance par défaut (lazy loading pour économiser la RAM)

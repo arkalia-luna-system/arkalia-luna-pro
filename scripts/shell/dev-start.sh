@@ -16,5 +16,18 @@ echo "🌕 Arkalia-LUNA Pro - dev-start"
 echo "🧪 Optionnel: make test-unit (commenté par défaut)"
 # make test-unit
 
+echo "🧹 make clean (nettoyage complet des artefacts)..."
+make clean || true
+
+echo "🧹 Nettoyage des fichiers AppleDouble à la racine, dans docker/, core/ et scripts/..."
+find . -maxdepth 1 -name '._*' -delete || true
+find . -maxdepth 1 -name '.__*' -delete || true
+find docker -name '._*' -delete || true
+find docker -name '.__*' -delete || true
+find core -name '._*' -delete || true
+find core -name '.__*' -delete || true
+find scripts -name '._*' -delete || true
+find scripts -name '.__*' -delete || true
+
 echo "🐳 Lancement de la stack Docker..."
 make run

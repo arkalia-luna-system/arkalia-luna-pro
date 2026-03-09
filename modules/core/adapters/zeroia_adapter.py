@@ -21,11 +21,11 @@ class ZeroIAAdapter(IModuleWithProcessing):
         self.name = "zeroia"
         self.version = "1.0.0"
         self.enabled = False
-        self._zeroia_core = None
+        self._zeroia_core: Any | None = None
         self._initialized = False
 
         # Statistiques de traitement
-        self._processing_stats = {
+        self._processing_stats: dict[str, Any] = {
             "total_decisions": 0,
             "successful_decisions": 0,
             "failed_decisions": 0,
@@ -39,12 +39,16 @@ class ZeroIAAdapter(IModuleWithProcessing):
             ark_logger.info("🔗 Initialisation ZeroIA Adapter...", extra={"arkalia_module": "core"})
 
             # Import dynamique pour éviter les dépendances circulaires
-            # from modules.zeroia.core import get_zeroia_core  # Module supprimé
-            # self._zeroia_core = get_zeroia_core()
+            try:
+                from modules.zeroia.core import get_zeroia_core
 
-            # Utilisation de l'interface existante
-
-            self._zeroia_core = {"status": "active"}  # Mock pour compatibilité
+                self._zeroia_core = get_zeroia_core()
+            except ImportError as e:
+                ark_logger.error(
+                    f"❌ Impossible d'importer ZeroIA Core: {e}",
+                    extra={"arkalia_module": "core"},
+                )
+                self._zeroia_core = None
 
             if self._zeroia_core is None:
                 ark_logger.error(
@@ -213,20 +217,26 @@ class ZeroIAAdapter(IModuleWithProcessing):
 
     def _update_processing_stats(self, result: dict[str, Any]) -> None:
         """Met à jour les statistiques de traitement"""
-        self._processing_stats["total_decisions"] += 1
+        self._processing_stats["total_decisions"] = int(
+            (self._processing_stats.get("total_decisions") or 0) + 1
+        )
 
         decision = result.get("decision", "unknown")
         confidence = result.get("confidence", 0.0)
 
         if decision != "error":
-            self._processing_stats["successful_decisions"] += 1
+            self._processing_stats["successful_decisions"] = int(
+                (self._processing_stats.get("successful_decisions") or 0) + 1
+            )
         else:
-            self._processing_stats["failed_decisions"] += 1
+            self._processing_stats["failed_decisions"] = int(
+                (self._processing_stats.get("failed_decisions") or 0) + 1
+            )
 
         # Mettre à jour la confiance moyenne
-        total_successful = self._processing_stats["successful_decisions"]
+        total_successful = int(self._processing_stats.get("successful_decisions") or 0)
         if total_successful > 0:
-            current_avg = self._processing_stats["average_confidence"]
+            current_avg = float(self._processing_stats.get("average_confidence") or 0.0)
             new_avg = ((current_avg * (total_successful - 1)) + confidence) / total_successful
             self._processing_stats["average_confidence"] = new_avg
 

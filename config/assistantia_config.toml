@@ -1,0 +1,38 @@
+#!/usr/bin/env toml
+# 🧠 AssistantIA - Configuration principale
+# Ce fichier concrétise la configuration décrite dans docs/modules/assistantia.md
+
+[assistantia]
+# Active ou désactive globalement le module AssistantIA
+enabled = true
+
+# Exemple de fonctionnalité optionnelle, en cohérence avec la doc
+enable_feature_x = false
+
+# Clé API optionnelle pour intégrations externes (laissée vide par défaut)
+# ⚠️ Ne PAS commiter de vraie clé, utiliser les variables d'environnement
+api_key = ""
+
+# Modèle LLM par défaut (fallback si non fourni dans la requête)
+default_model = "mistral:latest"
+
+# Température par défaut pour les générations LLM
+default_temperature = 0.7
+
+# Niveau de verbosité des logs spécifiques à AssistantIA
+log_level = "INFO"
+
+[assistantia.memoria]
+# Activation explicite de la mémoire vectorielle côté AssistantIA
+enabled = true
+
+# Taille max (approx.) du contexte reconstruit à partir de Memoria
+max_context_tokens = 2048
+
+[assistantia.security]
+# Active une validation renforcée des prompts (sanitization, filtrage)
+strict_prompt_validation = true
+
+# Score minimal de \"sécurité\" (0.0 - 1.0) pour accepter une requête
+min_safety_score = 0.3
+

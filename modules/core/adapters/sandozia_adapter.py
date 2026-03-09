@@ -24,11 +24,11 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
         self.version = "1.0.0"
         self.enabled = False
         self._initialized = False
-        self._sandozia_core = None
-        self._behavior_analyzer = None
+        self._sandozia_core: Any | None = None
+        self._behavior_analyzer: Any | None = None
 
         # Statistiques de traitement
-        self._processing_stats = {
+        self._processing_stats: dict[str, Any] = {
             "total_analyses": 0,
             "successful_analyses": 0,
             "failed_analyses": 0,
@@ -39,7 +39,7 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
         }
 
         # Métriques de monitoring
-        self._metrics = {}
+        self._metrics: dict[str, Any] = {}
         self._alert_thresholds = {
             "anomaly_threshold": 2.0,
             "pattern_confidence": 0.7,
@@ -56,11 +56,10 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
             # Import dynamique pour éviter les dépendances circulaires
             try:
                 from modules.sandozia.analyzer.behavior import BehaviorAnalyzer
-                from modules.sandozia.core import UsandoziaConfig, UsandoziaCore
+                from modules.sandozia.core.sandozia_core import SandoziaCore
 
-                # Initialiser le core Sandozia
-                config = UsandoziaConfig()
-                self._sandozia_core = UsandoziaCore(config)
+                # Initialiser le core Sandozia (sans config custom pour rester léger)
+                self._sandozia_core = SandoziaCore()
 
                 # Initialiser l'analyseur comportemental
                 self._behavior_analyzer = BehaviorAnalyzer()
@@ -69,22 +68,9 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
                 ark_logger.error(
                     f"❌ Module Sandozia non disponible: {e}", extra={"arkalia_module": "core"}
                 )
-                # Essayer d'importer directement depuis le fichier
-                try:
-                    from modules.sandozia.analyzer.behavior import BehaviorAnalyzer
-                    from modules.sandozia.core import UsandoziaConfig, UsandoziaCore
-
-                    config = UsandoziaConfig()
-                    self._sandozia_core = UsandoziaCore(config)
-                    self._behavior_analyzer = BehaviorAnalyzer()
-
-                except ImportError as e2:
-                    ark_logger.error(
-                        f"❌ Import direct Sandozia échoué: {e2}", extra={"arkalia_module": "core"}
-                    )
-                    self._sandozia_core = None
-                    self._behavior_analyzer = None
-                    return False
+                self._sandozia_core = None
+                self._behavior_analyzer = None
+                return False
 
             self.enabled = True
             self._initialized = True
@@ -361,7 +347,7 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
             analysis_result = self._behavior_analyzer.analyze_behavior()
 
             # Compter les patterns et anomalies
-            patterns = analysis_result.get("patterns", [])
+            patterns = list(analysis_result.get("patterns", []))
             anomalies = [p for p in patterns if p.get("pattern_type") == "statistical_anomaly"]
 
             self._processing_stats["patterns_detected"] += len(patterns)
@@ -384,17 +370,23 @@ class SandoziaAdapter(IModuleWithProcessing, IModuleWithMonitoring):
         self, analysis_time: float, success: bool, result: dict[str, Any]
     ) -> None:
         """Met à jour les statistiques de traitement"""
-        self._processing_stats["total_analyses"] += 1
+        self._processing_stats["total_analyses"] = int(
+            (self._processing_stats.get("total_analyses") or 0) + 1
+        )
 
         if success:
-            self._processing_stats["successful_analyses"] += 1
+            self._processing_stats["successful_analyses"] = int(
+                (self._processing_stats.get("successful_analyses") or 0) + 1
+            )
         else:
-            self._processing_stats["failed_analyses"] += 1
+            self._processing_stats["failed_analyses"] = int(
+                (self._processing_stats.get("failed_analyses") or 0) + 1
+            )
 
         # Mettre à jour le temps d'analyse moyen
-        total_successful = self._processing_stats["successful_analyses"]
+        total_successful = int(self._processing_stats.get("successful_analyses") or 0)
         if total_successful > 0:
-            current_avg = self._processing_stats["average_analysis_time"]
+            current_avg = float(self._processing_stats.get("average_analysis_time") or 0.0)
             new_avg = ((current_avg * (total_successful - 1)) + analysis_time) / total_successful
             self._processing_stats["average_analysis_time"] = new_avg
 

@@ -22,12 +22,20 @@ from pydantic import BaseModel, Field
 from core.ark_logger import ark_logger
 from modules.memoria.service import MemoryRecord, get_vector_memory_service
 
+from .config import load_assistantia_config
 from .utils.ollama_connector import check_ollama_health
 from .utils.ollama_connector import query_ollama as real_query_ollama
 from .utils.processing import process_input
 
 
 def _check_ollama_health() -> bool:
+    # Marquer la config comme chargée dès le premier accès pour les métriques
+    try:
+        load_assistantia_config()
+        assistantia_config_loaded.set(1.0)
+    except Exception:  # pragma: no cover - protection ultime
+        assistantia_config_loaded.set(0.0)
+
     return check_ollama_health()
 
 
@@ -50,6 +58,14 @@ assistantia_active_connections = Gauge(
 
 assistantia_context_quality = Gauge(
     "assistantia_context_quality_score", "Score de qualité du contexte Arkalia (0-100)"
+)
+
+assistantia_memoria_enabled = Gauge(
+    "assistantia_memoria_enabled", "Indique si Memoria est activée pour AssistantIA (0/1)"
+)
+
+assistantia_config_loaded = Gauge(
+    "assistantia_config_loaded", "Indique si la configuration AssistantIA a été chargée (0/1)"
 )
 
 router = APIRouter()
@@ -183,8 +199,15 @@ def is_memoria_enabled() -> bool:
     """
     global _memoria_enabled
     if _memoria_enabled is None:
-        value = os.getenv("MEMORIA_ENABLED", "false").lower()
-        _memoria_enabled = value in {"1", "true", "yes", "on"}
+        value = os.getenv("MEMORIA_ENABLED")
+        if value is not None:
+            _memoria_enabled = value.lower() in {"1", "true", "yes", "on"}
+        else:
+            cfg = load_assistantia_config()
+            _memoria_enabled = cfg.memoria.enabled
+
+        assistantia_memoria_enabled.set(1.0 if _memoria_enabled else 0.0)
+
     return _memoria_enabled
 
 
@@ -384,9 +407,8 @@ async def post_chat(
         if not message:
             raise HTTPException(status_code=400, detail="Message vide")
 
-        # Vérifier la santé d'Ollama
-        if not _check_ollama_health():
-            raise HTTPException(status_code=503, detail="Service IA temporairement indisponible")
+        # Vérifier la santé d'Ollama (mode dégradé possible)
+        ollama_available = _check_ollama_health()
 
         # Récupérer le contexte Arkalia si demandé
         arkalia_context = None
@@ -426,9 +448,43 @@ async def post_chat(
         # Prétraiter le message
         processed_message = process_input(enriched_message)
 
-        # Valeurs par défaut pour model et temperature
-        model = data.model or "mistral:latest"
-        temperature = data.temperature if data.temperature is not None else 0.7
+        # Valeurs par défaut pour model et temperature (config > payload > fallback)
+        cfg = load_assistantia_config()
+        model = data.model or cfg.default_model
+        temperature = data.temperature if data.temperature is not None else cfg.default_temperature
+
+        # Si Ollama est indisponible, répondre en mode dégradé sans erreur 503
+        if not ollama_available:
+            fallback_response = (
+                "⚠️ Le moteur IA (Ollama) n'est pas disponible actuellement, "
+                "je fonctionne donc en mode dégradé.\n\n"
+                f"Message reçu: \"{message}\""
+            )
+            processing_time = asyncio.get_event_loop().time() - start_time
+            assistantia_response_time.observe(processing_time)
+            assistantia_prompts_total.labels(
+                status="degraded", security_level="medium", model=model
+            ).inc()
+
+            background_tasks.add_task(
+                log_chat_interaction, message, fallback_response, processing_time, model
+            )
+            if is_memoria_enabled():
+                background_tasks.add_task(
+                    save_memoria_interaction,
+                    memoria_user_id,
+                    message,
+                    fallback_response,
+                    arkalia_context,
+                )
+
+            return ChatResponse(
+                response=fallback_response,
+                model_used=model,
+                processing_time=processing_time,
+                context_quality=context_quality,
+                arkalia_context=arkalia_context if data.include_context else None,
+            )
 
         # Appeler Ollama
         response = query_ollama(processed_message, model, temperature)

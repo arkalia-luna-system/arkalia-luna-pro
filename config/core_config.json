@@ -1,5 +1,58 @@
 {
   "default": true,
   "env": "dev",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "core": {
+    "debug_mode": false,
+    "log_level": "INFO",
+    "max_retries": 3,
+    "timeout": 30.0,
+    "enable_watchdogs": true,
+    "enable_metrics": true,
+    "enable_alerts": true
+  },
+  "modules": {
+    "zeroia": {
+      "enabled": true,
+      "max_decisions": 1000
+    },
+    "sandozia": {
+      "enabled": true,
+      "analysis_depth": "medium"
+    },
+    "reflexia": {
+      "enabled": true,
+      "panic_threshold": 0.8
+    },
+    "assistantia": {
+      "enabled": true,
+      "max_conversations": 100
+    },
+    "helloria": {
+      "enabled": true,
+      "port": 8000
+    },
+    "monitoring": {
+      "enabled": true,
+      "metrics_interval": 30
+    },
+    "security": {
+      "enabled": true,
+      "encryption_level": "high"
+    }
+  },
+  "watchdogs": {
+    "reflexia_panic": {
+      "enabled": true,
+      "threshold": 0.9
+    },
+    "zeroia_circuit": {
+      "enabled": true,
+      "failure_threshold": 5
+    },
+    "sandozia_anomaly": {
+      "enabled": true,
+      "sensitivity": 0.7
+    }
+  }
 }
