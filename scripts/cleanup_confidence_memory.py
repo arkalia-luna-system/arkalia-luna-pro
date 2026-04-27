@@ -7,6 +7,7 @@ Réduit la taille du fichier en gardant seulement les entrées récentes.
 import argparse
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 import toml
 
@@ -18,7 +19,7 @@ def cleanup_confidence_memory(
     days_to_keep: int = 30,
     max_entries: int = 1000,
     backup: bool = True,
-) -> tuple[int, float]:
+) -> tuple[int, float, float]:
     """
     Nettoie le fichier confidence_memory.toml en gardant seulement les entrées récentes.
 
@@ -69,7 +70,7 @@ def cleanup_confidence_memory(
         return 0, size_before_mb, size_before_mb
 
     # Filtrer par date
-    filtered_metrics = []
+    filtered_metrics: list[dict[str, Any]] = []
     for metric in performance_metrics:
         try:
             timestamp_str = metric.get("timestamp", "")
@@ -84,7 +85,10 @@ def cleanup_confidence_memory(
     # Limiter le nombre d'entrées (garder les plus récentes)
     if len(filtered_metrics) > max_entries:
         # Trier par timestamp (plus récent en premier)
-        filtered_metrics.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+        filtered_metrics.sort(
+            key=lambda metric: str(metric.get("timestamp", "")),
+            reverse=True,
+        )
         filtered_metrics = filtered_metrics[:max_entries]
 
     # Mettre à jour les données
@@ -120,7 +124,7 @@ def main() -> None:
     parser.add_argument(
         "--file",
         type=str,
-        default="modules/zeroia/state/confidence_memory.toml",
+        default="state/confidence_memory.toml",
         help="Chemin vers confidence_memory.toml",
     )
     parser.add_argument(

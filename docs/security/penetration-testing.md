@@ -65,7 +65,7 @@ docker exec arkalia-api (port 8000) test -S /var/run/docker.sock && echo "❌ So
 #### **Test concurrence fichiers TOML :**
 ```python
 def test_toml_race_condition():
-    state_file = "modules/zeroia/state/zeroia_state.toml"
+    state_file = "state/zeroia_state.toml"
 
     def corrupt_writer():
         for i in range(100):

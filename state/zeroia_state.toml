@@ -1,8 +1,20 @@
-last_check = "2025-07-04T01:01:25.780374"
-confidence_score = 0.4
-contradictions_detected = 1
-status = "monitoring"
 last_decision = "normal"
-reasoning_loop_active = true
-circuit_breaker_state = "CLOSED"
-last_update = "2025-07-05T15:53:14.000531"
+confidence_score = 0.6975
+timestamp = "2026-04-27 17:20:16"
+
+[context_snapshot]
+cpu = 0
+ram = 0
+severity = "unknown"
+system_status = "unknown"
+
+[metadata]
+version = "3.0.0-enhanced"
+source = "zeroia_state_manager"
+decision_engine = "enhanced"
+circuit_breaker = "closed"
+error_recovery = "enabled"
+
+[performance]
+decision_time = "2026-04-27T17:20:16.820324"
+processing_duration = 0.0

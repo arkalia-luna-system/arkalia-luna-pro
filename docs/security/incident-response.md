@@ -71,8 +71,7 @@ iptables -A OUTPUT -p tcp --dport 22 -j ACCEPT  # SSH admin uniquement
 
 # 3. Sauvegarde états critiques
 tar -czf /backup/emergency_$(date +%s).tar.gz \
-  modules/zeroia/state/ \
-  modules/reflexia/state/ \
+  state/ \
   global_state/ \
   logs/ 2>/dev/null
 
@@ -208,18 +207,18 @@ echo "🔄 ROLLBACK ZEROIA EMERGENCY"
 docker stop zeroia
 
 # 2. Sauvegarde état actuel (corrompu)
-cp modules/zeroia/state/zeroia_state.toml \
+cp state/zeroia_state.toml \
    /backup/corrupted_zeroia_$(date +%s).toml
 
 # 3. Recherche backup valide le plus récent
 BACKUP_FILE=$(find /backup -name "zeroia_state_backup_*.toml" -mtime -7 | sort -r | head -1)
 
 if [ -f "$BACKUP_FILE" ]; then
-    cp "$BACKUP_FILE" modules/zeroia/state/zeroia_state.toml
+    cp "$BACKUP_FILE" state/zeroia_state.toml
     echo "✅ Rollback depuis: $BACKUP_FILE"
 else
     # Fallback : état par défaut minimal
-    cat > modules/zeroia/state/zeroia_state.toml << EOF
+    cat > state/zeroia_state.toml << EOF
 [decision]
 last_decision = "normal"
 confidence_score = 0.5
@@ -237,7 +236,7 @@ fi
 python -c "
 import toml
 try:
-    state = toml.load('modules/zeroia/state/zeroia_state.toml')
+    state = toml.load('state/zeroia_state.toml')
     assert 'decision' in state
     assert 'last_decision' in state['decision']
     print('✅ État ZeroIA validé')

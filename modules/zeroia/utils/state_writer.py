@@ -63,7 +63,7 @@ def check_health(path: str) -> bool:
         - Gère gracieusement les fichiers corrompus ou manquants
 
     Example:
-        >>> is_healthy = check_health("modules/zeroia/state/zeroia_state.toml")
+        >>> is_healthy = check_health("state/zeroia_state.toml")
         >>> status = "OK" if is_healthy else "DOWN"
         >>> ark_logger.info(f"ZeroIA status: {status}", extra={"module": "utils"})
     """
@@ -95,7 +95,7 @@ def load_zeroia_state(path: str) -> dict[str, Any]:
         OSError: Si erreur d'accès fichier
 
     Example:
-        >>> state = load_zeroia_state("modules/zeroia/state/zeroia_state.toml")
+        >>> state = load_zeroia_state("state/zeroia_state.toml")
         >>> last_decision = state.get("decision", {}).get("last_decision")
     """
     with open(path, encoding="utf-8") as f:

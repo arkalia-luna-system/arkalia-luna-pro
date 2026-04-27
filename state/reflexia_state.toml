@@ -1,7 +1,12 @@
-last_execution = "2025-07-04T01:01:25.780371"
-recent_errors = []
-status = "active"
-
-[decision_metrics]
-confidence = 0.8100227418685156
-accuracy = 0.9335945050521486
+{
+  "timestamp": "2026-04-27T15:20:16.799984",
+  "metrics": {
+    "cpu": 23.8,
+    "ram": 72.2,
+    "latency": 1046.1,
+    "containers": 0,
+    "modules_active": 2,
+    "errors": 0
+  },
+  "status": "degraded"
+}

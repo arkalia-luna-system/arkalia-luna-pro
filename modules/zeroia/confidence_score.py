@@ -24,7 +24,7 @@ from core.ark_logger import ark_logger
 class ConfidenceScorer:
     """Système de scoring de confiance avec mémoire explicable pour ZeroIA"""
 
-    def __init__(self, state_file: str = "modules/zeroia/state/confidence_memory.toml") -> None:
+    def __init__(self, state_file: str = "state/confidence_memory.toml") -> None:
         self.state_file = Path(state_file)
         self.decision_history: list[dict[str, Any]] = []
         self.max_decision_history = 500  # Limite pour économiser la RAM
@@ -657,7 +657,7 @@ class ConfidenceScorer:
 _scorer_instance: ConfidenceScorer | None = None
 
 
-def get_scorer(state_file: str = "modules/zeroia/state/confidence_memory.toml") -> ConfidenceScorer:
+def get_scorer(state_file: str = "state/confidence_memory.toml") -> ConfidenceScorer:
     """
     Retourne l'instance globale du ConfidenceScorer (singleton)
 

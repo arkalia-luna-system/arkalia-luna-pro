@@ -20,7 +20,7 @@
 
 | Type de Données | Localisation | Criticité | Fréquence Backup |
 |------------------|--------------|-----------|------------------|
-| **États IA** | `modules/*/state/*.toml` | 🔴 CRITIQUE | **Temps réel** |
+| **États IA** | `state/*.toml` | 🔴 CRITIQUE | **Temps réel** |
 | **Configurations** | `config/*.toml`, `.env` | 🔴 CRITIQUE | **6h** |
 | **Modèles LLM** | `/var/lib/ollama/models/` | 🟧 ÉLEVÉE | **24h** |
 | **Logs Audit** | `logs/*.log` | 🟧 ÉLEVÉE | **12h** |
@@ -417,7 +417,7 @@ class TestBackupRecovery:
     def test_emergency_restore(self):
         """Teste la restauration d'urgence"""
         # Simulation corruption fichier
-        corrupt_file = "modules/zeroia/state/zeroia_state.toml"
+        corrupt_file = "state/zeroia_state.toml"
 
         # Sauvegarde original
         with open(corrupt_file, 'r') as f:
@@ -464,7 +464,6 @@ backup_current_state() {
 # 2. Simulation "perte" données
 simulate_disk_loss() {
     # Renommage temporaire (simulation perte)
-    mv modules/zeroia/state modules/zeroia/state.hidden
     mv state state.hidden
 
     echo "🚨 Simulation: Données état perdues"
@@ -477,7 +476,6 @@ test_recovery() {
 
 # 4. Restauration état test
 restore_test_state() {
-    mv modules/zeroia/state.hidden modules/zeroia/state
     mv state.hidden state
 
     echo "✅ État test restauré"

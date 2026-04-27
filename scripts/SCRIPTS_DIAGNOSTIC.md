@@ -186,7 +186,7 @@ python scripts/cleanup_cache.py --log-threshold 7 --state-limit 100
 ```bash
 python scripts/cleanup_confidence_memory.py
 python scripts/cleanup_confidence_memory.py --days 30 --max-entries 1000
-python scripts/cleanup_confidence_memory.py --file modules/zeroia/state/confidence_memory.toml --no-backup
+python scripts/cleanup_confidence_memory.py --file state/confidence_memory.toml --no-backup
 ```
 
 **Fonctionnalités :**
@@ -196,7 +196,7 @@ python scripts/cleanup_confidence_memory.py --file modules/zeroia/state/confiden
 - Création automatique de backup avant nettoyage
 
 **Options :**
-- `--file`: Chemin vers `confidence_memory.toml` (défaut: `modules/zeroia/state/confidence_memory.toml`)
+- `--file`: Chemin vers `confidence_memory.toml` (défaut: `state/confidence_memory.toml`)
 - `--days`: Nombre de jours à garder (défaut: 30)
 - `--max-entries`: Nombre maximum d'entrées à garder (défaut: 1000)
 - `--no-backup`: Ne pas créer de backup avant nettoyage
