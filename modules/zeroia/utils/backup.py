@@ -9,8 +9,8 @@ from pathlib import Path
 
 from core.ark_logger import ark_logger
 
-STATE_PATH = Path("modules/zeroia/state/zeroia_state.toml")
-BACKUP_PATH = Path("modules/zeroia/state/zeroia_state_backup.toml")
+STATE_PATH = Path("state/zeroia_state.toml")
+BACKUP_PATH = Path("state/zeroia_state_backup.toml")
 
 
 def save_backup() -> None:

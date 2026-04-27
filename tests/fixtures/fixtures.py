@@ -34,7 +34,7 @@ def clean_state_files() -> Generator[None, None, None]:
     yield
     # Cleanup après les tests
     state_files = [
-        "modules/zeroia/state/zeroia_state.toml",
+        "state/zeroia_state.toml",
         "state/reflexia_state.toml",
     ]
     for file_path in state_files:

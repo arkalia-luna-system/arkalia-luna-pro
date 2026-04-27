@@ -138,7 +138,7 @@ zeroia:
 	@ruff modules/zeroia/ --fix
 	@black modules/zeroia/
 	@pytest tests/unit/test_state_writer.py
-	@ls -lh modules/zeroia/state/zeroia_state.toml
+	@ls -lh state/zeroia_state.toml
 	@ls -lh state/zeroia_dashboard.json
 	@echo "✅ [Make] Fin ZeroIA full check"
 

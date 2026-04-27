@@ -69,10 +69,10 @@ docker-compose.override.yml
 # ======================================================
 # 🧠 Fichiers de state IA (dynamiques à exclure du contrôle Git)
 # ======================================================
-modules/reflexia/state/reflexia_state.toml
-modules/zeroia/state/zeroia_state.toml
+state/reflexia_state.toml
+state/zeroia_state.toml
 state/zeroia_dashboard.json
-modules/zeroia/state/zeroia_*.toml
+state/zeroia_*.toml
 
 # ======================================================
 # 📁 Dossier archive (usage personnel, exclu de CI/CD)

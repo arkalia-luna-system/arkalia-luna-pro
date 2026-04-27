@@ -10,7 +10,7 @@ import toml
 
 from modules.zeroia.utils.state_writer import check_health
 
-STATE_PATH = Path("modules/zeroia/state/zeroia_state.toml")
+STATE_PATH = Path("state/zeroia_state.toml")
 
 
 def test_healthcheck_active(tmp_path: Path) -> None:
