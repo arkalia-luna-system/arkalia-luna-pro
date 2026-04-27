@@ -34,9 +34,8 @@ GET /health
 
 ```json
 {
-  "status": "healthy",
-  "timestamp": "2025-06-30T21:10:00Z",
-  "version": "2.8.1"
+  "status": "ok",
+  "service": "arkalia-api"
 }
 ```
 
@@ -97,23 +96,15 @@ http://localhost:8000
 
 **Port** : 8000 (Helloria) ou 8001 (AssistantIA)
 
-#### **GET /zeroia/status** - Statut ZeroIA
+#### **Note ZeroIA**
+
+Le runtime principal expose actuellement un endpoint de compatibilité :
 
 ```http
-GET /zeroia/status
+POST /zeroia/decision
 ```
 
-**Description** : Retourne le statut et les métriques de ZeroIA
-
-**Réponse** :
-
-```json
-{
-  "status": "active",
-  "confidence": 0.85,
-  "uptime": "2d 5h 30m"
-}
-```
+`/zeroia/status` n'est pas exposé par `app/main.py`.
 
 #### **POST /zeroia/decision** - Prise de décision
 
@@ -170,13 +161,15 @@ GET /reflexia/metrics
 
 **Description** : Métriques au format Prometheus pour Reflexia
 
-#### **GET /reflexia/health** - Health Check Reflexia
+#### **GET /health** - Health Check Reflexia (service standalone)
 
 ```http
 GET /health
 ```
 
-**Description** : Vérification de l'état de santé de Reflexia
+**Description** : Vérification de l'état de santé de Reflexia sur le service standalone (port 8002).
+
+Via l'API principale (port 8000), utiliser les routes montées sous `/reflexia` (ex: `/reflexia/check`, `/reflexia/metrics`).
 
 ---
 

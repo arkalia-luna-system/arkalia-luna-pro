@@ -121,7 +121,7 @@ sequenceDiagram
 ### 👨‍💻 Pour les Seniors
 
 **Architecture technique** :
-- Mode daemon (pas d'API HTTP directe)
+- Mode daemon principal + endpoint de compatibilité exposé via API principale
 - Communication via fichiers d'état et events
 - 12 métriques Prometheus exposées
 - Couverture tests : 87% (excellent)
@@ -173,8 +173,8 @@ ZeroIA expose **12 métriques Prometheus** :
 
 ## 🔗 Accès
 
-**Pas d'API HTTP publique directe** : Toute interaction passe par :
-- 🚀 **arkalia-api** (port 8000) : Endpoint `/zeroia/status`
+**Accès runtime actuel** :
+- 🚀 **arkalia-api** (port 8000) : endpoint de compatibilité `POST /zeroia/decision`
 - 📊 **Prometheus** (port 9090) : Métriques
 - 📝 **Fichiers d'état** : `state/zeroia_*.json`
 

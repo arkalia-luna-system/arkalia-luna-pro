@@ -1,14 +1,14 @@
 # 🌙 Arkalia-LUNA Pro
 
-> **Orchestrateur IA Modulaire** — Plateforme d'orchestration IA avec FastAPI, monitoring avancé, sécurité, déploiement et modules cognitifs.
+> **Orchestrateur IA Entreprise Gouverné** — Plateforme modulaire orientée fiabilité, observabilité, sécurité et auditabilité pour workflows IA en production.
 
 [![Release](https://img.shields.io/github/v/tag/arkalia-luna-system/arkalia-luna-pro?label=release)](https://github.com/arkalia-luna-system/arkalia-luna-pro/releases)
-[![Status](https://img.shields.io/badge/status-production%20ready-brightgreen.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
+[![Status](https://img.shields.io/badge/status-active%20stabilization-yellow.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
 [![Docker](https://img.shields.io/badge/containers-5%20active-success.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
 [![Tests](https://img.shields.io/badge/test%20files-100-success.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
 [![Coverage](https://img.shields.io/badge/coverage-59.25%25-orange.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
 [![codecov](https://codecov.io/gh/arkalia-luna-system/arkalia-luna-pro/branch/develop/graph/badge.svg)](https://codecov.io/gh/arkalia-luna-system/arkalia-luna-pro)
-[![Workflows](https://img.shields.io/badge/CI%2FCD-8%20workflows-blue.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro/.github/workflows)
+[![Workflows](https://img.shields.io/badge/CI%2FCD-7%20workflows-blue.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro/.github/workflows)
 
 ---
 
@@ -19,6 +19,8 @@
   - [🚀 Démarrage Rapide](#-démarrage-rapide)
     - [🔗 Accès aux Services](#-accès-aux-services)
   - [🧩 Modules Principaux](#-modules-principaux)
+- [🎯 Positionnement](#-positionnement)
+  - [Différenciation](#différenciation)
   - [📊 Cas d'Usage](#-cas-dusage)
     - [✅ Adapté pour](#-adapté-pour)
     - [⚠️ Limitations](#️-limitations)
@@ -44,6 +46,7 @@
   - [🔐 Sécurité](#-sécurité)
   - [📚 Documentation](#-documentation)
   - [🤝 Contribuer](#-contribuer)
+- [🗺️ Relance Produit (90 jours)](#️-relance-produit-90-jours)
 
 > 💡 **Astuce** : Utilisez `Ctrl+F` (ou `Cmd+F` sur Mac) pour rechercher rapidement une section dans ce README.
 
@@ -69,10 +72,10 @@ curl http://localhost:8000/health
 |---------|-----|-------------|
 | **API principale** | http://localhost:8000 | API centrale |
 | **Documentation API** | http://localhost:8000/docs | Documentation interactive |
-| **Grafana** | http://localhost:3000 | Tableaux de bord |
-| **Prometheus** | http://localhost:9090 | Métriques système |
+| **Grafana** | http://localhost:3000 | Stack monitoring dédiée |
+| **Prometheus** | http://localhost:9090 | Stack monitoring dédiée |
 
-> 💡 **Identifiants Grafana** : `admin` / `arkalia-secure-2025`
+> 💡 **Note** : Grafana/Prometheus/Loki/AlertManager sont fournis par la stack monitoring dédiée, pas par `docker-compose.yml` principal.
 
 ---
 
@@ -90,20 +93,39 @@ curl http://localhost:8000/health
 
 ---
 
+## 🎯 Positionnement
+
+Arkalia-LUNA Pro se positionne comme une couche d'**orchestration IA gouvernée pour l'entreprise**:
+
+- exécution orchestrée de modules IA avec garde-fous de sécurité
+- observabilité native (métriques, logs, alertes) orientée exploitation
+- traçabilité et audit des décisions pour les environnements régulés
+- architecture modulaire pour intégrer des agents et services hétérogènes
+
+### Différenciation
+
+Comparaison simplifiée avec l'écosystème:
+
+- **LangChain**: framework de développement d'applications LLM (focus DX)
+- **CrewAI / AutoGen**: orchestration de conversations multi-agents
+- **Arkalia-LUNA Pro**: orchestration **opérationnelle entreprise** (SLO, monitoring, sécurité, audit, intégration infra)
+
+---
+
 ## 📊 Cas d'Usage
 
 ### ✅ Adapté pour
 
-- Développement et tests
-- Prototypage IA
-- Apprentissage des technologies IA
-- Évaluation de performance
+- Exécution de workflows IA internes avec exigences de conformité
+- Supervision centralisée de modules IA en environnement Docker
+- Prototypage vers production avec monitoring et sécurité intégrés
+- Évaluation de performance et de résilience avant passage en exploitation
 
 ### ⚠️ Limitations
 
 - Nécessite Ollama installé localement
-- Optimisation mémoire en cours
-- Couverture tests : 59% (objectif : 65%)
+- Couverture de tests encore en progression (objectif court terme: 70%+)
+- Le projet est en phase de relance produit et d'ouverture communautaire
 
 ---
 
@@ -127,7 +149,7 @@ Le système est organisé en modules qui communiquent entre eux :
 | **arkalia-sandozia** | - | Analyse et validation |
 | **cognitive** | 8003 | Intelligence avancée |
 
-> 📖 Pour plus de détails, voir [Architecture complète](docs/architecture.md)
+> 📖 Pour plus de détails, voir [Architecture complète](docs/architecture/overview.md)
 
 ---
 
@@ -248,7 +270,7 @@ make test-unit
 make test-integration
 ```
 
-**Statut** : ✅ 442 tests passent (59.25% de couverture)
+**Statut** : 🔄 Stabilisation active (couverture en progression)
 
 ---
 
@@ -280,10 +302,32 @@ make test-integration
 
 ---
 
+## 🗺️ Relance Produit (90 jours)
+
+### J0-J15: clarifier la proposition de valeur
+
+- Cibler 1-2 cas d'usage entreprise prioritaires
+- Formaliser les critères de succès (coût, latence, fiabilité, auditabilité)
+- Publier une feuille de route orientée impact utilisateur
+
+### J15-J45: renforcer la crédibilité technique
+
+- Monter la couverture de tests sur les modules critiques
+- Publier des benchmarks reproductibles (latence, coût, fiabilité)
+- Stabiliser les scénarios E2E les plus utilisés
+
+### J45-J90: relancer la traction
+
+- Ouvrir les sujets "good first issue"
+- Exécuter des POC avec utilisateurs pilotes
+- Publier des notes techniques de retour d'expérience
+
+---
+
 <div align="center">
 
 **Arkalia-LUNA Pro v2.8.0**
 
-*Orchestrateur IA structuré, ouvert et pensé pour l'apprentissage collectif*
+*Orchestrateur IA entreprise modulaire, observable et gouverné*
 
 </div>

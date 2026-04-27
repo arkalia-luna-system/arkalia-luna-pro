@@ -220,7 +220,7 @@
 <div class="requirements-list">
     <div class="requirement-item">
         <span class="req-icon">🐍</span>
-        <strong>Python</strong>: 3.11+ (recommandé 3.12)
+        <strong>Python</strong>: 3.10+ (3.11/3.12 recommandés)
     </div>
     <div class="requirement-item">
         <span class="req-icon">🐳</span>

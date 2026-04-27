@@ -9,7 +9,7 @@
 - **Sécurité** : vulnérabilités, permissions, secrets (`security/`)
 - **E2E** : scénarios bout-en-bout, API, DB, mémoire (`e2e/`)
 - **Fixtures** : données et helpers partagés (`fixtures/`)
-- **Reports** : rapports de couverture, logs, benchmarks (`reports/`)
+- **Reports** : rapports générés en CI/local (dossier non versionné)
 
 ## 📁 Structure
 
@@ -22,7 +22,6 @@ tests/
 ├── security/
 ├── e2e/
 ├── fixtures/
-├── reports/
 ├── conftest.py
 ├── tmp/  # À ignorer dans Git
 └── README.md
@@ -44,7 +43,7 @@ tests/
 - Centraliser les fixtures dans `fixtures/`
 - Documenter chaque dossier avec un README
 - Ne pas versionner `tmp/` ni les fichiers générés automatiquement
-- Utiliser les scripts CI pour générer les rapports dans `reports/`
+- Utiliser les scripts CI pour générer les rapports (artefacts CI/local non versionnés)
 
 ## 📚 Ressources
 

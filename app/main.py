@@ -9,11 +9,12 @@ import time
 from collections.abc import AsyncGenerator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
+from typing import Any
 
 import psutil
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, PlainTextResponse, Response
+from fastapi.responses import JSONResponse, Response
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from pydantic import BaseModel
 
@@ -94,7 +95,7 @@ async def metrics_middleware(
 
 
 @app.get("/")
-async def root() -> dict:
+async def root() -> dict[str, Any]:
     """
     Endpoint racine de l'API principale Arkalia-LUNA Pro.
 
@@ -123,7 +124,7 @@ async def root() -> dict:
 
 
 @app.get("/health")
-async def health() -> dict:
+async def health() -> dict[str, str]:
     """
     Health check de l'API principale.
 
@@ -140,7 +141,7 @@ async def health() -> dict:
 
 
 @app.get("/status")
-async def get_status() -> dict:
+async def get_status() -> dict[str, Any]:
     """
     Statut détaillé de l'API principale.
 
@@ -208,7 +209,8 @@ async def get_metrics() -> Response:
         # Générer le format Prometheus avec le registre unique
         prometheus_data = generate_latest(metrics.get_registry())
 
-        return PlainTextResponse(content=prometheus_data, media_type=CONTENT_TYPE_LATEST)
+        # Preserve Prometheus header exactly (without duplicated charset).
+        return Response(content=prometheus_data, headers={"Content-Type": CONTENT_TYPE_LATEST})
     except Exception as e:
         logger.exception("Erreur métriques")
         return JSONResponse(
@@ -243,12 +245,12 @@ class ZeroiaDecisionInput(BaseModel):
         priority: Priorité de la décision (optionnel).
     """
 
-    context: dict
+    context: dict[str, Any]
     priority: str | None = None
 
 
 @app.post("/zeroia/decision")
-async def zeroia_decision(_input: ZeroiaDecisionInput) -> dict:
+async def zeroia_decision(_input: ZeroiaDecisionInput) -> dict[str, str]:
     """
     Endpoint de décision ZeroIA minimal pour compatibilité.
 

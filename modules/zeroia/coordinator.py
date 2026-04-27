@@ -17,10 +17,10 @@ from datetime import datetime
 from typing import Any
 
 from core.ark_logger import ark_logger
+from modules.utils.error_recovery.core import ErrorRecoverySystem, ErrorType
 
 from .confidence_score import get_scorer
 from .decision_engine import DecisionEngine
-from .error_recovery_system import ErrorRecoverySystem, ErrorType
 from .graceful_degradation import DegradationLevel, GracefulDegradationSystem
 from .metrics import get_zeroia_metrics, update_zeroia_metrics
 from .orchestrator_enhanced import ZeroIAOrchestrator

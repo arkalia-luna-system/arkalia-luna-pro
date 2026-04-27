@@ -11,7 +11,7 @@ import hashlib
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from core.ark_logger import ark_logger
 
@@ -83,7 +83,9 @@ class BuildIntegrityValidator:
         )
         return checksums
 
-    def save_manifest(self, checksums: dict[str, str], metadata: dict | None = None) -> Path:
+    def save_manifest(
+        self, checksums: dict[str, str], metadata: dict[str, Any] | None = None
+    ) -> Path:
         """
         Sauvegarde manifest de checksums avec métadonnées
 
@@ -164,7 +166,9 @@ class BuildIntegrityValidator:
             violations.append(f"UNAUTHORIZED: {new_file}")
 
         if violations:
-            self._log_violations(violations, manifest_data.get("metadata", {}))
+            metadata_raw: Any = manifest_data.get("metadata", {})
+            metadata = cast(dict[str, Any], metadata_raw) if isinstance(metadata_raw, dict) else {}
+            self._log_violations(violations, metadata)
             raise SecurityError(f"Integrity violations detected: {len(violations)} issues")
 
         ark_logger.info("✅ Integrity validation PASSED", extra={"arkalia_module": "security"})
@@ -268,9 +272,9 @@ class BuildIntegrityValidator:
             "docker-compose.yml",
         ]
 
-    def _log_violations(self, violations: list[str], metadata: dict) -> None:
+    def _log_violations(self, violations: list[str], metadata: dict[str, Any]) -> None:
         timestamp = datetime.now().isoformat()
-        log_entry = {
+        log_entry: dict[str, Any] = {
             "timestamp": timestamp,
             "violations_count": len(violations),
             "manifest_metadata": metadata,

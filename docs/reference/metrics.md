@@ -22,11 +22,10 @@ Cette page documente toutes les métriques Prometheus exposées par Arkalia-LUNA
 
 ```prometheus
 # CPU Usage
-arkalia_cpu_usage_percent{module="helloria"} 45.2
+arkalia_cpu_usage 45.2
 
 # Memory Usage
-arkalia_memory_usage_bytes{module="helloria"} 1073741824
-arkalia_memory_usage_percent{module="helloria"} 67.8
+arkalia_memory_usage 1073741824
 
 # Disk Usage
 arkalia_disk_usage_bytes{module="helloria"} 5368709120
@@ -37,20 +36,20 @@ arkalia_network_bytes_sent_total{module="helloria"} 1024000
 arkalia_network_bytes_received_total{module="helloria"} 2048000
 
 # Uptime
-arkalia_uptime_seconds{module="helloria"} 172800
+arkalia_system_uptime 172800
 ```
 
 ### **Métriques API**
 
 ```prometheus
 # HTTP Requests
-arkalia_http_requests_total{module="helloria",method="GET",endpoint="/health"} 1234
-arkalia_http_requests_total{module="helloria",method="POST",endpoint="/chat"} 567
+arkalia_requests_total{method="GET",endpoint="/health",status="200"} 1234
+arkalia_requests_total{method="POST",endpoint="/assistantia/api/v1/chat",status="200"} 567
 
 # Request Duration
-arkalia_http_request_duration_seconds{module="helloria",quantile="0.5"} 0.1
-arkalia_http_request_duration_seconds{module="helloria",quantile="0.95"} 0.5
-arkalia_http_request_duration_seconds{module="helloria",quantile="0.99"} 1.0
+arkalia_request_duration_bucket{method="GET",endpoint="/health",le="0.5"} 100
+arkalia_request_duration_sum{method="GET",endpoint="/health"} 12.5
+arkalia_request_duration_count{method="GET",endpoint="/health"} 123
 
 # HTTP Status Codes
 arkalia_http_responses_total{module="helloria",status_code="200"} 1100
@@ -209,7 +208,7 @@ cognitive_reactor_optimizations_applied 3
 
 ```prometheus
 # Chat Requests
-assistantia_chat_requests_total 89
+assistantia_prompts_total 89
 
 # Response Time
 assistantia_response_time_seconds{quantile="0.5"} 0.5
