@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi.responses import JSONResponse, PlainTextResponse, Response
 from prometheus_client import (
     CONTENT_TYPE_LATEST,
     CollectorRegistry,
@@ -234,8 +234,8 @@ metrics = ArkaliaMetrics()
 router = APIRouter(tags=["Monitoring"])
 
 
-@router.get("/metrics")
-async def get_metrics() -> PlainTextResponse | JSONResponse:
+@router.get("/metrics", response_model=None)
+async def get_metrics() -> Response:
     """
     📊 Endpoint métriques Prometheus pour le monitoring global
     """
@@ -250,8 +250,8 @@ async def get_metrics() -> PlainTextResponse | JSONResponse:
         )
 
 
-@router.get("/health")
-async def health_check() -> dict[str, object] | JSONResponse:
+@router.get("/health", response_model=None)
+async def health_check() -> Response:
     """
     🏥 Endpoint de santé du monitoring
     """
