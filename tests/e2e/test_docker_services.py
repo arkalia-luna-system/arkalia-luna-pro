@@ -13,10 +13,11 @@ import httpx
 import pytest
 
 try:
-    from docker.client import DockerClient  # noqa: F401
+    from docker.errors import DockerException
 
     docker_available = True
 except (ImportError, AttributeError):
+    DockerException = Exception
     docker_available = False
 
 
@@ -26,7 +27,10 @@ def docker_client() -> Any:
         pytest.skip("Docker SDK non disponible")
     import docker
 
-    return docker.from_env()  # type: ignore[attr-defined]
+    try:
+        return docker.from_env()  # type: ignore[attr-defined]
+    except DockerException:
+        pytest.skip("Daemon Docker non disponible")
 
 
 @pytest.fixture(scope="session")
@@ -111,7 +115,6 @@ class TestDockerServicesE2E:
         containers = docker_client.containers.list()
         for c in containers:
             if any(service in c.name for service in ["arkalia-api", "assistantia", "reflexia"]):
-                original_status = c.status
                 c.restart()
                 time.sleep(5)  # Plus de temps pour le redémarrage
                 c.reload()  # Recharger les infos du conteneur

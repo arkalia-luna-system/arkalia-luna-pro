@@ -13,7 +13,7 @@
 
 ## 📁 Structure
 
-```
+```text
 tests/
 ├── unit/
 ├── integration/
@@ -47,6 +47,6 @@ tests/
 - Utiliser les scripts CI pour générer les rapports dans `reports/`
 
 ## 📚 Ressources
+
 - [Guide de contribution](../docs/credits/CONTRIBUTING.md)
 - [Cahier des charges](../docs/architecture/cahier_des_charges_v4.0.md)
-
