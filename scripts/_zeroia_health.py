@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 def check_state_file() -> dict:
     """Check the ZeroIA state file"""
-    state_path = Path("modules/zeroia/state/zeroia_state.toml")
+    state_path = Path("state/zeroia_state.toml")
     try:
         data = toml.load(state_path)
         logging.info("✅ ZeroIA State file: OK")

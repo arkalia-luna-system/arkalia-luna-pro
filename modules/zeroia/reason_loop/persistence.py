@@ -12,7 +12,7 @@ from modules.zeroia.utils.backup import save_backup
 from .initialization import initialize_components_with_recovery
 
 # === Chemins par défaut ===
-STATE_PATH = Path("modules/zeroia/state/zeroia_state.toml")
+STATE_PATH = Path("state/zeroia_state.toml")
 DASHBOARD_PATH = Path("state/zeroia_dashboard.json")
 LOG_PATH = Path("modules/zeroia/logs/zeroia.log")
 

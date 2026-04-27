@@ -182,7 +182,7 @@ class ArkaliaMetrics:
     def _update_module_statuses(self) -> None:
         """Met à jour les statuts de tous les modules"""
         modules = {
-            "zeroia": "modules/zeroia/state/zeroia_state.toml",
+            "zeroia": "state/zeroia_state.toml",
             "reflexia": "state/reflexia_state.toml",
             "assistantia": "modules/assistantia/core.py",
             "sandozia": "state/sandozia",

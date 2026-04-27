@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from core.ark_logger import ark_logger
 
-DEFAULT_STATE_PATH = "modules/zeroia/state/zeroia_state.toml"
+DEFAULT_STATE_PATH = "state/zeroia_state.toml"
 REQUIRED_FIELDS = ["last_decision", "confidence_score", "justification", "timestamp"]
 
 

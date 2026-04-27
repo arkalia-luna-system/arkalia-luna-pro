@@ -9,7 +9,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-SNAPSHOT_FILE = Path("modules/reflexia/state/reflexia_state.toml")
+SNAPSHOT_FILE = Path("state/reflexia_state.toml")
 
 # ✅ Crée le dossier si manquant
 os.makedirs(SNAPSHOT_FILE.parent, exist_ok=True)

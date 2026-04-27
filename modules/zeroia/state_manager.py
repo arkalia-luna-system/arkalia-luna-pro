@@ -17,7 +17,7 @@ from modules.utils.helpers import save_json_if_changed, save_toml_if_changed
 from modules.zeroia.utils.backup import save_backup
 
 # === Chemins par défaut ===
-STATE_PATH = Path("modules/zeroia/state/zeroia_state.toml")
+STATE_PATH = Path("state/zeroia_state.toml")
 DASHBOARD_PATH = Path("state/zeroia_dashboard.json")
 DEFAULT_CONTRADICTION_LOG = Path("logs/zeroia_contradictions.log")
 

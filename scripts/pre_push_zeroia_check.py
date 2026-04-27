@@ -29,7 +29,7 @@ try:
 except ModuleNotFoundError:
     import tomli as tomllib
 
-STATE_FILE = Path("modules/zeroia/state/zeroia_state.toml")
+STATE_FILE = Path("state/zeroia_state.toml")
 DASHBOARD_FILE = Path("state/zeroia_dashboard.json")
 ENV_FILES = list(Path(".").rglob("*.env"))
 

@@ -14,7 +14,7 @@ import toml
 
 from core.ark_logger import ark_logger
 
-STATE_PATH = Path("modules/zeroia/state/zeroia_state.toml")
+STATE_PATH = Path("state/zeroia_state.toml")
 DASHBOARD_PATH = Path("state/zeroia_dashboard.json")
 LOG_FILE = Path("logs/failure_analysis.md")
 

@@ -4,12 +4,17 @@ import shutil
 from pathlib import Path
 
 
+def _zeroia_state_path() -> Path:
+    return Path("state/zeroia_state.toml")
+
+
 def ensure_test_toml() -> None:
     """
     Crée un fichier TOML de test minimal pour éviter les erreurs liées
     aux fichiers manquants ou vides dans les tests ZeroIA.
     """
-    path = Path("modules/zeroia/state/zeroia_state.toml")
+    path = _zeroia_state_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
     if not path.exists() or path.read_text().strip() == "":
         path.write_text(
             """
@@ -25,7 +30,8 @@ context = "reflexia"
 
 
 def ensure_zeroia_state_file() -> None:
-    path = Path("modules/zeroia/state/zeroia_state.toml")
+    path = _zeroia_state_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
     if not path.exists() or path.read_text().strip() == "":
         path.write_text(
             """
