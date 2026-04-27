@@ -49,8 +49,8 @@ python scripts/chaos_test.py --scenario config
 **Cibles :**
 - `config/settings.toml`
 - `config/monitoring_config.toml`
-- `modules/zeroia/state/zeroia_state.toml`
-- `modules/reflexia/state/reflexia_state.toml`
+- `state/zeroia_state.toml`
+- `state/reflexia_state.toml`
 
 **Méthodes de corruption :**
 - Injection de caractères invalides
