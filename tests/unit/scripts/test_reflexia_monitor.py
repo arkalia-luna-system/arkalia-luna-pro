@@ -1,13 +1,14 @@
-import json
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import toml
+
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
-STATE_FILE = Path("modules/reflexia/state/reflexia_state.json")
+STATE_FILE = Path("state/reflexia_state.toml")
 
 
-def setup_module(module) -> None:
+def setup_module(module: object) -> None:
     # Crée un état mock de ReflexIA
     STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
     state = {
@@ -15,29 +16,28 @@ def setup_module(module) -> None:
         "last_decision": "observe",
         "timestamp": "2025-06-26T09:59:00",
     }
-    with open(STATE_FILE, "w") as f:
-        json.dump(state, f)
+    with open(STATE_FILE, "w", encoding="utf-8") as f:
+        toml.dump(state, f)
 
 
-def teardown_module(module) -> None:
+def teardown_module(module: object) -> None:
     # Nettoie le fichier mock après test
     if STATE_FILE.exists():
         STATE_FILE.unlink()
 
 
-def test_reflexia_monitor_runs():
+def test_reflexia_monitor_runs() -> None:
     """Teste que le script reflexia_monitor s'exécute sans erreur"""
     # Créer le fichier d'état manquant pour éviter l'erreur
-    state_file = Path("modules/reflexia/state/reflexia_state.json")
+    state_file = Path("state/reflexia_state.toml")
     state_file.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(state_file, "w") as f:
-        json.dump(
+    with open(state_file, "w", encoding="utf-8") as f:
+        toml.dump(
             {
                 "reasoning_loop_active": True,
                 "last_decision": "normal",
                 "timestamp": "2025-01-01T00:00:00",
-                "previous": [],
             },
             f,
         )

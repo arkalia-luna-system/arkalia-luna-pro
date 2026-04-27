@@ -7,36 +7,37 @@ vers Grafana pour visualisation.
 """
 # 🧠 Monitor ReflexIA State — Arkalia LUNA
 
-import json
 from pathlib import Path
+from typing import Any
 
 import requests
+import toml
 
 from core.ark_logger import ark_logger
 
-STATE_FILE = Path("modules/reflexia/state/reflexia_state.json")
+STATE_FILE = Path("state/reflexia_state.toml")
 GRAFANA_API_URL = "http://your-grafana-instance/api/dashboards/db"
 GRAFANA_API_KEY = "your_grafana_api_key"  # pragma: allowlist secret
 
 
-def read_state() -> dict:
+def read_state() -> dict[str, Any]:
     """Lit l'état Reflexia depuis le fichier de state.
 
     Returns:
         dict: État Reflexia ou erreur si le fichier n'existe pas.
     """
     if not STATE_FILE.exists():
-        return {"status": "💥", "error": "Fichier reflexia_state.json introuvable."}
+        return {"status": "💥", "error": "Fichier reflexia_state.toml introuvable."}
 
     try:
         with STATE_FILE.open("r", encoding="utf-8") as f:
-            data = json.load(f)
+            data = toml.load(f)
         return {"status": "✅", "data": data}
-    except json.JSONDecodeError as e:
-        return {"status": "💥", "error": f"Erreur JSON: {e}"}
+    except toml.TomlDecodeError as e:
+        return {"status": "💥", "error": f"Erreur TOML: {e}"}
 
 
-def display_info(result: dict) -> None:
+def display_info(result: dict[str, Any]) -> None:
     """Affiche les informations de l'état Reflexia.
 
     Args:
@@ -67,7 +68,7 @@ def display_info(result: dict) -> None:
     )
 
 
-def export_to_grafana(data: dict) -> None:
+def export_to_grafana(data: dict[str, Any]) -> None:
     """Exporte les données Reflexia vers Grafana.
 
     Args:

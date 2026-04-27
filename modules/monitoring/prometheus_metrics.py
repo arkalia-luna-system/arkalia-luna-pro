@@ -186,7 +186,7 @@ class ArkaliaMetrics:
             "reflexia": "state/reflexia_state.toml",
             "assistantia": "modules/assistantia/core.py",
             "sandozia": "state/sandozia",
-            "cognitive_reactor": "modules/cognitive_reactor/state/cognitive_reactor_state.toml",
+            "cognitive_reactor": "state/cognitive_reactor_state.toml",
             "security": "modules/security/core.py",
             "monitoring": "modules/monitoring/prometheus_metrics.py",
         }
@@ -235,7 +235,7 @@ router = APIRouter(tags=["Monitoring"])
 
 
 @router.get("/metrics")
-async def get_metrics():
+async def get_metrics() -> PlainTextResponse | JSONResponse:
     """
     📊 Endpoint métriques Prometheus pour le monitoring global
     """
@@ -251,7 +251,7 @@ async def get_metrics():
 
 
 @router.get("/health")
-async def health_check():
+async def health_check() -> dict[str, object] | JSONResponse:
     """
     🏥 Endpoint de santé du monitoring
     """
