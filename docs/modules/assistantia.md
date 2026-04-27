@@ -29,12 +29,12 @@ uvicorn modules.assistantia.core:app --port 8001
 
 ---
 
-## 🔄 Endpoints disponibles
+## 🔄 Endpoints disponibles (runtime principal)
 
-| Méthode | URL           | Description                                      |
-|---------|----------------|--------------------------------------------------|
-| POST    | /api/v1/chat   | Envoie un message à l'IA locale                 |
-| GET     | /status        | État du module assistantia                      |
+| Méthode | URL | Description |
+|---------|-----|-------------|
+| POST | /assistantia/api/v1/chat | Envoie un message au router AssistantIA |
+| GET | /assistantia/api/v1/health | État de santé du router AssistantIA |
 
 ---
 
@@ -44,12 +44,8 @@ uvicorn modules.assistantia.core:app --port 8001
   - `test_assistantia.py` (unitaires)
   - `test_assistantia_api_integration.py` (intégration API)
 - **Pipeline CI/CD** :
-  - 671 tests passés, 0 échec
-  - Couverture globale : **59.25 %** (seuil requis 28 % largement dépassé)
-  - Healthcheck Python natif intégré
-  - Upload conditionnel des artefacts
-  - CI/CD 100 % verte et stable (GitHub Actions)
-  - Surveillance et conformité sécurité actives
+  - Les métriques de tests/couverture évoluent en continu; vérifier les derniers workflows GitHub Actions.
+  - Ne pas considérer ce document comme preuve de CI verte sans exécution effective.
 
 ✅ **Stabilité validée** : module compatible avec la pipeline CI/CD, tests automatisés, artefacts et logs surveillés.
 
@@ -188,14 +184,13 @@ Le module Assistantia est un composant clé du projet Arkalia-LUNA, conçu pour 
 - **Personnalisation** : Permet une personnalisation avancée pour répondre aux besoins spécifiques des utilisateurs.
 
 ## Configuration
-Pour configurer le module Assistantia, modifiez le fichier `assistantia_config.toml` et ajustez les paramètres suivants :
+Pour configurer le module Assistantia, modifiez le fichier `config/assistantia_config.toml` et ajustez les paramètres suivants :
 - `enable_feature_x`: Active ou désactive la fonctionnalité X.
 - `api_key`: Clé API nécessaire pour l'authentification.
 
 ## API
-Le module expose plusieurs points d'entrée API :
-- `GET /assistantia/status`: Retourne le statut actuel du module.
-- `POST /assistantia/execute`: Exécute une commande spécifique.
+Le module est exposé via le router monté sous `/assistantia` dans l'API principale.
+Pour la liste exacte des routes actives, consulter l'OpenAPI runtime (`/openapi.json`).
 
 ## Dépannage
 En cas de problème avec le module Assistantia, vérifiez les logs dans `logs/assistantia.log` pour des messages d'erreur détaillés. Assurez-vous que toutes les dépendances sont correctement installées.

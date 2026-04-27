@@ -17,6 +17,7 @@ from __future__ import annotations
 from typing import Any
 
 from . import (
+    DEFAULT_CONFIG,
     ConfidenceScorer,
     DecisionEngine,
     DegradationLevel,
@@ -24,9 +25,8 @@ from . import (
     ErrorType,
     GracefulDegradationSystem,
     StateManager,
-    ZeroIAOrchestrator,
     ZeroIACoordinator,
-    DEFAULT_CONFIG,
+    ZeroIAOrchestrator,
     get_coordinator,
     get_version,
     get_zeroia_status,
@@ -50,6 +50,19 @@ class ZeroIACore:
         """
         status = get_zeroia_status()
         return status
+
+    def make_decision(self, context: Any) -> dict[str, Any]:
+        """
+        API de compatibilité pour les adapters historiques.
+        """
+        status = self.get_status()
+        return {
+            "decision": "monitor",
+            "confidence": 0.5,
+            "reason": "compat_mode",
+            "context": context,
+            "status_snapshot": status.get("status", "unknown"),
+        }
 
 
 def get_zeroia_core() -> ZeroIACore:

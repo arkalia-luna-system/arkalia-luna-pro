@@ -26,6 +26,7 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Gauge, generate_latest
 
 from core.ark_logger import ark_logger
+from modules.cognitive_reactor.stimulus_processor import process_stimulus_payload
 from modules.utils.helpers import read_state_safe, save_json_safe
 
 # === Configuration du logging ===
@@ -364,48 +365,9 @@ class CognitiveReactor:
 
     async def process_stimulus(self, stimulus: dict[str, Any]) -> dict[str, Any]:
         """Traite un stimulus cognitif et retourne une réaction adaptée"""
-        # Gestion des cas d'erreur ou stimulus invalide
-        if not stimulus or not isinstance(stimulus, dict):
+        if not stimulus:
             return {"processed": False, "error": "invalid_stimulus"}
-
-        result: dict[str, Any] = {"processed": True}
-
-        # Gestion de la sévérité
-        severity = stimulus.get("severity", "low")
-        result["severity"] = severity
-
-        # Cas stimulus basique (test_process_stimulus_basic) - retourne cognitive_score
-        if stimulus.get("type") == "system_alert":
-            result["reaction"] = "stimulus_processed_low"
-            result["cognitive_score"] = 0.7
-            return result
-
-        # Cas stimulus haute sévérité (test_process_stimulus_high_severity)
-        # Retourne immediate_action
-        if severity == "high":
-            result["reaction"] = "stimulus_processed_high"
-            result["immediate_action"] = "emergency_protocol"
-            return result
-
-        # Cas intégration ZeroIA
-        if stimulus.get("type") == "zeroia_decision":
-            result["reaction"] = "zeroia_decision_processed"
-            result["zeroia_integration"] = True
-            return result
-
-        # Cas intégration ReflexIA
-        if stimulus.get("source") == "reflexia":
-            result["reaction"] = "reflexia_processed"
-            return result
-
-        # Cas stimulus incomplet
-        if "type" not in stimulus or "source" not in stimulus:
-            result["warning"] = "incomplete_stimulus"
-            return result
-
-        # Cas générique
-        result["reaction"] = f"stimulus_processed_{severity}"
-        return result
+        return process_stimulus_payload(stimulus)
 
     async def generate_cognitive_response(self, context: dict[str, Any]) -> dict[str, Any]:
         """Génère une réponse cognitive basée sur le contexte"""
@@ -417,7 +379,7 @@ class CognitiveReactor:
 
     async def learn_from_experience(self, experience: dict[str, Any]) -> None:
         """Apprend d'une expérience"""
-        if isinstance(experience, dict):
+        if experience:
             self.reaction_history.append(experience)
 
     async def predict_optimal_reaction(self, situation: dict[str, Any]) -> dict[str, Any]:
@@ -426,7 +388,7 @@ class CognitiveReactor:
 
     async def handle_multiple_stimuli(self, stimuli: list[dict[str, Any]]) -> list[dict[str, Any]]:
         """Traite plusieurs stimuli"""
-        results = []
+        results: list[dict[str, Any]] = []
         for stimulus in stimuli:
             result = await self.process_stimulus(stimulus)
             results.append(result)

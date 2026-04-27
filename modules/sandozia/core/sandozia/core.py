@@ -462,3 +462,23 @@ class SandoziaCore:
             },
             "last_update": datetime.now().isoformat(),
         }
+
+    def health_check(self) -> dict[str, Any]:
+        """Contrat de compatibilité pour adapters."""
+        status = self.get_current_status()
+        running = bool(status.get("is_running"))
+        return {
+            "status": "healthy" if running else "degraded",
+            "service": "sandozia_core",
+            "details": status,
+        }
+
+    async def process(self, data: dict[str, Any]) -> dict[str, Any]:
+        """Traitement minimal asynchrone pour compatibilité adapter."""
+        snapshot = await self.collect_intelligence_snapshot()
+        return {
+            "status": "success",
+            "input": data,
+            "coherence_score": snapshot.coherence_analysis.get("coherence_score", 0.0),
+            "recommendations": snapshot.recommendations,
+        }

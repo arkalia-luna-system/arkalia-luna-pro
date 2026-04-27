@@ -63,15 +63,15 @@ jobs:
           case "${{ matrix.test-suite }}" in
             "zeroia")
               echo "📊 Tests de performance ZeroIA..."
-              pytest tests/performance/zeroia/ -v --benchmark-only --timeout=300 || echo "⚠️ Tests ZeroIA terminés avec avertissements"
+              pytest tests/performance/zeroia/ -v --benchmark-only --timeout=300
               ;;
             "api")
               echo "📊 Tests de performance API..."
-              pytest tests/performance/api/ -v --benchmark-only --timeout=300 || echo "⚠️ Tests API terminés avec avertissements"
+              pytest tests/performance/api/ -v --benchmark-only --timeout=300
               ;;
             "integration")
               echo "📊 Tests de performance intégration..."
-              pytest tests/performance/integration/ -v --benchmark-only --timeout=600 || echo "⚠️ Tests intégration terminés avec avertissements"
+              pytest tests/performance/integration/ -v --benchmark-only --timeout=600
               ;;
           esac
 

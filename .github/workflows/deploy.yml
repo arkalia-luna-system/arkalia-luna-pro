@@ -231,7 +231,7 @@ jobs:
         run: |
           echo "🧪 Exécution des tests E2E..."
           if [ -d "tests/e2e" ]; then
-            pytest tests/e2e/ -v --tb=short --timeout=600 || echo "⚠️ Tests E2E terminés avec avertissements"
+            pytest tests/e2e/ -v --tb=short --timeout=600
           else
             echo "📁 Dossier tests/e2e non trouvé, tests basiques..."
             # Tests basiques si pas de tests E2E

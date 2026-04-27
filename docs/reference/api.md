@@ -13,9 +13,22 @@ Documentation complète de l'API REST d'Arkalia-LUNA Pro Enhanced.
 
 **Version API** : `v2.8.0` | **Base URL** : `http://localhost:8000`
 
-## ⚠️ **Note importante**
+## ⚠️ Note importante
 
-Cette documentation inclut des endpoints **théoriques/en développement** et des endpoints **réellement implémentés**. Les endpoints réellement disponibles sont documentés dans [endpoints.md](endpoints.md). Les endpoints `/api/v1/zeroia/...` documentés ci-dessous sont des spécifications pour développement futur.
+Ce document mélange historique et spécifications futures. La source de vérité runtime est l'application FastAPI principale dans `app/main.py`.
+
+### Endpoints actuellement disponibles (runtime local)
+
+- `GET /`
+- `GET /health`
+- `GET /status`
+- `GET /metrics`
+- `POST /zeroia/decision` (endpoint de compatibilité minimal)
+- routes montées via routers :
+  - préfixe `/assistantia`
+  - préfixe `/reflexia`
+
+Les routes `/api/v1/zeroia/...` décrites plus bas doivent être considérées comme **planifiées / non garanties en production** tant qu'elles ne sont pas exposées explicitement dans le runtime principal.
 
 ---
 

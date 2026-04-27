@@ -33,9 +33,9 @@ tests/
 - **Tous les tests** : `pytest tests/`
 - **Unitaires** : `pytest tests/unit/`
 - **Intégration** : `pytest -c config/pytest/pytest-integration.ini`
-- **Performance** : `pytest -c pytest-performance.ini`
-- **Chaos** : `pytest -c pytest-chaos.ini`
-- **Sécurité** : `pytest -c pytest-security.ini`
+- **Performance** : `pytest -c config/pytest/pytest-performance.ini`
+- **Chaos** : `pytest -c config/pytest/pytest-chaos.ini`
+- **Sécurité** : `pytest -c config/pytest/pytest-security.ini`
 - **E2E** : `pytest tests/e2e/`
 
 ## 🛠️ Bonnes pratiques
@@ -50,14 +50,3 @@ tests/
 - [Guide de contribution](../docs/credits/CONTRIBUTING.md)
 - [Cahier des charges](../docs/architecture/cahier_des_charges_v4.0.md)
 
-# 🧪 tests/
-
-Ce dossier contient tous les **tests unitaires, d'intégration, de performance et de sécurité** du projet.
-
-- `unit/` : tests unitaires
-- `integration/` : tests d'intégration
-- `performance/` : tests de performance
-- `security/` : tests de sécurité
-- `fixtures/` : fixtures et helpers
-
-**Lancez les tests avec `pytest` ou les scripts fournis.**

@@ -7,8 +7,8 @@ from datetime import datetime
 from typing import Any
 
 from core.ark_logger import ark_logger
+from modules.utils.error_recovery.core import ErrorRecoverySystem
 from modules.zeroia.circuit_breaker import CircuitBreaker
-from modules.zeroia.error_recovery_system import ErrorRecoverySystem
 from modules.zeroia.event_store import EventStore
 from modules.zeroia.graceful_degradation import GracefulDegradationSystem
 
@@ -104,10 +104,9 @@ class ReasonLoopEnhanced:
                 import toml
 
                 state = toml.load(REFLEXIA_STATE)
-                if isinstance(state, dict):
-                    status = state.get("status", "unknown")
-                    if isinstance(status, str):
-                        return status
+                status = state.get("status", "unknown")
+                if isinstance(status, str):
+                    return status
                 return "unknown"
         except Exception as e:
             ark_logger.error(f"🚨 Erreur lecture état ReflexIA: {e}")
@@ -133,7 +132,7 @@ class ReasonLoopEnhanced:
                     break
 
                 iteration_count += 1
-                decision, score = reason_loop_enhanced_with_recovery()
+                decision, _score = reason_loop_enhanced_with_recovery()
                 self.decision_count += 1
 
                 # Vérifier les contradictions

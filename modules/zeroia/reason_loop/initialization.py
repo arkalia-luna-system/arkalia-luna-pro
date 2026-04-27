@@ -5,8 +5,8 @@ Initialization - Initialisation des composants Reason Loop
 from typing import Any
 
 from core.ark_logger import ark_logger
+from modules.utils.error_recovery.core import ErrorRecoverySystem
 from modules.zeroia.circuit_breaker import CircuitBreaker
-from modules.zeroia.error_recovery_system import ErrorRecoverySystem
 from modules.zeroia.event_store import EventStore
 from modules.zeroia.graceful_degradation import GracefulDegradationSystem
 

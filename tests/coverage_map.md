@@ -2,7 +2,10 @@
 
 **Date** : novembre 2025
 **Version** : v2.8.0
-**Objectif** : Couverture complète et robustesse professionnelle
+**Objectif** : cartographie indicative des zones de tests
+
+> ⚠️ **Avertissement fiabilité**
+> Cette carte peut contenir des chemins obsolètes. La source de vérité reste l'arborescence actuelle sous `tests/` et l'exécution effective de `pytest`.
 
 ## 📋 EXIGENCES PAR MODULE
 
@@ -19,7 +22,7 @@ Chaque module doit avoir :
 ## 🧠 MODULES IA PRINCIPAUX
 
 ### 1. **ZeroIA** - Moteur de Décision Autonome
-**Statut** : ✅ COMPLET
+**Statut** : ⚠️ À vérifier dynamiquement
 **Tests** : 15 unitaires + 3 intégration + 2 edge cases
 
 ```bash
@@ -44,7 +47,7 @@ pytest tests/unit/zeroia/test_graceful_degradation.py -v
 ---
 
 ### 2. **Reflexia** - Observateur Cognitif
-**Statut** : ✅ COMPLET
+**Statut** : ⚠️ À vérifier dynamiquement
 **Tests** : 12 unitaires + 2 intégration + 1 edge case
 
 ```bash
@@ -67,7 +70,7 @@ pytest tests/unit/reflexia/test_alert_thresholds.py -v
 ---
 
 ### 3. **AssistantIA** - Interface Utilisateur
-**Statut** : ✅ COMPLET
+**Statut** : ⚠️ À vérifier dynamiquement
 **Tests** : 8 unitaires + 3 intégration + 1 edge case
 
 ```bash
@@ -90,7 +93,7 @@ pytest tests/unit/assistantia/test_context_handling.py -v
 ---
 
 ### 4. **Sandozia** - Intelligence Croisée
-**Statut** : ✅ COMPLET
+**Statut** : ⚠️ À vérifier dynamiquement
 **Tests** : 10 unitaires + 2 intégration + 2 edge cases
 
 ```bash
@@ -119,10 +122,10 @@ pytest tests/unit/sandozia/test_cognitive_reactor.py -v
 
 ```bash
 # Tests unitaires
-pytest tests/unit/cognitive_reactor/test_core.py -v
+pytest tests/unit/cognitive_reactor/test_cognitive_reactor_core.py -v
 
 # Tests d'intégration
-pytest tests/integration/test_cognitive_integration.py -v
+pytest tests/integration/cognitive_reactor/test_cognitive_reactor_integration.py -v
 
 # Tests edge cases
 pytest tests/unit/cognitive_reactor/test_reaction_patterns.py -v
@@ -211,7 +214,7 @@ pytest tests/unit/core/test_optimizations.py -v
 pytest tests/performance/ -v -m performance
 
 # Benchmarks spécifiques
-pytest tests/performance/test_zeroia_performance.py -v
+pytest tests/performance/zeroia/test_zeroia_performance.py -v
 pytest tests/performance/test_circuit_breaker_latency.py -v
 ```
 

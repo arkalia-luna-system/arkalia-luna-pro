@@ -189,7 +189,7 @@ jobs:
             --junitxml=integration-test-results.xml \
             --ignore=modules/generative_ai/generated/ \
             --timeout=300 \
-            -v || echo "⚠️ Tests d'intégration terminés avec avertissements"
+            -v
 
       # Nouveau : Tests de performance
       - name: ⚡ Run performance tests
@@ -198,7 +198,7 @@ jobs:
           pytest tests/performance/ \
             --junitxml=performance-test-results.xml \
             --timeout=600 \
-            -v || echo "⚠️ Tests de performance terminés avec avertissements"
+            -v
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -250,7 +250,7 @@ jobs:
       - name: 🔒 Run security tests
         run: |
           echo "🔒 Exécution des tests de sécurité..."
-          pytest -c pytest-security.ini --timeout=300 || echo "⚠️ Tests de sécurité terminés avec avertissements"
+          pytest -c config/pytest/pytest-security.ini --timeout=300
 
       - name: 🔍 Run bandit security scan
         run: |
@@ -297,7 +297,7 @@ jobs:
       - name: 🌀 Run chaos tests
         run: |
           echo "🌀 Exécution des tests de chaos..."
-          pytest -c pytest-chaos.ini --timeout=900 || echo "⚠️ Tests de chaos terminés avec avertissements"
+          pytest -c config/pytest/pytest-chaos.ini --timeout=900
 
       - name: 📋 Upload chaos artifacts
         uses: actions/upload-artifact@v4
@@ -454,7 +454,7 @@ jobs:
           fi
       - name: 🧪 Run E2E tests
         run: |
-          pytest tests/e2e/ --tb=short -v || echo "⚠️ Tests E2E terminés avec des échecs (normal si services non disponibles)"
+          pytest tests/e2e/ --tb=short -v
       - name: 🐳 Stop services
         if: always()
         run: |
