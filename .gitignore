@@ -71,6 +71,7 @@ docker-compose.override.yml
 # ======================================================
 state/reflexia_state.toml
 state/zeroia_state.toml
+modules/cognitive_reactor/state/cognitive_state.json
 state/zeroia_dashboard.json
 state/zeroia_*.toml
 
