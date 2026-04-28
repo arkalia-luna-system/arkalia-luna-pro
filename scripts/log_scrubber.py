@@ -134,9 +134,8 @@ class LogScrubber:
             archive_path = archive_dir / archive_name
 
             # Compression avec gzip
-            with open(log_file, "rb") as f_in:
-                with gzip.open(archive_path, "wb") as f_out:
-                    shutil.copyfileobj(f_in, f_out)
+            with open(log_file, "rb") as f_in, gzip.open(archive_path, "wb") as f_out:
+                shutil.copyfileobj(f_in, f_out)
 
             # Calcul compression
             original_size = log_file.stat().st_size

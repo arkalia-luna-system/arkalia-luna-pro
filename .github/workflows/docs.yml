@@ -23,10 +23,10 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: 📥 Checkout du dépôt
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -102,10 +102,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: 📥 Checkout du dépôt
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -152,7 +152,7 @@ jobs:
           fi
 
       - name: 📋 Upload built documentation
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         continue-on-error: true
         timeout-minutes: 10
         with:
@@ -172,10 +172,10 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: 📥 Checkout du dépôt
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -187,7 +187,7 @@ jobs:
           pip install mkdocs mkdocs-material mkdocs-minify-plugin
 
       - name: 📋 Download built documentation
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: documentation-build
           path: site/
@@ -245,7 +245,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: 📥 Checkout du dépôt
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 📊 Generate documentation report
         run: |
@@ -268,7 +268,7 @@ jobs:
           echo "- Pages générées: $(find site/ -name '*.html' | wc -l 2>/dev/null || echo 'N/A')" >> docs-report.md
 
       - name: 📋 Upload documentation report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         continue-on-error: true
         timeout-minutes: 5
         with:
