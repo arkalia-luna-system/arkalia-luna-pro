@@ -33,6 +33,13 @@ Cette page sert de point d'entrée pour éviter la prolifération de scripts red
 - `scripts/auto-heal.sh`
 - `scripts/setup_log_scrubber_cron.sh`
 
+## VSCode / Cursor
+
+- Script canonique: `scripts/ark-vscode-reload.sh`
+- Alias compatibilité: `scripts/ark-reload-vscode.sh`
+- Diagnostic: `scripts/ark-vscode-diagnostic.sh`
+- Correctif config: `scripts/ark-fix-vscode-config.sh`
+
 ## Règles de maintenance
 
 - Éviter les doublons fonctionnels.
