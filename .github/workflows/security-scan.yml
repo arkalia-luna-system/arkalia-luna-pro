@@ -19,6 +19,10 @@ env:
   PYTHON_VERSION: "3.10"
   SECURITY_SCAN_TIMEOUT: 600
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   security-scan:
     name: 🔍 Security Vulnerability Scan
