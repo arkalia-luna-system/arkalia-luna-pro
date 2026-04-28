@@ -1,10 +1,22 @@
-# ⚙️ scripts/
+# Scripts - Index
 
-Ce dossier contient tous les **scripts utilitaires** (bash, python, etc.) utilisés pour l'automatisation, le nettoyage, la maintenance et le déploiement du projet.
+Ce dossier regroupe les scripts d'exploitation et de maintenance du projet.
 
-- Scripts de nettoyage
-- Scripts de build
-- Scripts de migration
-- Scripts de test
+## Avant d'ajouter un script
 
-**Consultez ce dossier avant d'écrire un nouveau script !**
+- Vérifier si un script existant couvre déjà le besoin.
+- Préférer une extension d'un script existant plutôt qu'un nouveau fichier.
+- Garder un nom explicite et une responsabilité unique.
+
+## Catégories principales
+
+- `ark-docker-*.sh`: gestion locale Docker (start/stop/status/rebuild/dev).
+- `ark-clean-*.sh`: nettoyage (state/json/fichiers cachés).
+- `ark-*-check.sh` / `validate-*.sh`: validation et diagnostics.
+- `shell/`: scripts historiques ou composés.
+
+## Documentation détaillée
+
+Le catalogue maintenu des scripts est dans:
+
+- `docs/support/scripts-index.md`
