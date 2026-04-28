@@ -119,9 +119,9 @@ def check_file(file_path: Path) -> dict[str, list]:
                     issues["argot"].append((i, line.strip()))
 
             # Vérifier la version (si mentionnée)
-            if "v2.9.0" in line or "v3.0" in line or "v3.x" in line:
-                if CURRENT_VERSION not in line:
-                    issues["wrong_version"].append((i, line.strip()))
+            mentions_old_version = "v2.9.0" in line or "v3.0" in line or "v3.x" in line
+            if mentions_old_version and CURRENT_VERSION not in line:
+                issues["wrong_version"].append((i, line.strip()))
 
             # Vérifier les services obsolètes
             for service in OBSOLETE_SERVICES:
@@ -210,9 +210,12 @@ def fix_file(file_path: Path) -> bool:
 
             # Pour les autres services obsolètes (Trello, Jira, etc.), supprimer les lignes simples
             for service in ["trello", "jira", "confluence", "atlassian"]:
-                if re.search(rf"\b{service}\b", line, re.IGNORECASE):
-                    if len(line.strip()) < 80 and line.strip().count(service) == 1:
-                        continue  # Supprimer cette ligne
+                stripped_line = line.strip()
+                is_short_single_mention = (
+                    len(stripped_line) < 80 and stripped_line.count(service) == 1
+                )
+                if re.search(rf"\b{service}\b", line, re.IGNORECASE) and is_short_single_mention:
+                    continue  # Supprimer cette ligne
 
             # Toujours ajouter la ligne (modifiée ou non)
             new_lines.append(line)
