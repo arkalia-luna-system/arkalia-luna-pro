@@ -12,3 +12,4 @@ Ce dossier contient des scripts historiques conservés pour compatibilité.
 - `scripts/shell/ark-start.sh` -> `scripts/ark-docker-start.sh`
 - `scripts/shell/docker-start.sh` -> `scripts/ark-docker-start.sh`
 - `scripts/shell/ark-fix-all.sh` -> `scripts/ark-fix-linting.sh`
+- `scripts/shell/test_healthcheck.sh` -> `scripts/health_check.sh full`
