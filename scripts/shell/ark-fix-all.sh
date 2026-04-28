@@ -1,6 +1,10 @@
 #!/bin/bash
 # 🚀 Script de correction rapide Arkalia-LUNA
-# Raccourci pour ark-fix-linting.sh
+# Raccourci de compatibilité vers le script canonique.
 
-cd /Volumes/T7/devstation/cursor/arkalia-luna-pro
-./scripts/ark-fix-linting.sh
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+exec "$PROJECT_ROOT/scripts/ark-fix-linting.sh" "$@"
