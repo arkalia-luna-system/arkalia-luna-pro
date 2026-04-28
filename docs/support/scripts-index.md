@@ -45,3 +45,4 @@ Cette page sert de point d'entrée pour éviter la prolifération de scripts red
 - Éviter les doublons fonctionnels.
 - Préférer un script court et focalisé.
 - Documenter les entrées/sorties attendues dans le script lui-même.
+- Pour les scripts historiques, préférer un wrapper vers un script canonique.

@@ -5,10 +5,26 @@ depuis l'historique Git.
 """
 
 import subprocess  # nosec
-from pathlib import Path
+import sys
 from typing import Any
+from pathlib import Path
 
-from core.ark_logger import ark_logger
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+ark_logger: Any
+try:
+    from core.ark_logger import ark_logger
+except Exception:  # pragma: no cover - fallback utilitaire
+    import logging
+
+    ark_logger = logging.getLogger("arkalia-updates")
+    if not ark_logger.handlers:
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter("%(levelname)s - %(message)s"))
+        ark_logger.addHandler(handler)
+    ark_logger.setLevel(logging.INFO)
 
 # Supprimer les fichiers ._* (pollution macOS)
 for file in Path("docs/releases").glob("._*"):
