@@ -235,7 +235,8 @@ jobs:
         run: |
           echo "🧪 Exécution des tests E2E..."
           if [ -d "tests/e2e" ]; then
-            pytest tests/e2e/ -v --tb=short --timeout=600
+            # Les E2E ne doivent pas appliquer le seuil de couverture global du projet.
+            pytest tests/e2e/ -v --tb=short --timeout=600 --no-cov
           else
             echo "📁 Dossier tests/e2e non trouvé, tests basiques..."
             # Tests basiques si pas de tests E2E
