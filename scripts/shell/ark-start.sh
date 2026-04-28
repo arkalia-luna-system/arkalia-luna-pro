@@ -1,10 +1,9 @@
 #!/bin/bash
-# 🚀 Lancement Docker persistant pour Arkalia-LUNA
+# Wrapper de compatibilité: utilise le script de démarrage canonique.
 
-echo "🌕 Lancement de Arkalia-LUNA (mode Docker persisté)..."
+set -euo pipefail
 
-docker run -it --rm \
-  -v "$(pwd)/logs:/app/logs" \
-  -v "$(pwd)/state:/app/state" \
-  -p 8000:8000 \
-  arkalia-luna
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+exec "$PROJECT_ROOT/scripts/ark-docker-start.sh" "$@"
