@@ -1,7 +1,14 @@
-# Tests d'Intégration
+# Tests d'intégration
 
-Ce dossier regroupe les tests d'intégration entre modules et composants.
+Ce dossier couvre les scénarios inter-modules.
 
-- **But** : Vérifier l'interopérabilité et les flux entre modules.
-- **Organisation** : Un fichier par scénario d'intégration.
-- **Exécution** : `pytest tests/integration/`
+## Objectif
+
+- Vérifier l'interopérabilité des composants
+- Valider les flux fonctionnels transverses
+
+## Exécution
+
+```bash
+pytest tests/integration/
+```

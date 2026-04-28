@@ -1,8 +1,14 @@
-# 🧩 modules/
+# Modules
 
-Ce dossier contient tous les **modules principaux** de l'IA Arkalia Luna Pro.
+Ce dossier contient les modules fonctionnels du système Arkalia-LUNA.
 
-- Chaque sous-dossier = un module fonctionnel (assistantia, reflexia, sandozia, etc.)
-- Respecter la structure modulaire pour toute nouvelle fonctionnalité
+## Structure
 
-**Voir la documentation de chaque module pour plus de détails.**
+- Un sous-dossier = un module métier
+- Chaque module expose sa logique, ses interfaces et ses points d'intégration
+
+## Règles
+
+- Préserver l'isolation entre modules
+- Éviter les dépendances circulaires
+- Ajouter les tests associés pour toute évolution fonctionnelle
