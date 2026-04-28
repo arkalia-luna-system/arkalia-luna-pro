@@ -173,7 +173,7 @@ class ${capitalized_name}Core:
         """Traitement principal"""
         try:
             self.logger.info(f"🧠 Traitement: {data}")
-            # TODO: Implémenter la logique spécifique
+            # Point d'extension: implémenter ici la logique métier spécifique du module.
             return {"status": "success", "data": data, "module": "$module_name"}
         except Exception as e:
             self.logger.error(f"❌ Erreur: {e}")

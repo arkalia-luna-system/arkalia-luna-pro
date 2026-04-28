@@ -431,7 +431,7 @@ def simulate_state_corruption():
 
 ## 📞 Contacts d'Urgence
 
-### **Escalade Immediate**
+### **Escalade Immédiate**
 - 🚨 **Incident CRITIQUE** : +33-XXX-XXX-XXX (24h/7j)
 - 📧 **Email sécurisé** : arkalia.luna.system@gmail.com
 - 💬 **notifications d'urgence** : #arkalia-security-emergency
