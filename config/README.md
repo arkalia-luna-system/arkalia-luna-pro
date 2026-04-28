@@ -1,8 +1,14 @@
-# ⚙️ config/
+# Configuration
 
-Ce dossier contient les **fichiers de configuration principaux** du projet (hors archives).
+Ce dossier contient les fichiers de configuration actifs du projet.
 
-- Fichiers TOML, YAML, JSON, etc.
-- Configurations actives pour le déploiement, le monitoring, etc.
+## Contenu
 
-**Ne pas modifier sans validation de l'équipe technique.**
+- Paramètres applicatifs (`.toml`, `.yaml`, `.json`)
+- Configurations d'exécution, de tests et de déploiement
+
+## Bonnes pratiques
+
+- Éviter les valeurs sensibles en clair
+- Documenter les changements de paramètres importants
+- Valider les impacts CI/CD avant merge

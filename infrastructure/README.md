@@ -1,8 +1,14 @@
-# 🏗️ infrastructure/
+# Infrastructure
 
-Ce dossier contient toute l'**infrastructure as code** (IaC) : monitoring, docker, CI/CD, etc.
+Ce dossier regroupe les ressources d'infrastructure (IaC et exploitation).
 
-- Fichiers de configuration Docker, Prometheus, Grafana, etc.
-- Scripts et templates de déploiement
+## Contenu
 
-**Voir chaque sous-dossier pour le détail des outils.**
+- Monitoring (Prometheus, Grafana, Alerting)
+- Déploiement et orchestration
+- Configurations d'environnement opérationnel
+
+## Usage
+
+- Consulter les sous-dossiers pour les procédures détaillées
+- Garder les changements infra traçables et testables

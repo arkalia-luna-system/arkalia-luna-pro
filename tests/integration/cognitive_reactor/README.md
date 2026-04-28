@@ -1,4 +1,14 @@
 # Tests d'intégration — CognitiveReactor
 
-Ce dossier contient les tests d'intégration pour le module CognitiveReactor.
-Chaque test vérifie l'intégration du réacteur cognitif avec les autres modules et son comportement dans un environnement réel.
+Ce dossier contient les scénarios d'intégration du module CognitiveReactor.
+
+## Portée
+
+- Interaction avec les autres modules cognitifs
+- Robustesse des flux en environnement réel simulé
+
+## Exécution
+
+```bash
+pytest tests/integration/cognitive_reactor/
+```
