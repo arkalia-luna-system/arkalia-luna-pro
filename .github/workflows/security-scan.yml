@@ -46,7 +46,6 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install bandit safety pip-audit
-          npm install -g audit
 
       - name: 🔍 Python Security Scan (Bandit)
         run: |
