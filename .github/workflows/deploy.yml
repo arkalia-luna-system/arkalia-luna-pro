@@ -221,15 +221,21 @@ jobs:
           # Vérification avec retry amélioré
           for service in "8000/health" "8000/zeroia/health" "8000/reflexia/health"; do
             echo "🔍 Vérification $service..."
+            service_ok=0
             for i in {1..15}; do
               if curl -f -s --max-time 30 "http://localhost:$service" > /dev/null; then
                 echo "✅ $service disponible"
+                service_ok=1
                 break
               else
                 echo "⏳ Tentative $i/15 - $service non disponible"
                 sleep 15
               fi
             done
+            if [ "$service_ok" -ne 1 ]; then
+              echo "❌ $service reste indisponible après 15 tentatives"
+              exit 1
+            fi
           done
 
       - name: 🧪 Run E2E tests
