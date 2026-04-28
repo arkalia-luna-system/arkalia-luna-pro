@@ -250,7 +250,7 @@ class PromptValidator:
         self, prompt: str, max_requests: int = 10, window_seconds: int = 60
     ) -> bool:
         """Vérifie le rate limiting basé sur le hash du prompt"""
-        prompt_hash = hashlib.md5(prompt.encode(), usedforsecurity=False).hexdigest()  # nosec B324
+        prompt_hash = hashlib.md5(prompt.encode(), usedforsecurity=False).hexdigest()
         current_time = time.time()
 
         if prompt_hash not in self._rate_limit_cache:
