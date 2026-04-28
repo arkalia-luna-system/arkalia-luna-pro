@@ -322,7 +322,7 @@ jobs:
           echo "- Gestion d'erreurs renforcée" >> deployment-report.md
 
       - name: 📋 Upload deployment report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:

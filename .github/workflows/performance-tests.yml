@@ -112,7 +112,7 @@ jobs:
           echo "✅ Fichier Locust généré pour tests futurs"
 
       - name: 📋 Upload performance artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: performance-results-${{ matrix.test-suite }}
@@ -181,7 +181,7 @@ jobs:
           } > performance-report.md
 
       - name: 📋 Upload performance report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:
