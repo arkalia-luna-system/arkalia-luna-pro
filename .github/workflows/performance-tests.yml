@@ -22,6 +22,10 @@ permissions:
   actions: read
   # Permissions minimales pour les tests de performance
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # 🚀 Tests de performance complets
   performance-tests:

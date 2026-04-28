@@ -24,6 +24,10 @@ permissions:
   # security-events: write  # Retiré car pas de scan de sécurité actif
   # Réactiver si scan de vulnérabilités ajouté
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # 🔍 Linting et formatage amélioré
   lint:
