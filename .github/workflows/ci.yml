@@ -1,5 +1,5 @@
 ---
-name: �� Arkalia-LUNA CI/CD - Enhanced
+name: 🚀 Arkalia-LUNA CI/CD - Enhanced
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 env:
   PYTHON_VERSION: "3.10"
-  COVERAGE_MIN: 5
+  COVERAGE_MIN: 15
   SECURITY_COVERAGE_MIN: 10
   PERFORMANCE_COVERAGE_MIN: 10
   CHAOS_COVERAGE_MIN: 10
@@ -65,7 +65,7 @@ jobs:
       - name: 📚 Check documentation quality
         run: |
           echo "📚 Vérification de la qualité de la documentation..."
-          python scripts/check_docs.py || echo "⚠️ Problèmes de documentation détectés"
+          python scripts/check_docs.py
 
       - name: 🎨 Check code formatting
         run: |
@@ -91,13 +91,13 @@ jobs:
       - name: 🔒 Enhanced security scan
         run: |
           echo "🔒 Scan de sécurité avec bandit..."
-          bandit -r modules/ -f json -o bandit-report.json --exclude archive/ || echo "⚠️ Scan bandit terminé avec avertissements"
+          bandit -r modules/ -f json -o bandit-report.json --exclude archive/
 
           echo "🔒 Vérification des vulnérabilités avec safety..."
-          safety check --json --output safety-report.json || echo "⚠️ Scan safety terminé avec avertissements"
+          safety check --json --output safety-report.json
 
           echo "🔒 Détection des secrets..."
-          detect-secrets scan --baseline .secrets.baseline || echo "⚠️ Scan secrets terminé"
+          detect-secrets scan --baseline .secrets.baseline
 
       - name: 📋 Upload enhanced linting artifacts
         uses: actions/upload-artifact@v5
