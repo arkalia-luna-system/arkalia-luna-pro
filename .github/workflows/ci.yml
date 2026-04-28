@@ -32,12 +32,12 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0 # Pour avoir l'historique complet
 
       - name: 🐍 Setup Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip" # Cache des dépendances
@@ -100,7 +100,7 @@ jobs:
           detect-secrets scan --baseline .secrets.baseline || echo "⚠️ Scan secrets terminé"
 
       - name: 📋 Upload enhanced linting artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: enhanced-linting-artifacts
@@ -122,10 +122,10 @@ jobs:
       fail-fast: false
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🐍 Setup Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -212,7 +212,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN || '' }}
 
       - name: 📋 Upload enhanced test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: enhanced-test-results-${{ matrix.os }}-${{ matrix.python-version }}
@@ -233,10 +233,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -263,7 +263,7 @@ jobs:
           safety check --json --output safety-report.json || echo "⚠️ Safety check terminé avec avertissements"
 
       - name: 📋 Upload security report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: security-report
@@ -281,10 +281,10 @@ jobs:
     timeout-minutes: 25
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -300,7 +300,7 @@ jobs:
           pytest -c config/pytest/pytest-chaos.ini --timeout=900
 
       - name: 📋 Upload chaos artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: chaos-results
@@ -319,10 +319,10 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 📋 Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         continue-on-error: true
         with:
           path: artifacts/
@@ -349,7 +349,7 @@ jobs:
           } > report.md
 
       - name: 📋 Upload final report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         continue-on-error: true
         timeout-minutes: 5
         with:
@@ -374,7 +374,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 🐳 Build ZeroIA
         run: |
           if [ -f "docker/Dockerfile.zeroia" ]; then
@@ -433,9 +433,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -469,7 +469,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 🐳 Deploy to staging
         run: |
           if [ -f "docker-compose.prod.yml" ]; then
@@ -514,7 +514,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 🐳 Deploy to production
         run: |
           if [ -f "docker-compose.prod.yml" ]; then
@@ -540,9 +540,9 @@ jobs:
     needs: test
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 🐍 Setup Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"

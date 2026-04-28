@@ -27,12 +27,12 @@ jobs:
 
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -84,7 +84,7 @@ jobs:
           grep -r "USER" . --include="Dockerfile*" || echo "⚠️ Some Dockerfiles might not use non-root users"
 
       - name: 📊 Upload Security Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         continue-on-error: true
         timeout-minutes: 5
         with:
@@ -153,10 +153,10 @@ jobs:
 
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -178,7 +178,7 @@ jobs:
           cat npm-outdated.json || echo "No updates available"
 
       - name: 📊 Upload Dependency Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         continue-on-error: true
         timeout-minutes: 5
         with:
