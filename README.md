@@ -240,7 +240,7 @@ python scripts/launch_demo_scenario.py --all
 
 - **URL** : http://localhost:3000
 - **Tableaux de bord** : État système, performance, sécurité
-- **Identifiants** : `admin` / `arkalia-secure-2025`
+- **Identifiants** : définis via variables d'environnement (ne pas versionner de mot de passe par défaut)
 
 ### Prometheus
 
