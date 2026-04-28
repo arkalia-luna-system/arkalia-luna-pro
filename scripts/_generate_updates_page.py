@@ -6,8 +6,8 @@ depuis l'historique Git.
 
 import subprocess  # nosec
 import sys
-from typing import Any
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -82,3 +82,7 @@ def main(**kwargs: Any) -> None:
             f"Erreur lors de l'exécution de la commande git: {e}",
             extra={"arkalia_module": "scripts"},
         )
+
+
+if __name__ == "__main__":
+    main()
