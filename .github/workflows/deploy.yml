@@ -143,7 +143,7 @@ jobs:
 
       - name: 🐳 Build and push ${{ matrix.image }}
         if: steps.check-dockerfile.outputs.skip_build != 'true'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./${{ matrix.dockerfile }}
