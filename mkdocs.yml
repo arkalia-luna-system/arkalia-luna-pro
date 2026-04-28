@@ -183,6 +183,7 @@ nav:
       - Future Improvements: planning/future-improvements.md
       - Roadmap Overview: planning/index.md
       - Enhancements: planning/ENHANCEMENTS.md
+      - TODO Opérationnel: planning/todo-restant.md
   - Support:
       - FAQ: support/faqs.md
       - VSCode Setup: support/vscode-setup.md
