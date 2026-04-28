@@ -21,7 +21,7 @@ black>=23.0.0
 bumpver>=2023.1122
 
 # 🔄 Utilities
-click>=8.1.0
+click>=8.3.3
 codecov>=2.1.0
 
 # 📊 Coverage & Reporting

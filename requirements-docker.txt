@@ -15,7 +15,7 @@ bandit>=1.7.5
 black>=24.0.0
 
 # 🔄 Utilities
-click>=8.1.7
+click>=8.3.3
 codecov>=2.1.13
 
 # 📊 Coverage & Reporting
