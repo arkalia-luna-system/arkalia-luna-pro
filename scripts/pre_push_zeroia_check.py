@@ -30,7 +30,21 @@ except ModuleNotFoundError:
     import tomli as tomllib
 
 STATE_FILE = Path("state/zeroia_state.toml")
-ENV_FILES = list(Path(".").rglob("*.env"))
+
+
+def iter_env_files(root: Path = Path(".")) -> list[Path]:
+    """Liste les fichiers .env en ignorant .git et les dossiers volatils."""
+    env_files: list[Path] = []
+    try:
+        for path in root.rglob("*.env"):
+            if ".git" in path.parts:
+                continue
+            env_files.append(path)
+    except OSError as exc:
+        ark_logger.warning(
+            f"⚠️ Scan .env partiel (dossier volatil): {exc}", extra={"arkalia_module": "scripts"}
+        )
+    return env_files
 
 
 def ensure_state_file_exists() -> None:
@@ -82,7 +96,7 @@ def check_pat_exposure() -> bool:
         bool: True si aucun token n'est exposé, False sinon.
     """
     pat_regex = re.compile(r"ghp_[A-Za-z0-9]{36,}")
-    for file in ENV_FILES:
+    for file in iter_env_files():
         content = file.read_text(errors="ignore")
         if pat_regex.search(content):
             ark_logger.info(
