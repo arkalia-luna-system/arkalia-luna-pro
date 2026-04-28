@@ -454,7 +454,8 @@ jobs:
           fi
       - name: 🧪 Run E2E tests
         run: |
-          pytest tests/e2e/ --tb=short -v
+          # Les tests E2E ne doivent pas être soumis au seuil de coverage global.
+          pytest tests/e2e/ --tb=short -v --no-cov
       - name: 🐳 Stop services
         if: always()
         run: |
