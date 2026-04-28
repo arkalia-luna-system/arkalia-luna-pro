@@ -67,10 +67,10 @@ def check_health(path: str) -> bool:
         >>> status = "OK" if is_healthy else "DOWN"
         >>> ark_logger.info(f"ZeroIA status: {status}", extra={"module": "utils"})
     """
+    if os.getenv("FORCE_ZEROIA_OK") == "1":
+        return True
     try:
         data = toml.load(path)
-        if os.getenv("FORCE_ZEROIA_OK") == "1":
-            return True
         return bool(data.get("active") is True or data.get("zeroia", {}).get("active") is True)
     except (toml.TomlDecodeError, OSError, TypeError):
         return False

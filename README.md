@@ -1,14 +1,15 @@
 # 🌙 Arkalia-LUNA Pro
 
-> **Orchestrateur IA Entreprise Gouverné** — Plateforme modulaire orientée fiabilité, observabilité, sécurité et auditabilité pour workflows IA en production.
+> **Orchestrateur IA Entreprise Gouverné** — Plateforme modulaire orientée fiabilité, observabilité, sécurité et auditabilité pour workflows IA en phase de stabilisation.
 
 [![Release](https://img.shields.io/github/v/tag/arkalia-luna-system/arkalia-luna-pro?label=release)](https://github.com/arkalia-luna-system/arkalia-luna-pro/releases)
 [![Status](https://img.shields.io/badge/status-active%20stabilization-yellow.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
 [![Docker](https://img.shields.io/badge/containers-5%20active-success.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
 [![Tests](https://img.shields.io/badge/test%20files-100-success.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
-[![Coverage](https://img.shields.io/badge/coverage-59.25%25-orange.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro)
 [![codecov](https://codecov.io/gh/arkalia-luna-system/arkalia-luna-pro/branch/develop/graph/badge.svg)](https://codecov.io/gh/arkalia-luna-system/arkalia-luna-pro)
 [![Workflows](https://img.shields.io/badge/CI%2FCD-7%20workflows-blue.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro/.github/workflows)
+[![CodeQL](https://github.com/arkalia-luna-system/arkalia-luna-pro/actions/workflows/codeql.yml/badge.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro/actions/workflows/codeql.yml)
+[![Secret Scan](https://github.com/arkalia-luna-system/arkalia-luna-pro/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/arkalia-luna-system/arkalia-luna-pro/actions/workflows/secret-scan.yml)
 
 ---
 
@@ -126,6 +127,7 @@ Comparaison simplifiée avec l'écosystème:
 - Nécessite Ollama installé localement
 - Couverture de tests encore en progression (objectif court terme: 70%+)
 - Le projet est en phase de relance produit et d'ouverture communautaire
+- Le statut "production-ready" n'est pas revendiqué tant que les critères de fiabilité/sécurité ne sont pas atteints
 
 ---
 
@@ -281,6 +283,10 @@ make test-integration
 - Secrets chiffrés
 - Audit automatique
 - Scan de sécurité automatisé
+- Politique de sécurité publique: `SECURITY.md`
+- Scan SAST: CodeQL
+- Scan secrets: Gitleaks
+- Mises à jour dépendances: Dependabot
 
 ---
 
