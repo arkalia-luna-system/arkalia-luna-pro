@@ -18,7 +18,7 @@ bandit>=1.7.0
 black>=23.0.0
 
 # 📋 Version Management
-bumpver>=2023.1122
+bumpver>=2025.1131
 
 # 🔄 Utilities
 click>=8.1.0
