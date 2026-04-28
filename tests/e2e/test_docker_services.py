@@ -117,15 +117,15 @@ class TestDockerServicesE2E:
         for c in containers:
             if any(service in c.name for service in ["arkalia-api", "assistantia", "reflexia"]):
                 c.restart()
-                # Le redémarrage peut prendre un peu plus longtemps en CI.
-                status = c.status
-                for _ in range(6):
+                # Le redémarrage peut prendre plus longtemps en CI (images lourdes/IO lente).
+                status = "restarting"
+                for _ in range(20):
                     time.sleep(2)
                     c.reload()
                     status = c.status
-                    if status in ("running", "created"):
+                    if status == "running":
                         break
-                assert status in ("running", "created", "restarting"), (
+                assert status in ("running", "created"), (
                     f"Container {c.name} n'a pas redémarré correctement"
                 )
 
@@ -204,6 +204,12 @@ class TestDockerResourceLimitsE2E:
                 stats = container.stats(stream=False)
                 memory_stats = stats.get("memory_stats", {})
                 memory_usage = memory_stats.get("usage")
+                if memory_usage is None:
+                    # Certains runtimes exposent la métrique dans "stats.cache"/"privateworkingset".
+                    memory_usage = (
+                        memory_stats.get("stats", {}).get("privateworkingset")
+                        or memory_stats.get("stats", {}).get("anon")
+                    )
                 memory_limit = memory_stats.get("limit")
                 if not memory_usage or not memory_limit:
                     pytest.skip(
@@ -226,6 +232,7 @@ class TestDockerResourceLimitsE2E:
                     pytest.skip(
                         f"Statistiques CPU indisponibles pour {container.name} - test ignoré"
                     )
+                # En CI la métrique peut rester à 0 si le conteneur est idle ; c'est valide.
                 assert cpu_usage >= 0, f"Statistiques CPU invalides pour {container.name}"
 
 
@@ -238,9 +245,18 @@ class TestDockerSecurityE2E:
         containers = docker_client.containers.list()
         for container in containers:
             if any(service in container.name for service in ["zeroia", "reflexia", "sandozia"]):
-                try:
-                    exec_result = container.exec_run("whoami")
-                except APIError:
+                exec_result = None
+                for _ in range(6):
+                    try:
+                        container.reload()
+                        if container.status != "running":
+                            time.sleep(2)
+                            continue
+                        exec_result = container.exec_run("whoami")
+                        break
+                    except APIError:
+                        time.sleep(2)
+                if exec_result is None:
                     pytest.skip(f"Container {container.name} indisponible/restarting - test ignoré")
                 user = exec_result.output.decode().strip()
                 assert user != "root", f"Container {container.name} tourne en tant que root"
