@@ -10,7 +10,6 @@ Ce script valide l'état de ZeroIA avant un push Git :
 
 import re
 from pathlib import Path
-from typing import Any
 
 try:
     from core.ark_logger import ark_logger

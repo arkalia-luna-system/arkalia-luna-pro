@@ -690,10 +690,7 @@ class GracefulDegradationSystem:
             return False
 
         # Vérifier le délai depuis la dernière initialisation
-        if (now - self.last_initialization).total_seconds() < self.initialization_cooldown:
-            return False
-
-        return True
+        return (now - self.last_initialization).total_seconds() >= self.initialization_cooldown
 
     def initialize(self) -> bool:
         """Initialise le système avec protection contre les boucles"""

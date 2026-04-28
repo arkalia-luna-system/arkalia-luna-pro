@@ -186,6 +186,7 @@ addopts = [
     "--cov-report=html",
     "--cov-fail-under=15",
     "--ignore=modules/generative_ai/generated/",
+    "--ignore-glob=**/._*.py",
     "--asyncio-mode=auto",
     "-x",
     "--maxfail=5",

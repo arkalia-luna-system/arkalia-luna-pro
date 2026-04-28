@@ -382,8 +382,7 @@ bash scripts/ark-lint-report.sh --output lint-report.html
 
 ## 🔗 LIENS UTILES
 
-- [Rapport d'audit complet](../reports/AUDIT_COMPLET_STRUCTURE_2025.md)
-- [Guide d'optimisation](../reports/AUDIT_DOUBLONS_ET_OPTIMISATIONS.md)
+- [Index des rapports](../reports/README.md)
 - [Documentation principale](../README.md)
 
 ---
