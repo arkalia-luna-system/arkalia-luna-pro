@@ -91,10 +91,7 @@ def log(msg: str, silent: bool = False) -> None:
     """Log message to rollback.log and print if not silent."""
     try:
         # Résoudre le chemin dynamiquement
-        if LOG_FILE is not None and LOG_FILE.is_absolute():
-            log_file = LOG_FILE
-        else:
-            log_file = get_log_file()
+        log_file = LOG_FILE if LOG_FILE is not None and LOG_FILE.is_absolute() else get_log_file()
         # Créer le répertoire parent si nécessaire
         log_file.parent.mkdir(parents=True, exist_ok=True)
         with log_file.open("a", encoding="utf-8") as f:

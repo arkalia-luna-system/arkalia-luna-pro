@@ -4,13 +4,17 @@ name: 🧹 Force Cleanup Workflows
 on:
   workflow_dispatch: # Seulement manuel
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   cleanup:
     name: 🔄 Force GitHub Actions Sync
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🔍 Verify current workflows
         run: |

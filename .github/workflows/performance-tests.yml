@@ -22,6 +22,10 @@ permissions:
   actions: read
   # Permissions minimales pour les tests de performance
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # 🚀 Tests de performance complets
   performance-tests:
@@ -35,10 +39,10 @@ jobs:
       fail-fast: false
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🐍 Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
@@ -112,7 +116,7 @@ jobs:
           echo "✅ Fichier Locust généré pour tests futurs"
 
       - name: 📋 Upload performance artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: performance-results-${{ matrix.test-suite }}
@@ -132,10 +136,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -147,7 +151,7 @@ jobs:
           pip install pandas matplotlib
 
       - name: 📋 Download performance artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: performance-artifacts/
 
@@ -181,7 +185,7 @@ jobs:
           } > performance-report.md
 
       - name: 📋 Upload performance report
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v5
         continue-on-error: true
         timeout-minutes: 5
         with:
