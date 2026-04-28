@@ -155,7 +155,7 @@ class CognitiveReactor:
             self.reaction_history.append(experience)
         return {"learned": True}
 
-    async def predict_optimal_reaction(self, situation: Any) -> dict[str, Any]:
+    async def predict_optimal_reaction(self, _situation: Any) -> dict[str, Any]:
         """Prédit la réaction optimale"""
         return {"prediction": "none", "recommended_action": "monitor", "confidence": 0.6}
 
@@ -642,7 +642,7 @@ async def run_daemon() -> None:
     ark_logger.info("🔥 CognitiveReactor daemon démarré", extra={"arkalia_module": "sandozia"})
 
     # Gestion signal d'arrêt
-    def signal_handler(signum: int, frame: Any) -> None:
+    def signal_handler(_signum: int, _frame: Any) -> None:
         """
         Gestionnaire de signaux pour arrêt gracieux du daemon.
 
