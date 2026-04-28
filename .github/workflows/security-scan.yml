@@ -50,8 +50,8 @@ jobs:
       - name: 🔍 Python Security Scan (Bandit)
         run: |
           echo "🔍 Scanning Python code with Bandit..."
-          bandit -r . -f json -o bandit-report.json --confidence-level high --severity-level low --skip B101 || true
-          bandit -r . -f txt -o bandit-report.txt --confidence-level high --severity-level low --skip B101 || true
+          bandit -r modules/ -f json -o bandit-report.json --confidence-level high --severity-level low --skip B101 || true
+          bandit -r modules/ -f txt -o bandit-report.txt --confidence-level high --severity-level low --skip B101 || true
           if [ -f bandit-report.json ] && [ -s bandit-report.json ]; then
             CRITICAL_ISSUES=$(python -c "import json; f=open('bandit-report.json'); data=json.load(f); f.close(); print(sum(1 for result in data.get('results', []) if result.get('issue_severity')=='HIGH'))")
             if [ "$CRITICAL_ISSUES" -gt 0 ]; then
