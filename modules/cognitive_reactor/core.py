@@ -382,7 +382,7 @@ class CognitiveReactor:
         if experience:
             self.reaction_history.append(experience)
 
-    async def predict_optimal_reaction(self, situation: dict[str, Any]) -> dict[str, Any]:
+    async def predict_optimal_reaction(self, _situation: dict[str, Any]) -> dict[str, Any]:
         """Prédit la réaction optimale"""
         return {"recommended_action": "monitor", "confidence": 0.6}
 
@@ -567,7 +567,7 @@ async def main() -> None:
         return
 
     # === Gestion des signaux ===
-    def signal_handler(signum: int, frame: Any) -> None:
+    def signal_handler(_signum: int, _frame: Any) -> None:
         ark_logger.info(
             "🧠 Signal de terminaison reçu", extra={"arkalia_module": "cognitive_reactor"}
         )

@@ -123,7 +123,7 @@ class IHealthCheckWithWatchdogs(IHealthCheck):
     """
 
     @abstractmethod
-    def register_watchdog(self, name: str, watchdog) -> bool:
+    def register_watchdog(self, name: str, _watchdog: Any) -> bool:
         """
         🛡️ Enregistrement d'un watchdog
         :param name: Nom du watchdog

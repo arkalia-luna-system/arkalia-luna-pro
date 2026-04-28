@@ -50,12 +50,12 @@ class ArkaliaModulesAnalyzer:
         # Scan helloria à la racine
         helloria_root = self.project_root / "helloria"
         if helloria_root.exists():
-            self.scan_module_directory(helloria_root, root_level=True)
+            self.scan_module_directory(helloria_root)
 
         # Analyser les résultats
         self.analyze_integration_gaps()
 
-    def scan_module_directory(self, module_path: Path, root_level: bool = False) -> None:
+    def scan_module_directory(self, module_path: Path) -> None:
         """Scan un répertoire de module spécifique"""
         module_name = module_path.name
         components = []

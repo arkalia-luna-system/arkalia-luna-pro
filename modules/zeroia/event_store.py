@@ -85,6 +85,7 @@ class EventStore:
         self, cache_dir: str = "./cache/zeroia_events.json", size_limit: int = 10_000_000
     ) -> None:
         self.cache_dir = Path(cache_dir)
+        self.size_limit = size_limit
         self.cache_dir.parent.mkdir(parents=True, exist_ok=True)
 
         self.events: dict[str, dict[str, Any]] = {}
