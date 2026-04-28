@@ -214,7 +214,6 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
           verbose: true
-          token: ${{ secrets.CODECOV_TOKEN || '' }}
 
       - name: 📋 Upload enhanced test results
         uses: actions/upload-artifact@v6
