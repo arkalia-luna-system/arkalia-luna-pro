@@ -188,20 +188,18 @@ class VectorMemoryService:
 
             with self._connection_ctx() as conn:
                 params: list[Any] = [user_id]
-                where_clauses = ["user_id = ?"]
-                if memory_type:
-                    where_clauses.append("memory_type = ?")
-                    params.append(memory_type)
-
-                # On limite le nombre de candidats pour rester léger
+                # On conserve une requête statique et paramétrée pour éviter
+                # toute interpolation dynamique dans le SQL.
                 sql = (
                     "SELECT id, user_id, memory_type, title, content, embedding, "
                     "metadata_json, created_at "
                     "FROM memories "
-                    f"WHERE {' AND '.join(where_clauses)} "
-                    "ORDER BY created_at DESC "
-                    "LIMIT 200"
+                    "WHERE user_id = ? "
                 )
+                if memory_type:
+                    sql += "AND memory_type = ? "
+                    params.append(memory_type)
+                sql += "ORDER BY created_at DESC LIMIT 200"
 
                 cursor = conn.execute(sql, tuple(params))
                 rows = cursor.fetchall()

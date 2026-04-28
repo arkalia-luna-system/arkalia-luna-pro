@@ -127,7 +127,7 @@ def atomic_write(
                     ark_logger.warning(
                         f"Failed to cleanup temporary file {tmp_path}: {cleanup_error}",
                         extra={"arkalia_module": "utils"},
-                    )  # nosec B110
+                    )
 
             raise AtomicWriteError(f"Erreur écriture atomique {file_path}: {e}") from e
 
