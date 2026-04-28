@@ -188,6 +188,7 @@ nav:
   - Support:
       - FAQ: support/faqs.md
       - VSCode Setup: support/vscode-setup.md
+      - Catalogue scripts: support/scripts-index.md
       - Documentation Status: support/documentation-status.md
   - Legal:
       - License: credits/license.md
