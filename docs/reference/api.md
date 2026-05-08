@@ -494,10 +494,10 @@ Toutes les requêtes API Enhanced nécessitent une authentification :
 
 ```bash
 # Header requis
-Authorization: Bearer <api_key>
+X-API-Key: <api_key>
 
 # Exemple avec curl
-curl -H "Authorization: Bearer ark_enhanced_v271_key" \
+curl -H "X-API-Key: ark_enhanced_v271_key" \
      http://localhost:8000/api/v1/zeroia/orchestrator/status
 ```
 

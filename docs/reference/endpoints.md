@@ -295,7 +295,7 @@ http://localhost:3100
 Tous les endpoints sensibles nécessitent une authentification via header :
 
 ```http
-Authorization: Bearer <token>
+X-API-Key: <api_key>
 ```
 
 ### **Rate Limiting**
@@ -306,9 +306,9 @@ Authorization: Bearer <token>
 ### **CORS**
 
 ```http
-Access-Control-Allow-Origin: *
+Access-Control-Allow-Origin: http://localhost:5173
 Access-Control-Allow-Methods: GET, POST, PUT, DELETE
-Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Headers: Content-Type, X-API-Key
 ```
 
 ---
