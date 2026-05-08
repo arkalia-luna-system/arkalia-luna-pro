@@ -555,7 +555,7 @@ async def post_chat(
         assistantia_prompts_total.labels(
             status="error", security_level="medium", model=data.model
         ).inc()
-        raise HTTPException(status_code=500, detail=f"Erreur interne: {str(e)}") from e
+        raise HTTPException(status_code=500, detail="Erreur interne AssistantIA") from e
     finally:
         # Décrémenter les connexions actives
         active_connections = max(0, active_connections - 1)
@@ -718,7 +718,7 @@ async def get_metrics() -> PlainTextResponse | JSONResponse:
         ark_logger.error(f"Erreur métriques: {e}", extra={"arkalia_module": "assistantia"})
         return JSONResponse(
             status_code=500,
-            content={"error": f"Erreur métriques : {str(e)}"},
+            content={"error": "Erreur métriques AssistantIA"},
         )
 
 
@@ -755,7 +755,7 @@ async def get_available_models() -> dict | JSONResponse:
             f"Erreur récupération modèles: {e}", extra={"arkalia_module": "assistantia"}
         )
         return JSONResponse(
-            status_code=500, content={"error": f"Erreur récupération modèles: {str(e)}"}
+            status_code=500, content={"error": "Erreur récupération modèles AssistantIA"}
         )
 
 

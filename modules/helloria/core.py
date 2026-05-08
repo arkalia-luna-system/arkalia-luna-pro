@@ -84,7 +84,7 @@ async def chat(request: Request) -> dict[str, Any] | JSONResponse:
         ark_logger.warning(f"Payload JSON invalide: {e}", extra={"arkalia_module": "helloria"})
         raise HTTPException(status_code=400, detail="Payload JSON invalide") from e
     except Exception as e:
-        ark_logger.error(f"Erreur interne : {str(e)}", extra={"arkalia_module": "helloria"})
+        ark_logger.error(f"Erreur interne : {e}", extra={"arkalia_module": "helloria"})
         raise HTTPException(status_code=500, detail="Erreur interne Helloria") from e
 
 
@@ -341,7 +341,8 @@ def zeroia_health() -> dict:
 
         return health_check()
     except Exception as e:
-        return {"status": "error", "error": str(e)}
+        ark_logger.error(f"Erreur ZeroIA health: {e}", extra={"arkalia_module": "helloria"})
+        return {"status": "error", "error": "internal_error"}
 
 
 @app.get("/reflexia/health", tags=["ReflexIA"])
@@ -359,7 +360,8 @@ def reflexia_health() -> dict:
         else:
             return {"status": "inactive", "module": "reflexia"}
     except Exception as e:
-        return {"status": "error", "error": str(e)}
+        ark_logger.error(f"Erreur ReflexIA health: {e}", extra={"arkalia_module": "helloria"})
+        return {"status": "error", "error": "internal_error"}
 
 
 @app.get("/sandozia/health", tags=["Sandozia"])
@@ -377,7 +379,8 @@ def sandozia_health() -> dict:
         else:
             return {"status": "inactive", "module": "sandozia"}
     except Exception as e:
-        return {"status": "error", "error": str(e)}
+        ark_logger.error(f"Erreur Sandozia health: {e}", extra={"arkalia_module": "helloria"})
+        return {"status": "error", "error": "internal_error"}
 
 
 @app.get("/zeroia/status", tags=["ZeroIA"])
@@ -406,7 +409,8 @@ async def zeroia_status() -> dict[str, Any]:
             data = await asyncio.to_thread(_read_json_dashboard, dashboard_path)
             return data
     except Exception as e:
-        return {"status": "error", "error": str(e)}
+        ark_logger.error(f"Erreur ZeroIA status: {e}", extra={"arkalia_module": "helloria"})
+        return {"status": "error", "error": "internal_error"}
 
 
 @app.post("/echo", tags=["Test"], response_model=None)
@@ -422,7 +426,8 @@ async def echo(request: Request) -> dict[str, Any] | JSONResponse:
         return {"echo": message}
 
     except Exception as e:
-        return JSONResponse(status_code=500, content={"error": f"Erreur : {str(e)}"})
+        ark_logger.error(f"Erreur endpoint /echo: {e}", extra={"arkalia_module": "helloria"})
+        return JSONResponse(status_code=500, content={"error": "Erreur interne Helloria"})
 
 
 def _get_metrics() -> dict:
