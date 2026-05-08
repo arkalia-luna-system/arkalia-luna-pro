@@ -85,7 +85,7 @@ def start_api() -> None:
         # Configuration uvicorn
         import uvicorn
 
-        bind_host = os.getenv("ARK_BIND_HOST", "127.0.0.1")
+        bind_host = os.getenv("ARK_BIND_HOST", "0.0.0.0")
         uvicorn.run(
             app,
             host=bind_host,
