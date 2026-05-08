@@ -497,7 +497,8 @@ Toutes les requêtes API Enhanced nécessitent une authentification :
 X-API-Key: <api_key>
 
 # Exemple avec curl
-curl -H "X-API-Key: your_api_key_here" \
+API_KEY="<api_key>"
+curl -H "X-API-Key: $API_KEY" \
      http://localhost:8000/api/v1/zeroia/orchestrator/status
 ```
 
