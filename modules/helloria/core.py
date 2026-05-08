@@ -5,6 +5,7 @@ Ce module expose l'API FastAPI principale avec les endpoints de santé
 pour tous les modules IA (ZeroIA, Reflexia, Sandozia).
 """
 
+import asyncio
 import json
 import time
 from pathlib import Path
@@ -26,6 +27,23 @@ from modules.reflexia.core_api import router as reflexia_router
 
 # 🚦 Router principal
 router = APIRouter()
+
+
+def _collect_system_metrics() -> tuple[float, Any, Any]:
+    """Collecte les métriques système de manière synchrone."""
+    cpu_percent = psutil.cpu_percent(interval=0.1)
+    memory = psutil.virtual_memory()
+    disk = psutil.disk_usage("/")
+    return cpu_percent, memory, disk
+
+
+def _read_json_dashboard(path: Path) -> dict[str, Any]:
+    """Lit un dashboard JSON local."""
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, dict):
+        raise ValueError("invalid dashboard format")
+    return data
 
 
 # 🎯 Endpoint principal IA
@@ -110,9 +128,7 @@ async def status() -> dict:
         ... }
     """
     # Métriques système
-    cpu_percent = psutil.cpu_percent(interval=0.1)
-    memory = psutil.virtual_memory()
-    disk = psutil.disk_usage("/")
+    cpu_percent, memory, disk = await asyncio.to_thread(_collect_system_metrics)
 
     return {
         "service": "arkalia-api",
@@ -386,12 +402,9 @@ async def zeroia_status() -> dict[str, Any]:
                     return data
                 return {"status": "error", "error": "invalid dashboard format"}
         except ImportError:
-            # Fallback synchrone si aiofiles non disponible
-            with open(dashboard_path, encoding="utf-8") as f:
-                data = json.load(f)
-                if isinstance(data, dict):
-                    return data
-                return {"status": "error", "error": "invalid dashboard format"}
+            # Fallback sans bloquer l'event-loop
+            data = await asyncio.to_thread(_read_json_dashboard, dashboard_path)
+            return data
     except Exception as e:
         return {"status": "error", "error": str(e)}
 

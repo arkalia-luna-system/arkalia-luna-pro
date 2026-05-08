@@ -210,6 +210,25 @@ def is_memoria_enabled() -> bool:
     return _memoria_enabled
 
 
+def _read_json_file_sync(path: Path) -> dict[str, object]:
+    """Lit un JSON de manière synchrone (utilisé via asyncio.to_thread)."""
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, dict):
+        raise ValueError(f"Invalid JSON object in {path}")
+    return data
+
+
+def _read_toml_file_sync(path: Path) -> dict[str, object]:
+    """Lit un TOML de manière synchrone (utilisé via asyncio.to_thread)."""
+    import toml
+
+    data = toml.load(path)
+    if not isinstance(data, dict):
+        raise ValueError(f"Invalid TOML object in {path}")
+    return data
+
+
 async def get_arkalia_context() -> tuple[str, float]:
     """
     Récupère le contexte des autres modules Arkalia avec score de qualité.
@@ -236,8 +255,7 @@ async def get_arkalia_context() -> tuple[str, float]:
         zeroia_dashboard = Path("state/zeroia_dashboard.json")
         if zeroia_dashboard.exists():
             try:
-                with open(zeroia_dashboard) as f:
-                    dashboard = json.load(f)
+                dashboard = await asyncio.to_thread(_read_json_file_sync, zeroia_dashboard)
                 status = dashboard.get("last_decision", "unknown")
                 context_parts.append(f"ZeroIA: {status}")
                 quality_score += 25.0 if status != "unknown" else 10.0
@@ -259,9 +277,7 @@ async def get_arkalia_context() -> tuple[str, float]:
         reflexia_state = Path("state/reflexia_state.toml")
         if reflexia_state.exists():
             try:
-                import toml
-
-                reflexia_data = toml.load(reflexia_state)
+                reflexia_data = await asyncio.to_thread(_read_toml_file_sync, reflexia_state)
                 status = reflexia_data.get("status", "unknown")
                 context_parts.append(f"Reflexia: {status}")
                 quality_score += 25.0 if status != "unknown" else 10.0
@@ -296,9 +312,7 @@ async def get_arkalia_context() -> tuple[str, float]:
         cognitive_state = Path("state/cognitive_reactor_state.toml")
         if cognitive_state.exists():
             try:
-                import toml
-
-                cognitive_data = toml.load(cognitive_state)
+                cognitive_data = await asyncio.to_thread(_read_toml_file_sync, cognitive_state)
                 status = cognitive_data.get("status", "unknown")
                 context_parts.append(f"Cognitive: {status}")
                 quality_score += 25.0 if status != "unknown" else 10.0
