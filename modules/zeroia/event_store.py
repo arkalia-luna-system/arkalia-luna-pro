@@ -129,9 +129,12 @@ class EventStore:
         event_id = str(uuid.uuid4())
         event = {
             "id": event_id,
-            "type": event_type,
+            "event_type": event_type,
             "timestamp": datetime.now().isoformat(),
+            "module": event_data.get("module", "zeroia"),
             "data": event_data,
+            "correlation_id": event_data.get("correlation_id"),
+            "version": "1.0",
         }
 
         self.events[event_id] = event
@@ -149,7 +152,11 @@ class EventStore:
     def get_events(self, event_type: str | None = None, limit: int = 100) -> list[dict[str, Any]]:
         """Récupère les événements filtrés par type"""
         if event_type:
-            filtered_events = [e for e in self.events.values() if e["type"] == event_type]
+            filtered_events = [
+                e
+                for e in self.events.values()
+                if e.get("event_type", e.get("type")) == event_type
+            ]
         else:
             filtered_events = list(self.events.values())
 
@@ -221,7 +228,7 @@ class EventStore:
         """Récupère un événement par son ID"""
         try:
             event_data = self.events.get(event_id)
-            if event_data and isinstance(event_data, dict):
+            if event_data:
                 return Event.from_dict(event_data)
         except Exception as e:
             ark_logger.warning(
@@ -246,7 +253,13 @@ class EventStore:
         try:
             events: list[Any] = []
             for _event_id, event_data in self.events.items():
-                if event_data["event_type"] == event_type.value:
+                if event_data.get("event_type", event_data.get("type")) == event_type.value:
+                    if "event_type" not in event_data and "type" in event_data:
+                        event_data = {
+                            **event_data,
+                            "event_type": event_data["type"],
+                            "module": event_data.get("module", "zeroia"),
+                        }
                     event = Event.from_dict(event_data)
                     if since and event.timestamp < since:
                         continue
@@ -278,7 +291,7 @@ class EventStore:
         try:
             # Parcourir le cache de manière sécurisée
             for key, event_data in self.events.items():
-                if isinstance(key, str) and key.startswith(("zeroia_", "reflexia_", "sandozia_")):
+                if key.startswith(("zeroia_", "reflexia_", "sandozia_")):
                     try:
                         event = Event.from_dict(event_data)
                         all_events.append(event)
@@ -302,7 +315,7 @@ class EventStore:
 
         try:
             for key, event_data in self.events.items():
-                if isinstance(key, str) and key.startswith(f"{module}_"):
+                if key.startswith(f"{module}_"):
                     event = Event.from_dict(event_data)
                     if event and len(events) < limit:
                         events.append(event)
@@ -454,20 +467,26 @@ class EventStore:
         deleted_count = 0
 
         try:
-            # Récupérer toutes les clés du cache de manière sécurisée
-            keys_to_check: list[str] = []
-            for key in self.events:
-                if isinstance(key, str) and key.startswith("event_"):
-                    keys_to_check.append(key)
+            keys_to_delete: list[str] = []
+            for key, event_data in self.events.items():
+                timestamp_raw = event_data.get("timestamp")
+                if not isinstance(timestamp_raw, str):
+                    continue
+                try:
+                    event_timestamp = datetime.fromisoformat(timestamp_raw)
+                except ValueError:
+                    continue
+                if event_timestamp < cutoff_date:
+                    keys_to_delete.append(key)
 
-            for key in keys_to_check:
-                event = self.get_event(key)
-                if event and event.timestamp < cutoff_date:
-                    try:
-                        del self.events[key]
-                        deleted_count += 1
-                    except Exception:
-                        continue
+            for key in keys_to_delete:
+                try:
+                    del self.events[key]
+                    deleted_count += 1
+                except Exception:
+                    continue
+            if deleted_count:
+                self._save_events()
         except Exception as e:
             ark_logger.warning(
                 f"Erreur nettoyage événements: {e}", extra={"arkalia_module": "zeroia"}
