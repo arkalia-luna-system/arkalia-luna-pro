@@ -75,3 +75,29 @@ def test_chat_post_long_message(test_client: TestClient) -> None:
         assert "response" in response_data
         # La réponse contient le message mocké + contexte Arkalia
         assert "Message reçu" in response_data["response"]
+
+
+def test_sensitive_endpoints_require_api_key_when_configured(
+    test_client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("ARKALIA_API_KEY", "assistantia-test-key")
+
+    unauthorized_models = test_client.get("/api/v1/models")
+    assert unauthorized_models.status_code == 401
+
+    unauthorized_metrics = test_client.get("/api/v1/metrics")
+    assert unauthorized_metrics.status_code == 401
+
+    with patch(
+        "modules.assistantia.core.get_available_models",
+        return_value={"models": ["mistral:latest"]},
+    ):
+        authorized_models = test_client.get(
+            "/api/v1/models", headers={"X-API-Key": "assistantia-test-key"}
+        )
+        assert authorized_models.status_code == 200
+
+    authorized_metrics = test_client.get(
+        "/api/v1/metrics", headers={"X-API-Key": "assistantia-test-key"}
+    )
+    assert authorized_metrics.status_code == 200

@@ -12,7 +12,7 @@ from datetime import datetime
 from pathlib import Path
 
 import requests
-from fastapi import APIRouter, BackgroundTasks, Depends, FastAPI, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Counter, Gauge, Histogram, generate_latest
@@ -216,6 +216,15 @@ def _get_cors_origins() -> list[str]:
     if raw:
         return [origin.strip() for origin in raw.split(",") if origin.strip()]
     return ["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173"]
+
+
+def require_api_key(x_api_key: str | None = Header(default=None, alias="X-API-Key")) -> None:
+    """Protège les endpoints sensibles via clé API si configurée."""
+    expected = os.getenv("ARKALIA_API_KEY", "").strip()
+    if not expected:
+        return
+    if x_api_key != expected:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 
 def _read_json_file_sync(path: Path) -> dict[str, object]:
@@ -696,7 +705,7 @@ async def health() -> HealthResponse:
 
 
 @router.get("/metrics", response_model=None)
-async def get_metrics() -> PlainTextResponse | JSONResponse:
+async def get_metrics(_: None = Depends(require_api_key)) -> PlainTextResponse | JSONResponse:
     """
     Endpoint métriques Prometheus pour AssistantIA.
 
@@ -723,7 +732,7 @@ async def get_metrics() -> PlainTextResponse | JSONResponse:
 
 
 @router.get("/models", response_model=None)
-async def get_available_models() -> dict | JSONResponse:
+async def get_available_models(_: None = Depends(require_api_key)) -> dict | JSONResponse:
     """
     Récupère la liste des modèles disponibles.
 
