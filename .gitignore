@@ -220,6 +220,8 @@ $RECYCLE.BIN/
 # Arkalia-LUNA specific
 cache/
 state/
+!state/
+!state/.gitkeep
 benchmark_results/
 chaos_backups/
 demo_sandozia_state/
