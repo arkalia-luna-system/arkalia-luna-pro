@@ -210,6 +210,14 @@ def is_memoria_enabled() -> bool:
     return _memoria_enabled
 
 
+def _get_cors_origins() -> list[str]:
+    """Construit la liste d'origines CORS autorisées depuis l'environnement."""
+    raw = os.getenv("CORS_ALLOWED_ORIGINS", "").strip()
+    if raw:
+        return [origin.strip() for origin in raw.split(",") if origin.strip()]
+    return ["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173"]
+
+
 def _read_json_file_sync(path: Path) -> dict[str, object]:
     """Lit un JSON de manière synchrone (utilisé via asyncio.to_thread)."""
     with open(path, encoding="utf-8") as f:
@@ -763,8 +771,8 @@ app = FastAPI(
 # Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En production, spécifier les domaines autorisés
-    allow_credentials=True,
+    allow_origins=_get_cors_origins(),
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
