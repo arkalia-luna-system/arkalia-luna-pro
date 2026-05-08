@@ -7,12 +7,13 @@ pour tous les modules IA (ZeroIA, Reflexia, Sandozia).
 
 import asyncio
 import json
+import os
 import time
 from pathlib import Path
 from typing import Any
 
 import psutil
-from fastapi import APIRouter, FastAPI, HTTPException, Request
+from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException, Request
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 from core.ark_logger import ark_logger
@@ -27,6 +28,15 @@ from modules.reflexia.core_api import router as reflexia_router
 
 # 🚦 Router principal
 router = APIRouter()
+
+
+def require_api_key(x_api_key: str | None = Header(default=None, alias="X-API-Key")) -> None:
+    """Protège les endpoints sensibles via clé API si configurée."""
+    expected = os.getenv("ARKALIA_API_KEY", "").strip()
+    if not expected:
+        return
+    if x_api_key != expected:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 
 def _collect_system_metrics() -> tuple[float, Any, Any]:
@@ -108,7 +118,7 @@ async def root() -> dict:
 
 # 📊 Endpoint statut détaillé
 @router.get("/status", tags=["Status"])
-async def status() -> dict:
+async def status(_: None = Depends(require_api_key)) -> dict:
     """
     Statut détaillé de l'API avec métriques système.
 
@@ -157,7 +167,7 @@ async def status() -> dict:
 
 # 📊 Endpoint métriques Prometheus
 @router.get("/metrics", tags=["Monitoring"])
-async def metrics() -> PlainTextResponse:
+async def metrics(_: None = Depends(require_api_key)) -> PlainTextResponse:
     """
     Endpoint Prometheus pour exposition des métriques Arkalia-LUNA.
 
