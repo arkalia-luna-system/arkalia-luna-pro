@@ -421,7 +421,7 @@ async def post_chat(
             raise HTTPException(status_code=400, detail="Message vide")
 
         # Vérifier la santé d'Ollama (mode dégradé possible)
-        ollama_available = _check_ollama_health()
+        ollama_available = await asyncio.to_thread(_check_ollama_health)
 
         # Récupérer le contexte Arkalia si demandé
         arkalia_context = None
@@ -500,7 +500,7 @@ async def post_chat(
             )
 
         # Appeler Ollama
-        response = query_ollama(processed_message, model, temperature)
+        response = await asyncio.to_thread(query_ollama, processed_message, model, temperature)
 
         # Calculer le temps de traitement
         processing_time = asyncio.get_event_loop().time() - start_time

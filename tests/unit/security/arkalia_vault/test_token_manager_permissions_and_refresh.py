@@ -52,3 +52,27 @@ def test_refresh_token_returns_new_access_token(token_manager: TokenManager) -> 
     assert new_access_id in token_manager.token_metadata
     assert token_manager.token_metadata[new_access_id].token_type == TokenType.ACCESS_TOKEN
 
+    # Le refresh token est one-time: une seconde utilisation doit échouer.
+    second_access_id, second_access_value = token_manager.refresh_token(refresh_token)
+    assert second_access_id is None
+    assert second_access_value is None
+
+
+def test_custom_claims_cannot_override_reserved_jwt_fields(token_manager: TokenManager) -> None:
+    token_id, token_value = token_manager.generate_token(  # pyright: ignore[reportUnknownMemberType]
+        token_type=TokenType.ACCESS_TOKEN,  # pyright: ignore[reportUnknownMemberType]
+        user_id="user-claims",
+        permissions=["read"],
+        custom_claims={
+            "permissions": ["admin"],  # doit être ignoré
+            "token_type": "api_key",  # doit être ignoré
+            "ctx_trace_id": "trace-123",  # autorisé
+        },
+    )
+
+    is_valid, metadata, reason = token_manager.validate_token(token_value)
+    assert is_valid is True, reason
+    assert metadata is not None
+    assert metadata.token_id == token_id
+    assert metadata.permissions == ["read"]
+

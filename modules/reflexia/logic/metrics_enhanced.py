@@ -35,7 +35,8 @@ def get_system_metrics() -> dict:
     """Collecte les vraies métriques système"""
     if psutil:
         return {
-            "cpu_percent": round(psutil.cpu_percent(interval=1), 1),
+            # interval=None évite le blocage d'1s sur endpoint métriques.
+            "cpu_percent": round(psutil.cpu_percent(interval=None), 1),
             "memory_percent": round(psutil.virtual_memory().percent, 1),
             "disk_usage": round(psutil.disk_usage("/").percent, 1),
             "load_avg": (list(os.getloadavg()) if hasattr(os, "getloadavg") else [0, 0, 0]),
