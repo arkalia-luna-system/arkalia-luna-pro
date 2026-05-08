@@ -1,5 +1,7 @@
 import unittest
 from pathlib import Path
+from tempfile import TemporaryDirectory
+from typing import Any
 from unittest.mock import MagicMock, mock_open, patch
 
 from scripts._generate_updates_page import main as run
@@ -7,22 +9,23 @@ from scripts._generate_updates_page import main as run
 
 class TestGenerateUpdatesPage(unittest.TestCase):
     @patch("subprocess.run")
-    def test_run_success(self, mock_subprocess_run) -> None:
+    def test_run_success(self, mock_subprocess_run: Any) -> None:
         # Mock the subprocess.run to simulate git log output
         mock_result = MagicMock()
         mock_result.stdout = "abc123 - Fix bug (2023-10-01)\n"
         mock_subprocess_run.return_value = mock_result
 
-        # Run the function
-        run()
+        with TemporaryDirectory() as tmp_dir:
+            output_file = Path(tmp_dir) / "dernieres_updates.md"
+            # Run the function
+            run(output_file=str(output_file))
 
-        # Check that the file was created with the expected content
-        output_file = Path("docs/releases/dernieres_updates.md")
-        self.assertTrue(output_file.exists())
-        with output_file.open("r", encoding="utf-8") as f:
-            content = f.read()
-            self.assertIn("# 🔄 Dernières mises à jour", content)
-            self.assertIn("abc123", content)
+            # Check that the file was created with the expected content
+            self.assertTrue(output_file.exists())
+            with output_file.open("r", encoding="utf-8") as f:
+                content = f.read()
+                self.assertIn("# 🔄 Dernières mises à jour", content)
+                self.assertIn("abc123", content)
 
     def test_run_failure(self) -> None:
         """Teste la gestion d'erreur du script de génération des updates"""
@@ -35,7 +38,7 @@ class TestGenerateUpdatesPage(unittest.TestCase):
             mock_run.return_value = mock_result
 
             # Mock de l'écriture de fichier pour éviter l'erreur
-            with patch("builtins.open", mock_open()) as mock_file:
+            with patch("builtins.open", mock_open()):
                 from scripts._generate_updates_page import main
 
                 main()
