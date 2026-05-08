@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 import psutil
-from fastapi import APIRouter, FastAPI, Request
+from fastapi import APIRouter, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 from core.ark_logger import ark_logger
@@ -62,9 +62,12 @@ async def chat(request: Request) -> dict[str, Any] | JSONResponse:
         response_text = f"Tu as dit : '{prompt}' (réponse IA à coder 🎯)"
         return {"réponse": response_text}
 
+    except json.JSONDecodeError as e:
+        ark_logger.warning(f"Payload JSON invalide: {e}", extra={"arkalia_module": "helloria"})
+        raise HTTPException(status_code=400, detail="Payload JSON invalide") from e
     except Exception as e:
         ark_logger.error(f"Erreur interne : {str(e)}", extra={"arkalia_module": "helloria"})
-        raise Exception(f"Erreur Helloria: {e}") from e
+        raise HTTPException(status_code=500, detail="Erreur interne Helloria") from e
 
 
 # 🌐 Racine API
@@ -170,7 +173,7 @@ async def metrics() -> PlainTextResponse:
             return PlainTextResponse(prometheus_text, media_type="text/plain")
     except Exception as e:
         ark_logger.error(f"Erreur endpoint /metrics: {e}", extra={"arkalia_module": "helloria"})
-        raise Exception(f"Erreur Helloria: {e}") from e
+        raise HTTPException(status_code=500, detail="Erreur métriques Helloria") from e
 
 
 def _get_fallback_metrics() -> dict:

@@ -596,42 +596,49 @@ def migrate_from_env_file(
     # Backup du fichier .env si demandé
     if backup_env:
         backup_path = env_path.parent / f"{env_path.name}.backup.{int(datetime.now().timestamp())}"
-        backup_path.write_text(env_path.read_text())
-        ark_logger.info(
-            f"📦 .env backed up to: {backup_path}", extra={"arkalia_module": "security"}
-        )
+        try:
+            backup_path.write_text(env_path.read_text(encoding="utf-8"), encoding="utf-8")
+            ark_logger.info(
+                f"📦 .env backed up to: {backup_path}", extra={"arkalia_module": "security"}
+            )
+        except OSError as e:
+            raise VaultError(f"Failed to backup env file '{env_path}': {e}") from e
 
     # Parser le fichier .env
     secrets_migrated = 0
 
-    with open(env_path) as f:
-        for _line_num, line in enumerate(f, 1):
-            line = line.strip()
+    try:
+        with open(env_path, encoding="utf-8") as f:
+            for _line_num, line in enumerate(f, 1):
+                line = line.strip()
 
-            # Ignorer les commentaires et lignes vides
-            if not line or line.startswith("#"):
-                continue
+                # Ignorer les commentaires et lignes vides
+                if not line or line.startswith("#"):
+                    continue
 
-            # Parser KEY=VALUE
-            if "=" in line:
-                key, value = line.split("=", 1)
-                key = key.strip()
-                value = value.strip().strip("\"'")  # Enlever les quotes
+                # Parser KEY=VALUE
+                if "=" in line:
+                    key, value = line.split("=", 1)
+                    key = key.strip()
+                    value = value.strip().strip("\"'")  # Enlever les quotes
 
-                try:
-                    vault.store_secret(
-                        name=f"env_{key}",
-                        value=value,
-                        tags=["migrated_from_env"],
-                        overwrite=True,
-                    )
-                    secrets_migrated += 1
-                    ark_logger.info(f"✅ Migrated: {key}", extra={"arkalia_module": "security"})
+                    try:
+                        vault.store_secret(
+                            name=f"env_{key}",
+                            value=value,
+                            tags=["migrated_from_env"],
+                            overwrite=True,
+                        )
+                        secrets_migrated += 1
+                        ark_logger.info(f"✅ Migrated: {key}", extra={"arkalia_module": "security"})
 
-                except Exception as e:
-                    ark_logger.error(
-                        f"❌ Failed to migrate {key}: {e}", extra={"arkalia_module": "security"}
-                    )
+                    except VaultError as e:
+                        ark_logger.error(
+                            f"❌ Failed to migrate {key}: {e}",
+                            extra={"arkalia_module": "security"},
+                        )
+    except OSError as e:
+        raise VaultError(f"Failed to read env file '{env_path}': {e}") from e
 
     ark_logger.info(
         f"🚀 Migration completed: {secrets_migrated} secrets migrated from {env_path}",
