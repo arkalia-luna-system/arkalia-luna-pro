@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles de base Arkalia-LUNA */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-arkalia-black text-slate-200 font-inter;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+  }
+
+  /* Scrollbar personnalisée */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-arkalia-dark;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neural-blue/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-neural-blue/50;
+  }
+}
+
+/* Composants personnalisés */
+@layer components {
+  .luna-button {
+    @apply px-6 py-3 bg-transparent border border-neural-blue/30 text-neural-blue
+           font-orbitron font-bold tracking-wider uppercase
+           transition-all duration-300 ease-out
+           hover:bg-neural-blue/10 hover:border-neural-blue/60 hover:text-white
+           focus:outline-none focus:ring-2 focus:ring-neural-blue/50 focus:ring-offset-2 focus:ring-offset-arkalia-black;
+  }
+
+  .luna-card {
+    @apply bg-arkalia-dark/50 backdrop-blur-sm border border-neural-blue/20
+           rounded-lg p-6 transition-all duration-300
+           hover:border-neural-blue/40 hover:shadow-cyber-glow;
+  }
+
+  .luna-input {
+    @apply bg-arkalia-dark/50 border border-neural-blue/30 text-slate-200
+           px-4 py-3 rounded-md font-inter
+           focus:outline-none focus:ring-2 focus:ring-neural-blue/50 focus:border-neural-blue/60
+           placeholder:text-slate-400;
+  }
+
+  .luna-link {
+    @apply text-neural-blue hover:text-white transition-colors duration-200
+           font-semibold relative
+           after:content-[''] after:absolute after:bottom-0 after:left-0
+           after:w-0 after:h-0.5 after:bg-neural-blue after:transition-all after:duration-300
+           hover:after:w-full;
+  }
+
+  .neural-dot {
+    @apply w-2 h-2 bg-neural-blue rounded-full shadow-neural-glow;
+  }
+
+  .cyber-border {
+    @apply border border-neural-blue/30 shadow-inner shadow-neural-blue/10;
+  }
+}
+
+/* Animations personnalisées */
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 4s ease-in-out infinite alternate;
+  }
+
+  .animate-neural-flicker {
+    animation: neural-flicker 2s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes glow-pulse {
+    0% {
+      box-shadow: 0 0 20px rgba(126, 203, 255, 0.3);
+      text-shadow: 0 0 8px rgba(126, 203, 255, 0.5);
+    }
+    100% {
+      box-shadow: 0 0 40px rgba(126, 203, 255, 0.6);
+      text-shadow: 0 0 16px rgba(126, 203, 255, 0.8);
+    }
+  }
+
+  @keyframes neural-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+
+  /* Gradients personnalisés */
+  .gradient-luna {
+    background: radial-gradient(circle at center, rgba(126, 203, 255, 0.1) 0%, transparent 70%);
+  }
+
+  .gradient-cyber {
+    background: linear-gradient(135deg, rgba(126, 203, 255, 0.1) 0%, rgba(0, 255, 255, 0.05) 100%);
+  }
+
+  .gradient-neural {
+    background: linear-gradient(45deg, rgba(126, 203, 255, 0.05) 0%, rgba(182, 208, 255, 0.03) 50%, rgba(0, 255, 255, 0.05) 100%);
+  }
+}

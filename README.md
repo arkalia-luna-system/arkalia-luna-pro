@@ -80,6 +80,15 @@ curl http://localhost:8000/health
 
 ---
 
+## ✅ État qualité (08 mai 2026)
+
+- Backend : `ruff check .` OK, suite `pytest -q` OK.
+- Frontend : `npm run lint:check`, `npm run type-check`, `npm run build` OK.
+- Hygiène dépôt : suppression des fichiers macOS cachés `._*` (contrôlés par tests d'intégration).
+- Vérification rapide recommandée avant PR : `python3 -m pytest -q` puis `cd frontend && npm run build`.
+
+---
+
 ## 🧩 Modules Principaux
 
 | Module | Description |

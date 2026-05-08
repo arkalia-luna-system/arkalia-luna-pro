@@ -47,6 +47,7 @@ liens_non_listes.txt
 *.swp
 # 🐳 Docker (non versionnés dans Git)
 docker-compose.override.yml
+frontend/node_modules/
 # 🧠 Fichiers de state IA (dynamiques à exclure du contrôle Git)
 state/reflexia_state.toml
 state/zeroia_state.toml

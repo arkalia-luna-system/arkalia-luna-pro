@@ -1,11 +1,2 @@
 # 🔄 Dernières mises à jour
-edaf5a6d - Durcit l'étape Codecov pour éviter les contextes secrets fragiles. (2026-04-28)
-3a64e41f - Finalise le nettoyage de signatures et corrige l'initialisation du store d'événements. (2026-04-28)
-9e041dca - Nettoie les workflows sécurité pour réduire les faux échecs CI. (2026-04-28)
-1c753179 - Stabilise les scans sécurité CI et prépare la migration Node 24. (2026-04-28)
-98a9b565 - Corrige la génération des dernières mises à jour. (2026-04-28)
-4b1590a4 - Clarifie la gouvernance des scripts legacy pour éviter le bazar futur. (2026-04-28)
-00820ca8 - Renforce la robustesse du générateur d'updates et clarifie les règles scripts. (2026-04-28)
-1b5ffcee - Canonise le healthcheck legacy shell vers le script principal. (2026-04-28)
-a95e7028 - Rationalise les scripts legacy shell en wrappers de compatibilité. (2026-04-28)
-5d03116e - Réduit la redondance des scripts VSCode et corrige une commande invalide. (2026-04-28)
+abc123 - Fix bug (2023-10-01)
