@@ -44,10 +44,10 @@ def test_sensitive_endpoints_require_api_key_when_configured(
     unauthorized_metrics = client.get("/metrics")
     assert unauthorized_metrics.status_code == 401
 
-    unauthorized_reflexia_check = client.get("/reflexia/reflexia/check")
+    unauthorized_reflexia_check = client.get("/reflexia/check")
     assert unauthorized_reflexia_check.status_code == 401
 
-    unauthorized_reflexia_metrics = client.get("/reflexia/reflexia/metrics")
+    unauthorized_reflexia_metrics = client.get("/reflexia/metrics")
     assert unauthorized_reflexia_metrics.status_code == 401
 
     authorized_status = client.get("/status", headers={"X-API-Key": "helloria-test-key"})
@@ -57,12 +57,12 @@ def test_sensitive_endpoints_require_api_key_when_configured(
     assert authorized_metrics.status_code == 200
 
     authorized_reflexia_check = client.get(
-        "/reflexia/reflexia/check", headers={"X-API-Key": "helloria-test-key"}
+        "/reflexia/check", headers={"X-API-Key": "helloria-test-key"}
     )
     assert authorized_reflexia_check.status_code == 200
 
     authorized_reflexia_metrics = client.get(
-        "/reflexia/reflexia/metrics", headers={"X-API-Key": "helloria-test-key"}
+        "/reflexia/metrics", headers={"X-API-Key": "helloria-test-key"}
     )
     assert authorized_reflexia_metrics.status_code == 200
 

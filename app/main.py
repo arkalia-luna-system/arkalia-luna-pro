@@ -239,7 +239,7 @@ async def get_metrics(_: None = Depends(require_api_key)) -> Response:
 
 # Inclusion des routers
 app.include_router(assistantia_router, prefix="/assistantia")
-app.include_router(reflexia_router, prefix="/reflexia")
+app.include_router(reflexia_router)
 
 
 def print_status() -> None:

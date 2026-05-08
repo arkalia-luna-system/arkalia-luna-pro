@@ -325,7 +325,7 @@ app = FastAPI(
 
 # 🧩 Inclusion des routers
 app.include_router(router)
-app.include_router(reflexia_router, prefix="/reflexia")
+app.include_router(reflexia_router)
 # app.include_router(zeroia_router, prefix="/zeroia")  # Module supprimé
 
 
