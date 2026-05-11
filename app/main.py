@@ -165,8 +165,8 @@ async def zeroia_health() -> dict[str, Any]:
         from modules.zeroia import health_check
 
         return health_check()
-    except Exception as e:
-        logger.warning("ZeroIA health: %s", e)
+    except Exception:
+        logger.warning("ZeroIA health unavailable")
         return {"status": "error", "error": "internal_error"}
 
 
