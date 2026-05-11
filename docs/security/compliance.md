@@ -22,7 +22,7 @@ Cadre minimal de conformite pour l'exploitation Arkalia.
 ### Revue securite
 
 ```bash
-./scripts/ark-sec-check.sh --full-validation
+./scripts/ops/ark-sec-check.sh --full-validation
 ```
 
 ### Points de verification

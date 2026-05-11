@@ -56,29 +56,5 @@ Cette page sert de point d'entrée pour éviter la prolifération de scripts red
 
 ## Migration recente (racine -> dossiers canoniques)
 
-- `scripts/ark-check-hooks.sh` -> `scripts/dev/ark-check-hooks.sh`
-- `scripts/ark-fix-modules.sh` -> `scripts/dev/ark-fix-modules.sh`
-- `scripts/ark-fix-vscode-config.sh` -> `scripts/dev/ark-fix-vscode-config.sh`
-- `scripts/ark-gpg-setup.sh` -> `scripts/dev/ark-gpg-setup.sh`
-- `scripts/ark-install-extensions.sh` -> `scripts/dev/ark-install-extensions.sh`
-- `scripts/ark-reset-cursor.sh` -> `scripts/dev/ark-reset-cursor.sh`
-- `scripts/ark-setup-shell.sh` -> `scripts/dev/ark-setup-shell.sh`
-- `scripts/ark-setup-vscode.sh` -> `scripts/dev/ark-setup-vscode.sh`
-- `scripts/ark-vscode-diagnostic.sh` -> `scripts/dev/ark-vscode-diagnostic.sh`
-- `scripts/ark-vscode-reload.sh` -> `scripts/dev/ark-vscode-reload.sh`
-- `scripts/ark-validate-site.sh` -> `scripts/dev/ark-validate-site.sh`
-- `scripts/build_docs.sh` -> `scripts/dev/build_docs.sh`
-- `scripts/validate-dockerfiles.sh` -> `scripts/dev/validate-dockerfiles.sh`
-- `scripts/validate-workflows.sh` -> `scripts/dev/validate-workflows.sh`
-- `scripts/ark-clean-hidden.sh` -> `scripts/ops/ark-clean-hidden.sh`
-- `scripts/ark-clean-json.sh` -> `scripts/ops/ark-clean-json.sh`
-- `scripts/ark-clean-state.sh` -> `scripts/ops/ark-clean-state.sh`
-- `scripts/ark-module-diagnostic.sh` -> `scripts/ops/ark-module-diagnostic.sh`
-- `scripts/ark-sec-check.sh` -> `scripts/ops/ark-sec-check.sh`
-- `scripts/ark-zeroia-check.sh` -> `scripts/ops/ark-zeroia-check.sh`
-- `scripts/auto-heal.sh` -> `scripts/ops/auto-heal.sh`
-- `scripts/backup_state.sh` -> `scripts/ops/backup_state.sh`
-- `scripts/diagnose-docker-issues.sh` -> `scripts/ops/diagnose-docker-issues.sh`
-- `scripts/firewall_setup.sh` -> `scripts/ops/firewall_setup.sh`
-- `scripts/optimize_containers.sh` -> `scripts/ops/optimize_containers.sh`
-- `scripts/start_generative_ai.sh` -> `scripts/ops/start_generative_ai.sh`
+Les anciens noms en racine ont ete deplaces vers `scripts/dev/` et `scripts/ops/`.
+Pour toute nouvelle integration, utiliser directement les chemins canoniques ci-dessus.

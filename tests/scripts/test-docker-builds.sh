@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 🐳 Script de test des constructions Docker locales
-# Usage: ./tests/scripts/test-docker-builds.sh [image_name]
+# Usage: exécuter ce script avec un nom d'image optionnel
 
 set -e
 

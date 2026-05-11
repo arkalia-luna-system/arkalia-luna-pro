@@ -29,7 +29,7 @@ mkdir -p "/tmp/incident_${TS}"
 cp -r state global_state logs "/tmp/incident_${TS}" 2>/dev/null
 
 # 3) Validation securite avant reprise
-./scripts/ark-sec-check.sh --paranoid-mode
+./scripts/ops/ark-sec-check.sh --paranoid-mode
 ```
 
 ## Cas frequents
@@ -38,7 +38,7 @@ cp -r state global_state logs "/tmp/incident_${TS}" 2>/dev/null
 
 ```bash
 python scripts/_zeroia_rollback.py
-./scripts/ark-sec-check.sh --full-validation
+./scripts/ops/ark-sec-check.sh --full-validation
 ```
 
 ### Degradation API / monitoring
