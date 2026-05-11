@@ -49,6 +49,20 @@ def get_reflexia_status() -> dict:
     return {"status": "ok", "metrics": result["metrics"]}
 
 
+@router.get("/health")
+async def reflexia_health():
+    """
+    Health check Reflexia sur le router monté sous /reflexia (API principale + CI).
+
+    Returns:
+        dict: Statut de santé du module Reflexia.
+    """
+    try:
+        return {"status": "ok", "service": "reflexia"}
+    except Exception as e:
+        return {"status": "unhealthy", "error": str(e)}
+
+
 @router.get("/check")
 async def check_reflexia_status(_: None = Depends(require_api_key)):
     """

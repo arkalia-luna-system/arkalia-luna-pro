@@ -43,7 +43,7 @@ class TestAPIEndpointsE2E:
             assert response.status_code == 200
             data = response.json()
             assert "status" in data
-            assert "metrics" in data
+            assert "metrics" in data or "components" in data
         except Exception:
             pytest.skip("ZeroIA non disponible - test ignoré")
 

@@ -158,6 +158,18 @@ async def health() -> dict[str, str]:
     return {"status": "ok", "service": "arkalia-api"}
 
 
+@app.get("/zeroia/health", tags=["ZeroIA"])
+async def zeroia_health() -> dict[str, Any]:
+    """Santé du module ZeroIA (agrégé sur l'API principale, aligné CI / E2E)."""
+    try:
+        from modules.zeroia import health_check
+
+        return health_check()
+    except Exception as e:
+        logger.warning("ZeroIA health: %s", e)
+        return {"status": "error", "error": "internal_error"}
+
+
 @app.get("/status")
 async def get_status(_: None = Depends(require_api_key)) -> dict[str, Any]:
     """
