@@ -78,6 +78,7 @@ def atomic_write(
     file_lock = _get_file_lock(file_path)
 
     with file_lock:
+        tmp_path: str | None = None
         try:
             # Crée le répertoire parent si nécessaire
             file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -120,7 +121,7 @@ def atomic_write(
 
         except Exception as e:
             # Nettoie le fichier temporaire en cas d'erreur
-            if "tmp_path" in locals() and os.path.exists(tmp_path):
+            if tmp_path is not None and os.path.exists(tmp_path):
                 try:
                     os.unlink(tmp_path)
                 except OSError as cleanup_error:
@@ -392,7 +393,11 @@ def save_toml_if_changed(
             data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # Utiliser atomic_write pour la sauvegarde finale (thread-safe)
-        return atomic_write(file_path, data)
+        result = atomic_write(file_path, data)
+        # Nettoyage du temporaire de comparaison (sinon accumulation sur disque).
+        if tmp_file_path is not None and tmp_file_path.exists():
+            os.unlink(tmp_file_path)
+        return result
 
     except Exception as e:
         # Nettoyer en cas d'erreur
@@ -430,6 +435,7 @@ def save_json_if_changed(
         data_to_hash.pop("timestamp", None)
 
     # Créer un fichier temporaire pour comparer
+    tmp_file_path: Path | None = None
     try:
         with tempfile.NamedTemporaryFile(
             mode="w",
@@ -459,11 +465,15 @@ def save_json_if_changed(
 
         # Utiliser atomic_write pour la sauvegarde finale (thread-safe)
         # Note: atomic_write gère déjà le formatage JSON
-        return atomic_write(file_path, data)
+        result = atomic_write(file_path, data)
+        # Nettoyage du temporaire de comparaison (sinon accumulation sur disque).
+        if tmp_file_path is not None and tmp_file_path.exists():
+            os.unlink(tmp_file_path)
+        return result
 
     except Exception as e:
         # Nettoyer en cas d'erreur
-        if "tmp_file_path" in locals() and tmp_file_path.exists():
+        if tmp_file_path is not None and tmp_file_path.exists():
             try:
                 os.unlink(tmp_file_path)
             except OSError:

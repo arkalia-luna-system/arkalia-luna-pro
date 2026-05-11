@@ -34,6 +34,22 @@ def test_health_endpoint() -> None:
     assert response.json() == {"status": "ok", "service": "arkalia-api"}
 
 
+def test_zeroia_health_endpoint() -> None:
+    """Test de l'endpoint health ZeroIA exposé par l'API principale."""
+    response = client.get("/zeroia/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert "status" in data
+    assert "components" in data or "error" in data
+
+
+def test_reflexia_health_endpoint() -> None:
+    """Test de l'endpoint health Reflexia exposé par le router /reflexia."""
+    response = client.get("/reflexia/health")
+    assert response.status_code == 200
+    assert response.json()["status"] == "ok"
+
+
 @patch("psutil.cpu_percent")
 @patch("psutil.virtual_memory")
 @patch("psutil.disk_usage")

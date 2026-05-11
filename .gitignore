@@ -219,8 +219,7 @@ $RECYCLE.BIN/
 *~
 # Arkalia-LUNA specific
 cache/
-state/
-!state/
+state/**
 !state/.gitkeep
 benchmark_results/
 chaos_backups/
@@ -233,6 +232,7 @@ app_errors.log
 bilan_session.txt
 tests_analysis_results.txt
 *.tmp
+*.arkalia
 *.bak
 *.backup
 *.swo

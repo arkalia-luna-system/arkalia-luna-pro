@@ -13,7 +13,9 @@ from modules.utils.helpers.io_safe import (
     atomic_write,
     locked_read,
     read_state_safe,
+    save_json_if_changed,
     save_json_safe,
+    save_toml_if_changed,
     save_toml_safe,
 )
 
@@ -204,6 +206,28 @@ class TestSafeWrappers:
         assert test_file.exists()
         loaded = toml.loads(test_file.read_text())
         assert loaded == test_data
+
+    def test_save_toml_if_changed_cleans_comparison_tmp(self, tmp_path) -> None:
+        """Nettoie le fichier temporaire de comparaison après écriture."""
+        test_file = tmp_path / "state.toml"
+        payload = {"status": "ok"}
+
+        changed = save_toml_if_changed(payload, test_file, add_timestamp=False)
+
+        assert changed is True
+        assert test_file.exists()
+        assert not list(tmp_path.glob(".state.toml.tmp.*.arkalia"))
+
+    def test_save_json_if_changed_cleans_comparison_tmp(self, tmp_path) -> None:
+        """Nettoie le fichier temporaire de comparaison après écriture."""
+        test_file = tmp_path / "state.json"
+        payload = {"status": "ok"}
+
+        changed = save_json_if_changed(payload, test_file, add_timestamp=False)
+
+        assert changed is True
+        assert test_file.exists()
+        assert not list(tmp_path.glob(".state.json.tmp.*.arkalia"))
 
     def test_save_toml_safe_invalid_data(self, tmp_path) -> None:
         """🧠 Test sauvegarde TOML avec données invalides"""
