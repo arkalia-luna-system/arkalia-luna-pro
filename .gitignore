@@ -35,6 +35,8 @@ logs/
 .coverage.*
 coverage.xml
 htmlcov/
+*.prof
+tests/reports/performance/
 .cache/
 # 📘 MkDocs : site statique généré + fichiers auxiliaires
 site/
