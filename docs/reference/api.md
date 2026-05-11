@@ -494,11 +494,10 @@ Toutes les requêtes API Enhanced nécessitent une authentification :
 
 ```bash
 # Header requis
-X-API-Key: <api_key>
+<api-key-header>: <redacted-api-key>
 
 # Exemple avec curl
-API_KEY="<api_key>"
-curl -H "X-API-Key: $API_KEY" \
+curl -H "<api-key-header>: <redacted-api-key>" \
      http://localhost:8000/api/v1/zeroia/orchestrator/status
 ```
 
