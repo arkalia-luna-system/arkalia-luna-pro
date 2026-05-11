@@ -245,7 +245,7 @@ async def get_metrics(_: None = Depends(require_api_key)) -> Response:
         logger.exception("Erreur métriques")
         return JSONResponse(
             status_code=500,
-            content={"error": f"Erreur métriques : {e!s}"},
+            content={"error": "internal_error"},
         )
 
 

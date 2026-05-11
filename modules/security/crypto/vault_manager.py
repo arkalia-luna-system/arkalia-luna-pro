@@ -9,6 +9,7 @@ Ce module fait partie du système Arkalia Luna Pro.
 
 import json
 import os
+import hashlib
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -174,8 +175,8 @@ class ArkaliaVault(BuildIntegrityValidator):
             secrets_dict: dict[str, str] = json.loads(decrypted_data.decode())
             return secrets_dict
         except Exception as e:
-            ark_logger.error(f"❌ Error loading secrets: {e}", extra={"arkalia_module": "security"})
-            raise VaultError(f"Failed to decrypt vault: {e}") from e
+            ark_logger.exception("❌ Error loading secrets", extra={"arkalia_module": "security"})
+            raise VaultError("Failed to decrypt vault") from e
 
     def _save_secrets(self, secrets: dict[str, str]) -> None:
         try:
@@ -184,12 +185,15 @@ class ArkaliaVault(BuildIntegrityValidator):
             self.secrets_file.write_bytes(encrypted_data)
             os.chmod(self.secrets_file, 0o600)
         except Exception as e:
-            ark_logger.error(f"❌ Error saving secrets: {e}", extra={"arkalia_module": "security"})
-            raise VaultError(f"Failed to encrypt vault: {e}") from e
+            ark_logger.exception("❌ Error saving secrets", extra={"arkalia_module": "security"})
+            raise VaultError("Failed to encrypt vault") from e
 
     def _audit_log_entry(self, action: str, secret_name: str, details: str = "") -> None:
         timestamp = datetime.now().isoformat()
-        log_entry = f"{timestamp} | {action} | {secret_name} | {details}\n"
+        # Avoid plaintext leakage of secret identifiers/details in audit logs.
+        secret_ref = hashlib.sha256(secret_name.encode("utf-8")).hexdigest()[:12]
+        details_ref = "redacted" if details else ""
+        log_entry = f"{timestamp} | {action} | secret_ref={secret_ref} | {details_ref}\n"
 
         self._trim_log_if_needed(self.audit_log, MAX_AUDIT_LOG_BYTES)
         with open(self.audit_log, "a") as f:
@@ -446,8 +450,8 @@ class ArkaliaVault(BuildIntegrityValidator):
                 self.key_file.write_bytes(backup_key_file.read_bytes())
                 self.cipher_suite = self._initialize_encryption()
 
-            ark_logger.error(f"❌ Key rotation failed: {e}", extra={"arkalia_module": "security"})
-            raise VaultError(f"Key rotation failed: {e}") from e
+            ark_logger.exception("❌ Key rotation failed", extra={"arkalia_module": "security"})
+            raise VaultError("Key rotation failed") from e
 
     def validate_vault_integrity(self) -> bool:
         """
@@ -468,7 +472,7 @@ class ArkaliaVault(BuildIntegrityValidator):
         try:
             super().validate_integrity()
         except SecurityError as e:
-            raise VaultError(f"Base integrity validation failed: {e}") from e
+            raise VaultError("Base integrity validation failed") from e
 
         # 2. Validation spécifique du vault
         violations: list[Any] = []
@@ -505,7 +509,7 @@ class ArkaliaVault(BuildIntegrityValidator):
         if violations:
             violation_msg = "; ".join(violations)
             self._audit_log_entry("INTEGRITY_VIOLATION", "SYSTEM", violation_msg)
-            raise VaultError(f"Vault integrity violations: {violation_msg}")
+            raise VaultError("Vault integrity violations detected")
 
         ark_logger.info(
             "✅ Vault integrity validation PASSED", extra={"arkalia_module": "security"}
@@ -578,13 +582,11 @@ class ArkaliaVault(BuildIntegrityValidator):
                 "last_check": datetime.now().isoformat(),
             }
 
-        except Exception as e:
-            ark_logger.error(
-                f"❌ Security health check failed: {e}", extra={"arkalia_module": "security"}
-            )
+        except Exception:
+            ark_logger.exception("❌ Security health check failed", extra={"arkalia_module": "security"})
             return {
                 "score": 0.0,
-                "error": str(e),
+                "error": "internal_error",
                 "secrets_count": 0,
                 "last_check": datetime.now().isoformat(),
             }
@@ -622,7 +624,7 @@ def migrate_from_env_file(
                 f"📦 .env backed up to: {backup_path}", extra={"arkalia_module": "security"}
             )
         except OSError as e:
-            raise VaultError(f"Failed to backup env file '{env_path}': {e}") from e
+            raise VaultError(f"Failed to backup env file '{env_path}'") from e
 
     # Parser le fichier .env
     secrets_migrated = 0
@@ -658,7 +660,7 @@ def migrate_from_env_file(
                             extra={"arkalia_module": "security"},
                         )
     except OSError as e:
-        raise VaultError(f"Failed to read env file '{env_path}': {e}") from e
+        raise VaultError(f"Failed to read env file '{env_path}'") from e
 
     ark_logger.info(
         f"🚀 Migration completed: {secrets_migrated} secrets migrated from {env_path}",

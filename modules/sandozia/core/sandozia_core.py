@@ -114,10 +114,10 @@ async def get_metrics() -> Any:
             sandozia_coherence_score.set(core.metrics_history[-1].coherence_score)
         prometheus_data = generate_latest()
         return PlainTextResponse(content=prometheus_data, media_type=CONTENT_TYPE_LATEST)
-    except Exception as e:
+    except Exception:
         return JSONResponse(
             status_code=500,
-            content={"error": f"Erreur métriques : {str(e)}"},
+            content={"error": "internal_error"},
         )
 
 

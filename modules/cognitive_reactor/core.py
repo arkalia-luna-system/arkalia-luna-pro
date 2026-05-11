@@ -58,10 +58,10 @@ async def get_metrics() -> PlainTextResponse | JSONResponse:
         cognitive_reactor_reactions.set(reactor.reaction_count)
         prometheus_data = generate_latest()
         return PlainTextResponse(content=prometheus_data, media_type=CONTENT_TYPE_LATEST)
-    except Exception as e:
+    except Exception:
         return JSONResponse(
             status_code=500,
-            content={"error": f"Erreur métriques : {str(e)}"},
+            content={"error": "internal_error"},
         )
 
 
@@ -69,8 +69,8 @@ async def get_metrics() -> PlainTextResponse | JSONResponse:
 async def health() -> dict[str, str]:
     try:
         return {"status": "ok", "service": "cognitive_reactor"}
-    except Exception as e:
-        return {"status": "unhealthy", "error": str(e)}
+    except Exception:
+        return {"status": "unhealthy", "error": "internal_error"}
 
 
 class CognitiveReactor:
