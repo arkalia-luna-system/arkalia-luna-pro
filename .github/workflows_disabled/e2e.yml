@@ -1,5 +1,5 @@
 # Fichier temporaire pour nettoyer le workflow orphelin
-name: 🧪 Tests End-to-End (E2E)
+name: Test · E2E Manual
 on:
   workflow_dispatch:
 

@@ -1,5 +1,5 @@
 ---
-name: 🧹 Force Cleanup Workflows
+name: Maintenance · Actions Sync
 
 on:
   workflow_dispatch: # Seulement manuel
