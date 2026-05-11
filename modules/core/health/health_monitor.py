@@ -50,6 +50,7 @@ class HealthMonitor:
     def __init__(self, auto_start_monitoring: bool = False) -> None:
         self._metrics: dict[str, HealthMetric] = {}
         self._alerts: list[Alert] = []
+        self._max_alert_history = 500
         self._watchdogs: dict[str, Callable] = {}
         self._health_score: float = 1.0
         self._last_check: datetime | None = None
@@ -272,6 +273,8 @@ class HealthMonitor:
             value=result,
         )
         self._alerts.append(alert)
+        if len(self._alerts) > self._max_alert_history:
+            self._alerts = self._alerts[-self._max_alert_history :]
         ark_logger.warning(f"🚨 Alerte créée : {alert.message}", extra={"arkalia_module": "core"})
 
     def check_health(self) -> dict[str, Any]:

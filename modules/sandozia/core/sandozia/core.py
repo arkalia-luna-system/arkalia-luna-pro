@@ -53,6 +53,7 @@ class SandoziaCore:
         # Métriques et état
         self.metrics_history: list[SandoziaMetrics] = []
         self.max_metrics_history = 500  # Limite pour économiser la RAM
+        self.max_snapshot_files = 48  # ~24h si interval=30min, ~24min si 30s
         self.intelligence_snapshots = diskcache.Cache(
             "./cache/sandozia_snapshots", size_limit=50_000_000
         )  # 50MB limit (réduit pour économiser la RAM)
@@ -445,6 +446,18 @@ class SandoziaCore:
         metrics_file = self.state_dir / "latest_metrics.json"
         with open(metrics_file, "w") as f:
             json.dump(metrics.to_dict(), f, indent=2)
+
+        # Limite le nombre de snapshots sur disque pour éviter la croissance continue.
+        snapshot_files = sorted(self.state_dir.glob("intelligence_snapshot_*.json"))
+        if len(snapshot_files) > self.max_snapshot_files:
+            for old_file in snapshot_files[: len(snapshot_files) - self.max_snapshot_files]:
+                try:
+                    old_file.unlink()
+                except OSError as e:
+                    ark_logger.warning(
+                        f"⚠️ Impossible de supprimer l'ancien snapshot {old_file}: {e}",
+                        extra={"arkalia_module": "sandozia"},
+                    )
 
     def get_current_status(self) -> dict:
         """Récupère le statut actuel de SandoziaCore.

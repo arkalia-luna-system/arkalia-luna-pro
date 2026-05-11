@@ -405,6 +405,7 @@ def save_toml_if_changed(
         AtomicWriteError: En cas d'erreur d'écriture
     """
     file_path = Path(file_path)
+    _cleanup_stale_atomic_tmp(file_path)
     data_to_hash = data.copy()
     if add_timestamp:
         data_to_hash.pop("timestamp", None)
@@ -477,6 +478,7 @@ def save_json_if_changed(
         AtomicWriteError: En cas d'erreur d'écriture
     """
     file_path = Path(file_path)
+    _cleanup_stale_atomic_tmp(file_path)
     data_to_hash = data.copy()
     if add_timestamp:
         data_to_hash.pop("timestamp", None)
