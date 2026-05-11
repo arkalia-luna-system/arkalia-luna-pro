@@ -70,9 +70,9 @@ python scripts/ark-master-orchestrator.py --restart
 
 **Usage :**
 ```bash
-python scripts/legacy/ark-modules-analysis.py
-python scripts/legacy/ark-modules-analysis.py --module zeroia --detailed
-python scripts/legacy/ark-modules-analysis.py --export report.json
+python scripts/dev/ark-modules-analysis.py
+python scripts/dev/ark-modules-analysis.py --module zeroia --detailed
+python scripts/dev/ark-modules-analysis.py --export report.json
 ```
 
 **Fonctionnalités :**

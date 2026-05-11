@@ -89,7 +89,7 @@ jobs:
           grep -r "USER" . --include="Dockerfile*" || echo "⚠️ Some Dockerfiles might not use non-root users"
 
       - name: 📊 Upload Security Reports
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:
@@ -183,7 +183,7 @@ jobs:
           cat npm-outdated.json || echo "No updates available"
 
       - name: 📊 Upload Dependency Reports
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:
