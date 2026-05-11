@@ -7,9 +7,9 @@ Ce module fait partie du système Arkalia Luna Pro.
 # 🔐 modules/security/crypto/vault_manager.py
 # Arkalia-Vault Enterprise - Gestionnaire de secrets sécurisé
 
+import hashlib
 import json
 import os
-import hashlib
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -175,7 +175,7 @@ class ArkaliaVault(BuildIntegrityValidator):
             secrets_dict: dict[str, str] = json.loads(decrypted_data.decode())
             return secrets_dict
         except Exception as e:
-            ark_logger.exception("❌ Error loading secrets", extra={"arkalia_module": "security"})
+            ark_logger.error("❌ Error loading secrets", extra={"arkalia_module": "security"})
             raise VaultError("Failed to decrypt vault") from e
 
     def _save_secrets(self, secrets: dict[str, str]) -> None:
@@ -185,7 +185,7 @@ class ArkaliaVault(BuildIntegrityValidator):
             self.secrets_file.write_bytes(encrypted_data)
             os.chmod(self.secrets_file, 0o600)
         except Exception as e:
-            ark_logger.exception("❌ Error saving secrets", extra={"arkalia_module": "security"})
+            ark_logger.error("❌ Error saving secrets", extra={"arkalia_module": "security"})
             raise VaultError("Failed to encrypt vault") from e
 
     def _audit_log_entry(self, action: str, secret_name: str, details: str = "") -> None:
@@ -450,7 +450,7 @@ class ArkaliaVault(BuildIntegrityValidator):
                 self.key_file.write_bytes(backup_key_file.read_bytes())
                 self.cipher_suite = self._initialize_encryption()
 
-            ark_logger.exception("❌ Key rotation failed", extra={"arkalia_module": "security"})
+            ark_logger.error("❌ Key rotation failed", extra={"arkalia_module": "security"})
             raise VaultError("Key rotation failed") from e
 
     def validate_vault_integrity(self) -> bool:
@@ -583,7 +583,10 @@ class ArkaliaVault(BuildIntegrityValidator):
             }
 
         except Exception:
-            ark_logger.exception("❌ Security health check failed", extra={"arkalia_module": "security"})
+            ark_logger.error(
+                "❌ Security health check failed",
+                extra={"arkalia_module": "security"},
+            )
             return {
                 "score": 0.0,
                 "error": "internal_error",

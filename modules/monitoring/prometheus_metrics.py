@@ -266,4 +266,7 @@ async def health_check() -> Response:
         )
     except Exception:
         ark_logger.error("Erreur health check", extra={"arkalia_module": "monitoring"})
-        return JSONResponse(status_code=500, content={"status": "unhealthy", "error": "internal_error"})
+        return JSONResponse(
+            status_code=500,
+            content={"status": "unhealthy", "error": "internal_error"},
+        )

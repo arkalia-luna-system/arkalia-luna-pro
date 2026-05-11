@@ -241,7 +241,7 @@ async def get_metrics(_: None = Depends(require_api_key)) -> Response:
 
         # Preserve Prometheus header exactly (without duplicated charset).
         return Response(content=prometheus_data, headers={"Content-Type": CONTENT_TYPE_LATEST})
-    except Exception as e:
+    except Exception:
         logger.exception("Erreur métriques")
         return JSONResponse(
             status_code=500,
