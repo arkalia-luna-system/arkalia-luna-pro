@@ -72,9 +72,6 @@ extra:
             Dites-nous comment améliorer cette page en
             <a href="https://github.com/arkalia-luna-system/arkalia-luna-pro/issues/new" target="_blank" rel="noopener">créant une issue</a>.
 
-  # PWA Configuration
-  manifest: assets/docs/manifest.json
-
 # 📊 SEO & Performance
 use_directory_urls: true
 strict: true

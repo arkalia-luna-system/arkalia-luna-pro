@@ -120,6 +120,8 @@ class CognitiveReactor:
         # Ajouts pour les tests unitaires :
         self.stimuli_queue: list[dict[str, Any]] = []
         self.cognitive_state: dict[str, Any] = {}
+        self.max_stimuli_queue = 200
+        self.max_reaction_history = 1000
 
         ark_logger.info(
             "🔥 CognitiveReactor initialized - Réactions automatiques activées",
@@ -130,6 +132,8 @@ class CognitiveReactor:
     async def process_stimulus(self, stimulus: Any) -> dict[str, Any]:
         """Traite un stimulus et retourne une réaction"""
         self.stimuli_queue.append(stimulus)
+        if len(self.stimuli_queue) > self.max_stimuli_queue:
+            self.stimuli_queue = self.stimuli_queue[-self.max_stimuli_queue :]
 
         # Analyser la sévérité du stimulus
         severity = "low"
@@ -153,6 +157,8 @@ class CognitiveReactor:
         """Apprend d'une expérience"""
         if isinstance(experience, dict):
             self.reaction_history.append(experience)
+            if len(self.reaction_history) > self.max_reaction_history:
+                self.reaction_history = self.reaction_history[-self.max_reaction_history :]
         return {"learned": True}
 
     async def predict_optimal_reaction(self, _situation: Any) -> dict[str, Any]:
@@ -509,8 +515,8 @@ class CognitiveReactor:
         self.reaction_history.append(reaction)
 
         # Limiter l'historique
-        if len(self.reaction_history) > 1000:
-            self.reaction_history = self.reaction_history[-500:]
+        if len(self.reaction_history) > self.max_reaction_history:
+            self.reaction_history = self.reaction_history[-self.max_reaction_history :]
 
         # Event Store
         self.event_store.add_event(
