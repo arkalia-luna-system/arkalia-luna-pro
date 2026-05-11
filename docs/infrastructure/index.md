@@ -194,7 +194,7 @@ LOKI_PORT=3100
 ./scripts/ark-validate-monitoring.py
 
 # Backup automatique
-./scripts/backup_state.sh
+./scripts/ops/backup_state.sh
 
 # Nettoyage des logs
 ./python scripts/ops/log_scrubber.py

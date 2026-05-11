@@ -55,7 +55,7 @@ alias ark-clean='./ark-fix-all.sh'
 alias ark-status='echo "🌕 État Arkalia-LUNA:" && ark-docker-status'
 
 # Extensions VSCode
-alias ark-extensions='./scripts/ark-install-extensions.sh'
+alias ark-extensions='./scripts/dev/ark-install-extensions.sh'
 
 # Git style Arkalia
 alias ark-commit='git add . && git commit -m "🔁 Arkalia | Update: $(date +%Y%m%d_%H%M%S)"'

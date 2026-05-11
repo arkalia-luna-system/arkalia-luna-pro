@@ -4,7 +4,7 @@ Ce dossier contient des scripts historiques conservés pour compatibilité.
 
 ## Règle
 
-- Préférer les scripts canoniques dans `scripts/` à la racine.
+- Préférer les scripts canoniques dans `scripts/dev/`, `scripts/ops/` ou `scripts/run/`.
 - Les scripts de ce dossier doivent idéalement rester des wrappers légers.
 
 ## Mappings recommandés
@@ -34,6 +34,6 @@ Ces scripts conservent une logique propre et ne sont pas encore migrés:
 
 Lors d'une évolution d'un script autonome:
 
-1. créer (ou identifier) un script canonique dans `scripts/`,
+1. créer (ou identifier) un script canonique dans `scripts/dev/`, `scripts/ops/` ou `scripts/run/`,
 2. y déplacer la logique métier,
 3. convertir le script `scripts/shell/` en wrapper de compatibilité.

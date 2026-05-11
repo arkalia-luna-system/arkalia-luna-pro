@@ -180,6 +180,6 @@ fi
 
 echo ""
 echo "🚀 Commandes utiles :"
-echo "   • Recharger config : ./scripts/ark-vscode-reload.sh"
-echo "   • Installer extensions : ./scripts/ark-install-extensions.sh"
-echo "   • Nettoyer fichiers cachés : ./scripts/ark-clean-hidden.sh"
+echo "   • Recharger config : ./scripts/dev/ark-vscode-reload.sh"
+echo "   • Installer extensions : ./scripts/dev/ark-install-extensions.sh"
+echo "   • Nettoyer fichiers cachés : ./scripts/ops/ark-clean-hidden.sh"

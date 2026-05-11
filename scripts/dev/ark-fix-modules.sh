@@ -293,8 +293,8 @@ if [[ $errors -gt 0 ]]; then
 fi
 
 echo "   • Exécutez les tests: pytest tests/ -v"
-echo "   • Vérifiez la configuration: ./scripts/ark-vscode-reload.sh"
-echo "   • Lancez le diagnostic: ./scripts/ark-module-diagnostic.sh"
+echo "   • Vérifiez la configuration: ./scripts/dev/ark-vscode-reload.sh"
+echo "   • Lancez le diagnostic: ./scripts/ops/ark-module-diagnostic.sh"
 
 echo ""
 

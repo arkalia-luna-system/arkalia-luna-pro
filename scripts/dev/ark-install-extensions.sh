@@ -177,10 +177,10 @@ echo ""
 # Script de rechargement
 ark_echo "$ARKALIA_BLUE" "🔄" "Rechargement de VSCode..."
 
-if [[ -f "scripts/ark-vscode-reload.sh" ]]; then
+if [[ -f "scripts/dev/ark-vscode-reload.sh" ]]; then
     ark_echo "$ARKALIA_GREEN" "✅" "Script de rechargement disponible"
     echo ""
-    ark_echo "$ARKALIA_CYAN" "💡" "Exécutez './scripts/ark-vscode-reload.sh' pour recharger VSCode"
+    ark_echo "$ARKALIA_CYAN" "💡" "Exécutez './scripts/dev/ark-vscode-reload.sh' pour recharger VSCode"
 else
     ark_echo "$ARKALIA_RED" "❌" "Script de rechargement non trouvé"
 fi

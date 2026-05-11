@@ -8,11 +8,11 @@ Configuration complète de VSCode pour le développement Arkalia-LUNA avec ambia
 
 ```bash
 # Configuration automatique complète
-./scripts/ark-setup-vscode.sh
+./scripts/dev/ark-setup-vscode.sh
 
 # Ou étape par étape
-./scripts/ark-setup-shell.sh      # Alias shell
-./scripts/ark-install-extensions.sh # Extensions VSCode
+./scripts/dev/ark-setup-shell.sh      # Alias shell
+./scripts/dev/ark-install-extensions.sh # Extensions VSCode
 ```
 
 ## 🎨 Thème & Ambiance
@@ -227,7 +227,7 @@ ark-docker-status
 ### Extensions Non Installées
 ```bash
 # Réinstaller les extensions
-./scripts/ark-install-extensions.sh
+./scripts/dev/ark-install-extensions.sh
 ```
 
 ### Alias Non Disponibles
@@ -236,7 +236,7 @@ ark-docker-status
 source ~/.zshrc
 
 # Ou reconfigurer
-./scripts/ark-setup-shell.sh
+./scripts/dev/ark-setup-shell.sh
 ```
 
 ### Problèmes de Linting

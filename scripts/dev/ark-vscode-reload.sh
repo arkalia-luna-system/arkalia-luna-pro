@@ -70,7 +70,7 @@ if [[ ${#missing_files[@]} -gt 0 ]]; then
         echo "   - $file"
     done
     echo ""
-    ark_echo "$ARKALIA_BLUE" "💡" "Exécutez './scripts/ark-fix-vscode-config.sh' pour les créer"
+    ark_echo "$ARKALIA_BLUE" "💡" "Exécutez './scripts/dev/ark-fix-vscode-config.sh' pour les créer"
 fi
 
 # Rechargement de VSCode

@@ -66,7 +66,7 @@ find . -name "._*" -delete
 find . -name ".DS_Store" -delete
 
 # Alias permanent
-alias ark-clean-hidden="bash scripts/ark-clean-hidden.sh"
+alias ark-clean-hidden="bash scripts/ops/ark-clean-hidden.sh"
 ```
 
 ---

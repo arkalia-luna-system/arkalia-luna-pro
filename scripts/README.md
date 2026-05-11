@@ -1,22 +1,22 @@
 # Scripts - Index
 
-Ce dossier regroupe les scripts d'exploitation et de maintenance du projet.
+Ce dossier regroupe les scripts d'exploitation, de developpement et d'execution.
 
-## Avant d'ajouter un script
+## Structure canonique
 
-- Vérifier si un script existant couvre déjà le besoin.
-- Préférer une extension d'un script existant plutôt qu'un nouveau fichier.
-- Garder un nom explicite et une responsabilité unique.
+- `scripts/dev/`: outillage dev (lint, docs, checks, maintenance locale).
+- `scripts/ops/`: operations et runbooks locaux (docker, monitoring, health).
+- `scripts/run/`: points d'entree de lancement des services Python.
+- `scripts/shell/`: scripts historiques, a traiter comme couche de compatibilite.
 
-## Catégories principales
+## Regles d'ajout
 
-- `ark-docker-*.sh`: gestion locale Docker (start/stop/status/rebuild/dev).
-- `ark-clean-*.sh`: nettoyage (state/json/fichiers cachés).
-- `ark-*-check.sh` / `validate-*.sh`: validation et diagnostics.
-- `shell/`: scripts historiques ou composés.
+- Verifier si un script existant couvre deja le besoin.
+- Preferer l'extension d'un script existant plutot qu'un nouveau fichier.
+- Garder un nom explicite et une responsabilite unique.
+- Placer tout nouveau script dans `dev/`, `ops/` ou `run/` (pas en racine).
+- Nommage shell: `kebab-case`; nommage Python: `snake_case`.
 
-## Documentation détaillée
+## Documentation detaillee
 
-Le catalogue maintenu des scripts est dans:
-
-- `docs/support/scripts-index.md`
+Le catalogue maintenu des scripts est dans `docs/support/scripts-index.md`.

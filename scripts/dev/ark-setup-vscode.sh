@@ -27,11 +27,11 @@ echo -e "${GREEN}✅ VSCode détecté${NC}"
 
 # 1. Configuration des alias shell
 echo -e "\n${BLUE}🔧 Étape 1/4 : Configuration des alias shell...${NC}"
-./scripts/ark-setup-shell.sh
+./scripts/dev/ark-setup-shell.sh
 
 # 2. Installation des extensions
 echo -e "\n${BLUE}🔧 Étape 2/4 : Installation des extensions VSCode...${NC}"
-./scripts/ark-install-extensions.sh
+./scripts/dev/ark-install-extensions.sh
 
 # 3. Vérification des fichiers de configuration
 echo -e "\n${BLUE}🔧 Étape 3/4 : Vérification des fichiers de configuration...${NC}"

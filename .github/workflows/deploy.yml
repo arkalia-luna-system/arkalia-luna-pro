@@ -48,9 +48,9 @@ jobs:
       - name: 🔍 Validate Dockerfiles
         run: |
           echo "🔍 Validation des Dockerfiles..."
-          if [ -f "scripts/validate-dockerfiles.sh" ]; then
-            chmod +x scripts/validate-dockerfiles.sh
-            ./scripts/validate-dockerfiles.sh
+          if [ -f "scripts/dev/validate-dockerfiles.sh" ]; then
+            chmod +x scripts/dev/validate-dockerfiles.sh
+            ./scripts/dev/validate-dockerfiles.sh
           else
             echo "⚠️ Script de validation Dockerfiles non trouvé, validation manuelle..."
             # Validation conditionnelle - ne fait échouer que si aucun Dockerfile n'est trouvé

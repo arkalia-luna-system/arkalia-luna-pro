@@ -215,7 +215,7 @@ python scripts/cleanup_confidence_memory.py --days 7 --max-entries 500
 
 **Usage :**
 ```bash
-bash scripts/ark-clean-state.sh
+bash scripts/ops/ark-clean-state.sh
 ```
 
 **Fonctionnalités :**
@@ -231,7 +231,7 @@ bash scripts/ark-clean-state.sh
 
 **Usage :**
 ```bash
-bash scripts/ark-clean-json.sh
+bash scripts/ops/ark-clean-json.sh
 ```
 
 **Fonctionnalités :**
@@ -247,7 +247,7 @@ bash scripts/ark-clean-json.sh
 
 **Usage :**
 ```bash
-bash scripts/ark-clean-hidden.sh
+bash scripts/ops/ark-clean-hidden.sh
 ```
 
 **Fonctionnalités :**
@@ -346,7 +346,7 @@ bash scripts/dev/ark-lint-report.sh --output lint-report.html
 
 2. **Avant commit :**
    ```bash
-   bash scripts/ark-clean-hidden.sh
+   bash scripts/ops/ark-clean-hidden.sh
    bash scripts/dev/ark-fix-linting.sh
    bash scripts/dev/ark-fix-style.sh
    ```

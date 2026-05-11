@@ -172,8 +172,8 @@ ark_echo "$ARKALIA_BLUE" "🔧" "Vérification des scripts..."
 scripts=(
     "ark-start.sh"
     "ark-fix-all.sh"
-    "scripts/ark-vscode-reload.sh"
-    "scripts/ark-install-extensions.sh"
+    "scripts/dev/ark-vscode-reload.sh"
+    "scripts/dev/ark-install-extensions.sh"
     "scripts/dev/ark-motivation.sh"
 )
 
@@ -207,7 +207,7 @@ if [[ -z "$VIRTUAL_ENV" ]]; then
 fi
 
 echo "   • Exécutez les tests: pytest tests/ -v"
-echo "   • Vérifiez la configuration: ./scripts/ark-vscode-reload.sh"
+echo "   • Vérifiez la configuration: ./scripts/dev/ark-vscode-reload.sh"
 
 echo ""
 

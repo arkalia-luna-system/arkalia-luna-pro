@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 🔍 Script de diagnostic des problèmes Docker et réseau
-# Usage: ./scripts/diagnose-docker-issues.sh
+# Usage: ./scripts/ops/diagnose-docker-issues.sh
 
 set -e
 
