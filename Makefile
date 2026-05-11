@@ -51,8 +51,13 @@ clean:
 	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 	find . -name "*.pyc" -delete
 	find . -name "*.pyo" -delete
+	find state -name ".zeroia_state.toml.tmp.*.arkalia" -type f -delete 2>/dev/null || true
+	find state -name "*.tmp.arkalia" -type f -delete 2>/dev/null || true
 	rm -rf .pytest_cache/
+	rm -rf .mypy_cache/
+	rm -rf .ruff_cache/
 	rm -rf htmlcov/
+	rm -rf tests/tmp/
 	rm -rf .coverage
 	rm -rf dist/
 	rm -rf build/
