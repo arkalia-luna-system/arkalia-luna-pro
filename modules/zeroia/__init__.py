@@ -171,10 +171,10 @@ def health_check() -> dict:
             },
             "timestamp": "2025-07-05T16:27:00Z",
         }
-    except Exception as e:
+    except Exception:
         return {
             "status": "unhealthy",
-            "error": str(e),
+            "error": "internal_error",
             "version": __version__,
             "timestamp": "2025-07-05T16:27:00Z",
         }
