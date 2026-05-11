@@ -50,6 +50,16 @@ def test_reflexia_health_endpoint() -> None:
     assert response.json()["status"] == "ok"
 
 
+def test_zeroia_decision_endpoint() -> None:
+    """Test de l'endpoint de compatibilité /zeroia/decision."""
+    response = client.post("/zeroia/decision", json={"context": {}, "priority": "low"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "accepted"
+    assert data["module"] == "zeroia"
+    assert data["decision"] == "accepted"
+
+
 @patch("psutil.cpu_percent")
 @patch("psutil.virtual_memory")
 @patch("psutil.disk_usage")

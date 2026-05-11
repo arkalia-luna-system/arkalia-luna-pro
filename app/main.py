@@ -282,7 +282,7 @@ class ZeroiaDecisionInput(BaseModel):
 @app.post("/zeroia/decision")
 async def zeroia_decision(
     _input: ZeroiaDecisionInput, _: None = Depends(require_api_key)
-) -> dict[str, str]:
+) -> dict[str, Any]:
     """
     Endpoint de décision ZeroIA minimal pour compatibilité.
 
@@ -300,4 +300,5 @@ async def zeroia_decision(
         >>> {"status": "accepted", "module": "zeroia"}
     """
     del _input  # Non utilisé pour l'instant
-    return {"status": "accepted", "module": "zeroia"}
+    # Payload de compatibilité pour les suites E2E historiques.
+    return {"status": "accepted", "module": "zeroia", "decision": "accepted"}
