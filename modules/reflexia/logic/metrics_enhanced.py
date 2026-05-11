@@ -66,8 +66,8 @@ def get_arkalia_containers_status() -> dict:
                         "healthy" if getattr(c, "status", "") == "running" else c.status
                     )
             return containers
-        except Exception as e:
-            return {"error": f"Container check failed: {str(e)}"}
+        except Exception:
+            return {"error": "container_check_failed"}
 
     # Fallback si SDK indisponible
     return {"error": "Docker SDK unavailable"}
