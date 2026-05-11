@@ -44,17 +44,24 @@ class ArkaliaLogger:
         console_handler.setFormatter(formatter)
         logger.addHandler(console_handler)
 
-        # Handler fichier avec rotation
+        # Handler fichier avec rotation (désactivé si volume/logs non inscriptible, ex. Docker CI)
         log_dir = Path("logs")
-        log_dir.mkdir(exist_ok=True)
-
-        file_handler = logging.handlers.RotatingFileHandler(
-            log_dir / f"{self.module_name}.log",
-            maxBytes=10 * 1024 * 1024,
-            backupCount=5,  # 10MB
-        )
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
+        try:
+            log_dir.mkdir(exist_ok=True)
+            file_handler = logging.handlers.RotatingFileHandler(
+                log_dir / f"{self.module_name}.log",
+                maxBytes=10 * 1024 * 1024,
+                backupCount=5,  # 10MB
+            )
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
+        except OSError:
+            log_path = log_dir / f"{self.module_name}.log"
+            logger.warning(
+                "Écriture fichier logs indisponible (%s), logs console uniquement",
+                str(log_path),
+                extra={"arkalia_module": self.module_name},
+            )
 
         return logger
 
