@@ -131,6 +131,8 @@ class GracefulDegradationSystem:
         # Callbacks
         self.degradation_callbacks: list[Callable] = []
         self.recovery_callbacks: list[Callable] = []
+        self.max_degradation_triggers = 500
+        self.max_callbacks_per_type = 50
 
         # Métriques
         self.metrics = {
@@ -388,6 +390,11 @@ class GracefulDegradationSystem:
         self.degradation_metrics.degradation_triggers.append(
             f"{datetime.now().isoformat()}: {reason}"
         )
+        if len(self.degradation_metrics.degradation_triggers) > self.max_degradation_triggers:
+            triggers = self.degradation_metrics.degradation_triggers
+            self.degradation_metrics.degradation_triggers = triggers[
+                -self.max_degradation_triggers :
+            ]
 
         # Appliquer la dégradation
         await self._apply_degradation_level(target_level)
@@ -655,11 +662,19 @@ class GracefulDegradationSystem:
 
     def add_degradation_callback(self, callback: Callable):
         """Ajoute un callback appelé lors de dégradations"""
-        self.degradation_callbacks.append(callback)
+        if callback not in self.degradation_callbacks:
+            self.degradation_callbacks.append(callback)
+            if len(self.degradation_callbacks) > self.max_callbacks_per_type:
+                self.degradation_callbacks = self.degradation_callbacks[
+                    -self.max_callbacks_per_type :
+                ]
 
     def add_recovery_callback(self, callback: Callable):
         """Ajoute un callback appelé lors de récupérations"""
-        self.recovery_callbacks.append(callback)
+        if callback not in self.recovery_callbacks:
+            self.recovery_callbacks.append(callback)
+            if len(self.recovery_callbacks) > self.max_callbacks_per_type:
+                self.recovery_callbacks = self.recovery_callbacks[-self.max_callbacks_per_type :]
 
     async def health_check(self) -> dict[str, Any]:
         """Vérification de santé du système de dégradation"""

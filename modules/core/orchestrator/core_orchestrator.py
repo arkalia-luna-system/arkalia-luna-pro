@@ -188,10 +188,9 @@ class CoreOrchestrator(IOrchestrator):
             # Initialiser les modules via factory
             await self._initialize_modules()
 
-            # Démarrer les tasks de monitoring
-            await self._start_monitoring_tasks()
-
             self.is_running = True
+            # Démarrer les tasks de monitoring une fois l'orchestrateur actif
+            await self._start_monitoring_tasks()
             ark_logger.info(
                 "✅ Core Orchestrator initialized successfully", extra={"arkalia_module": "core"}
             )
@@ -337,7 +336,8 @@ class CoreOrchestrator(IOrchestrator):
         try:
             # Vérifier la santé du module
             health_status = self.health_monitor.check_health()
-            if health_status.get("status") != "ok":
+            health_state = health_status.get("status")
+            if health_state not in {"ok", "healthy", "degraded"}:
                 return {"status": "error", "error": "Module health check failed"}
 
             # Exécuter le module (utiliser health_check par défaut)

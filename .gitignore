@@ -35,6 +35,8 @@ logs/
 .coverage.*
 coverage.xml
 htmlcov/
+*.prof
+tests/reports/performance/
 .cache/
 # 📘 MkDocs : site statique généré + fichiers auxiliaires
 site/
@@ -47,6 +49,7 @@ liens_non_listes.txt
 *.swp
 # 🐳 Docker (non versionnés dans Git)
 docker-compose.override.yml
+frontend/node_modules/
 # 🧠 Fichiers de state IA (dynamiques à exclure du contrôle Git)
 state/reflexia_state.toml
 state/zeroia_state.toml
@@ -218,7 +221,8 @@ $RECYCLE.BIN/
 *~
 # Arkalia-LUNA specific
 cache/
-state/
+state/**
+!state/.gitkeep
 benchmark_results/
 chaos_backups/
 demo_sandozia_state/
@@ -230,6 +234,7 @@ app_errors.log
 bilan_session.txt
 tests_analysis_results.txt
 *.tmp
+*.arkalia
 *.bak
 *.backup
 *.swo

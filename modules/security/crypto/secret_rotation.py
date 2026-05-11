@@ -131,6 +131,12 @@ class RotationManager:
         self.vault = vault
         self.policies: dict[str, RotationPolicy] = {}
         self.rotation_history: list[dict] = []
+        self.max_rotation_history = 500
+
+    def _trim_rotation_history(self) -> None:
+        """Borne l'historique de rotation pour éviter la croissance mémoire."""
+        if len(self.rotation_history) > self.max_rotation_history:
+            self.rotation_history = self.rotation_history[-self.max_rotation_history :]
 
     def add_policy(self, policy: RotationPolicy) -> None:
         """Ajoute une politique de rotation.
@@ -286,6 +292,7 @@ class RotationManager:
                 "reason": self.check_rotation_needed(secret_name)[1],
             }
             self.rotation_history.append(rotation_record)
+            self._trim_rotation_history()
 
             # Notification si configurée
             if policy.notification_callback:
@@ -425,6 +432,7 @@ class RotationManager:
                 "action": "rollback",
             }
             self.rotation_history.append(rollback_record)
+            self._trim_rotation_history()
 
             ark_logger.info(
                 f"↩️ Secret '{secret_name}' rolled back successfully",
@@ -489,7 +497,8 @@ class RotationManager:
         cutoff_date = datetime.now() - timedelta(days=7)
 
         for record in self.rotation_history:
-            if datetime.fromisoformat(record["rotated_at"]) > cutoff_date:
+            event_time_str = record.get("rotated_at") or record.get("rolled_back_at")
+            if event_time_str and datetime.fromisoformat(event_time_str) > cutoff_date:
                 recent_rotations.append(record)
 
         return {

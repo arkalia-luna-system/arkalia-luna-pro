@@ -20,6 +20,7 @@ _zeroia_metrics = {
     "processing_times": [],
     "decision_types": {},
 }
+MAX_DECISION_TYPES = 100
 
 
 def update_zeroia_metrics(
@@ -65,6 +66,14 @@ def update_zeroia_metrics(
             _zeroia_metrics["decision_types"][decision_type] = (
                 _zeroia_metrics["decision_types"].get(decision_type, 0) + 1
             )
+            # Évite l'explosion de cardinalité si les types sont dynamiques.
+            if len(_zeroia_metrics["decision_types"]) > MAX_DECISION_TYPES:
+                sorted_items = sorted(
+                    _zeroia_metrics["decision_types"].items(),
+                    key=lambda item: item[1],
+                    reverse=True,
+                )
+                _zeroia_metrics["decision_types"] = dict(sorted_items[:MAX_DECISION_TYPES])
 
         ark_logger.debug(
             f"📊 Métriques mises à jour: {operation} ({status})", extra={"arkalia_module": "zeroia"}

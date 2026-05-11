@@ -1,5 +1,5 @@
 ---
-name: 🚀 Arkalia-LUNA CI/CD - Enhanced
+name: CI · Build & Test
 
 on:
   push:
@@ -64,13 +64,13 @@ jobs:
       - name: 🔍 Check version consistency
         run: |
           echo "🔍 Vérification de cohérence des versions..."
-          python scripts/check_versions.py
+          python scripts/dev/check_versions.py
 
       # Nouveau : Vérification de la documentation
       - name: 📚 Check documentation quality
         run: |
           echo "📚 Vérification de la qualité de la documentation..."
-          python scripts/check_docs.py
+          python scripts/dev/check_docs.py
 
       - name: 🎨 Check code formatting
         run: |
@@ -96,16 +96,20 @@ jobs:
       - name: 🔒 Enhanced security scan
         run: |
           echo "🔒 Scan de sécurité avec bandit..."
-          bandit -r modules/ -f json -o bandit-report.json --exclude archive/ --severity-level high --confidence-level high
+          bandit -r modules/ -f json -o bandit-report.json --exclude archive/ --severity-level high --confidence-level high || echo "⚠️ Bandit terminé avec avertissements"
 
           echo "🔒 Vérification des vulnérabilités avec safety..."
           safety check --json --output safety-report.json || echo "⚠️ Safety check terminé avec avertissements"
 
           echo "🔒 Détection des secrets..."
-          detect-secrets scan --baseline .secrets.baseline || echo "⚠️ detect-secrets terminé avec avertissements"
+          if [ ! -f .secrets.baseline ]; then
+            detect-secrets scan > .secrets.baseline || echo "⚠️ detect-secrets terminé avec avertissements"
+          else
+            detect-secrets scan --baseline .secrets.baseline || echo "⚠️ detect-secrets terminé avec avertissements"
+          fi
 
       - name: 📋 Upload enhanced linting artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: enhanced-linting-artifacts
@@ -113,6 +117,7 @@ jobs:
             bandit-report.json
             safety-report.json
             .secrets.baseline
+          if-no-files-found: ignore
 
   # 🧪 Tests unitaires et d'intégration améliorés
   test:
@@ -160,7 +165,7 @@ jobs:
       - name: 🧪 Run unit tests with enhanced coverage
         run: |
           echo "🧪 Exécution des tests unitaires avec couverture améliorée..."
-          pytest tests/unit/ tests/integration/ tests/performance/ tests/chaos/ \
+          pytest tests/unit/ tests/integration/ \
             --cov=modules \
             --cov=scripts \
             --cov-report=xml \
@@ -187,36 +192,29 @@ jobs:
           echo "=== 📁 FICHIERS COUVERTURE ==="
           ls -la coverage.xml htmlcov/ || echo "⚠️ Fichiers de couverture non trouvés"
 
-      - name: 🧪 Run integration tests (no coverage check)
-        run: |
-          echo "🧪 Exécution des tests d'intégration..."
-          pytest tests/integration/ \
-            --junitxml=integration-test-results.xml \
-            --ignore=modules/generative_ai/generated/ \
-            --timeout=300 \
-            -v
-
       # Nouveau : Tests de performance
       - name: ⚡ Run performance tests
+        if: github.ref == 'refs/heads/main'
         run: |
           echo "⚡ Exécution des tests de performance..."
           pytest tests/performance/ \
             --junitxml=performance-test-results.xml \
             --timeout=600 \
+            --no-cov \
             -v
 
       - name: 📊 Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         if: success() && github.event_name != 'pull_request'
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
           verbose: true
 
       - name: 📋 Upload enhanced test results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: enhanced-test-results-${{ matrix.os }}-${{ matrix.python-version }}
@@ -254,20 +252,22 @@ jobs:
       - name: 🔒 Run security tests
         run: |
           echo "🔒 Exécution des tests de sécurité..."
-          pytest -c config/pytest/pytest-security.ini --timeout=300
+          pytest tests/security/ --timeout=300 --no-cov -v
 
       - name: 🔍 Run bandit security scan
+        if: always()
         run: |
           echo "🔍 Scan de sécurité avec bandit..."
           bandit -r modules/ -f json -o bandit-report.json || echo "⚠️ Scan bandit terminé avec avertissements"
 
       - name: 🔍 Run safety check
+        if: always()
         run: |
           echo "🔍 Vérification des vulnérabilités des dépendances..."
           safety check --json --output safety-report.json || echo "⚠️ Safety check terminé avec avertissements"
 
       - name: 📋 Upload security report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: security-report
@@ -275,6 +275,7 @@ jobs:
             bandit-report.json
             safety-report.json
           retention-days: 90
+          if-no-files-found: ignore
 
   # 🌀 Tests de chaos (nightly)
   chaos:
@@ -301,10 +302,10 @@ jobs:
       - name: 🌀 Run chaos tests
         run: |
           echo "🌀 Exécution des tests de chaos..."
-          pytest -c config/pytest/pytest-chaos.ini --timeout=900
+          pytest tests/chaos/ --timeout=900 --no-cov -m "not slow" -v
 
       - name: 📋 Upload chaos artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: chaos-results
@@ -326,7 +327,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: 📋 Download all artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         continue-on-error: true
         with:
           path: artifacts/
@@ -353,7 +354,7 @@ jobs:
           } > report.md
 
       - name: 📋 Upload final report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:

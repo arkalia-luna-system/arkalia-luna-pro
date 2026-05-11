@@ -39,8 +39,8 @@ def main(**kwargs: Any) -> None:
     """
     ark_logger.info("✅ Hook exécuté : génération des updates", extra={"arkalia_module": "scripts"})
 
-    repo_path = Path.cwd()  # Assure que le chemin actuel est un dépôt Git
-    output_file = Path("docs/releases/dernieres_updates.md")
+    repo_path = Path(kwargs.get("repo_path", Path.cwd()))
+    output_file = Path(kwargs.get("output_file", "docs/releases/dernieres_updates.md"))
     command = [
         "git",
         "log",
@@ -67,6 +67,11 @@ def main(**kwargs: Any) -> None:
 
         with output_file.open("w", encoding="utf-8") as f:
             f.write(new_content)
+
+        # Nettoyage explicite du sidecar AppleDouble éventuel du fichier cible
+        apple_double = output_file.parent / f"._{output_file.name}"
+        if apple_double.exists():
+            apple_double.unlink()
 
         ark_logger.info(
             f"✅ Updates page générée avec {len(result.stdout.strip().splitlines())} "

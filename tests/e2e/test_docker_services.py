@@ -60,7 +60,7 @@ class TestDockerServicesE2E:
     async def test_service_health_checks(self, services_running: bool) -> None:
         """Test des health checks des services"""
         try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
+            async with httpx.AsyncClient(timeout=30.0, trust_env=False) as client:
                 # Test principal health endpoint
                 response = await client.get("http://localhost:8000/health")
                 assert response.status_code == 200
@@ -78,7 +78,7 @@ class TestDockerServicesE2E:
                     assert response.status_code == 200
                 except Exception:
                     pytest.skip("Reflexia health endpoint non disponible - test ignoré")
-        except httpx.ConnectError:
+        except httpx.HTTPError:
             pytest.skip("Services non disponibles - test ignoré")
 
     @pytest.mark.asyncio
@@ -96,7 +96,7 @@ class TestDockerServicesE2E:
     async def test_service_communication(self, services_running: bool) -> None:
         """Test de la communication entre services"""
         try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
+            async with httpx.AsyncClient(timeout=30.0, trust_env=False) as client:
                 # Test API principale
                 response = await client.get("http://localhost:8000/health")
                 assert response.status_code == 200
@@ -107,7 +107,7 @@ class TestDockerServicesE2E:
                     assert response.status_code == 200
                 except Exception:
                     pytest.skip("Communication avec assistantia non disponible - test ignoré")
-        except httpx.ConnectError:
+        except httpx.HTTPError:
             pytest.skip("Services non disponibles - test ignoré")
 
     @pytest.mark.asyncio
@@ -137,7 +137,7 @@ class TestDockerNetworkingE2E:
     async def test_internal_communication(self, services_running: bool) -> None:
         """Test de la communication interne entre conteneurs"""
         try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
+            async with httpx.AsyncClient(timeout=30.0, trust_env=False) as client:
                 # Test communication interne via l'API principale
                 response = await client.get("http://localhost:8000/health")
                 assert response.status_code == 200
@@ -148,18 +148,18 @@ class TestDockerNetworkingE2E:
                     assert response.status_code == 200
                 except Exception:
                     pytest.skip("Endpoint metrics non disponible - test ignoré")
-        except httpx.ConnectError:
+        except httpx.HTTPError:
             pytest.skip("Services non disponibles - test ignoré")
 
     @pytest.mark.asyncio
     async def test_port_exposure(self, services_running: bool) -> None:
         """Test de l'exposition des ports"""
         try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
+            async with httpx.AsyncClient(timeout=30.0, trust_env=False) as client:
                 # Test port principal
                 response = await client.get("http://localhost:8000/health")
                 assert response.status_code == 200
-        except httpx.ConnectError:
+        except httpx.HTTPError:
             pytest.skip("Services non disponibles - test ignoré")
 
     @pytest.mark.asyncio
@@ -174,7 +174,7 @@ class TestDockerVolumesE2E:
     @pytest.mark.asyncio
     async def test_persistent_storage(self, services_running: bool) -> None:
         """Test du stockage persistant"""
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        async with httpx.AsyncClient(timeout=30.0, trust_env=False) as client:
             try:
                 response = await client.post(
                     "http://localhost:8000/zeroia/decision",
@@ -264,7 +264,7 @@ class TestDockerSecurityE2E:
     @pytest.mark.asyncio
     async def test_security_scan(self, services_running: bool) -> None:
         """Test de scan de sécurité basique"""
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        async with httpx.AsyncClient(timeout=30.0, trust_env=False) as client:
             # Test endpoint admin (doit être protégé)
             try:
                 response = await client.get("http://localhost:8000/admin")

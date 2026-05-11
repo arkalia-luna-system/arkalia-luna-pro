@@ -135,7 +135,7 @@ modules/monitoring/
 ### **Démarrage du Stack**
 ```bash
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml up -d
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 ```
 
 ### **Accès aux Interfaces**

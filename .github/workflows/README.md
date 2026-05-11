@@ -1,36 +1,21 @@
 # 🚀 Workflows GitHub Actions - Arkalia-LUNA Pro
 
-## 📋 **Workflows Essentiels (5 workflows ultra-pro)**
+## 📋 Workflows actifs (visibles dans Actions)
 
-### 1. **`ci.yml`** - CI/CD Principale
-- **But** : Pipeline CI/CD complète (lint, tests unitaires, intégration, sécurité, coverage)
-- **Déclencheurs** : `push`, `pull_request` sur toutes les branches principales
-- **Jobs** : Lint, tests unitaires, intégration, sécurité, artefacts, codecov
-- **Statut** : **Workflow principal pour CI/CD**
+- `ci.yml` -> **CI · Build & Test**
+- `deploy.yml` -> **Deploy · App**
+- `docs.yml` -> **Deploy · Docs**
+- `security-scan.yml` -> **Security · Dependency & Code Scan**
+- `secret-scan.yml` -> **Security · Secret Scan**
+- `codeql.yml` -> **Security · CodeQL**
 
-### 2. **`deploy.yml`** - Déploiement Complet
-- **But** : Déploiement complet (validation, build Docker, E2E post-build)
-- **Déclencheurs** : `push`, `pull_request` sur branches principales
-- **Jobs** : Validation pré-déploiement, build images Docker, tests E2E
-- **Statut** : **Workflow principal pour déploiement**
+## 🗄️ Workflows archivés (masqués de la vue Actions)
 
-### 3. **`security-scan.yml`** - Scan de Sécurité
-- **But** : Scan de sécurité avancé (Bandit, Safety, pip-audit, npm audit)
-- **Déclencheurs** : `push`, `pull_request`, `schedule` (cron quotidien)
-- **Jobs** : Security scan, dependency update check, artefacts
-- **Statut** : **Workflow spécialisé pour sécurité**
+Ces workflows ne sont plus chargés par GitHub Actions car déplacés hors `.github/workflows/` :
 
-### 4. **`performance-tests.yml`** - Tests de Performance
-- **But** : Tests de performance (ZeroIA, API, intégration)
-- **Déclencheurs** : `push`, `pull_request`, `schedule` (cron quotidien)
-- **Jobs** : Benchmarks, artefacts, rapport de performance
-- **Statut** : **Workflow spécialisé pour performance**
-
-### 5. **`docs.yml`** - Documentation
-- **But** : Build, validation, et déploiement de la documentation
-- **Déclencheurs** : `push`, `pull_request` sur branches principales
-- **Jobs** : Validation, build, artefacts, déploiement GitHub Pages
-- **Statut** : **Workflow spécialisé pour documentation**
+- `.github/workflows_disabled/e2e.yml`
+- `.github/workflows_disabled/performance-tests.yml`
+- `.github/workflows_disabled/force-cleanup.yml`
 
 ---
 
@@ -48,11 +33,10 @@
 - **`performance-tests.yml`** : Performance (spécialisé)
 - **`docs.yml`** : Documentation (spécialisé)
 
-### **🎯 Interface GitHub Actions Optimisée**
-- **Workflows visibles** : 3 workflows essentiels (ci.yml, deploy.yml, docs.yml)
-- **Workflows masqués** : 2 workflows spécialisés (performance-tests.yml, security-scan.yml)
-- **Exécution manuelle** : Les workflows masqués sont disponibles via "Run workflow"
-- **Interface plus propre** : Moins de bruit visuel dans l'onglet Actions
+### 🎯 Interface GitHub Actions optimisée
+- Workflows actifs réduits et renommés de façon homogène.
+- Workflows utilitaires/marche arrière archivés hors dossier actif.
+- Interface Actions plus lisible (moins de bruit).
 
 ---
 

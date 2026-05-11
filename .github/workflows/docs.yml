@@ -1,5 +1,5 @@
 ---
-name: 📘 Deploy Documentation
+name: Deploy · Docs
 
 on:
   push:
@@ -151,7 +151,7 @@ jobs:
           fi
 
       - name: 📋 Upload built documentation
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 10
         with:
@@ -186,7 +186,7 @@ jobs:
           pip install mkdocs mkdocs-material mkdocs-minify-plugin
 
       - name: 📋 Download built documentation
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: documentation-build
           path: site/
@@ -273,7 +273,7 @@ jobs:
           echo "- Pages générées: $(find site/ -name '*.html' | wc -l 2>/dev/null || echo 'N/A')" >> docs-report.md
 
       - name: 📋 Upload documentation report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:

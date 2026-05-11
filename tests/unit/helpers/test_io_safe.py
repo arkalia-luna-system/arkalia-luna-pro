@@ -1,5 +1,6 @@
 # 🧪 Tests pour utils/io_safe.py - IO Sécurisé Arkalia-LUNA
 import json
+import os
 import threading
 import time
 from unittest.mock import patch
@@ -13,7 +14,9 @@ from modules.utils.helpers.io_safe import (
     atomic_write,
     locked_read,
     read_state_safe,
+    save_json_if_changed,
     save_json_safe,
+    save_toml_if_changed,
     save_toml_safe,
 )
 
@@ -99,6 +102,27 @@ class TestAtomicWrite:
         with patch("tempfile.NamedTemporaryFile", side_effect=OSError("Permission denied")):
             with pytest.raises(AtomicWriteError, match="Erreur écriture atomique"):
                 atomic_write(tmp_path / "test.txt", "data")
+
+    def test_atomic_write_cleans_stale_tmp_files(self, tmp_path) -> None:
+        """Nettoie les temporaires orphelins avant une nouvelle écriture."""
+        test_file = tmp_path / "state.toml"
+        stale_files = []
+
+        for i in range(20):
+            stale = tmp_path / f".state.toml.tmp.stale{i}.arkalia"
+            stale.write_text("orphan")
+            stale_files.append(stale)
+
+        old_time = time.time() - (2 * 3600)
+        for stale in stale_files:
+            os.utime(stale, (old_time, old_time))
+
+        result = atomic_write(test_file, {"status": "ok"})
+
+        assert result is True
+        leftovers = list(tmp_path.glob(".state.toml.tmp.*.arkalia"))
+        # Le garde-fou limite fortement l'accumulation.
+        assert len(leftovers) <= 16
 
 
 class TestLockedRead:
@@ -204,6 +228,28 @@ class TestSafeWrappers:
         assert test_file.exists()
         loaded = toml.loads(test_file.read_text())
         assert loaded == test_data
+
+    def test_save_toml_if_changed_cleans_comparison_tmp(self, tmp_path) -> None:
+        """Nettoie le fichier temporaire de comparaison après écriture."""
+        test_file = tmp_path / "state.toml"
+        payload = {"status": "ok"}
+
+        changed = save_toml_if_changed(payload, test_file, add_timestamp=False)
+
+        assert changed is True
+        assert test_file.exists()
+        assert not list(tmp_path.glob(".state.toml.tmp.*.arkalia"))
+
+    def test_save_json_if_changed_cleans_comparison_tmp(self, tmp_path) -> None:
+        """Nettoie le fichier temporaire de comparaison après écriture."""
+        test_file = tmp_path / "state.json"
+        payload = {"status": "ok"}
+
+        changed = save_json_if_changed(payload, test_file, add_timestamp=False)
+
+        assert changed is True
+        assert test_file.exists()
+        assert not list(tmp_path.glob(".state.json.tmp.*.arkalia"))
 
     def test_save_toml_safe_invalid_data(self, tmp_path) -> None:
         """🧠 Test sauvegarde TOML avec données invalides"""

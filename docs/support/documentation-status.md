@@ -120,7 +120,7 @@ Les points d'amélioration identifiés sont mineurs.
 - 6 services Docker configurés et opérationnels
 - API FastAPI sur port 8000 (arkalia-api)
 - Stack monitoring : Prometheus, Grafana, Loki, AlertManager, cAdvisor
-- CI/CD GitHub Actions : 671 tests passés, couverture 59.25%
+- CI/CD GitHub Actions : statut à valider sur le dernier run (chiffres variables)
 - Healthchecks implémentés sur les services
 
 ### 3. Endpoints API Documentés vs Réels
@@ -131,8 +131,8 @@ Les points d'amélioration identifiés sont mineurs.
 | `/metrics` | Oui | Multiple modules |
 | `/status` | Oui | `modules/helloria/core.py`, `zeroia/core.py` |
 | `/api/v1/health` | Oui | `assistantia/core.py` |
-| `/zeroia/health` | Oui | `modules/helloria/core.py` |
-| `/reflexia/health` | Oui | `modules/helloria/core.py` |
+| `/zeroia/health` | Oui | `app/main.py`, `modules/helloria/core.py` |
+| `/reflexia/health` | Oui | `modules/reflexia/core_api.py`, `modules/helloria/core.py` |
 | `/sandozia/health` | Oui | `modules/helloria/core.py` |
 
 ### 4. Monitoring Stack - Correspondance

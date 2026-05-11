@@ -5,7 +5,7 @@ Ce script génère un fichier Markdown avec le statut actuel de ZeroIA,
 incluant les logs Docker et les dernières décisions prises.
 """
 
-# scripts/generate_zeroia_status.py
+# scripts/_generate_zeroia_status.py
 
 import datetime
 import os

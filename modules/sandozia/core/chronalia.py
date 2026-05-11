@@ -20,6 +20,8 @@ from typing import Any
 
 from core.ark_logger import ark_logger
 
+MAX_CHRONALIA_JSONL_BYTES = 5 * 1024 * 1024
+
 
 @dataclass
 class CognitiveCycle:
@@ -300,13 +302,32 @@ class Chronalia:
 
     def _persist_cycle(self, cycle: CognitiveCycle) -> None:
         """💾 Persiste un cycle cognitif au format JSONL"""
+        self._trim_log_if_needed(self.cycles_file, MAX_CHRONALIA_JSONL_BYTES)
         with open(self.cycles_file, "a", encoding="utf-8") as f:
             f.write(json.dumps(asdict(cycle), ensure_ascii=False) + "\n")
 
     def _persist_pattern(self, pattern: dict[str, Any]) -> None:
         """💾 Persiste un pattern détecté"""
+        self._trim_log_if_needed(self.patterns_file, MAX_CHRONALIA_JSONL_BYTES)
         with open(self.patterns_file, "a", encoding="utf-8") as f:
             f.write(json.dumps(pattern, ensure_ascii=False) + "\n")
+
+    def _trim_log_if_needed(self, log_path: Path, max_bytes: int) -> None:
+        """Évite la croissance illimitée des fichiers JSONL de timeline."""
+        if not log_path.exists():
+            return
+        try:
+            current_size = log_path.stat().st_size
+            if current_size <= max_bytes:
+                return
+            keep_bytes = max_bytes // 2
+            with open(log_path, "rb") as src:
+                src.seek(-keep_bytes, 2)
+                tail = src.read()
+            with open(log_path, "wb") as dst:
+                dst.write(tail)
+        except OSError:
+            return
 
     def _load_cycles_since(self, since: datetime) -> list[CognitiveCycle]:
         """📖 Charge cycles depuis une date"""

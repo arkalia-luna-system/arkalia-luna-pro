@@ -109,6 +109,12 @@ class CrossModuleValidator:
         self.state_cache: dict[str, dict] = {}
         ark_logger.info("🔍 CrossModuleValidator initialized", extra={"arkalia_module": "utils"})
 
+    def _trim_validation_history(self) -> None:
+        """Garde un historique borné pour éviter la croissance mémoire."""
+        max_history = int(self.config.get("max_validation_history", 100))
+        if len(self.validation_history) > max_history:
+            self.validation_history = self.validation_history[-max_history:]
+
     def load_module_states(self) -> dict[str, dict]:
         """Charge les états de tous les modules."""
         states = {}
@@ -157,8 +163,7 @@ class CrossModuleValidator:
 
         # Enregistrer dans l'historique
         self.validation_history.append(validation_result)
-        if len(self.validation_history) > 50:
-            self.validation_history = self.validation_history[-50:]
+        self._trim_validation_history()
 
         ark_logger.info(
             f"✅ Cross-module validation completed: {validation_result['passed']}",
@@ -429,11 +434,7 @@ class CrossModuleValidator:
 
         # Ajouter à l'historique
         self.validation_history.extend(all_results)
-
-        # Limiter l'historique
-        max_history = self.config["max_validation_history"]
-        if len(self.validation_history) > max_history:
-            self.validation_history = self.validation_history[-max_history:]
+        self._trim_validation_history()
 
         # Calculer le score global de cohérence
         if all_results:

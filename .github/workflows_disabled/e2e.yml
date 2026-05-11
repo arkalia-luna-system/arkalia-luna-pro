@@ -1,0 +1,16 @@
+# Fichier temporaire pour nettoyer le workflow orphelin
+name: Test · E2E Manual
+on:
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Nettoyage en cours..."

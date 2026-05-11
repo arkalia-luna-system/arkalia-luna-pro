@@ -1,5 +1,5 @@
 ---
-name: 🚀 Deploy Arkalia-LUNA (Optimized)
+name: Deploy · App
 
 on:
   push:
@@ -48,9 +48,9 @@ jobs:
       - name: 🔍 Validate Dockerfiles
         run: |
           echo "🔍 Validation des Dockerfiles..."
-          if [ -f "scripts/validate-dockerfiles.sh" ]; then
-            chmod +x scripts/validate-dockerfiles.sh
-            ./scripts/validate-dockerfiles.sh
+          if [ -f "scripts/dev/validate-dockerfiles.sh" ]; then
+            chmod +x scripts/dev/validate-dockerfiles.sh
+            ./scripts/dev/validate-dockerfiles.sh
           else
             echo "⚠️ Script de validation Dockerfiles non trouvé, validation manuelle..."
             # Validation conditionnelle - ne fait échouer que si aucun Dockerfile n'est trouvé
@@ -223,7 +223,7 @@ jobs:
             echo "🔍 Vérification $service..."
             service_ok=0
             for i in {1..15}; do
-              if curl -f -s --max-time 30 "http://localhost:$service" > /dev/null; then
+              if curl --noproxy "*" -f -s --max-time 30 "http://localhost:$service" > /dev/null; then
                 echo "✅ $service disponible"
                 service_ok=1
                 break
@@ -234,6 +234,10 @@ jobs:
             done
             if [ "$service_ok" -ne 1 ]; then
               echo "❌ $service reste indisponible après 15 tentatives"
+              echo "📋 État des conteneurs:"
+              docker compose ps || true
+              echo "📋 Logs arkalia-api (200 dernières lignes):"
+              docker compose logs --tail=200 arkalia-api || true
               exit 1
             fi
           done
@@ -334,7 +338,7 @@ jobs:
           echo "- Gestion d'erreurs renforcée" >> deployment-report.md
 
       - name: 📋 Upload deployment report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:

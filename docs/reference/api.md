@@ -3,9 +3,9 @@
 ## État Actuel du Système (Mise à jour novembre 2025)
 
 ### CI/CD
-- 671 tests passés (642 unitaires + 29 intégration)
-- Couverture : 59.25% (seuil requis : 28%)
-- Temps d'exécution : 31.73s
+- Résultats dynamiques selon le dernier run GitHub Actions
+- Couverture : voir le rapport `coverage.xml` du pipeline (seuil requis : 28%)
+- Temps d'exécution : variable selon la charge CI
 - Healthcheck optimisé : Python urllib natif
 - Artefacts uploadés : Conditionnel et robuste
 
@@ -494,10 +494,11 @@ Toutes les requêtes API Enhanced nécessitent une authentification :
 
 ```bash
 # Header requis
-Authorization: Bearer <api_key>
+X-API-Key: <api_key>
 
 # Exemple avec curl
-curl -H "Authorization: Bearer ark_enhanced_v271_key" \
+API_KEY="<api_key>"
+curl -H "X-API-Key: $API_KEY" \
      http://localhost:8000/api/v1/zeroia/orchestrator/status
 ```
 

@@ -34,6 +34,32 @@ def test_health_endpoint() -> None:
     assert response.json() == {"status": "ok", "service": "arkalia-api"}
 
 
+def test_zeroia_health_endpoint() -> None:
+    """Test de l'endpoint health ZeroIA exposé par l'API principale."""
+    response = client.get("/zeroia/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert "status" in data
+    assert "components" in data or "error" in data
+
+
+def test_reflexia_health_endpoint() -> None:
+    """Test de l'endpoint health Reflexia exposé par le router /reflexia."""
+    response = client.get("/reflexia/health")
+    assert response.status_code == 200
+    assert response.json()["status"] == "ok"
+
+
+def test_zeroia_decision_endpoint() -> None:
+    """Test de l'endpoint de compatibilité /zeroia/decision."""
+    response = client.post("/zeroia/decision", json={"context": {}, "priority": "low"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "accepted"
+    assert data["module"] == "zeroia"
+    assert data["decision"] == "accepted"
+
+
 @patch("psutil.cpu_percent")
 @patch("psutil.virtual_memory")
 @patch("psutil.disk_usage")
@@ -111,25 +137,38 @@ def test_metrics_middleware() -> None:
 
 def test_cors_middleware() -> None:
     """Test de la configuration CORS"""
-    # Test avec une requête GET avec Origin
-    response = client.get("/", headers={"origin": "http://test.com"})
+    allowed_origin = "http://localhost:5173"
+
+    # Test avec une requête GET depuis une origine autorisée
+    response = client.get("/", headers={"origin": allowed_origin})
     assert response.status_code == 200
     assert "access-control-allow-origin" in response.headers
-    # Accepter '*' ou l'origine demandée
-    assert response.headers["access-control-allow-origin"] in ("*", "http://test.com")
+    assert response.headers["access-control-allow-origin"] == allowed_origin
     # Test avec une requête OPTIONS (preflight)
     response = client.options(
         "/",
         headers={
-            "origin": "http://test.com",
+            "origin": allowed_origin,
             "access-control-request-method": "GET",
             "access-control-request-headers": "content-type",
         },
     )
     assert response.status_code == 200
-    assert response.headers["access-control-allow-origin"] in ("*", "http://test.com")
+    assert response.headers["access-control-allow-origin"] == allowed_origin
     assert "GET" in response.headers["access-control-allow-methods"]
     assert "content-type" in response.headers["access-control-allow-headers"].lower()
+
+
+def test_sensitive_endpoints_require_api_key_when_configured(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("ARKALIA_API_KEY", "unit-test-key")
+
+    unauthorized = client.get("/status")
+    assert unauthorized.status_code == 401
+
+    authorized = client.get("/status", headers={"X-API-Key": "unit-test-key"})
+    assert authorized.status_code == 200
 
 
 def test_print_status(caplog: pytest.LogCaptureFixture) -> None:

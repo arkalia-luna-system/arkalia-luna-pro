@@ -42,7 +42,7 @@ RUN mkdir -p /app/logs \
 EXPOSE 8001
 
 # === Script de démarrage ===
-COPY scripts/start_generative_ai.sh /start.sh
+COPY scripts/ops/start_generative_ai.sh /start.sh
 RUN chmod +x /start.sh
 
 # === Point d'entrée ===

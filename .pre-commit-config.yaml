@@ -67,14 +67,14 @@ repos:
 
       - id: version-check
         name: Version consistency check
-        entry: python3 scripts/check_versions.py
+        entry: python3 scripts/dev/check_versions.py
         language: system
         files: "version.toml|pyproject.toml|requirements.txt"
         pass_filenames: false
 
       - id: docs-check
         name: Documentation check
-        entry: python3 scripts/check_docs.py
+        entry: python3 scripts/dev/check_docs.py
         language: system
         files: "^modules/.*\\.py$"
         exclude: ^archive/

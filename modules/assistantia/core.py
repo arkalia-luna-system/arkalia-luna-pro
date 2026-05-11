@@ -12,7 +12,7 @@ from datetime import datetime
 from pathlib import Path
 
 import requests
-from fastapi import APIRouter, BackgroundTasks, Depends, FastAPI, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Counter, Gauge, Histogram, generate_latest
@@ -163,6 +163,8 @@ class HealthResponse(BaseModel):
 # Variables globales pour le suivi
 startup_time = datetime.now()
 active_connections = 0
+ASSISTANTIA_CHAT_LOG_PATH = Path("logs/assistantia_chat.log")
+MAX_ASSISTANTIA_CHAT_LOG_BYTES = 5 * 1024 * 1024
 
 
 # Variable au niveau module pour éviter B008 (Depends dans argument par défaut)
@@ -210,6 +212,42 @@ def is_memoria_enabled() -> bool:
     return _memoria_enabled
 
 
+def _get_cors_origins() -> list[str]:
+    """Construit la liste d'origines CORS autorisées depuis l'environnement."""
+    raw = os.getenv("CORS_ALLOWED_ORIGINS", "").strip()
+    if raw:
+        return [origin.strip() for origin in raw.split(",") if origin.strip()]
+    return ["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173"]
+
+
+def require_api_key(x_api_key: str | None = Header(default=None, alias="X-API-Key")) -> None:
+    """Protège les endpoints sensibles via clé API si configurée."""
+    expected = os.getenv("ARKALIA_API_KEY", "").strip()
+    if not expected:
+        return
+    if x_api_key != expected:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+
+def _read_json_file_sync(path: Path) -> dict[str, object]:
+    """Lit un JSON de manière synchrone (utilisé via asyncio.to_thread)."""
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, dict):
+        raise ValueError(f"Invalid JSON object in {path}")
+    return data
+
+
+def _read_toml_file_sync(path: Path) -> dict[str, object]:
+    """Lit un TOML de manière synchrone (utilisé via asyncio.to_thread)."""
+    import toml
+
+    data = toml.load(path)
+    if not isinstance(data, dict):
+        raise ValueError(f"Invalid TOML object in {path}")
+    return data
+
+
 async def get_arkalia_context() -> tuple[str, float]:
     """
     Récupère le contexte des autres modules Arkalia avec score de qualité.
@@ -236,8 +274,7 @@ async def get_arkalia_context() -> tuple[str, float]:
         zeroia_dashboard = Path("state/zeroia_dashboard.json")
         if zeroia_dashboard.exists():
             try:
-                with open(zeroia_dashboard) as f:
-                    dashboard = json.load(f)
+                dashboard = await asyncio.to_thread(_read_json_file_sync, zeroia_dashboard)
                 status = dashboard.get("last_decision", "unknown")
                 context_parts.append(f"ZeroIA: {status}")
                 quality_score += 25.0 if status != "unknown" else 10.0
@@ -259,9 +296,7 @@ async def get_arkalia_context() -> tuple[str, float]:
         reflexia_state = Path("state/reflexia_state.toml")
         if reflexia_state.exists():
             try:
-                import toml
-
-                reflexia_data = toml.load(reflexia_state)
+                reflexia_data = await asyncio.to_thread(_read_toml_file_sync, reflexia_state)
                 status = reflexia_data.get("status", "unknown")
                 context_parts.append(f"Reflexia: {status}")
                 quality_score += 25.0 if status != "unknown" else 10.0
@@ -296,9 +331,7 @@ async def get_arkalia_context() -> tuple[str, float]:
         cognitive_state = Path("state/cognitive_reactor_state.toml")
         if cognitive_state.exists():
             try:
-                import toml
-
-                cognitive_data = toml.load(cognitive_state)
+                cognitive_data = await asyncio.to_thread(_read_toml_file_sync, cognitive_state)
                 status = cognitive_data.get("status", "unknown")
                 context_parts.append(f"Cognitive: {status}")
                 quality_score += 25.0 if status != "unknown" else 10.0
@@ -335,6 +368,26 @@ def _build_memoria_user_id(data: MessageInput) -> str:
     return "default_user"
 
 
+def _trim_log_if_needed(
+    log_path: Path, max_bytes: int = MAX_ASSISTANTIA_CHAT_LOG_BYTES
+) -> None:
+    """Conserve uniquement la fin du log quand il dépasse la taille max."""
+    if not log_path.exists():
+        return
+    try:
+        current_size = log_path.stat().st_size
+        if current_size <= max_bytes:
+            return
+        keep_bytes = max_bytes // 2
+        with open(log_path, "rb") as src:
+            src.seek(-keep_bytes, 2)
+            tail = src.read()
+        with open(log_path, "wb") as dst:
+            dst.write(tail)
+    except OSError:
+        return
+
+
 def _format_memoria_context(memories: list[MemoryRecord]) -> str:
     """
     Formate les souvenirs Memoria pour injection dans le prompt.
@@ -346,10 +399,10 @@ def _format_memoria_context(memories: list[MemoryRecord]) -> str:
     for idx, mem in enumerate(memories, start=1):
         title: str | None = None
         if hasattr(mem, "metadata") and isinstance(mem.metadata, dict):
-            title = mem.metadata.get("title")  # type: ignore[assignment]
+            title = mem.metadata.get("title")
         if getattr(mem, "title", None):
             # Priorité au titre explicite
-            title = mem.title  # type: ignore[assignment]
+            title = mem.title
         header = f"[Souvenir {idx} - {mem.memory_type}]"
         if title:
             header += f" {title}"
@@ -407,7 +460,7 @@ async def post_chat(
             raise HTTPException(status_code=400, detail="Message vide")
 
         # Vérifier la santé d'Ollama (mode dégradé possible)
-        ollama_available = _check_ollama_health()
+        ollama_available = await asyncio.to_thread(_check_ollama_health)
 
         # Récupérer le contexte Arkalia si demandé
         arkalia_context = None
@@ -486,7 +539,7 @@ async def post_chat(
             )
 
         # Appeler Ollama
-        response = query_ollama(processed_message, model, temperature)
+        response = await asyncio.to_thread(query_ollama, processed_message, model, temperature)
 
         # Calculer le temps de traitement
         processing_time = asyncio.get_event_loop().time() - start_time
@@ -533,7 +586,7 @@ async def post_chat(
         assistantia_prompts_total.labels(
             status="error", security_level="medium", model=data.model
         ).inc()
-        raise HTTPException(status_code=500, detail=f"Erreur interne: {str(e)}") from e
+        raise HTTPException(status_code=500, detail="Erreur interne AssistantIA") from e
     finally:
         # Décrémenter les connexions actives
         active_connections = max(0, active_connections - 1)
@@ -554,8 +607,9 @@ async def log_chat_interaction(
         }
 
         # Écrire dans le log d'AssistantIA
-        log_file = Path("logs/assistantia_chat.log")
+        log_file = ASSISTANTIA_CHAT_LOG_PATH
         log_file.parent.mkdir(exist_ok=True)
+        _trim_log_if_needed(log_file)
 
         with open(log_file, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
@@ -674,7 +728,7 @@ async def health() -> HealthResponse:
 
 
 @router.get("/metrics", response_model=None)
-async def get_metrics() -> PlainTextResponse | JSONResponse:
+async def get_metrics(_: None = Depends(require_api_key)) -> PlainTextResponse | JSONResponse:
     """
     Endpoint métriques Prometheus pour AssistantIA.
 
@@ -696,12 +750,12 @@ async def get_metrics() -> PlainTextResponse | JSONResponse:
         ark_logger.error(f"Erreur métriques: {e}", extra={"arkalia_module": "assistantia"})
         return JSONResponse(
             status_code=500,
-            content={"error": f"Erreur métriques : {str(e)}"},
+            content={"error": "Erreur métriques AssistantIA"},
         )
 
 
 @router.get("/models", response_model=None)
-async def get_available_models() -> dict | JSONResponse:
+async def get_available_models(_: None = Depends(require_api_key)) -> dict | JSONResponse:
     """
     Récupère la liste des modèles disponibles.
 
@@ -733,7 +787,7 @@ async def get_available_models() -> dict | JSONResponse:
             f"Erreur récupération modèles: {e}", extra={"arkalia_module": "assistantia"}
         )
         return JSONResponse(
-            status_code=500, content={"error": f"Erreur récupération modèles: {str(e)}"}
+            status_code=500, content={"error": "Erreur récupération modèles AssistantIA"}
         )
 
 
@@ -749,8 +803,8 @@ app = FastAPI(
 # Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En production, spécifier les domaines autorisés
-    allow_credentials=True,
+    allow_origins=_get_cors_origins(),
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

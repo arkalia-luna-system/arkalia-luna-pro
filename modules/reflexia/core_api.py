@@ -6,7 +6,9 @@ Ce module fait partie du système Arkalia Luna Pro.
 
 # 📁 modules/reflexia/core_api.py
 
-from fastapi import APIRouter, FastAPI
+import os
+
+from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, Gauge, generate_latest
 
@@ -29,6 +31,15 @@ app = FastAPI()
 app.include_router(router)
 
 
+def require_api_key(x_api_key: str | None = Header(default=None, alias="X-API-Key")) -> None:
+    """Protège les endpoints sensibles via clé API si configurée."""
+    expected = os.getenv("ARKALIA_API_KEY", "").strip()
+    if not expected:
+        return
+    if x_api_key != expected:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+
 def get_reflexia_status() -> dict:
     """
     Fonction testable indépendamment de l'API FastAPI.
@@ -38,8 +49,22 @@ def get_reflexia_status() -> dict:
     return {"status": "ok", "metrics": result["metrics"]}
 
 
+@router.get("/health", operation_id="reflexia_router_health")
+async def reflexia_health():
+    """
+    Health check Reflexia sur le router monté sous /reflexia (API principale + CI).
+
+    Returns:
+        dict: Statut de santé du module Reflexia.
+    """
+    try:
+        return {"status": "ok", "service": "reflexia", "module": "reflexia"}
+    except Exception as e:
+        return {"status": "unhealthy", "error": str(e)}
+
+
 @router.get("/check")
-async def check_reflexia_status():
+async def check_reflexia_status(_: None = Depends(require_api_key)):
     """
     Endpoint de vérification réflexive.
 
@@ -69,7 +94,7 @@ async def check_reflexia_status():
 
 
 @router.get("/metrics")
-async def get_metrics():
+async def get_metrics(_: None = Depends(require_api_key)):
     """
     Endpoint métriques Prometheus pour Reflexia.
 

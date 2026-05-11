@@ -63,6 +63,7 @@ class SandoziaMetrics:
         self.retention_hours = retention_hours
         self.metrics_store: dict[str, list[MetricPoint]] = defaultdict(list)
         self.correlations_cache: dict[str, float] = {}
+        self.max_correlations_cache = 1000
         ark_logger.info("📊 SandoziaMetrics initialized", extra={"arkalia_module": "sandozia"})
 
     def add_metric(self, name: str, value: float, labels: dict[str, str] | None = None) -> None:
@@ -126,6 +127,11 @@ class SandoziaMetrics:
             correlation: float = numerator / denominator
             cache_key = f"{metric1}_{metric2}_{time_window_minutes}"
             self.correlations_cache[cache_key] = correlation
+            if len(self.correlations_cache) > self.max_correlations_cache:
+                # Supprime des entrées anciennes (ordre d'insertion dict).
+                overflow = len(self.correlations_cache) - self.max_correlations_cache
+                for old_key in list(self.correlations_cache.keys())[:overflow]:
+                    self.correlations_cache.pop(old_key, None)
             return correlation
         except Exception as e:
             ark_logger.warning(
@@ -384,6 +390,7 @@ class MetricsCollector:
         }
         self.metrics_buffer: dict[str, list[dict]] = {}
         self.alerts: list[dict] = []
+        self.max_alert_history = 1000
         ark_logger.info("📊 MetricsCollector initialized", extra={"arkalia_module": "sandozia"})
 
     def collect_module_metrics(self, module_name: str, metrics: dict) -> None:
@@ -438,6 +445,8 @@ class MetricsCollector:
                         "severity": "warning",
                     }
                     self.alerts.append(alert)
+                    if len(self.alerts) > self.max_alert_history:
+                        self.alerts = self.alerts[-self.max_alert_history :]
                     ark_logger.warning(
                         f"⚠️ Alert: {module_name}.{metric_name} = {value} > {threshold}",
                         extra={"arkalia_module": "sandozia"},

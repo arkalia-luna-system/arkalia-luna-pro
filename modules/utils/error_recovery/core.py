@@ -328,6 +328,8 @@ class ErrorRecoverySystem:
         self.recovery_history: list[RecoveryResult] = []
         self.is_running = False
         self.max_retries = 3
+        self.max_errors_per_module = 200
+        self.max_recovery_history = 500
 
         # Métriques
         self.metrics: RecoveryMetrics = {
@@ -384,6 +386,10 @@ class ErrorRecoverySystem:
             self.active_errors[error.module_name] = []
 
         self.active_errors[error.module_name].append(error)
+        if len(self.active_errors[error.module_name]) > self.max_errors_per_module:
+            self.active_errors[error.module_name] = self.active_errors[error.module_name][
+                -self.max_errors_per_module :
+            ]
         self.metrics["total_errors"] += 1
         self.metrics["last_error_time"] = datetime.now().isoformat()
 
@@ -470,6 +476,8 @@ class ErrorRecoverySystem:
 
             # Mettre à jour historique
             self.recovery_history.append(recovery_result)
+            if len(self.recovery_history) > self.max_recovery_history:
+                self.recovery_history = self.recovery_history[-self.max_recovery_history :]
 
             return recovery_result
 
@@ -508,7 +516,7 @@ class ErrorRecoverySystem:
             f"⚠️ Contradiction détectée: ZeroIA={zeroia_state}, ReflexIA={reflexia_state}"
         )
 
-    async def run_recovery_loop(self):
+    async def run_recovery_loop(self) -> None:
         """Boucle principale de récupération"""
         self.is_running = True
         ark_logger.info("💥 Démarrage boucle de récupération", extra={"arkalia_module": "utils"})

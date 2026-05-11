@@ -16,7 +16,7 @@ Documentation complète des opérations et maintenance d'Arkalia-LUNA Pro avec m
 ### Monitoring et Observabilité
 ```bash
 # Validation monitoring complet
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 
 # Vérification services monitoring
 docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml ps
@@ -52,7 +52,7 @@ ark-check-all
 ark-zeroia-logs
 
 # Validation monitoring
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 
 # Métriques Arkalia
 curl http://localhost:8000/metrics | grep arkalia
@@ -74,7 +74,7 @@ ark-zeroia-health
 
 # Redémarrer monitoring
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml restart
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml restart
 
 # Nettoyer monitoring
 docker system prune -f
@@ -96,8 +96,8 @@ docker logs alertmanager
 
 # Redémarrer services
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml down
-docker-compose -f docker-compose.monitoring.yml up -d
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml down
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 ```
 
 ## 🎯 Métriques Clés
@@ -152,13 +152,13 @@ docker cp grafana:/var/lib/grafana ./backup/grafana-data/
 ```bash
 # Arrêter services
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml down
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml down
 
 # Mettre à jour images
-docker-compose -f docker-compose.monitoring.yml pull
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml pull
 
 # Redémarrer
-docker-compose -f docker-compose.monitoring.yml up -d
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 ```
 
 ### Nettoyage
@@ -171,8 +171,8 @@ docker system prune -f
 
 # Redémarrer proprement
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml down
-docker-compose -f docker-compose.monitoring.yml up -d
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml down
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 ```
 
 ## 📈 Validation Continue
@@ -182,7 +182,7 @@ docker-compose -f docker-compose.monitoring.yml up -d
 ### **Tests et Validation**
 ```bash
 # Validation monitoring
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 
 # Tests complets
 pytest tests/ -v

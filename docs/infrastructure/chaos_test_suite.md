@@ -24,16 +24,16 @@ La suite de tests de chaos d'Arkalia-LUNA Pro valide la résilience du système 
 
 ```bash
 # Lancement rapide
-python scripts/chaos_test.py
+python tests/chaos/chaos_test.py
 
 # Mode simulation (recommandé pour premiers tests)
-python scripts/chaos_test.py --dry-run
+python tests/chaos/chaos_test.py --dry-run
 
 # Test de durée spécifique
-python scripts/chaos_test.py --duration 120
+python tests/chaos/chaos_test.py --duration 120
 
 # Scénario spécifique
-python scripts/chaos_test.py --scenario config
+python tests/chaos/chaos_test.py --scenario config
 ```
 
 ## 🌪️ Scénarios de Chaos
@@ -43,7 +43,7 @@ python scripts/chaos_test.py --scenario config
 **Objectif :** Tester la robustesse face aux fichiers de config corrompus
 
 ```bash
-python scripts/chaos_test.py --scenario config
+python tests/chaos/chaos_test.py --scenario config
 ```
 
 **Cibles :**
@@ -62,7 +62,7 @@ python scripts/chaos_test.py --scenario config
 **Objectif :** Validation de la récupération face à la perte de fichiers
 
 ```bash
-python scripts/chaos_test.py --scenario files
+python tests/chaos/chaos_test.py --scenario files
 ```
 
 **Cibles :**
@@ -76,7 +76,7 @@ python scripts/chaos_test.py --scenario files
 **Objectif :** Test de comportement sous stress mémoire
 
 ```bash
-python scripts/chaos_test.py --scenario memory
+python tests/chaos/chaos_test.py --scenario memory
 ```
 
 **Méthode :**
@@ -89,7 +89,7 @@ python scripts/chaos_test.py --scenario memory
 **Objectif :** Validation de la résilience réseau
 
 ```bash
-python scripts/chaos_test.py --scenario network
+python tests/chaos/chaos_test.py --scenario network
 ```
 
 **Services testés :**
@@ -103,7 +103,7 @@ python scripts/chaos_test.py --scenario network
 **Objectif :** Test spécifique corruption IA décisionnelle
 
 ```bash
-python scripts/chaos_test.py --scenario zeroia
+python tests/chaos/chaos_test.py --scenario zeroia
 ```
 
 **Méthodes d'injection :**
@@ -167,7 +167,7 @@ Chaque test génère un rapport dans `logs/chaos_reports/` :
 ### Mode Dry-Run
 
 ```bash
-python scripts/chaos_test.py --dry-run
+python tests/chaos/chaos_test.py --dry-run
 ```
 
 - **Simulation complète** : Aucune modification réelle
@@ -208,7 +208,7 @@ python scripts/chaos_test.py --dry-run
 ```yaml
 - name: 🧪 Chaos Testing
   run: |
-    python scripts/chaos_test.py --dry-run --duration 30
+    python tests/chaos/chaos_test.py --dry-run --duration 30
 ```
 
 ### Tests automatiques
@@ -239,7 +239,7 @@ cp chaos_backups/*.backup /path/to/original/
 
 ```bash
 # Logs détaillés
-python scripts/chaos_test.py --scenario config -v
+python tests/chaos/chaos_test.py --scenario config -v
 ```
 
 ### Reset Complet

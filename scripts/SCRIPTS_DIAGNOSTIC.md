@@ -70,9 +70,9 @@ python scripts/ark-master-orchestrator.py --restart
 
 **Usage :**
 ```bash
-python scripts/ark-modules-analysis.py
-python scripts/ark-modules-analysis.py --module zeroia --detailed
-python scripts/ark-modules-analysis.py --export report.json
+python scripts/dev/ark-modules-analysis.py
+python scripts/dev/ark-modules-analysis.py --module zeroia --detailed
+python scripts/dev/ark-modules-analysis.py --export report.json
 ```
 
 **Fonctionnalités :**
@@ -92,9 +92,9 @@ python scripts/ark-modules-analysis.py --export report.json
 
 **Usage :**
 ```bash
-python scripts/ark-validate-performance.py
-python scripts/ark-validate-performance.py --module zeroia
-python scripts/ark-validate-performance.py --benchmark
+python scripts/dev/ark-validate-performance.py
+python scripts/dev/ark-validate-performance.py --module zeroia
+python scripts/dev/ark-validate-performance.py --benchmark
 ```
 
 **Fonctionnalités :**
@@ -120,9 +120,9 @@ Module sandozia: 89ms (✅ OK)
 
 **Usage :**
 ```bash
-python scripts/ark-validate-coverage.py
-python scripts/ark-validate-coverage.py --module zeroia
-python scripts/ark-validate-coverage.py --threshold 80
+python scripts/dev/ark-validate-coverage.py
+python scripts/dev/ark-validate-coverage.py --module zeroia
+python scripts/dev/ark-validate-coverage.py --threshold 80
 ```
 
 **Fonctionnalités :**
@@ -139,9 +139,9 @@ python scripts/ark-validate-coverage.py --threshold 80
 
 **Usage :**
 ```bash
-python scripts/ark-validate-monitoring.py
-python scripts/ark-validate-monitoring.py --check-prometheus
-python scripts/ark-validate-monitoring.py --check-grafana
+python scripts/dev/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py --check-prometheus
+python scripts/dev/ark-validate-monitoring.py --check-grafana
 ```
 
 **Fonctionnalités :**
@@ -215,7 +215,7 @@ python scripts/cleanup_confidence_memory.py --days 7 --max-entries 500
 
 **Usage :**
 ```bash
-bash scripts/ark-clean-state.sh
+bash scripts/ops/ark-clean-state.sh
 ```
 
 **Fonctionnalités :**
@@ -231,7 +231,7 @@ bash scripts/ark-clean-state.sh
 
 **Usage :**
 ```bash
-bash scripts/ark-clean-json.sh
+bash scripts/ops/ark-clean-json.sh
 ```
 
 **Fonctionnalités :**
@@ -247,7 +247,7 @@ bash scripts/ark-clean-json.sh
 
 **Usage :**
 ```bash
-bash scripts/ark-clean-hidden.sh
+bash scripts/ops/ark-clean-hidden.sh
 ```
 
 **Fonctionnalités :**
@@ -284,8 +284,8 @@ python scripts/ark-performance-benchmark.py --module zeroia --export results.jso
 
 **Usage :**
 ```bash
-python scripts/ark-pyright-fix.py
-python scripts/ark-pyright-fix.py --file modules/zeroia/core.py
+python scripts/dev/ark-pyright-fix.py
+python scripts/dev/ark-pyright-fix.py --file modules/zeroia/core.py
 ```
 
 **Fonctionnalités :**
@@ -304,8 +304,8 @@ python scripts/ark-pyright-fix.py --file modules/zeroia/core.py
 
 **Usage :**
 ```bash
-bash scripts/ark-lint-report.sh
-bash scripts/ark-lint-report.sh --output lint-report.html
+bash scripts/dev/ark-lint-report.sh
+bash scripts/dev/ark-lint-report.sh --output lint-report.html
 ```
 
 **Fonctionnalités :**
@@ -341,14 +341,14 @@ bash scripts/ark-lint-report.sh --output lint-report.html
 1. **Avant développement :**
    ```bash
    python scripts/ark-master-diagnostic.py
-   python scripts/ark-validate-coverage.py
+   python scripts/dev/ark-validate-coverage.py
    ```
 
 2. **Avant commit :**
    ```bash
-   bash scripts/ark-clean-hidden.sh
-   bash scripts/ark-fix-linting.sh
-   bash scripts/ark-fix-style.sh
+   bash scripts/ops/ark-clean-hidden.sh
+   bash scripts/dev/ark-fix-linting.sh
+   bash scripts/dev/ark-fix-style.sh
    ```
 
 3. **Maintenance régulière :**
@@ -360,7 +360,7 @@ bash scripts/ark-lint-report.sh --output lint-report.html
 4. **Après optimisations :**
    ```bash
    python scripts/ark-performance-benchmark.py
-   python scripts/ark-validate-performance.py
+   python scripts/dev/ark-validate-performance.py
    ```
 
 ### Scripts à exécuter quotidiennement

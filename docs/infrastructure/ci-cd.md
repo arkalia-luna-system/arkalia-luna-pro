@@ -38,7 +38,7 @@ Résolution des conflits entre Black et Flake8 via `.flake8` :
 max-line-length = 88
 ignore = E501,E203,W503
 per-file-ignores =
-    scripts/test_model_poisoning.py:E402
+    tests/security/test_poisoning.py:E402
 ```
 
 **Règles ignorées** :
@@ -89,7 +89,7 @@ pytest tests/performance/ -v
 pytest tests/security/ -v
 
 # Validation monitoring
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 ```
 
 ### Vérifications ZeroIA

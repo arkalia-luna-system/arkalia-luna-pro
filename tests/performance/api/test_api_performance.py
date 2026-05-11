@@ -88,10 +88,7 @@ class TestAPIPerformance:
             def reflexia_check() -> int:
                 import requests
 
-                payload = {"module": "zeroia", "check_type": "health"}
-                response = requests.post(
-                    "http://localhost:8000/reflexia/check", json=payload, timeout=10
-                )
+                response = requests.get("http://localhost:8000/reflexia/check", timeout=10)
                 return response.status_code
 
             result = benchmark(reflexia_check)

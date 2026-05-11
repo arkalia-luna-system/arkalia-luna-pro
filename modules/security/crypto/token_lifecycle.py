@@ -380,9 +380,20 @@ class TokenManager:
         if metadata.max_usage_count:
             payload["max_usage"] = metadata.max_usage_count
 
-        # Ajouter les claims personnalisés
+        # Ajouter les claims personnalisés (sans écraser les claims de sécurité)
         if custom_claims:
-            payload.update(custom_claims)
+            reserved_claims = {
+                "jti",
+                "iat",
+                "sub",
+                "token_type",
+                "permissions",
+                "usage_count",
+                "exp",
+                "max_usage",
+            }
+            safe_claims = {k: v for k, v in custom_claims.items() if k not in reserved_claims}
+            payload.update(safe_claims)
 
         return jwt.encode(payload, jwt_secret, algorithm="HS256")
 
@@ -558,6 +569,9 @@ class TokenManager:
                 "⚠️ Token is not a refresh token", extra={"arkalia_module": "security"}
             )
             return None, None
+
+        # Rotation one-time: révoquer le refresh token consommé
+        self.revoke_token(metadata.token_id, "Refresh token consumed")
 
         # Générer un nouveau token d'accès
         new_token_id, new_token_value = self.generate_token(

@@ -89,6 +89,7 @@ class BehaviorAnalyzer:
         self.pattern_history: list[BehaviorPattern] = []
         self.metrics_buffer: dict[str, deque] = defaultdict(lambda: deque(maxlen=1000))
         self.decision_history: deque = deque(maxlen=500)
+        self.max_metric_keys = 500
 
         # État statistique
         self.baseline_stats: dict[str, dict] = {}
@@ -108,10 +109,24 @@ class BehaviorAnalyzer:
 
         key = f"{module_name}.{metric_name}"
         self.metrics_buffer[key].append({"value": value, "timestamp": timestamp})
+        self._trim_metric_keys_if_needed()
 
         # Mettre à jour les statistiques de base si suffisamment d'échantillons
         if len(self.metrics_buffer[key]) >= 30:
             self._update_baseline_stats(key)
+
+    def _trim_metric_keys_if_needed(self) -> None:
+        """Borne la cardinalité des clés de métriques suivies."""
+        if len(self.metrics_buffer) <= self.max_metric_keys:
+            return
+
+        overflow = len(self.metrics_buffer) - self.max_metric_keys
+        # Dict conserve l'ordre d'insertion: on retire les clés les plus anciennes.
+        old_keys = list(self.metrics_buffer.keys())[:overflow]
+        for key in old_keys:
+            self.metrics_buffer.pop(key, None)
+            self.baseline_stats.pop(key, None)
+            self.anomaly_counters.pop(key, None)
 
     def add_decision_event(self, module_name: str, decision_data: dict) -> None:
         """Ajoute un événement de décision à l'historique.

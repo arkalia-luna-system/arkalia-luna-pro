@@ -31,10 +31,10 @@ tests/
 
 - **Tous les tests** : `pytest tests/`
 - **Unitaires** : `pytest tests/unit/`
-- **Intégration** : `pytest -c config/pytest/pytest-integration.ini`
-- **Performance** : `pytest -c config/pytest/pytest-performance.ini`
-- **Chaos** : `pytest -c config/pytest/pytest-chaos.ini`
-- **Sécurité** : `pytest -c config/pytest/pytest-security.ini`
+- **Intégration** : `pytest tests/integration/ -v`
+- **Performance** : `pytest tests/performance/ -v`
+- **Chaos** : `pytest tests/chaos/ -v -m "not slow"`
+- **Sécurité** : `pytest tests/security/ -v`
 - **E2E** : `pytest tests/e2e/`
 
 ## 🛠️ Bonnes pratiques

@@ -69,7 +69,7 @@ Si une incohérence ou un pattern critique est détecté → il déclenche ZeroI
 - modules/reflexia/core.py — moteur de veille
 - modules/zeroia/reason_loop.py — raisonnement contextuel
 - modules/assistantia/response_engine.py — action adaptée
-- scripts/snapshot_generator.py — trace mémoire
+- scripts/generate_dashboard.py — trace mémoire
 
 ---
 

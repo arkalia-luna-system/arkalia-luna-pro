@@ -137,7 +137,7 @@ async def main() -> None:
 
     if args.status:
         status = sandozia.get_current_status()
-        ark_logger.info(json.dumps(status, indent=2, extra={"module": "core"}))
+        ark_logger.info(json.dumps(status, indent=2), extra={"module": "core"})
         return
 
     if args.start:

@@ -40,6 +40,10 @@ _CACHE_TIMESTAMPS: dict[str, float] = {}
 _CACHE_TTL: float = 30.0  # 30 secondes par défaut
 _cache_lock = threading.Lock()
 
+# Garde-fou anti-accumulation de fichiers temporaires d'écriture atomique.
+_TMP_RETENTION_SECONDS = 60 * 60  # 1h
+_TMP_MAX_KEEP = 16
+
 
 def _get_file_lock(file_path: Path) -> threading.Lock:
     """Obtient un verrou spécifique à un fichier"""
@@ -49,6 +53,48 @@ def _get_file_lock(file_path: Path) -> threading.Lock:
         if str_path not in _file_locks:
             _file_locks[str_path] = threading.Lock()
         return _file_locks[str_path]
+
+
+def _cleanup_stale_atomic_tmp(file_path: Path) -> None:
+    """
+    Nettoie les temporaires atomiques orphelins.
+
+    Un arrêt brutal peut laisser des `.tmp.*.arkalia`. On purge d'abord ceux
+    trop anciens, puis on limite le nombre restant pour éviter la croissance.
+    """
+    parent = file_path.parent
+    if not parent.exists():
+        return
+
+    pattern = f".{file_path.name}.tmp.*.arkalia"
+    now = time.time()
+    tmp_candidates: list[Path] = []
+
+    for tmp in parent.glob(pattern):
+        if not tmp.is_file():
+            continue
+        tmp_candidates.append(tmp)
+        try:
+            if now - tmp.stat().st_mtime > _TMP_RETENTION_SECONDS:
+                tmp.unlink()
+        except OSError:
+            # Best effort: ne jamais bloquer l'écriture principale.
+            continue
+
+    # Garder uniquement les plus récents si la quantité explose.
+    if len(tmp_candidates) <= _TMP_MAX_KEEP:
+        return
+
+    try:
+        existing = [p for p in parent.glob(pattern) if p.is_file()]
+        existing.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+        for stale in existing[_TMP_MAX_KEEP:]:
+            try:
+                stale.unlink()
+            except OSError:
+                continue
+    except OSError:
+        return
 
 
 def atomic_write(
@@ -78,9 +124,11 @@ def atomic_write(
     file_lock = _get_file_lock(file_path)
 
     with file_lock:
+        tmp_path: str | None = None
         try:
             # Crée le répertoire parent si nécessaire
             file_path.parent.mkdir(parents=True, exist_ok=True)
+            _cleanup_stale_atomic_tmp(file_path)
 
             # Fichier temporaire dans le même répertoire (même système de fichiers)
             with tempfile.NamedTemporaryFile(
@@ -120,7 +168,7 @@ def atomic_write(
 
         except Exception as e:
             # Nettoie le fichier temporaire en cas d'erreur
-            if "tmp_path" in locals() and os.path.exists(tmp_path):
+            if tmp_path is not None and os.path.exists(tmp_path):
                 try:
                     os.unlink(tmp_path)
                 except OSError as cleanup_error:
@@ -357,6 +405,7 @@ def save_toml_if_changed(
         AtomicWriteError: En cas d'erreur d'écriture
     """
     file_path = Path(file_path)
+    _cleanup_stale_atomic_tmp(file_path)
     data_to_hash = data.copy()
     if add_timestamp:
         data_to_hash.pop("timestamp", None)
@@ -392,7 +441,11 @@ def save_toml_if_changed(
             data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # Utiliser atomic_write pour la sauvegarde finale (thread-safe)
-        return atomic_write(file_path, data)
+        result = atomic_write(file_path, data)
+        # Nettoyage du temporaire de comparaison (sinon accumulation sur disque).
+        if tmp_file_path is not None and tmp_file_path.exists():
+            os.unlink(tmp_file_path)
+        return result
 
     except Exception as e:
         # Nettoyer en cas d'erreur
@@ -425,11 +478,13 @@ def save_json_if_changed(
         AtomicWriteError: En cas d'erreur d'écriture
     """
     file_path = Path(file_path)
+    _cleanup_stale_atomic_tmp(file_path)
     data_to_hash = data.copy()
     if add_timestamp:
         data_to_hash.pop("timestamp", None)
 
     # Créer un fichier temporaire pour comparer
+    tmp_file_path: Path | None = None
     try:
         with tempfile.NamedTemporaryFile(
             mode="w",
@@ -459,11 +514,15 @@ def save_json_if_changed(
 
         # Utiliser atomic_write pour la sauvegarde finale (thread-safe)
         # Note: atomic_write gère déjà le formatage JSON
-        return atomic_write(file_path, data)
+        result = atomic_write(file_path, data)
+        # Nettoyage du temporaire de comparaison (sinon accumulation sur disque).
+        if tmp_file_path is not None and tmp_file_path.exists():
+            os.unlink(tmp_file_path)
+        return result
 
     except Exception as e:
         # Nettoyer en cas d'erreur
-        if "tmp_file_path" in locals() and tmp_file_path.exists():
+        if tmp_file_path is not None and tmp_file_path.exists():
             try:
                 os.unlink(tmp_file_path)
             except OSError:

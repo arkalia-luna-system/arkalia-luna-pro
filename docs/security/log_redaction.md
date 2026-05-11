@@ -103,10 +103,10 @@ export ARKALIA_SCRUBBER_VERBOSE="true"
 
 ```bash
 # Nettoyage quotidien à 02:00
-0 2 * * * cd /path/to/arkalia && python scripts/log_scrubber.py
+0 2 * * * cd /path/to/arkalia && python scripts/ops/log_scrubber.py
 
 # Nettoyage hebdomadaire complet (dimanche 03:00)
-0 3 * * 0 cd /path/to/arkalia && python scripts/log_scrubber.py --verbose
+0 3 * * 0 cd /path/to/arkalia && python scripts/ops/log_scrubber.py --verbose
 
 # Purge archives anciennes (1er du mois 04:00)
 0 4 1 * * find logs/archives/ -name '*.gz' -mtime +90 -delete
@@ -116,7 +116,7 @@ export ARKALIA_SCRUBBER_VERBOSE="true"
 
 ```bash
 # Configuration cron automatique
-bash scripts/setup_log_scrubber_cron.sh
+bash scripts/ops/setup_log_scrubber_cron.sh
 
 # Vérification status
 crontab -l | grep "Arkalia-LUNA"
@@ -230,23 +230,23 @@ gpg --cipher-algo AES256 --compress-algo 1 --symmetric logs/sensitive.log
 
 ```bash
 # Nettoyage standard
-python scripts/log_scrubber.py
+python scripts/ops/log_scrubber.py
 
 # Mode dry-run (test)
-python scripts/log_scrubber.py --dry-run
+python scripts/ops/log_scrubber.py --dry-run
 
 # Mode verbose
-python scripts/log_scrubber.py --verbose
+python scripts/ops/log_scrubber.py --verbose
 
 # Configuration personnalisée
-python scripts/log_scrubber.py --config config/custom_scrubber.json
+python scripts/ops/log_scrubber.py --config config/custom_scrubber.json
 ```
 
 ### Mode Automatique
 
 ```bash
 # Installation cron
-bash scripts/setup_log_scrubber_cron.sh
+bash scripts/ops/setup_log_scrubber_cron.sh
 
 # Vérification logs cron
 tail -f logs/cron_scrubber.log
@@ -284,14 +284,14 @@ launchctl list | grep cron  # macOS
 
 ```bash
 # Permissions insuffisantes
-chmod +x scripts/log_scrubber.py
+chmod +x scripts/ops/log_scrubber.py
 
 # Python introuvable
 which python3
 export PATH="/usr/bin:$PATH"
 
 # Logs corrompus
-python scripts/log_scrubber.py --skip-corrupted
+python scripts/ops/log_scrubber.py --skip-corrupted
 ```
 
 ### Récupération d'Urgence

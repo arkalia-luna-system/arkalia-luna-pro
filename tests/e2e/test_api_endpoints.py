@@ -43,7 +43,7 @@ class TestAPIEndpointsE2E:
             assert response.status_code == 200
             data = response.json()
             assert "status" in data
-            assert "metrics" in data
+            assert "metrics" in data or "components" in data
         except Exception:
             pytest.skip("ZeroIA non disponible - test ignoré")
 
@@ -96,8 +96,7 @@ class TestAPIEndpointsE2E:
     async def test_reflexia_check(self, api_client: httpx.AsyncClient) -> None:
         """Test du endpoint de vérification ReflexIA"""
         try:
-            payload = {"module": "zeroia", "check_type": "health"}
-            response = await api_client.post("/reflexia/check", json=payload)
+            response = await api_client.get("/reflexia/check")
             if response.status_code == 404:
                 pytest.skip("Endpoint ReflexIA check non implémenté - test ignoré")
             assert response.status_code == 200

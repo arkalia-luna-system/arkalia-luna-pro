@@ -1,6 +1,6 @@
 # 📦 Makefile Arkalia IA Devstation - Enhanced
 
-.PHONY: all test test-full format bump patch minor major zeroia clean install dev-setup security-check performance-check docs-build docker-build docker-test
+.PHONY: all test test-light test-full format bump patch minor major zeroia clean clean-git-macos install dev-setup security-check performance-check docs-build docker-build docker-test
 
 # Variables
 PYTHON := python3
@@ -19,15 +19,19 @@ test-full:
 
 test-unit:
 	@echo "🧪 Tests unitaires uniquement..."
-	pytest tests/unit/ -v --cov=modules --cov-report=term-missing
+	PYTHONDONTWRITEBYTECODE=1 pytest tests/unit/ -v --cov=modules --cov-report=term-missing
+
+test-light:
+	@echo "🧪 Tests légers (rapides, sans suites lourdes)..."
+	PYTHONDONTWRITEBYTECODE=1 pytest tests/unit/ tests/integration/ -q -m "not slow and not performance and not chaos and not e2e and not benchmark" --no-cov
 
 test-integration:
 	@echo "🧪 Tests d'intégration..."
-	pytest tests/integration/ -v
+	PYTHONDONTWRITEBYTECODE=1 pytest tests/integration/ -v
 
 test-e2e:
 	@echo "🧪 Tests end-to-end..."
-	pytest tests/e2e/ -v
+	PYTHONDONTWRITEBYTECODE=1 pytest tests/e2e/ -v
 
 # 🎨 Formatage et linting
 # Remarque : isort est volontairement désactivé (voir historique projet).
@@ -51,12 +55,23 @@ clean:
 	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 	find . -name "*.pyc" -delete
 	find . -name "*.pyo" -delete
+	find .git -name "._*" -type f -delete 2>/dev/null || true
+	find state -name ".zeroia_state.toml.tmp.*.arkalia" -type f -delete 2>/dev/null || true
+	find state -name "*.tmp.arkalia" -type f -delete 2>/dev/null || true
 	rm -rf .pytest_cache/
+	rm -rf .mypy_cache/
+	rm -rf .ruff_cache/
 	rm -rf htmlcov/
+	rm -rf tests/tmp/
 	rm -rf .coverage
 	rm -rf dist/
 	rm -rf build/
 	rm -rf *.egg-info/
+
+clean-git-macos:
+	@echo "🧹 Nettoyage des fichiers macOS parasites dans .git..."
+	find .git -name "._*" -type f -delete 2>/dev/null || true
+	git status -sb
 
 # 📦 Installation et setup
 install:
@@ -109,7 +124,7 @@ run:
 # 🧪 Tests avec couverture (cible principale `test`)
 test:
 	@echo "🧪 Tests avec couverture..."
-	pytest --cov=modules --cov-report=term-missing --cov-report=html
+	PYTHONDONTWRITEBYTECODE=1 pytest --cov=modules --cov-report=term-missing
 
 docker-clean:
 	@echo "🐳 Nettoyage Docker..."
@@ -166,6 +181,7 @@ help:
 	@echo ""
 	@echo "🧪 Tests:"
 	@echo "  test          - Tests complets avec couverture"
+	@echo "  test-light    - Tests rapides sans suites lourdes"
 	@echo "  test-full     - Tests complets (script ark-test-full.sh)"
 	@echo "  test-unit     - Tests unitaires"
 	@echo "  test-integration - Tests d'intégration"

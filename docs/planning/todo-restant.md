@@ -15,7 +15,7 @@ Objectif: capturer des screenshots des dashboards de monitoring pour la document
 ```bash
 docker-compose up -d
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml up -d
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 ```
 
 1. Capturer les screenshots:

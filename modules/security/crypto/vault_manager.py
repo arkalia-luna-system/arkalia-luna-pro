@@ -19,6 +19,8 @@ from core.ark_logger import ark_logger
 
 from .checksum_validator import BuildIntegrityValidator, SecurityError
 
+MAX_AUDIT_LOG_BYTES = 5 * 1024 * 1024
+
 
 class VaultError(SecurityError):
     """Exception levée lors d'une erreur dans la gestion du vault de secrets."""
@@ -189,8 +191,26 @@ class ArkaliaVault(BuildIntegrityValidator):
         timestamp = datetime.now().isoformat()
         log_entry = f"{timestamp} | {action} | {secret_name} | {details}\n"
 
+        self._trim_log_if_needed(self.audit_log, MAX_AUDIT_LOG_BYTES)
         with open(self.audit_log, "a") as f:
             f.write(log_entry)
+
+    def _trim_log_if_needed(self, log_path: Path, max_bytes: int) -> None:
+        """Empêche la croissance illimitée du log d'audit."""
+        if not log_path.exists():
+            return
+        try:
+            current_size = log_path.stat().st_size
+            if current_size <= max_bytes:
+                return
+            keep_bytes = max_bytes // 2
+            with open(log_path, "rb") as src:
+                src.seek(-keep_bytes, 2)
+                tail = src.read()
+            with open(log_path, "wb") as dst:
+                dst.write(tail)
+        except OSError:
+            return
 
     def store_secret(
         self,
@@ -596,42 +616,49 @@ def migrate_from_env_file(
     # Backup du fichier .env si demandé
     if backup_env:
         backup_path = env_path.parent / f"{env_path.name}.backup.{int(datetime.now().timestamp())}"
-        backup_path.write_text(env_path.read_text())
-        ark_logger.info(
-            f"📦 .env backed up to: {backup_path}", extra={"arkalia_module": "security"}
-        )
+        try:
+            backup_path.write_text(env_path.read_text(encoding="utf-8"), encoding="utf-8")
+            ark_logger.info(
+                f"📦 .env backed up to: {backup_path}", extra={"arkalia_module": "security"}
+            )
+        except OSError as e:
+            raise VaultError(f"Failed to backup env file '{env_path}': {e}") from e
 
     # Parser le fichier .env
     secrets_migrated = 0
 
-    with open(env_path) as f:
-        for _line_num, line in enumerate(f, 1):
-            line = line.strip()
+    try:
+        with open(env_path, encoding="utf-8") as f:
+            for _line_num, line in enumerate(f, 1):
+                line = line.strip()
 
-            # Ignorer les commentaires et lignes vides
-            if not line or line.startswith("#"):
-                continue
+                # Ignorer les commentaires et lignes vides
+                if not line or line.startswith("#"):
+                    continue
 
-            # Parser KEY=VALUE
-            if "=" in line:
-                key, value = line.split("=", 1)
-                key = key.strip()
-                value = value.strip().strip("\"'")  # Enlever les quotes
+                # Parser KEY=VALUE
+                if "=" in line:
+                    key, value = line.split("=", 1)
+                    key = key.strip()
+                    value = value.strip().strip("\"'")  # Enlever les quotes
 
-                try:
-                    vault.store_secret(
-                        name=f"env_{key}",
-                        value=value,
-                        tags=["migrated_from_env"],
-                        overwrite=True,
-                    )
-                    secrets_migrated += 1
-                    ark_logger.info(f"✅ Migrated: {key}", extra={"arkalia_module": "security"})
+                    try:
+                        vault.store_secret(
+                            name=f"env_{key}",
+                            value=value,
+                            tags=["migrated_from_env"],
+                            overwrite=True,
+                        )
+                        secrets_migrated += 1
+                        ark_logger.info(f"✅ Migrated: {key}", extra={"arkalia_module": "security"})
 
-                except Exception as e:
-                    ark_logger.error(
-                        f"❌ Failed to migrate {key}: {e}", extra={"arkalia_module": "security"}
-                    )
+                    except VaultError as e:
+                        ark_logger.error(
+                            f"❌ Failed to migrate {key}: {e}",
+                            extra={"arkalia_module": "security"},
+                        )
+    except OSError as e:
+        raise VaultError(f"Failed to read env file '{env_path}': {e}") from e
 
     ark_logger.info(
         f"🚀 Migration completed: {secrets_migrated} secrets migrated from {env_path}",
