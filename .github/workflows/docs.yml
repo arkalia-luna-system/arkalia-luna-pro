@@ -15,7 +15,6 @@ permissions:
 
 env:
   PYTHON_VERSION: "3.10"
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -150,24 +149,13 @@ jobs:
             echo "⚠️ Assets manquants"
           fi
 
-      - name: 📋 Upload built documentation
-        uses: actions/upload-artifact@v5
-        continue-on-error: true
-        timeout-minutes: 10
-        with:
-          name: documentation-build
-          path: site/
-          retention-days: 7
-          if-no-files-found: warn
-        env:
-          ACTIONS_STEP_DEBUG: false
-
   # 🚀 Déploiement de la documentation
   deploy-docs:
     name: 🚀 Deploy Documentation
     runs-on: ubuntu-latest
     needs: build-docs
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Désactivé par défaut pour éviter les erreurs d'intégration Pages.
+    if: false
     timeout-minutes: 10
     steps:
       - name: 📥 Checkout du dépôt
@@ -185,16 +173,13 @@ jobs:
           pip install -r requirements.txt
           pip install mkdocs mkdocs-material mkdocs-minify-plugin
 
-      - name: 📋 Download built documentation
-        uses: actions/download-artifact@v5
-        with:
-          name: documentation-build
-          path: site/
+      - name: 📘 Build documentation
+        run: |
+          echo "📘 Construction de la documentation..."
+          python -m mkdocs build --clean --strict || (echo "❌ Échec de la construction" && exit 1)
 
       - name: 🔐 Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: 📦 Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -266,18 +251,6 @@ jobs:
           echo "### 📊 Statistiques:" >> docs-report.md
           echo "- Fichiers Markdown: $(find docs/ -name '*.md' | wc -l)" >> docs-report.md
           echo "- Pages générées: $(find site/ -name '*.html' | wc -l 2>/dev/null || echo 'N/A')" >> docs-report.md
-
-      - name: 📋 Upload documentation report
-        uses: actions/upload-artifact@v5
-        continue-on-error: true
-        timeout-minutes: 5
-        with:
-          name: docs-report
-          path: docs-report.md
-          retention-days: 90
-          if-no-files-found: warn
-        env:
-          ACTIONS_STEP_DEBUG: false
 
       - name: 🚨 Notify on documentation failure
         if: failure()
