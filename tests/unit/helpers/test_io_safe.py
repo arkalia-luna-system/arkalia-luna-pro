@@ -1,5 +1,6 @@
 # 🧪 Tests pour utils/io_safe.py - IO Sécurisé Arkalia-LUNA
 import json
+import os
 import threading
 import time
 from unittest.mock import patch
@@ -101,6 +102,27 @@ class TestAtomicWrite:
         with patch("tempfile.NamedTemporaryFile", side_effect=OSError("Permission denied")):
             with pytest.raises(AtomicWriteError, match="Erreur écriture atomique"):
                 atomic_write(tmp_path / "test.txt", "data")
+
+    def test_atomic_write_cleans_stale_tmp_files(self, tmp_path) -> None:
+        """Nettoie les temporaires orphelins avant une nouvelle écriture."""
+        test_file = tmp_path / "state.toml"
+        stale_files = []
+
+        for i in range(20):
+            stale = tmp_path / f".state.toml.tmp.stale{i}.arkalia"
+            stale.write_text("orphan")
+            stale_files.append(stale)
+
+        old_time = time.time() - (2 * 3600)
+        for stale in stale_files:
+            os.utime(stale, (old_time, old_time))
+
+        result = atomic_write(test_file, {"status": "ok"})
+
+        assert result is True
+        leftovers = list(tmp_path.glob(".state.toml.tmp.*.arkalia"))
+        # Le garde-fou limite fortement l'accumulation.
+        assert len(leftovers) <= 16
 
 
 class TestLockedRead:

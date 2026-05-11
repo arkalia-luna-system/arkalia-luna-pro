@@ -40,6 +40,10 @@ _CACHE_TIMESTAMPS: dict[str, float] = {}
 _CACHE_TTL: float = 30.0  # 30 secondes par défaut
 _cache_lock = threading.Lock()
 
+# Garde-fou anti-accumulation de fichiers temporaires d'écriture atomique.
+_TMP_RETENTION_SECONDS = 60 * 60  # 1h
+_TMP_MAX_KEEP = 16
+
 
 def _get_file_lock(file_path: Path) -> threading.Lock:
     """Obtient un verrou spécifique à un fichier"""
@@ -49,6 +53,48 @@ def _get_file_lock(file_path: Path) -> threading.Lock:
         if str_path not in _file_locks:
             _file_locks[str_path] = threading.Lock()
         return _file_locks[str_path]
+
+
+def _cleanup_stale_atomic_tmp(file_path: Path) -> None:
+    """
+    Nettoie les temporaires atomiques orphelins.
+
+    Un arrêt brutal peut laisser des `.tmp.*.arkalia`. On purge d'abord ceux
+    trop anciens, puis on limite le nombre restant pour éviter la croissance.
+    """
+    parent = file_path.parent
+    if not parent.exists():
+        return
+
+    pattern = f".{file_path.name}.tmp.*.arkalia"
+    now = time.time()
+    tmp_candidates: list[Path] = []
+
+    for tmp in parent.glob(pattern):
+        if not tmp.is_file():
+            continue
+        tmp_candidates.append(tmp)
+        try:
+            if now - tmp.stat().st_mtime > _TMP_RETENTION_SECONDS:
+                tmp.unlink()
+        except OSError:
+            # Best effort: ne jamais bloquer l'écriture principale.
+            continue
+
+    # Garder uniquement les plus récents si la quantité explose.
+    if len(tmp_candidates) <= _TMP_MAX_KEEP:
+        return
+
+    try:
+        existing = [p for p in parent.glob(pattern) if p.is_file()]
+        existing.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+        for stale in existing[_TMP_MAX_KEEP:]:
+            try:
+                stale.unlink()
+            except OSError:
+                continue
+    except OSError:
+        return
 
 
 def atomic_write(
@@ -82,6 +128,7 @@ def atomic_write(
         try:
             # Crée le répertoire parent si nécessaire
             file_path.parent.mkdir(parents=True, exist_ok=True)
+            _cleanup_stale_atomic_tmp(file_path)
 
             # Fichier temporaire dans le même répertoire (même système de fichiers)
             with tempfile.NamedTemporaryFile(
