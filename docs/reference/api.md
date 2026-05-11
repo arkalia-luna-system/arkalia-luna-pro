@@ -3,9 +3,9 @@
 ## État Actuel du Système (Mise à jour novembre 2025)
 
 ### CI/CD
-- 671 tests passés (642 unitaires + 29 intégration)
-- Couverture : 59.25% (seuil requis : 28%)
-- Temps d'exécution : 31.73s
+- Résultats dynamiques selon le dernier run GitHub Actions
+- Couverture : voir le rapport `coverage.xml` du pipeline (seuil requis : 28%)
+- Temps d'exécution : variable selon la charge CI
 - Healthcheck optimisé : Python urllib natif
 - Artefacts uploadés : Conditionnel et robuste
 

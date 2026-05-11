@@ -168,13 +168,13 @@
 <div class="metrics-grid">
     <div class="metric-card">
         <div class="metric-icon">🧪</div>
-        <div class="metric-value">671</div>
+        <div class="metric-value">CI</div>
         <div class="metric-label">Tests automatisés</div>
     </div>
 
     <div class="metric-card">
         <div class="metric-icon">📈</div>
-        <div class="metric-value">59.25%</div>
+        <div class="metric-value">Variable</div>
         <div class="metric-label">Couverture tests</div>
     </div>
 
@@ -204,7 +204,7 @@
 
     <div class="metric-card">
         <div class="metric-icon">✅</div>
-        <div class="metric-value">100%</div>
+        <div class="metric-value">Selon run</div>
         <div class="metric-label">CI/CD verte</div>
     </div>
 
@@ -341,7 +341,7 @@
 </div>
 
 <div class="footer-note">
-    <p><strong>Arkalia-LUNA Pro v2.8.0</strong> - Système d'Intelligence Artificielle. Architecture modulaire avec 5 containers actifs, monitoring complet et observabilité totale. Optimisé avec 671 tests automatisés, 59.25% de couverture, CI/CD stable.</p>
+    <p><strong>Arkalia-LUNA Pro v2.8.0</strong> - Système d'Intelligence Artificielle. Architecture modulaire avec 5 containers actifs, monitoring complet et observabilité totale. Les métriques de tests et couverture sont pilotées par le dernier run CI.</p>
 </div>
 
 # Documentation
