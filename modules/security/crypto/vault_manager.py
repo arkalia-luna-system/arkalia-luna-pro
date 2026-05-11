@@ -7,7 +7,6 @@ Ce module fait partie du système Arkalia Luna Pro.
 # 🔐 modules/security/crypto/vault_manager.py
 # Arkalia-Vault Enterprise - Gestionnaire de secrets sécurisé
 
-import hashlib
 import json
 import os
 from datetime import datetime, timedelta
@@ -190,10 +189,8 @@ class ArkaliaVault(BuildIntegrityValidator):
 
     def _audit_log_entry(self, action: str, secret_name: str, details: str = "") -> None:
         timestamp = datetime.now().isoformat()
-        # Avoid plaintext leakage of secret identifiers/details in audit logs.
-        secret_ref = hashlib.sha256(secret_name.encode("utf-8")).hexdigest()[:12]
-        details_ref = "redacted" if details else ""
-        log_entry = f"{timestamp} | {action} | secret_ref={secret_ref} | {details_ref}\n"
+        # Keep audit entries non-sensitive (no secret identifier/value/details).
+        log_entry = f"{timestamp} | {action} | secret_ref=redacted | details=redacted\n"
 
         self._trim_log_if_needed(self.audit_log, MAX_AUDIT_LOG_BYTES)
         with open(self.audit_log, "a") as f:

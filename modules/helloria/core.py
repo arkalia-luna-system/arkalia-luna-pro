@@ -350,8 +350,8 @@ def zeroia_health() -> dict:
         from modules.zeroia import health_check
 
         return health_check()
-    except Exception as e:
-        ark_logger.error(f"Erreur ZeroIA health: {e}", extra={"arkalia_module": "helloria"})
+    except Exception:
+        ark_logger.error("Erreur ZeroIA health", extra={"arkalia_module": "helloria"})
         return {"status": "error", "error": "internal_error"}
 
 
@@ -417,7 +417,9 @@ async def zeroia_status() -> dict[str, Any]:
         except ImportError:
             # Fallback sans bloquer l'event-loop
             data = await asyncio.to_thread(_read_json_dashboard, dashboard_path)
-            return data
+            if isinstance(data, dict):
+                return data
+            return {"status": "error", "error": "invalid dashboard format"}
     except Exception as e:
         ark_logger.error(f"Erreur ZeroIA status: {e}", extra={"arkalia_module": "helloria"})
         return {"status": "error", "error": "internal_error"}

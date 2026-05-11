@@ -9,18 +9,31 @@ Ce module fait partie du système Arkalia Luna Pro.
 import os
 from typing import Any
 
-from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException
+from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException, Response
 from fastapi.responses import JSONResponse, PlainTextResponse
-from prometheus_client import CONTENT_TYPE_LATEST, Gauge, generate_latest
+from prometheus_client import CONTENT_TYPE_LATEST, REGISTRY, Gauge, generate_latest
 
 from .core import launch_reflexia_check
 
+
+def _get_or_create_gauge(name: str, description: str) -> Gauge:
+    """Retourne un gauge existant ou en crée un nouveau."""
+    existing = REGISTRY._names_to_collectors.get(name)
+    if existing is not None and isinstance(existing, Gauge):
+        return existing
+    return Gauge(name, description)
+
+
 # Métriques Prometheus locales pour Reflexia
-reflexia_cpu_usage = Gauge("reflexia_cpu_usage_percent", "Utilisation CPU reportée par ReflexIA")
-
-reflexia_ram_usage = Gauge("reflexia_ram_usage_percent", "Utilisation RAM reportée par ReflexIA")
-
-reflexia_latency = Gauge("reflexia_latency_ms", "Latence système reportée par ReflexIA")
+reflexia_cpu_usage = _get_or_create_gauge(
+    "reflexia_cpu_usage_percent", "Utilisation CPU reportée par ReflexIA"
+)
+reflexia_ram_usage = _get_or_create_gauge(
+    "reflexia_ram_usage_percent", "Utilisation RAM reportée par ReflexIA"
+)
+reflexia_latency = _get_or_create_gauge(
+    "reflexia_latency_ms", "Latence système reportée par ReflexIA"
+)
 
 # 🧩 Router Reflexia
 router = APIRouter(
@@ -94,8 +107,8 @@ async def check_reflexia_status(_: None = Depends(require_api_key)) -> JSONRespo
         )
 
 
-@router.get("/metrics")
-async def get_metrics(_: None = Depends(require_api_key)) -> PlainTextResponse | JSONResponse:
+@router.get("/metrics", response_model=None)
+async def get_metrics(_: None = Depends(require_api_key)) -> Response:
     """
     Endpoint métriques Prometheus pour Reflexia.
 

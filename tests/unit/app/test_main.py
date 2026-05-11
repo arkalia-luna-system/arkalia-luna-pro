@@ -107,7 +107,7 @@ def test_metrics_endpoint_error(mock_cpu: MagicMock) -> None:
     response = client.get("/metrics")
     assert response.status_code == 500
     assert "error" in response.json()
-    assert "Test error" in response.json()["error"]
+    assert response.json()["error"] == "internal_error"
 
 
 def test_metrics_middleware() -> None:

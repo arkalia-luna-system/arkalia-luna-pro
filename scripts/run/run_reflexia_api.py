@@ -34,13 +34,19 @@ async def health_check() -> dict:
 @app.get("/metrics")
 async def get_system_metrics() -> dict:
     """Retourne les métriques système actuelles"""
-    return get_metrics()
+    try:
+        return get_metrics()
+    except Exception:
+        return {"status": "error", "error": "internal_error"}
 
 
 @app.get("/status")
 async def get_system_status() -> dict:
     """Lance une vérification réflexive et retourne le statut"""
-    return launch_reflexia_check()
+    try:
+        return launch_reflexia_check()
+    except Exception:
+        return {"status": "error", "error": "internal_error"}
 
 
 if __name__ == "__main__":
