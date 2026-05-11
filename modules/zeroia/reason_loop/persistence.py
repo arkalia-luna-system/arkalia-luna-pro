@@ -15,6 +15,26 @@ from .initialization import initialize_components_with_recovery
 STATE_PATH = Path("state/zeroia_state.toml")
 DASHBOARD_PATH = Path("state/zeroia_dashboard.json")
 LOG_PATH = Path("modules/zeroia/logs/zeroia.log")
+MAX_ZEROIA_LOG_BYTES = 5 * 1024 * 1024
+
+
+def _trim_log_if_needed(log_path: Path, max_bytes: int = MAX_ZEROIA_LOG_BYTES) -> None:
+    """Conserve uniquement la fin du fichier si le log devient trop gros."""
+    if not log_path.exists():
+        return
+    try:
+        current_size = log_path.stat().st_size
+        if current_size <= max_bytes:
+            return
+        keep_bytes = max_bytes // 2
+        with open(log_path, "rb") as src:
+            src.seek(-keep_bytes, 2)
+            tail = src.read()
+        with open(log_path, "wb") as dst:
+            dst.write(tail)
+    except OSError:
+        # Best effort: ne jamais casser la boucle principale.
+        return
 
 
 def ensure_parent_dir(path: Path) -> None:
@@ -68,6 +88,7 @@ def persist_state_enhanced(
 
     # Log traditionnel
     ensure_parent_dir(LOG_PATH)
+    _trim_log_if_needed(LOG_PATH)
     with open(LOG_PATH, "a") as f:
         f.write(
             f"{datetime.now()} :: FROM REFLEXIA: {reflexia_summary} | "

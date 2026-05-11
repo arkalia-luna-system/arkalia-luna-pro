@@ -163,6 +163,8 @@ class HealthResponse(BaseModel):
 # Variables globales pour le suivi
 startup_time = datetime.now()
 active_connections = 0
+ASSISTANTIA_CHAT_LOG_PATH = Path("logs/assistantia_chat.log")
+MAX_ASSISTANTIA_CHAT_LOG_BYTES = 5 * 1024 * 1024
 
 
 # Variable au niveau module pour éviter B008 (Depends dans argument par défaut)
@@ -364,6 +366,26 @@ def _build_memoria_user_id(data: MessageInput) -> str:
     if data.user_id and data.user_id.strip():
         return data.user_id.strip()
     return "default_user"
+
+
+def _trim_log_if_needed(
+    log_path: Path, max_bytes: int = MAX_ASSISTANTIA_CHAT_LOG_BYTES
+) -> None:
+    """Conserve uniquement la fin du log quand il dépasse la taille max."""
+    if not log_path.exists():
+        return
+    try:
+        current_size = log_path.stat().st_size
+        if current_size <= max_bytes:
+            return
+        keep_bytes = max_bytes // 2
+        with open(log_path, "rb") as src:
+            src.seek(-keep_bytes, 2)
+            tail = src.read()
+        with open(log_path, "wb") as dst:
+            dst.write(tail)
+    except OSError:
+        return
 
 
 def _format_memoria_context(memories: list[MemoryRecord]) -> str:
@@ -585,8 +607,9 @@ async def log_chat_interaction(
         }
 
         # Écrire dans le log d'AssistantIA
-        log_file = Path("logs/assistantia_chat.log")
+        log_file = ASSISTANTIA_CHAT_LOG_PATH
         log_file.parent.mkdir(exist_ok=True)
+        _trim_log_if_needed(log_file)
 
         with open(log_file, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
