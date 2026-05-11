@@ -15,6 +15,8 @@ from typing import Any, cast
 
 from core.ark_logger import ark_logger
 
+MAX_INTEGRITY_LOG_BYTES = 5 * 1024 * 1024
+
 
 class SecurityError(Exception):
     """Exception levée lors d'une violation de sécurité ou d'intégrité."""
@@ -283,6 +285,7 @@ class BuildIntegrityValidator:
         }
 
         # Log en JSON pour parsing automatique
+        self._trim_log_if_needed(self.violations_log, MAX_INTEGRITY_LOG_BYTES)
         with open(self.violations_log, "a") as f:
             f.write(json.dumps(log_entry) + "\n")
 
@@ -290,6 +293,23 @@ class BuildIntegrityValidator:
             f"🚨 SECURITY VIOLATION: {len(violations)} integrity issues logged",
             extra={"arkalia_module": "security"},
         )
+
+    def _trim_log_if_needed(self, log_path: Path, max_bytes: int) -> None:
+        """Empêche la croissance infinie du log d'intégrité."""
+        if not log_path.exists():
+            return
+        try:
+            current_size = log_path.stat().st_size
+            if current_size <= max_bytes:
+                return
+            keep_bytes = max_bytes // 2
+            with open(log_path, "rb") as src:
+                src.seek(-keep_bytes, 2)
+                tail = src.read()
+            with open(log_path, "wb") as dst:
+                dst.write(tail)
+        except OSError:
+            return
 
 
 # Fonctions utilitaires

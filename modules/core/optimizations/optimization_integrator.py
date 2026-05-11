@@ -38,6 +38,7 @@ class OptimizationIntegrator:
     def __init__(self) -> None:
         self.is_initialized = False
         self.is_running = False
+        self._prometheus_started = False
 
         # Composants d'optimisation
         self.cache_manager: CacheManager | None = None
@@ -272,6 +273,12 @@ class OptimizationIntegrator:
 
     def expose_prometheus_metrics(self, port: int = 8000):
         """Expose un endpoint /metrics Prometheus sur le port donné"""
+        if self._prometheus_started:
+            ark_logger.warning(
+                "⚠️ Prometheus déjà exposé, appel ignoré", extra={"arkalia_module": "core"}
+            )
+            return
+
         registry = CollectorRegistry()
         # Exemples de métriques à exposer
         self.gauge_cache_hits = Gauge(
@@ -320,6 +327,7 @@ class OptimizationIntegrator:
         threading.Thread(target=start_http_server, args=(port,), daemon=True).start()
         # Lancer la boucle de mise à jour des métriques
         threading.Thread(target=metrics_loop, daemon=True).start()
+        self._prometheus_started = True
         print(f"✅ Endpoint Prometheus /metrics exposé sur le port {port}")
 
 

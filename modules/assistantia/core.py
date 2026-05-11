@@ -399,10 +399,10 @@ def _format_memoria_context(memories: list[MemoryRecord]) -> str:
     for idx, mem in enumerate(memories, start=1):
         title: str | None = None
         if hasattr(mem, "metadata") and isinstance(mem.metadata, dict):
-            title = mem.metadata.get("title")  # type: ignore[assignment]
+            title = mem.metadata.get("title")
         if getattr(mem, "title", None):
             # Priorité au titre explicite
-            title = mem.title  # type: ignore[assignment]
+            title = mem.title
         header = f"[Souvenir {idx} - {mem.memory_type}]"
         if title:
             header += f" {title}"

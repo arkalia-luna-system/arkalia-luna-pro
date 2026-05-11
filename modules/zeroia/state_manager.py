@@ -20,6 +20,7 @@ from modules.zeroia.utils.backup import save_backup
 STATE_PATH = Path("state/zeroia_state.toml")
 DASHBOARD_PATH = Path("state/zeroia_dashboard.json")
 DEFAULT_CONTRADICTION_LOG = Path("logs/zeroia_contradictions.log")
+MAX_CONTRADICTION_LOG_BYTES = 2 * 1024 * 1024
 
 
 class StateManager:
@@ -33,6 +34,25 @@ class StateManager:
     def ensure_parent_dir(self, path: Path) -> None:
         """Assure que le répertoire parent existe"""
         path.parent.mkdir(parents=True, exist_ok=True)
+
+    def _trim_log_if_needed(
+        self, log_path: Path, max_bytes: int = MAX_CONTRADICTION_LOG_BYTES
+    ) -> None:
+        """Conserve la partie la plus récente d'un log trop volumineux."""
+        if not log_path.exists():
+            return
+        try:
+            current_size = log_path.stat().st_size
+            if current_size <= max_bytes:
+                return
+            keep_bytes = max_bytes // 2
+            with open(log_path, "rb") as src:
+                src.seek(-keep_bytes, 2)
+                tail = src.read()
+            with open(log_path, "wb") as dst:
+                dst.write(tail)
+        except OSError:
+            return
 
     def persist_state_enhanced(
         self,
@@ -219,6 +239,7 @@ class StateManager:
                 }
 
                 try:
+                    self._trim_log_if_needed(log_path)
                     with open(log_path, "a", encoding="utf-8") as f:
                         f.write(json.dumps(conflict_log) + "\n")
 

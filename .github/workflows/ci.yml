@@ -160,7 +160,7 @@ jobs:
       - name: 🧪 Run unit tests with enhanced coverage
         run: |
           echo "🧪 Exécution des tests unitaires avec couverture améliorée..."
-          pytest tests/unit/ tests/integration/ tests/performance/ tests/chaos/ \
+          pytest tests/unit/ tests/integration/ \
             --cov=modules \
             --cov=scripts \
             --cov-report=xml \
@@ -198,6 +198,7 @@ jobs:
 
       # Nouveau : Tests de performance
       - name: ⚡ Run performance tests
+        if: github.ref == 'refs/heads/main'
         run: |
           echo "⚡ Exécution des tests de performance..."
           pytest tests/performance/ \

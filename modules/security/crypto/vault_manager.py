@@ -19,6 +19,8 @@ from core.ark_logger import ark_logger
 
 from .checksum_validator import BuildIntegrityValidator, SecurityError
 
+MAX_AUDIT_LOG_BYTES = 5 * 1024 * 1024
+
 
 class VaultError(SecurityError):
     """Exception levée lors d'une erreur dans la gestion du vault de secrets."""
@@ -189,8 +191,26 @@ class ArkaliaVault(BuildIntegrityValidator):
         timestamp = datetime.now().isoformat()
         log_entry = f"{timestamp} | {action} | {secret_name} | {details}\n"
 
+        self._trim_log_if_needed(self.audit_log, MAX_AUDIT_LOG_BYTES)
         with open(self.audit_log, "a") as f:
             f.write(log_entry)
+
+    def _trim_log_if_needed(self, log_path: Path, max_bytes: int) -> None:
+        """Empêche la croissance illimitée du log d'audit."""
+        if not log_path.exists():
+            return
+        try:
+            current_size = log_path.stat().st_size
+            if current_size <= max_bytes:
+                return
+            keep_bytes = max_bytes // 2
+            with open(log_path, "rb") as src:
+                src.seek(-keep_bytes, 2)
+                tail = src.read()
+            with open(log_path, "wb") as dst:
+                dst.write(tail)
+        except OSError:
+            return
 
     def store_secret(
         self,

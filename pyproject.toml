@@ -183,7 +183,6 @@ addopts = [
     "--cov=app",
     "--cov=arkalia",
     "--cov-report=term-missing",
-    "--cov-report=html",
     "--cov-fail-under=15",
     "--ignore=modules/generative_ai/generated/",
     "--ignore-glob=**/._*.py",
