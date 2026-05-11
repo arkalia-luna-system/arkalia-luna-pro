@@ -151,7 +151,7 @@ jobs:
           fi
 
       - name: 📋 Upload built documentation
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         continue-on-error: true
         timeout-minutes: 10
         with:
@@ -167,7 +167,7 @@ jobs:
     name: 🚀 Deploy Documentation
     runs-on: ubuntu-latest
     needs: build-docs
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     timeout-minutes: 10
     steps:
       - name: 📥 Checkout du dépôt
@@ -186,13 +186,15 @@ jobs:
           pip install mkdocs mkdocs-material mkdocs-minify-plugin
 
       - name: 📋 Download built documentation
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: documentation-build
           path: site/
 
       - name: 🔐 Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: 📦 Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -266,7 +268,7 @@ jobs:
           echo "- Pages générées: $(find site/ -name '*.html' | wc -l 2>/dev/null || echo 'N/A')" >> docs-report.md
 
       - name: 📋 Upload documentation report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         continue-on-error: true
         timeout-minutes: 5
         with:
