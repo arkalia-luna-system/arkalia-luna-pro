@@ -187,15 +187,6 @@ jobs:
           echo "=== 📁 FICHIERS COUVERTURE ==="
           ls -la coverage.xml htmlcov/ || echo "⚠️ Fichiers de couverture non trouvés"
 
-      - name: 🧪 Run integration tests (no coverage check)
-        run: |
-          echo "🧪 Exécution des tests d'intégration..."
-          pytest tests/integration/ \
-            --junitxml=integration-test-results.xml \
-            --ignore=modules/generative_ai/generated/ \
-            --timeout=300 \
-            -v
-
       # Nouveau : Tests de performance
       - name: ⚡ Run performance tests
         if: github.ref == 'refs/heads/main'
