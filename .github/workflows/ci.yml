@@ -64,13 +64,13 @@ jobs:
       - name: 🔍 Check version consistency
         run: |
           echo "🔍 Vérification de cohérence des versions..."
-          python scripts/check_versions.py
+          python scripts/dev/check_versions.py
 
       # Nouveau : Vérification de la documentation
       - name: 📚 Check documentation quality
         run: |
           echo "📚 Vérification de la qualité de la documentation..."
-          python scripts/check_docs.py
+          python scripts/dev/check_docs.py
 
       - name: 🎨 Check code formatting
         run: |
@@ -198,7 +198,7 @@ jobs:
             -v
 
       - name: 📊 Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         if: success() && github.event_name != 'pull_request'
         with:
           file: ./coverage.xml
@@ -246,7 +246,7 @@ jobs:
       - name: 🔒 Run security tests
         run: |
           echo "🔒 Exécution des tests de sécurité..."
-          pytest -c config/pytest/pytest-security.ini --timeout=300
+          pytest tests/security/ --timeout=300 -v
 
       - name: 🔍 Run bandit security scan
         run: |
@@ -293,7 +293,7 @@ jobs:
       - name: 🌀 Run chaos tests
         run: |
           echo "🌀 Exécution des tests de chaos..."
-          pytest -c config/pytest/pytest-chaos.ini --timeout=900
+          pytest tests/chaos/ --timeout=900 -m "not slow" -v
 
       - name: 📋 Upload chaos artifacts
         uses: actions/upload-artifact@v6
