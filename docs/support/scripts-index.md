@@ -4,19 +4,19 @@ Cette page sert de point d'entrée pour éviter la prolifération de scripts red
 
 ## Exploitation Docker
 
-- `scripts/ark-docker-start.sh`
-- `scripts/ark-docker-stop.sh`
-- `scripts/ark-docker-status.sh`
-- `scripts/ark-docker-rebuild.sh`
-- `scripts/ark-docker-dev.sh`
+- `scripts/ops/ark-docker-start.sh`
+- `scripts/ops/ark-docker-stop.sh`
+- `scripts/ops/ark-docker-status.sh`
+- `scripts/ops/ark-docker-rebuild.sh`
+- `scripts/ops/ark-docker-dev.sh`
 
 ## Nettoyage & hygiène
 
 - `scripts/ark-clean-state.sh`
 - `scripts/ark-clean-json.sh`
 - `scripts/ark-clean-hidden.sh`
-- `scripts/ark-fix-style.sh`
-- `scripts/ark-fix-linting.sh`
+- `scripts/dev/ark-fix-style.sh`
+- `scripts/dev/ark-fix-linting.sh`
 
 ## Validation & sécurité
 
@@ -24,19 +24,18 @@ Cette page sert de point d'entrée pour éviter la prolifération de scripts red
 - `scripts/ark-sec-check.sh`
 - `scripts/validate-workflows.sh`
 - `scripts/validate-dockerfiles.sh`
-- `scripts/ark-docs-check.sh`
+- `scripts/dev/ark-docs-check.sh`
 
 ## Monitoring & santé
 
-- `scripts/start-monitoring.sh`
-- `scripts/health_check.sh`
+- `scripts/ops/start-monitoring.sh`
+- `scripts/ops/health_check.sh`
 - `scripts/auto-heal.sh`
-- `scripts/setup_log_scrubber_cron.sh`
+- `scripts/ops/setup_log_scrubber_cron.sh`
 
 ## VSCode / Cursor
 
 - Script canonique: `scripts/ark-vscode-reload.sh`
-- Alias compatibilité: `scripts/ark-reload-vscode.sh`
 - Diagnostic: `scripts/ark-vscode-diagnostic.sh`
 - Correctif config: `scripts/ark-fix-vscode-config.sh`
 

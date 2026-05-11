@@ -1,5 +1,5 @@
 #!/bin/bash
-# 📊 scripts/start-monitoring.sh
+# 📊 scripts/ops/start-monitoring.sh
 # Démarrage et test du stack monitoring Arkalia-LUNA Phase 4
 
 set -euo pipefail
@@ -147,12 +147,11 @@ EOF
 
 # Arrêt éventuel de l'ancien stack
 log "🛑 Stopping any existing monitoring stack..."
-cd "$MONITORING_DIR"
-docker compose -f docker-compose.monitoring.yml down --remove-orphans 2>/dev/null || true
+docker compose -f "$COMPOSE_FILE" down --remove-orphans 2>/dev/null || true
 
 # Démarrage du nouveau stack
 log "🚀 Starting monitoring stack..."
-docker compose -f docker-compose.monitoring.yml up -d
+docker compose -f "$COMPOSE_FILE" up -d
 
 # Attente démarrage services
 log "⏳ Waiting for services to start..."
@@ -191,7 +190,7 @@ fi
 
 # Affichage des logs en temps réel
 log "📊 Monitoring stack status:"
-docker compose -f docker-compose.monitoring.yml ps
+docker compose -f "$COMPOSE_FILE" ps
 
 # Informations d'accès
 echo -e "\n${GREEN}🎯 MONITORING ENDPOINTS${NC}"

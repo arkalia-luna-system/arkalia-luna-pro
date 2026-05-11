@@ -33,14 +33,14 @@ cat >> "$ZSHRC" << 'EOF'
 # Ambiance cognitive pour le développement IA
 
 # Motivation et ambiance
-alias ark-motivation='./scripts/ark-motivation.sh'
-alias ark-welcome='echo "🌕 Bienvenue dans Arkalia-LUNA v3.0-phase1" && ./scripts/ark-motivation.sh'
+alias ark-motivation='./scripts/dev/ark-motivation.sh'
+alias ark-welcome='echo "🌕 Bienvenue dans Arkalia-LUNA v3.0-phase1" && ./scripts/dev/ark-motivation.sh'
 
 # Commandes rapides
 alias ark-test='pytest tests/ --maxfail=2 --disable-warnings -v'
 alias ark-test-fast='pytest tests/unit/ -x -q'
-alias ark-lint='./scripts/ark-fix-linting.sh'
-alias ark-style='./scripts/ark-fix-style.sh'
+alias ark-lint='./scripts/dev/ark-fix-linting.sh'
+alias ark-style='./scripts/dev/ark-fix-style.sh'
 alias ark-docs='mkdocs serve -a 127.0.0.1:9000'
 alias ark-docs-build='mkdocs build'
 

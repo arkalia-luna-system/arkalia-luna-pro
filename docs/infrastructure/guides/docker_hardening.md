@@ -88,7 +88,7 @@ services:
       nproc: 65535
       nofile: 65535
     healthcheck:
-      test: ["CMD", "/app/scripts/healthcheck-sandozia.sh"]
+      test: ["CMD", "/app/healthcheck-sandozia.sh"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -251,13 +251,13 @@ USER sandozia:sandozia
 WORKDIR /app
 
 # Point d'entrée sécurisé
-ENTRYPOINT ["/app/scripts/entrypoint-sandozia.sh"]
+ENTRYPOINT ["/app/entrypoint-sandozia.sh"]
 ```
 
 ### **Scripts Entrypoint Sécurisés**
 ```bash
 #!/bin/bash
-# /app/scripts/entrypoint-sandozia.sh
+# /app/entrypoint-sandozia.sh
 
 set -euo pipefail
 

@@ -160,7 +160,7 @@ receivers:
 - [x] modules IA accessibles
 - [x] Docker + FastAPI fonctionnels
 - [x] scripts `arkalia-*.sh` opérationnels
-- [x] **Monitoring démarré** (`docker-compose -f docker-compose.monitoring.yml up -d`)
+- [x] **Monitoring démarré** (`docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d`)
 - [x] **Grafana accessible** (http://localhost:3000)
 - [x] **Prometheus scrape** les métriques
 - [x] **Alertes configurées** et testées

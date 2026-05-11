@@ -131,9 +131,9 @@ ark_echo "$ARKALIA_GREEN" "🚀" "Prêt pour le développement Arkalia-LUNA !"
 echo ""
 
 # Motivation finale
-if [[ -f "scripts/ark-motivation.sh" ]]; then
+if [[ -f "scripts/legacy/ark-motivation.sh" ]]; then
     ark_echo "$ARKALIA_GOLD" "🌙" "Boost de motivation..."
-    ./scripts/ark-motivation.sh
+    ./scripts/legacy/ark-motivation.sh
 fi
 
 exit 0

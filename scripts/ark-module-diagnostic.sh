@@ -174,7 +174,7 @@ scripts=(
     "ark-fix-all.sh"
     "scripts/ark-vscode-reload.sh"
     "scripts/ark-install-extensions.sh"
-    "scripts/ark-motivation.sh"
+    "scripts/dev/ark-motivation.sh"
 )
 
 for script in "${scripts[@]}"; do
@@ -223,9 +223,9 @@ ark_echo "$ARKALIA_GREEN" "🚀" "Diagnostic terminé !"
 echo ""
 
 # Motivation finale
-if [[ -f "scripts/ark-motivation.sh" ]]; then
+if [[ -f "scripts/dev/ark-motivation.sh" ]]; then
     ark_echo "$ARKALIA_GOLD" "🌙" "Boost de motivation..."
-    ./scripts/ark-motivation.sh
+    ./scripts/dev/ark-motivation.sh
 fi
 
 exit 0

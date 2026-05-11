@@ -62,11 +62,11 @@ cat > docs/compliance/iso27001/risk_register.md << 'EOF'
 EOF
 
 # 3. Procédures d'audit
-cat > scripts/iso27001_audit.sh << 'EOF'
+cat > docs/compliance/iso27001_audit.sh << 'EOF'
 #!/bin/bash
 echo "📋 AUDIT ISO 27001 ARKALIA-LUNA"
 ./scripts/ark-sec-check.sh --iso27001-format
-python scripts/generate_compliance_report.py --standard iso27001
+python tests/compliance/test_compliance.py --standard iso27001
 EOF
 ```
 
@@ -169,7 +169,7 @@ transparency_measures:
 ### **Contrôles SOC 2 Arkalia**
 ```bash
 #!/bin/bash
-# scripts/soc2_controls_audit.sh
+# docs/compliance/soc2_controls_audit.sh
 
 echo "📋 AUDIT SOC 2 ARKALIA-LUNA"
 
@@ -248,7 +248,7 @@ def test_audit_trail():
 
 ### **Génération Rapports Compliance**
 ```python
-# scripts/generate_compliance_report.py
+# tests/compliance/test_compliance.py
 
 def generate_iso27001_report():
     """Génère rapport conformité ISO 27001"""

@@ -31,7 +31,7 @@ fi
 
 # Exécution du script de génération
 echo "🧠 ZeroIA actif, génération du fichier de statut..."
-python scripts/generate_zeroia_status.py
+python scripts/_generate_zeroia_status.py
 
 # Vérifie l'exécution
 if [ $? -ne 0 ]; then

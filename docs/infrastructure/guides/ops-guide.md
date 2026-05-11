@@ -74,7 +74,7 @@ ark-zeroia-health
 
 # Redémarrer monitoring
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml restart
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml restart
 
 # Nettoyer monitoring
 docker system prune -f
@@ -96,8 +96,8 @@ docker logs alertmanager
 
 # Redémarrer services
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml down
-docker-compose -f docker-compose.monitoring.yml up -d
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml down
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 ```
 
 ## 🎯 Métriques Clés
@@ -152,13 +152,13 @@ docker cp grafana:/var/lib/grafana ./backup/grafana-data/
 ```bash
 # Arrêter services
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml down
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml down
 
 # Mettre à jour images
-docker-compose -f docker-compose.monitoring.yml pull
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml pull
 
 # Redémarrer
-docker-compose -f docker-compose.monitoring.yml up -d
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 ```
 
 ### Nettoyage
@@ -171,8 +171,8 @@ docker system prune -f
 
 # Redémarrer proprement
 cd infrastructure/monitoring
-docker-compose -f docker-compose.monitoring.yml down
-docker-compose -f docker-compose.monitoring.yml up -d
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml down
+docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 ```
 
 ## 📈 Validation Continue

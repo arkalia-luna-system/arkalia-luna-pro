@@ -194,13 +194,13 @@ LOKI_PORT=3100
 ./scripts/ark-validate-monitoring.py
 
 # Backup automatique
-./scripts/ark-backup.sh
+./scripts/backup_state.sh
 
 # Nettoyage des logs
-./scripts/ark-clean-logs.sh
+./python scripts/ops/log_scrubber.py
 
 # Mise à jour
-./scripts/ark-update.sh
+./git pull --ff-only
 ```
 
 ---

@@ -34,7 +34,7 @@
 ### **Snapshot États IA (Temps Réel)**
 ```bash
 #!/bin/bash
-# scripts/ark_realtime_snapshot.sh
+# scripts/backup_state.sh
 
 SNAPSHOT_DIR="/backup/realtime"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
@@ -71,7 +71,7 @@ echo "📸 Snapshot temps réel terminé: $TIMESTAMP"
 ### **Snapshot Système Complet (Journalier)**
 ```bash
 #!/bin/bash
-# scripts/ark_full_backup.sh
+# scripts/backup_state.sh
 
 BACKUP_ROOT="/backup/daily"
 DATE=$(date +%Y%m%d)
@@ -144,7 +144,7 @@ find "$BACKUP_ROOT" -name "arkalia_*" -type d -mtime +30 -exec rm -rf {} \;
 ### **Chiffrement Backups Sensibles**
 ```bash
 #!/bin/bash
-# scripts/ark_encrypted_backup.sh
+# scripts/backup_state.sh
 
 GPG_RECIPIENT="arkalia.luna.system@gmail.com"
 ENCRYPTED_DIR="/backup/encrypted"
@@ -179,7 +179,7 @@ done
 ### **Stockage Sécurisé Distant**
 ```bash
 #!/bin/bash
-# scripts/ark_remote_sync.sh
+# scripts/backup_state.sh
 
 REMOTE_BACKUP="user@backup-server:/secure/arkalia/"
 ENCRYPTED_DIR="/backup/encrypted"
@@ -200,7 +200,7 @@ echo "🌐 Synchronisation distante terminée"
 ### **Récupération État IA Critique**
 ```bash
 #!/bin/bash
-# scripts/ark_emergency_restore.sh
+# scripts/_zeroia_rollback.py
 
 restore_critical_state() {
     local module="$1"
@@ -261,7 +261,7 @@ restore_critical_state "$1" "$2"
 ### **Récupération Complète Système**
 ```bash
 #!/bin/bash
-# scripts/ark_disaster_recovery.sh
+# scripts/_zeroia_rollback.py
 
 echo "💥 RÉCUPÉRATION COMPLÈTE ARKALIA-LUNA"
 
@@ -322,7 +322,7 @@ echo "🎯 Récupération terminée - monitoring requis"
 ### **Procédure Disaster Recovery**
 ```bash
 #!/bin/bash
-# scripts/ark_disk_recovery.sh
+# scripts/_zeroia_rollback.py
 
 echo "💽 RÉCUPÉRATION PERTE DISQUE TOTAL"
 
@@ -410,7 +410,7 @@ class TestBackupRecovery:
             f.flush()
 
             # Test backup
-            result = subprocess.run(['scripts/ark_realtime_snapshot.sh'],
+            result = subprocess.run(['scripts/backup_state.sh'],
                                   capture_output=True, text=True)
             assert result.returncode == 0
 
@@ -428,7 +428,7 @@ class TestBackupRecovery:
             f.write("invalid toml content {[}")
 
         # Test restauration
-        result = subprocess.run(['scripts/ark_emergency_restore.sh', 'zeroia'],
+        result = subprocess.run(['scripts/_zeroia_rollback.py', 'zeroia'],
                               capture_output=True, text=True)
 
         # Validation restoration
@@ -438,7 +438,7 @@ class TestBackupRecovery:
     def test_full_backup_cycle(self):
         """Teste cycle complet backup/restore"""
         # Lancement backup complet
-        result = subprocess.run(['scripts/ark_full_backup.sh'],
+        result = subprocess.run(['scripts/backup_state.sh'],
                               capture_output=True, text=True)
         assert result.returncode == 0
 
@@ -471,7 +471,7 @@ simulate_disk_loss() {
 
 # 3. Test procédure récupération
 test_recovery() {
-    ./scripts/ark_disaster_recovery.sh --test-mode
+    ./scripts/_zeroia_rollback.py --test-mode
 }
 
 # 4. Restauration état test

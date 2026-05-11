@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/docker-compose.yml"
 
 echo -e "${PURPLE}🌕 Arkalia-LUNA Pro — Arrêt Docker v2.8.0${NC}"
@@ -45,4 +45,4 @@ docker network prune -f 2>/dev/null || true
 
 echo -e "${GREEN}✅ Tous les services ont été arrêtés${NC}"
 echo -e "${CYAN}==============================================${NC}"
-echo -e "${YELLOW}💡 Pour redémarrer: ./scripts/ark-docker-start.sh${NC}"
+echo -e "${YELLOW}💡 Pour redémarrer: ./scripts/ops/ark-docker-start.sh${NC}"

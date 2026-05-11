@@ -69,7 +69,7 @@ Arkalia-LUNA Pro v2.8.0 est conçu pour souveraineté numérique complète : mod
 # Clone et setup
 git clone https://github.com/arkalia-luna-system/arkalia-luna-pro
 cd arkalia-luna-pro
-source scripts/setup-env.sh
+source arkalia-luna-venv/bin/activate
 
 # Lancement système complet
 ark-run

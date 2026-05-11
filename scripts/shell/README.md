@@ -9,10 +9,10 @@ Ce dossier contient des scripts historiques conservés pour compatibilité.
 
 ## Mappings recommandés
 
-- `scripts/shell/ark-start.sh` -> `scripts/ark-docker-start.sh`
-- `scripts/shell/docker-start.sh` -> `scripts/ark-docker-start.sh`
-- `scripts/shell/ark-fix-all.sh` -> `scripts/ark-fix-linting.sh`
-- `scripts/shell/test_healthcheck.sh` -> `scripts/health_check.sh full`
+- `scripts/shell/ark-start.sh` -> `scripts/ops/ark-docker-start.sh`
+- `scripts/shell/docker-start.sh` -> `scripts/ops/ark-docker-start.sh`
+- `scripts/shell/ark-fix-all.sh` -> `scripts/dev/ark-fix-linting.sh`
+- `scripts/shell/test_healthcheck.sh` -> `scripts/ops/health_check.sh full`
 
 ## Scripts encore autonomes
 

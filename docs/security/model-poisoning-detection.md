@@ -11,7 +11,7 @@ Le système de détection d'empoisonnement de modèle pour ZeroIA constitue la *
 ```
 modules/zeroia/model_integrity.py    # Monitor d'intégrité temps réel
 tests/security/test_poisoning.py     # Framework de test d'attaques
-scripts/test_model_poisoning.py      # Tests en conditions réelles
+tests/security/test_poisoning.py      # Tests en conditions réelles
 ```
 
 ### Intégration ZeroIA
@@ -93,7 +93,7 @@ Le système est **automatiquement actif** dans ZeroIA. Aucune configuration requ
 tail -f modules/zeroia/logs/model_integrity.log
 
 # Test manuel complet
-python scripts/test_model_poisoning.py
+python tests/security/test_poisoning.py
 
 # Vérification status intégrité
 python -c "from modules.zeroia.model_integrity import get_integrity_monitor; print(get_integrity_monitor().get_integrity_status())"
@@ -124,7 +124,7 @@ python -c "from modules.zeroia.model_integrity import get_integrity_monitor; pri
 pytest tests/security/test_poisoning.py -v
 
 # Tests en conditions réelles
-python scripts/test_model_poisoning.py
+python tests/security/test_poisoning.py
 ```
 
 ### Datasets de Test

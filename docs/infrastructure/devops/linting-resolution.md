@@ -44,8 +44,8 @@ Cette documentation détaille le processus complet de résolution des erreurs de
 modules/zeroia/confidence_score.py:290  # E501 → ligne coupée
 modules/zeroia/confidence_score.py:354  # E501 → recommandation inline
 modules/zeroia/model_integrity.py:180   # E203 → suppression espace
-scripts/chaos_test.py:45               # E501 + E203 → réformat
-scripts/log_scrubber.py:67             # E122 → correction print()
+tests/chaos/chaos_test.py:45               # E501 + E203 → réformat
+scripts/ops/log_scrubber.py:67             # E122 → correction print()
 ```
 
 ### Phase 3 : Configuration harmonisée
@@ -56,7 +56,7 @@ Création du fichier `.flake8` optimisé :
 max-line-length = 88
 ignore = E501,E203,W503
 per-file-ignores =
-    scripts/test_model_poisoning.py:E402
+    tests/security/test_poisoning.py:E402
 ```
 
 ### Phase 4 : Nettoyage automatisé
@@ -97,7 +97,7 @@ ignore = ["E501"]
 max-line-length = 88
 ignore = E501,E203,W503
 per-file-ignores =
-    scripts/test_model_poisoning.py:E402
+    tests/security/test_poisoning.py:E402
 ```
 
 ### Pre-commit (Orchestration)

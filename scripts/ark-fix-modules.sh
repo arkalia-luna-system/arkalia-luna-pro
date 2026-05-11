@@ -310,9 +310,9 @@ ark_echo "$ARKALIA_GREEN" "🚀" "Correction terminée !"
 echo ""
 
 # Motivation finale
-if [[ -f "scripts/ark-motivation.sh" ]]; then
+if [[ -f "scripts/dev/ark-motivation.sh" ]]; then
     ark_echo "$ARKALIA_GOLD" "🌙" "Boost de motivation..."
-    ./scripts/ark-motivation.sh
+    ./scripts/dev/ark-motivation.sh
 fi
 
 exit 0

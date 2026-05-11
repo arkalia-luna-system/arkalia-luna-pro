@@ -117,7 +117,7 @@ jobs:
           echo "✅ Fichier Locust généré pour tests futurs"
 
       - name: 📋 Upload performance artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: performance-results-${{ matrix.test-suite }}
@@ -152,7 +152,7 @@ jobs:
           pip install pandas matplotlib
 
       - name: 📋 Download performance artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: performance-artifacts/
 
@@ -186,7 +186,7 @@ jobs:
           } > performance-report.md
 
       - name: 📋 Upload performance report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:

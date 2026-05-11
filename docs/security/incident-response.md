@@ -104,7 +104,7 @@ docker-compose build --no-cache --security-opt seccomp:default
 
 # 3. Redémarrage graduel
 docker-compose up -d --scale assistantia=0  # Démarre sans IA
-./scripts/healthcheck_system.sh --full-validation
+./scripts/ops/health_check.sh --full-validation
 docker-compose up -d  # Démarre service complet si validation OK
 ```
 
@@ -199,7 +199,7 @@ docker restart assistantia  # Restart clean état
 ### **Rollback État ZeroIA**
 ```bash
 #!/bin/bash
-# scripts/zeroia_emergency_rollback.sh
+# docs/examples/zeroia_emergency_rollback.sh
 
 echo "🔄 ROLLBACK ZEROIA EMERGENCY"
 
@@ -259,7 +259,7 @@ fi
 ### **Rollback Global Système**
 ```bash
 #!/bin/bash
-# scripts/ark_system_rollback.sh
+# docs/examples/ark_system_rollback.sh
 
 echo "🔄 ROLLBACK SYSTÈME ARKALIA-LUNA COMPLET"
 
@@ -272,7 +272,7 @@ git checkout HEAD~1  # Rollback 1 commit
 git checkout main
 
 # 3. Restauration états modules depuis backup
-./scripts/restore_all_states.sh --emergency
+./scripts/_zeroia_rollback.py --emergency
 
 # 4. Validation intégrité complète
 ./scripts/ark-sec-check.sh --full-validation || {
@@ -422,9 +422,9 @@ def simulate_state_corruption():
 ### **Drill Équipe Sécurité (Mensuel)**
 ```bash
 # Exercice incident response équipe
-./scripts/ark_security_drill.sh --scenario container_escape --dry-run
-./scripts/ark_security_drill.sh --scenario llm_poisoning --dry-run
-./scripts/ark_security_drill.sh --scenario prompt_injection --dry-run
+pytest tests/chaos/chaos_test.py -v -k --scenario container_escape --dry-run
+pytest tests/chaos/chaos_test.py -v -k --scenario llm_poisoning --dry-run
+pytest tests/chaos/chaos_test.py -v -k --scenario prompt_injection --dry-run
 ```
 
 ---

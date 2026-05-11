@@ -105,7 +105,7 @@ jobs:
           detect-secrets scan --baseline .secrets.baseline || echo "⚠️ detect-secrets terminé avec avertissements"
 
       - name: 📋 Upload enhanced linting artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: enhanced-linting-artifacts
@@ -208,7 +208,7 @@ jobs:
           verbose: true
 
       - name: 📋 Upload enhanced test results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: enhanced-test-results-${{ matrix.os }}-${{ matrix.python-version }}
@@ -259,7 +259,7 @@ jobs:
           safety check --json --output safety-report.json || echo "⚠️ Safety check terminé avec avertissements"
 
       - name: 📋 Upload security report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: security-report
@@ -296,7 +296,7 @@ jobs:
           pytest tests/chaos/ --timeout=900 -m "not slow" -v
 
       - name: 📋 Upload chaos artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: chaos-results
@@ -318,7 +318,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: 📋 Download all artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         continue-on-error: true
         with:
           path: artifacts/
@@ -345,7 +345,7 @@ jobs:
           } > report.md
 
       - name: 📋 Upload final report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:

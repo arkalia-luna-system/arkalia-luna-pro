@@ -56,10 +56,10 @@ done
 echo -e "\n${BLUE}🔧 Étape 4/4 : Test de la configuration...${NC}"
 
 # Test du script de motivation
-if [ -f "./scripts/ark-motivation.sh" ]; then
+if [ -f "./scripts/dev/ark-motivation.sh" ]; then
     echo -e "${GREEN}✅ Script de motivation disponible${NC}"
     echo -e "${CYAN}🎯 Test du script de motivation :${NC}"
-    ./scripts/ark-motivation.sh
+    ./scripts/dev/ark-motivation.sh
 else
     echo -e "${RED}❌ Script de motivation manquant${NC}"
 fi

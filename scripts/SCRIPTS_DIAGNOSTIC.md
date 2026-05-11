@@ -70,9 +70,9 @@ python scripts/ark-master-orchestrator.py --restart
 
 **Usage :**
 ```bash
-python scripts/ark-modules-analysis.py
-python scripts/ark-modules-analysis.py --module zeroia --detailed
-python scripts/ark-modules-analysis.py --export report.json
+python scripts/legacy/ark-modules-analysis.py
+python scripts/legacy/ark-modules-analysis.py --module zeroia --detailed
+python scripts/legacy/ark-modules-analysis.py --export report.json
 ```
 
 **Fonctionnalités :**
@@ -284,8 +284,8 @@ python scripts/ark-performance-benchmark.py --module zeroia --export results.jso
 
 **Usage :**
 ```bash
-python scripts/ark-pyright-fix.py
-python scripts/ark-pyright-fix.py --file modules/zeroia/core.py
+python scripts/dev/ark-pyright-fix.py
+python scripts/dev/ark-pyright-fix.py --file modules/zeroia/core.py
 ```
 
 **Fonctionnalités :**
@@ -304,8 +304,8 @@ python scripts/ark-pyright-fix.py --file modules/zeroia/core.py
 
 **Usage :**
 ```bash
-bash scripts/ark-lint-report.sh
-bash scripts/ark-lint-report.sh --output lint-report.html
+bash scripts/dev/ark-lint-report.sh
+bash scripts/dev/ark-lint-report.sh --output lint-report.html
 ```
 
 **Fonctionnalités :**
@@ -347,8 +347,8 @@ bash scripts/ark-lint-report.sh --output lint-report.html
 2. **Avant commit :**
    ```bash
    bash scripts/ark-clean-hidden.sh
-   bash scripts/ark-fix-linting.sh
-   bash scripts/ark-fix-style.sh
+   bash scripts/dev/ark-fix-linting.sh
+   bash scripts/dev/ark-fix-style.sh
    ```
 
 3. **Maintenance régulière :**

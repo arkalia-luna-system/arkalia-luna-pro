@@ -1,6 +1,6 @@
 #!/bin/bash
 # 📚 Script validation automatique documentation Arkalia-LUNA
-# Usage: ./scripts/ark-docs-check.sh
+# Usage: ./scripts/dev/ark-docs-check.sh
 
 set -euo pipefail
 

@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/docker-compose.yml"
 
 echo -e "${PURPLE}🌕 Arkalia-LUNA Pro — Statut Docker v2.8.0${NC}"
@@ -95,7 +95,7 @@ docker stats --no-stream --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsa
 echo -e ""
 echo -e "${CYAN}==============================================${NC}"
 echo -e "${YELLOW}📋 Commandes utiles:${NC}"
-echo -e "   🚀 Démarrage: ./scripts/ark-docker-start.sh"
-echo -e "   🛑 Arrêt: ./scripts/ark-docker-stop.sh"
+echo -e "   🚀 Démarrage: ./scripts/ops/ark-docker-start.sh"
+echo -e "   🛑 Arrêt: ./scripts/ops/ark-docker-stop.sh"
 echo -e "   📝 Logs: docker compose logs -f"
 echo -e "   🔄 Redémarrage: docker compose restart"

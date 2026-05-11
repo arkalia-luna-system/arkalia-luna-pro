@@ -5,9 +5,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 PYTHON_PATH="${PROJECT_ROOT}/arkalia-luna-venv/bin/python"
-SCRUBBER_SCRIPT="${PROJECT_ROOT}/scripts/log_scrubber.py"
+SCRUBBER_SCRIPT="${PROJECT_ROOT}/scripts/ops/log_scrubber.py"
 
 echo "🕐 [CRON SETUP] Configuration automatique du log scrubber"
 echo "📂 Projet: $PROJECT_ROOT"

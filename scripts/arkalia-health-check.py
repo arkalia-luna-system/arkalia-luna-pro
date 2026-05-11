@@ -116,8 +116,8 @@ class ArkaliaHealthChecker:
         """Vérifie l'intégrité des fichiers critiques"""
         critical_files = [
             "docs/assets/arkalia-luna-theme.css",
-            "src/App.jsx",
-            "components/ArkaliaLunaHomepage.jsx",
+            "frontend/src/App.jsx",
+            "frontend/components/ArkaliaLunaHomepage.jsx",
             "modules/zeroia/core.py",
             "modules/zeroia/reason_loop.py",
             "config/arkalia_master_config.toml",
