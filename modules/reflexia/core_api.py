@@ -7,6 +7,7 @@ Ce module fait partie du système Arkalia Luna Pro.
 # 📁 modules/reflexia/core_api.py
 
 import os
+from typing import Any
 
 from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException
 from fastapi.responses import JSONResponse, PlainTextResponse
@@ -50,7 +51,7 @@ def get_reflexia_status() -> dict:
 
 
 @router.get("/health", operation_id="reflexia_router_health")
-async def reflexia_health():
+async def reflexia_health() -> dict[str, str]:
     """
     Health check Reflexia sur le router monté sous /reflexia (API principale + CI).
 
@@ -59,12 +60,12 @@ async def reflexia_health():
     """
     try:
         return {"status": "ok", "service": "reflexia", "module": "reflexia"}
-    except Exception as e:
-        return {"status": "unhealthy", "error": str(e)}
+    except Exception:
+        return {"status": "unhealthy", "error": "internal_error"}
 
 
 @router.get("/check")
-async def check_reflexia_status(_: None = Depends(require_api_key)):
+async def check_reflexia_status(_: None = Depends(require_api_key)) -> JSONResponse:
     """
     Endpoint de vérification réflexive.
 
@@ -86,15 +87,15 @@ async def check_reflexia_status(_: None = Depends(require_api_key)):
     """
     try:
         return JSONResponse(content=get_reflexia_status())
-    except Exception as e:
+    except Exception:
         return JSONResponse(
             status_code=500,
-            content={"error": f"Erreur réflexive : {str(e)}"},
+            content={"error": "internal_error"},
         )
 
 
 @router.get("/metrics")
-async def get_metrics(_: None = Depends(require_api_key)):
+async def get_metrics(_: None = Depends(require_api_key)) -> PlainTextResponse | JSONResponse:
     """
     Endpoint métriques Prometheus pour Reflexia.
 
@@ -128,15 +129,15 @@ async def get_metrics(_: None = Depends(require_api_key)):
         prometheus_data = generate_latest()
 
         return PlainTextResponse(content=prometheus_data, media_type=CONTENT_TYPE_LATEST)
-    except Exception as e:
+    except Exception:
         return JSONResponse(
             status_code=500,
-            content={"error": f"Erreur métriques : {str(e)}"},
+            content={"error": "internal_error"},
         )
 
 
 @app.get("/health")
-async def health():
+async def health() -> dict[str, str]:
     """
     Health check pour le service Reflexia.
 
@@ -151,5 +152,5 @@ async def health():
     """
     try:
         return {"status": "ok", "service": "reflexia"}
-    except Exception as e:
-        return {"status": "unhealthy", "error": str(e)}
+    except Exception:
+        return {"status": "unhealthy", "error": "internal_error"}

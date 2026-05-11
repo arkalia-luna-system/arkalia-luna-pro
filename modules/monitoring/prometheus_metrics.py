@@ -242,11 +242,11 @@ async def get_metrics() -> Response:
     try:
         prometheus_data = metrics.generate_metrics()
         return PlainTextResponse(content=prometheus_data, media_type=CONTENT_TYPE_LATEST)
-    except Exception as e:
-        ark_logger.error(f"Erreur endpoint métriques: {e}", extra={"arkalia_module": "monitoring"})
+    except Exception:
+        ark_logger.error("Erreur endpoint métriques", extra={"arkalia_module": "monitoring"})
         return JSONResponse(
             status_code=500,
-            content={"error": f"Erreur métriques : {str(e)}"},
+            content={"error": "internal_error"},
         )
 
 
@@ -256,12 +256,14 @@ async def health_check() -> Response:
     🏥 Endpoint de santé du monitoring
     """
     try:
-        return {
+        return JSONResponse(
+            content={
             "status": "healthy",
             "timestamp": datetime.now().isoformat(),
             "metrics_collected": True,
             "modules_monitored": 7,
-        }
-    except Exception as e:
-        ark_logger.error(f"Erreur health check: {e}", extra={"arkalia_module": "monitoring"})
-        return JSONResponse(status_code=500, content={"status": "unhealthy", "error": str(e)})
+            }
+        )
+    except Exception:
+        ark_logger.error("Erreur health check", extra={"arkalia_module": "monitoring"})
+        return JSONResponse(status_code=500, content={"status": "unhealthy", "error": "internal_error"})
