@@ -105,6 +105,9 @@ class CognitiveReactor:
         self.learned_patterns: list[dict[str, Any]] = []
         self.reaction_history: list[dict[str, Any]] = []
         self.stimuli_queue: list[dict[str, Any]] = []
+        self.max_reaction_history = 1000
+        self.max_learned_patterns = 500
+        self.max_stimuli_queue = 200
 
         ark_logger.info(
             f"🧠 CognitiveReactor initialisé en mode {mode}",
@@ -334,10 +337,7 @@ class CognitiveReactor:
             self.cognitive_state["learning_cycles"] = (
                 int(self.cognitive_state.get("learning_cycles", 0)) + 1
             )
-
-        # Limiter l'historique
-        if len(self.reaction_history) > 1000:
-            self.reaction_history = self.reaction_history[-500:]
+        self._trim_memory_structures()
 
     def predict_future_patterns(self) -> list[dict[str, Any]]:
         """Prédit les patterns futurs basés sur l'apprentissage"""
@@ -381,6 +381,7 @@ class CognitiveReactor:
         """Apprend d'une expérience"""
         if experience:
             self.reaction_history.append(experience)
+            self._trim_memory_structures()
 
     async def predict_optimal_reaction(self, _situation: dict[str, Any]) -> dict[str, Any]:
         """Prédit la réaction optimale"""
@@ -425,18 +426,7 @@ class CognitiveReactor:
 
     async def cleanup_memory(self) -> dict[str, Any]:
         """Nettoie la mémoire pour économiser RAM"""
-        # Limiter la taille de l'historique (réduit à 500 pour économiser RAM)
-        if len(self.reaction_history) > 500:
-            self.reaction_history = self.reaction_history[-500:]
-
-        # Limiter learned_patterns (garder 200 plus récents)
-        if len(self.learned_patterns) > 200:
-            self.learned_patterns = self.learned_patterns[-200:]
-
-        # Limiter stimuli_queue (garder 100 plus récents)
-        if len(self.stimuli_queue) > 100:
-            self.stimuli_queue = self.stimuli_queue[-100:]
-
+        self._trim_memory_structures()
         return {"cleaned": True}
 
     def serialize(self) -> dict[str, Any]:
@@ -461,6 +451,16 @@ class CognitiveReactor:
             self.reaction_count = data["reaction_count"]
         if "start_time" in data:
             self.start_time = data["start_time"]
+        self._trim_memory_structures()
+
+    def _trim_memory_structures(self) -> None:
+        """Borne les structures mémoire pour éviter la dérive RAM."""
+        if len(self.reaction_history) > self.max_reaction_history:
+            self.reaction_history = self.reaction_history[-self.max_reaction_history :]
+        if len(self.learned_patterns) > self.max_learned_patterns:
+            self.learned_patterns = self.learned_patterns[-self.max_learned_patterns :]
+        if len(self.stimuli_queue) > self.max_stimuli_queue:
+            self.stimuli_queue = self.stimuli_queue[-self.max_stimuli_queue :]
 
     async def cognitive_loop(self) -> None:
         """Boucle principale du réacteur cognitif"""

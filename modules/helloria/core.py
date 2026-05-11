@@ -355,7 +355,7 @@ def zeroia_health() -> dict:
         return {"status": "error", "error": "internal_error"}
 
 
-@app.get("/reflexia/health", tags=["ReflexIA"])
+@app.get("/reflexia/health", tags=["ReflexIA"], operation_id="helloria_reflexia_health")
 def reflexia_health() -> dict:
     """Vérifie l'état de santé du module Reflexia.
 

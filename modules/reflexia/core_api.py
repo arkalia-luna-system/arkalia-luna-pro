@@ -49,7 +49,7 @@ def get_reflexia_status() -> dict:
     return {"status": "ok", "metrics": result["metrics"]}
 
 
-@router.get("/health")
+@router.get("/health", operation_id="reflexia_router_health")
 async def reflexia_health():
     """
     Health check Reflexia sur le router monté sous /reflexia (API principale + CI).

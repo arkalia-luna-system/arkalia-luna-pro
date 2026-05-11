@@ -90,6 +90,7 @@ class EventStore:
 
         self.events: dict[str, dict[str, Any]] = {}
         self.event_counter = 0
+        self.max_events_in_memory = 500
         self._load_events()
 
         ark_logger.info(
@@ -140,22 +141,25 @@ class EventStore:
         self.events[event_id] = event
         self.event_counter += 1
 
-        # Limiter le nombre d'événements stockés (réduit à 500 pour économiser RAM)
-        if len(self.events) > 500:
-            # Supprimer les 100 plus anciens pour éviter de supprimer un par un
-            keys_to_remove = list(self.events.keys())[:100]
-            for key in keys_to_remove:
-                del self.events[key]
+        self._trim_events_if_needed()
 
         self._save_events()
+
+    def _trim_events_if_needed(self) -> None:
+        """Évite la croissance mémoire du store d'événements."""
+        if len(self.events) <= self.max_events_in_memory:
+            return
+        overflow = len(self.events) - self.max_events_in_memory
+        # Dict conserve l'ordre d'insertion; on retire les plus anciens.
+        oldest_keys = list(self.events.keys())[:overflow]
+        for key in oldest_keys:
+            self.events.pop(key, None)
 
     def get_events(self, event_type: str | None = None, limit: int = 100) -> list[dict[str, Any]]:
         """Récupère les événements filtrés par type"""
         if event_type:
             filtered_events = [
-                e
-                for e in self.events.values()
-                if e.get("event_type", e.get("type")) == event_type
+                e for e in self.events.values() if e.get("event_type", e.get("type")) == event_type
             ]
         else:
             filtered_events = list(self.events.values())
@@ -207,6 +211,7 @@ class EventStore:
         # Stocker dans le cache avec gestion d'erreur SQLite
         try:
             self.events[event_id] = event.to_dict()
+            self._trim_events_if_needed()
         except (sqlite3.OperationalError, sqlite3.DatabaseError) as e:
             ark_logger.warning(
                 f"⚠️ Erreur cache événement {event_id}: {e}", extra={"arkalia_module": "zeroia"}

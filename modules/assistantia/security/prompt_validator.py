@@ -45,8 +45,9 @@ class PromptValidator:
         self.security_level = security_level
         self._load_patterns()
         self._rate_limit_cache: dict[str, list[float]] = {}
+        self._max_rate_limit_entries = 2000
 
-    def _load_patterns(self):
+    def _load_patterns(self) -> None:
         """Charge les patterns d'injection selon le niveau de sécurité"""
 
         # Patterns de base - toujours actifs
@@ -252,6 +253,7 @@ class PromptValidator:
         """Vérifie le rate limiting basé sur le hash du prompt"""
         prompt_hash = hashlib.md5(prompt.encode(), usedforsecurity=False).hexdigest()
         current_time = time.time()
+        self._prune_rate_limit_cache(current_time, window_seconds)
 
         if prompt_hash not in self._rate_limit_cache:
             self._rate_limit_cache[prompt_hash] = []
@@ -268,6 +270,30 @@ class PromptValidator:
         # Ajoute le timestamp actuel
         self._rate_limit_cache[prompt_hash].append(current_time)
         return True
+
+    def _prune_rate_limit_cache(self, current_time: float, window_seconds: int) -> None:
+        """Évite la croissance non bornée du cache de rate limit."""
+        expired_keys = []
+        for key, timestamps in self._rate_limit_cache.items():
+            recent = [ts for ts in timestamps if current_time - ts < window_seconds]
+            if recent:
+                self._rate_limit_cache[key] = recent
+            else:
+                expired_keys.append(key)
+
+        for key in expired_keys:
+            self._rate_limit_cache.pop(key, None)
+
+        # Garde une borne stricte sur le nombre de clés.
+        if len(self._rate_limit_cache) <= self._max_rate_limit_entries:
+            return
+        keys_sorted = sorted(
+            self._rate_limit_cache,
+            key=lambda k: self._rate_limit_cache[k][-1] if self._rate_limit_cache[k] else 0.0,
+            reverse=True,
+        )
+        keep_keys = set(keys_sorted[: self._max_rate_limit_entries])
+        self._rate_limit_cache = {k: self._rate_limit_cache[k] for k in keep_keys}
 
     def _calculate_entropy(self, text: str) -> float:
         """Calcule l'entropie d'un texte (détection d'obfuscation)"""

@@ -255,7 +255,8 @@ class AlertManager:
 
     def add_alert_handler(self, handler: Callable) -> None:
         """Ajoute un gestionnaire d'alertes"""
-        self.alert_handlers.append(handler)
+        if handler not in self.alert_handlers:
+            self.alert_handlers.append(handler)
 
     def check_alerts(self, metrics: dict[str, Metric]) -> list[Alert]:
         """Vérifie toutes les règles d'alerte"""
@@ -296,6 +297,8 @@ class AlertManager:
                     )
 
                     self.alerts.append(alert)
+                    if len(self.alerts) > self.config["max_alerts"]:
+                        self.alerts = self.alerts[-self.config["max_alerts"] :]
                     new_alerts.append(alert)
 
                     # Notifier les gestionnaires
@@ -383,6 +386,8 @@ class AlertManager:
         """Nettoie les anciennes alertes"""
         cutoff_time = datetime.now() - timedelta(hours=self.config["alert_retention_hours"])
         self.alerts = [alert for alert in self.alerts if alert.timestamp > cutoff_time]
+        if len(self.alerts) > self.config["max_alerts"]:
+            self.alerts = self.alerts[-self.config["max_alerts"] :]
 
 
 class AdvancedMetricsManager:
