@@ -1,6 +1,6 @@
 # 📦 Makefile Arkalia IA Devstation - Enhanced
 
-.PHONY: all test test-full format bump patch minor major zeroia clean install dev-setup security-check performance-check docs-build docker-build docker-test
+.PHONY: all test test-light test-full format bump patch minor major zeroia clean install dev-setup security-check performance-check docs-build docker-build docker-test
 
 # Variables
 PYTHON := python3
@@ -20,6 +20,10 @@ test-full:
 test-unit:
 	@echo "🧪 Tests unitaires uniquement..."
 	pytest tests/unit/ -v --cov=modules --cov-report=term-missing
+
+test-light:
+	@echo "🧪 Tests légers (rapides, sans suites lourdes)..."
+	pytest tests/unit/ tests/integration/ -q -m "not slow and not performance and not chaos and not e2e and not benchmark" --no-cov
 
 test-integration:
 	@echo "🧪 Tests d'intégration..."
@@ -114,7 +118,7 @@ run:
 # 🧪 Tests avec couverture (cible principale `test`)
 test:
 	@echo "🧪 Tests avec couverture..."
-	pytest --cov=modules --cov-report=term-missing --cov-report=html
+	pytest --cov=modules --cov-report=term-missing
 
 docker-clean:
 	@echo "🐳 Nettoyage Docker..."
@@ -171,6 +175,7 @@ help:
 	@echo ""
 	@echo "🧪 Tests:"
 	@echo "  test          - Tests complets avec couverture"
+	@echo "  test-light    - Tests rapides sans suites lourdes"
 	@echo "  test-full     - Tests complets (script ark-test-full.sh)"
 	@echo "  test-unit     - Tests unitaires"
 	@echo "  test-integration - Tests d'intégration"
