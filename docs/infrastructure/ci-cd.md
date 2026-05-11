@@ -89,7 +89,7 @@ pytest tests/performance/ -v
 pytest tests/security/ -v
 
 # Validation monitoring
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 ```
 
 ### Vérifications ZeroIA

@@ -24,7 +24,7 @@ docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml ps
 ### 2) Valider localement
 
 ```bash
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 pytest tests/performance/ -v
 pytest tests/security/ -v
 ```
@@ -117,7 +117,7 @@ Exemples de regles :
 
 ```bash
 # Verification quotidienne
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 
 # Nettoyage metriques anciennes
 docker exec prometheus promtool tsdb clean --older-than 30d

@@ -45,7 +45,7 @@ Consultez notre [Guide de Contribution](../credits/CONTRIBUTING.md) et soumettez
 
 **Q : Comment tester la cohérence de Sandozia ?**
 
-**R :** Utilisez notre suite de validation : `python scripts/ark-validate-performance.py` pour test complet, ou `python scripts/ark-validate-monitoring.py` pour validation croisée uniquement. Score de cohérence > 0.90 indique un système en bon état.
+**R :** Utilisez notre suite de validation : `python scripts/dev/ark-validate-performance.py` pour test complet, ou `python scripts/dev/ark-validate-monitoring.py` pour validation croisée uniquement. Score de cohérence > 0.90 indique un système en bon état.
 
 ### 6. Où puis-je trouver la documentation technique ?
 
@@ -75,7 +75,7 @@ source arkalia-luna-venv/bin/activate
 ark-run
 
 # Test intelligence croisée
-python scripts/ark-validate-performance.py
+python scripts/dev/ark-validate-performance.py
 ```
 
 ---

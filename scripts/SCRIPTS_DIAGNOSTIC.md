@@ -92,9 +92,9 @@ python scripts/dev/ark-modules-analysis.py --export report.json
 
 **Usage :**
 ```bash
-python scripts/ark-validate-performance.py
-python scripts/ark-validate-performance.py --module zeroia
-python scripts/ark-validate-performance.py --benchmark
+python scripts/dev/ark-validate-performance.py
+python scripts/dev/ark-validate-performance.py --module zeroia
+python scripts/dev/ark-validate-performance.py --benchmark
 ```
 
 **Fonctionnalités :**
@@ -120,9 +120,9 @@ Module sandozia: 89ms (✅ OK)
 
 **Usage :**
 ```bash
-python scripts/ark-validate-coverage.py
-python scripts/ark-validate-coverage.py --module zeroia
-python scripts/ark-validate-coverage.py --threshold 80
+python scripts/dev/ark-validate-coverage.py
+python scripts/dev/ark-validate-coverage.py --module zeroia
+python scripts/dev/ark-validate-coverage.py --threshold 80
 ```
 
 **Fonctionnalités :**
@@ -139,9 +139,9 @@ python scripts/ark-validate-coverage.py --threshold 80
 
 **Usage :**
 ```bash
-python scripts/ark-validate-monitoring.py
-python scripts/ark-validate-monitoring.py --check-prometheus
-python scripts/ark-validate-monitoring.py --check-grafana
+python scripts/dev/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py --check-prometheus
+python scripts/dev/ark-validate-monitoring.py --check-grafana
 ```
 
 **Fonctionnalités :**
@@ -341,7 +341,7 @@ bash scripts/dev/ark-lint-report.sh --output lint-report.html
 1. **Avant développement :**
    ```bash
    python scripts/ark-master-diagnostic.py
-   python scripts/ark-validate-coverage.py
+   python scripts/dev/ark-validate-coverage.py
    ```
 
 2. **Avant commit :**
@@ -360,7 +360,7 @@ bash scripts/dev/ark-lint-report.sh --output lint-report.html
 4. **Après optimisations :**
    ```bash
    python scripts/ark-performance-benchmark.py
-   python scripts/ark-validate-performance.py
+   python scripts/dev/ark-validate-performance.py
    ```
 
 ### Scripts à exécuter quotidiennement

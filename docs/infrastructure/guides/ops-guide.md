@@ -16,7 +16,7 @@ Documentation complète des opérations et maintenance d'Arkalia-LUNA Pro avec m
 ### Monitoring et Observabilité
 ```bash
 # Validation monitoring complet
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 
 # Vérification services monitoring
 docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml ps
@@ -52,7 +52,7 @@ ark-check-all
 ark-zeroia-logs
 
 # Validation monitoring
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 
 # Métriques Arkalia
 curl http://localhost:8000/metrics | grep arkalia
@@ -182,7 +182,7 @@ docker-compose -f infrastructure/monitoring/docker-compose.monitoring.yml up -d
 ### **Tests et Validation**
 ```bash
 # Validation monitoring
-python scripts/ark-validate-monitoring.py
+python scripts/dev/ark-validate-monitoring.py
 
 # Tests complets
 pytest tests/ -v
