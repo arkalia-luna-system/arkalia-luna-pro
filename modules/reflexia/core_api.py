@@ -58,7 +58,7 @@ async def reflexia_health():
         dict: Statut de santé du module Reflexia.
     """
     try:
-        return {"status": "ok", "service": "reflexia"}
+        return {"status": "ok", "service": "reflexia", "module": "reflexia"}
     except Exception as e:
         return {"status": "unhealthy", "error": str(e)}
 

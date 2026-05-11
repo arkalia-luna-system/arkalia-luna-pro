@@ -3,12 +3,15 @@
 # Tests unitaires SandoziaCore
 
 import asyncio
+import json
+import sys
 from pathlib import Path
 from typing import Any
 from unittest.mock import patch
 
 import pytest
 
+from modules.sandozia.core import sandozia_core as sandozia_cli
 from modules.sandozia.core.sandozia_core import IntelligenceSnapshot, SandoziaCore, SandoziaMetrics
 
 
@@ -266,6 +269,27 @@ class TestSandoziaCoreIntegration:
             # Test statut
             status = sandozia.get_current_status()
             assert status["snapshots_count"] >= 1
+
+
+@pytest.mark.asyncio
+async def test_main_status_logs_json(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Le mode --status log un JSON sans kwargs invalides."""
+    fake_status = {"is_running": False, "snapshots_count": 0}
+
+    class FakeCore:
+        def __init__(self, config_path: Path | None = None) -> None:
+            del config_path
+
+        def get_current_status(self) -> dict[str, Any]:
+            return fake_status
+
+    monkeypatch.setattr(sys, "argv", ["sandozia-core", "--status"])
+    monkeypatch.setattr(sandozia_cli, "SandoziaCore", FakeCore)
+
+    with patch.object(sandozia_cli.ark_logger, "info") as mock_info:
+        await sandozia_cli.main()
+
+    mock_info.assert_called_once_with(json.dumps(fake_status, indent=2), extra={"module": "core"})
 
 
 if __name__ == "__main__":
