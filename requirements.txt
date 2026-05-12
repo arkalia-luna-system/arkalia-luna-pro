@@ -102,7 +102,7 @@ pytest-xdist>=3.5.0
 
 # 📡 Appels HTTP
 requests
-rich>=13.7.0
+rich>=15.0.0
 ruff>=0.1.0
 safety>=2.3.5
 toml>=0.10.2
