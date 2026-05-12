@@ -188,7 +188,7 @@ jobs:
 
       - name: 📘 Déployer la documentation
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
       - name: 📋 Logs du container arkalia-api en cas d'échec
         if: failure()
