@@ -9,7 +9,7 @@ aiohttp>=3.9.0
 # 🔄 Async & Messaging
 aiofiles>=23.2.1
 asyncio-mqtt>=0.16.0
-autoflake>=2.2.0
+autoflake>=2.3.3
 
 # 🔒 Security Tools
 bandit>=1.7.0
