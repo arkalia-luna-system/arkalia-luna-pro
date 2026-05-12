@@ -76,7 +76,7 @@ pytest-xdist>=3.5.0
 PyYAML>=6.0.1
 
 # 📡 Appels HTTP
-requests>=2.31.0
+requests>=2.34.0
 rich>=13.7.0
 ruff>=0.1.6
 safety>=2.3.5
