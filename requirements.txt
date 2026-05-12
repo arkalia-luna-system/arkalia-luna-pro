@@ -110,7 +110,7 @@ toml>=0.10.2
 #########################
 # 🔄 Circuit Breaker & Retries
 #########################
-tomli==2.2.1
+tomli==2.4.1
 tqdm>=4.66.0
 types-PyYAML>=6.0.0
 
