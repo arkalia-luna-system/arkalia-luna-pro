@@ -1,0 +1,3 @@
+# Fichiers exclus du scan (chemins relatifs à la racine du dépôt).
+# Baseline detect-secrets : hashes / métadonnées, pas des secrets en clair exploitables.
+.secrets.baseline
