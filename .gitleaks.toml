@@ -19,13 +19,13 @@ paths = [
   '''^examples/''',
   '''^spec/''',
   '''^site/''',
+  '''^search/search_index\.json$''',
   '''^\.github/''',
   '''^scripts/demo_arkalia_vault\.py$''',
   '''^scripts/ark-secret-check\.sh$''',
   '''^docs/api\.md$''',
-  # Baseline detect-secrets (voir aussi .gitleaksignore).
-  '''\.secrets\.baseline$''',
-  '''[/\\]\.secrets\.baseline$''',
+  # Baseline detect-secrets : empreintes / métadonnées, pas des secrets exploitables.
+  '''(^|[/\\])\.secrets\.baseline$''',
 ]
 
 # Placeholders et textes d’exemple courants (alignés avec la doc API).
