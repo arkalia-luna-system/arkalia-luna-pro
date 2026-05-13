@@ -23,6 +23,8 @@ paths = [
   '''^scripts/demo_arkalia_vault\.py$''',
   '''^scripts/ark-secret-check\.sh$''',
   '''^docs/api\.md$''',
+  # Baseline detect-secrets : contient des hash / entrées volontairement listées.
+  '''(^|/)\.secrets\.baseline$''',
 ]
 
 # Placeholders et textes d’exemple courants (alignés avec la doc API).
