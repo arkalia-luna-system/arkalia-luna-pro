@@ -1,3 +1,3 @@
-# Fichiers exclus du scan (chemins relatifs à la racine du dépôt).
-# Baseline detect-secrets : hashes / métadonnées, pas des secrets en clair exploitables.
-.secrets.baseline
+# Ignorer des fuites précises via leur champ `Fingerprint` dans un rapport JSON Gitleaks.
+# Ce fichier n’accepte pas des chemins de fichiers ; pour exclure tout un fichier,
+# utiliser `[allowlist] paths` dans `.gitleaks.toml`.
