@@ -83,7 +83,7 @@ safety>=2.3.5
 
 # 🔄 Circuit Breaker & Retries
 toml>=0.10.2
-tomli>=2.0.1
+tomli>=2.4.1
 tqdm>=4.66.1
 
 # 🎯 Type Stubs
