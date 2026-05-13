@@ -1,0 +1,34 @@
+# Configuration Gitleaks : réduit les faux positifs (docs, tests, démos) tout en
+# conservant la détection sur le code applicatif (app/, modules/, etc.).
+
+title = "arkalia-luna-pro"
+
+[extend]
+# Règles par défaut (dépend de la version embarquée par l’action Gitleaks)
+useDefault = true
+
+# Chemins fréquemment utilisés pour des exemples, de la doc et des tests.
+# Les vrais secrets doivent rester hors de ces répertoires ou dans le gestionnaire de secrets.
+[allowlist]
+description = "Documentation, tests, assets générés, démos explicites"
+paths = [
+  '''^docs/''',
+  '''^tests/''',
+  '''^test/''',
+  '''^e2e/''',
+  '''^examples/''',
+  '''^spec/''',
+  '''^site/''',
+  '''^\.github/''',
+  '''^scripts/demo_arkalia_vault\.py$''',
+  '''^scripts/ark-secret-check\.sh$''',
+  '''^docs/api\.md$''',
+]
+
+# Placeholders et textes d’exemple courants (alignés avec la doc API).
+regexes = [
+  '''<redacted[^>]*>''',
+  '''<api[_-]?key>''',
+  '''REDACTED''',
+  '''example[_-]?key''',
+]
