@@ -97,7 +97,7 @@ pytest-asyncio>=0.23.0
 #########################
 pytest-benchmark
 pytest-cov>=4.1.0
-pytest-timeout>=2.2.0
+pytest-timeout>=2.4.0
 pytest-xdist>=3.5.0
 
 # 📡 Appels HTTP
