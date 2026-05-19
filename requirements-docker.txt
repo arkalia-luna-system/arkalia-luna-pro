@@ -62,7 +62,7 @@ pydantic>=2.5.2
 
 # 📊 Monitoring & Métriques
 PyJWT>=2.8.0
-pymdown-extensions>=10.21.2
+pymdown-extensions>=10.21.3
 
 # 🧪 Testing Framework
 pytest>=7.4.3
