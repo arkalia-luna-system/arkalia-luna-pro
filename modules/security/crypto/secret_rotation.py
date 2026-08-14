@@ -145,9 +145,7 @@ class RotationManager:
             policy: Politique de rotation à ajouter.
         """
         self.policies[policy.name] = policy
-        ark_logger.info(
-            f"📋 Rotation policy added for: {policy.name}", extra={"arkalia_module": "security"}
-        )
+        ark_logger.info("📋 Rotation policy added", extra={"arkalia_module": "security"})
 
     def remove_policy(self, secret_name: str) -> None:
         """Supprime une politique de rotation.
@@ -157,10 +155,7 @@ class RotationManager:
         """
         if secret_name in self.policies:
             del self.policies[secret_name]
-            ark_logger.info(
-                f"🗑️ Rotation policy removed for: {secret_name}",
-                extra={"arkalia_module": "security"},
-            )
+            ark_logger.info("🗑️ Rotation policy removed", extra={"arkalia_module": "security"})
 
     def check_rotation_needed(self, secret_name: str) -> tuple[bool, str]:
         """
@@ -206,9 +201,9 @@ class RotationManager:
             try:
                 if policy.condition_callback(secret_metadata):
                     return True, "Conditional rotation triggered"
-            except Exception as e:
+            except Exception:
                 ark_logger.error(
-                    f"❌ Error in rotation condition callback: {e}",
+                    "❌ Error in rotation condition callback",
                     extra={"arkalia_module": "security"},
                 )
 
@@ -227,8 +222,7 @@ class RotationManager:
         """
         if secret_name not in self.policies:
             ark_logger.error(
-                f"❌ No rotation policy for secret: {secret_name}",
-                extra={"arkalia_module": "security"},
+                "❌ No rotation policy for secret", extra={"arkalia_module": "security"}
             )
             return False
 
@@ -239,8 +233,7 @@ class RotationManager:
             old_value = self.vault.retrieve_secret(secret_name)
             if old_value is None:
                 ark_logger.error(
-                    f"❌ Cannot rotate non-existent secret: {secret_name}",
-                    extra={"arkalia_module": "security"},
+                    "❌ Cannot rotate non-existent secret", extra={"arkalia_module": "security"}
                 )
                 return False
 
@@ -250,7 +243,7 @@ class RotationManager:
 
             if new_value is None:
                 ark_logger.error(
-                    f"❌ No new value provided and auto-generation disabled for: {secret_name}",
+                    "❌ No new value provided and auto-generation disabled",
                     extra={"arkalia_module": "security"},
                 )
                 return False
@@ -298,22 +291,16 @@ class RotationManager:
             if policy.notification_callback:
                 try:
                     policy.notification_callback(secret_name, rotation_record)
-                except Exception as e:
+                except Exception:
                     ark_logger.error(
-                        f"⚠️ Notification callback failed: {e}", extra={"arkalia_module": "security"}
+                        "⚠️ Notification callback failed", extra={"arkalia_module": "security"}
                     )
 
-            ark_logger.info(
-                f"🔄 Secret '{secret_name}' rotated successfully",
-                extra={"arkalia_module": "security"},
-            )
+            ark_logger.info("🔄 Secret rotated successfully", extra={"arkalia_module": "security"})
             return True
 
-        except Exception as e:
-            ark_logger.error(
-                f"❌ Failed to rotate secret '{secret_name}': {e}",
-                extra={"arkalia_module": "security"},
-            )
+        except Exception:
+            ark_logger.error("❌ Failed to rotate secret", extra={"arkalia_module": "security"})
             return False
 
     def _generate_new_value(self, policy: RotationPolicy) -> str:
@@ -356,17 +343,12 @@ class RotationManager:
         """
         rotation_check = self.bulk_rotation_check()
         results: dict[str, Any] = {}
-        for secret_name, (needs_rotation, reason) in rotation_check.items():
+        for secret_name, (needs_rotation, _reason) in rotation_check.items():
             if needs_rotation:
-                ark_logger.info(
-                    f"🔄 Auto-rotating {secret_name}: {reason}",
-                    extra={"arkalia_module": "security"},
-                )
+                ark_logger.info("🔄 Auto-rotating due secret", extra={"arkalia_module": "security"})
                 results[secret_name] = self.rotate_secret(secret_name)
             else:
-                ark_logger.debug(
-                    f"⏭️ Skipping {secret_name}: {reason}", extra={"arkalia_module": "security"}
-                )
+                ark_logger.debug("⏭️ Skipping secret rotation", extra={"arkalia_module": "security"})
         return results
 
     def rollback_rotation(self, secret_name: str) -> bool:
@@ -400,10 +382,7 @@ class RotationManager:
                     continue
 
         if not recent_backup:
-            ark_logger.error(
-                f"❌ No backup found for secret: {secret_name}",
-                extra={"arkalia_module": "security"},
-            )
+            ark_logger.error("❌ No backup found for secret", extra={"arkalia_module": "security"})
             return False
 
         try:
@@ -411,8 +390,7 @@ class RotationManager:
             backup_value = self.vault.retrieve_secret(recent_backup.name)
             if backup_value is None:
                 ark_logger.error(
-                    f"❌ Could not retrieve backup value for: {secret_name}",
-                    extra={"arkalia_module": "security"},
+                    "❌ Could not retrieve backup value", extra={"arkalia_module": "security"}
                 )
                 return False
 
@@ -435,16 +413,12 @@ class RotationManager:
             self._trim_rotation_history()
 
             ark_logger.info(
-                f"↩️ Secret '{secret_name}' rolled back successfully",
-                extra={"arkalia_module": "security"},
+                "↩️ Secret rolled back successfully", extra={"arkalia_module": "security"}
             )
             return True
 
-        except Exception as e:
-            ark_logger.error(
-                f"❌ Failed to rollback secret '{secret_name}': {e}",
-                extra={"arkalia_module": "security"},
-            )
+        except Exception:
+            ark_logger.error("❌ Failed to rollback secret", extra={"arkalia_module": "security"})
             return False
 
     def cleanup_old_backups(self, max_age_days: int = 90) -> int:

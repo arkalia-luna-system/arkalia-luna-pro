@@ -238,7 +238,7 @@ class ArkaliaVault(BuildIntegrityValidator):
             VaultError: Si erreur de stockage
         """
         if not overwrite and name in self.secrets_metadata:
-            raise VaultError(f"Secret '{name}' already exists. Use overwrite=True to replace.")
+            raise VaultError("Secret already exists. Use overwrite=True to replace.")
 
         # Charger les secrets existants
         secrets = self._load_secrets()
@@ -262,9 +262,7 @@ class ArkaliaVault(BuildIntegrityValidator):
         # Audit log
         self._audit_log_entry("STORE", name, f"tags={tags}, expires={expires_at}")
 
-        ark_logger.info(
-            f"🔐 Secret '{name}' stored successfully", extra={"arkalia_module": "security"}
-        )
+        ark_logger.info("🔐 Secret stored successfully", extra={"arkalia_module": "security"})
         return True
 
     def retrieve_secret(self, name: str) -> str | None:
@@ -281,18 +279,16 @@ class ArkaliaVault(BuildIntegrityValidator):
             VaultError: Si secret expiré
         """
         if name not in self.secrets_metadata:
-            ark_logger.warning(f"⚠️ Secret '{name}' not found", extra={"arkalia_module": "security"})
+            ark_logger.warning("⚠️ Secret not found", extra={"arkalia_module": "security"})
             return None
 
         metadata = self.secrets_metadata[name]
 
         # Vérifier l'expiration
         if metadata.expires_at and datetime.now() > metadata.expires_at:
-            ark_logger.warning(
-                f"⚠️ Secret '{name}' has expired", extra={"arkalia_module": "security"}
-            )
+            ark_logger.warning("⚠️ Secret has expired", extra={"arkalia_module": "security"})
             self._audit_log_entry("ACCESS_DENIED", name, "EXPIRED")
-            raise VaultError(f"Secret '{name}' has expired")
+            raise VaultError("Secret has expired")
 
         # Charger et récupérer le secret
         secrets = self._load_secrets()
@@ -300,7 +296,7 @@ class ArkaliaVault(BuildIntegrityValidator):
 
         if value is None:
             ark_logger.error(
-                f"❌ Secret '{name}' found in metadata but missing from vault",
+                "❌ Secret found in metadata but missing from vault",
                 extra={"arkalia_module": "security"},
             )
             return None
@@ -327,7 +323,7 @@ class ArkaliaVault(BuildIntegrityValidator):
         """
         if name not in self.secrets_metadata:
             ark_logger.warning(
-                f"⚠️ Secret '{name}' not found for deletion", extra={"arkalia_module": "security"}
+                "⚠️ Secret not found for deletion", extra={"arkalia_module": "security"}
             )
             return False
 
@@ -344,9 +340,7 @@ class ArkaliaVault(BuildIntegrityValidator):
         # Audit log
         self._audit_log_entry("DELETE", name)
 
-        ark_logger.info(
-            f"🗑️ Secret '{name}' deleted successfully", extra={"arkalia_module": "security"}
-        )
+        ark_logger.info("🗑️ Secret deleted successfully", extra={"arkalia_module": "security"})
         return True
 
     def list_secrets(self, include_expired: bool = False) -> list[SecretMetadata]:
@@ -376,20 +370,21 @@ class ArkaliaVault(BuildIntegrityValidator):
             Nombre de secrets supprimés
         """
         now = datetime.now()
-        expired_secrets: list[Any] = []
+        expired_names: list[Any] = []
 
         for name, metadata in self.secrets_metadata.items():
             if metadata.expires_at and now > metadata.expires_at:
-                expired_secrets.append(name)
+                expired_names.append(name)
 
-        for name in expired_secrets:
-            self.delete_secret(name)
+        cleaned = 0
+        for name in expired_names:
+            if self.delete_secret(name):
+                cleaned += 1
 
         ark_logger.info(
-            f"🧹 Cleaned up {len(expired_secrets)} expired secrets",
-            extra={"arkalia_module": "security"},
+            "🧹 Cleaned up expired vault entries", extra={"arkalia_module": "security"}
         )
-        return len(expired_secrets)
+        return cleaned
 
     def rotate_master_key(self, new_key: bytes | None = None) -> bytes:
         """
@@ -652,20 +647,19 @@ def migrate_from_env_file(
                             overwrite=True,
                         )
                         secrets_migrated += 1
-                        ark_logger.info(f"✅ Migrated: {key}", extra={"arkalia_module": "security"})
+                        ark_logger.info(
+                            "✅ Migrated env entry", extra={"arkalia_module": "security"}
+                        )
 
-                    except VaultError as e:
+                    except VaultError:
                         ark_logger.error(
-                            f"❌ Failed to migrate {key}: {e}",
+                            "❌ Failed to migrate env entry",
                             extra={"arkalia_module": "security"},
                         )
     except OSError as e:
         raise VaultError(f"Failed to read env file '{env_path}'") from e
 
-    ark_logger.info(
-        f"🚀 Migration completed: {secrets_migrated} secrets migrated from {env_path}",
-        extra={"arkalia_module": "security"},
-    )
+    ark_logger.info("🚀 Env migration completed", extra={"arkalia_module": "security"})
     return secrets_migrated
 
 
