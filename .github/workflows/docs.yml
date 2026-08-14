@@ -28,10 +28,10 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: 📥 Checkout du dépôt
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -100,10 +100,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: 📥 Checkout du dépôt
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -159,10 +159,10 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: 📥 Checkout du dépôt
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -230,7 +230,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: 📥 Checkout du dépôt
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: 📊 Generate documentation report
         run: |
