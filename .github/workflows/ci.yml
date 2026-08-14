@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Pour avoir l'historique complet
 
@@ -132,7 +132,7 @@ jobs:
       fail-fast: false
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: 🐍 Setup Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v6
@@ -235,7 +235,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: 🐍 Setup Python
         uses: actions/setup-python@v6
@@ -286,7 +286,7 @@ jobs:
     timeout-minutes: 25
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: 🐍 Setup Python
         uses: actions/setup-python@v6
@@ -324,7 +324,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: 📋 Download all artifacts
         uses: actions/download-artifact@v4
@@ -379,7 +379,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: 🐳 Build ZeroIA
         run: |
           if [ -f "docker/Dockerfile.zeroia" ]; then
@@ -438,7 +438,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: 🐍 Setup Python
         uses: actions/setup-python@v6
         with:
@@ -475,7 +475,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: 🐳 Deploy to staging
         run: |
           if [ -f "docker-compose.prod.yml" ]; then
@@ -520,7 +520,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: 🐳 Deploy to production
         run: |
           if [ -f "docker-compose.prod.yml" ]; then
@@ -546,7 +546,7 @@ jobs:
     needs: test
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: 🐍 Setup Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v6
         with:
