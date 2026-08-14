@@ -115,7 +115,7 @@ tqdm>=4.66.0
 types-PyYAML>=6.0.0
 
 # 🎯 Type Stubs
-types-requests>=2.31.0
+types-requests>=2.33.0.20260518
 uvicorn>=0.24.0
 
 # 🔍 Additional Quality Tools
