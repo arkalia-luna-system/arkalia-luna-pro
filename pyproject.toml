@@ -262,3 +262,8 @@ exclude = [
     "htmlcov",
     "benchmark_results"
 ]
+
+[tool.pyright]
+pythonVersion = "3.10"
+stubPath = "typings"
+reportMissingTypeStubs = false
