@@ -212,7 +212,7 @@ class TestIntegrationPerformance:
                 "cpu_usage": 60.0 + (operation_id % 20),
                 "memory_usage": 70.0 + (operation_id % 15),
             }
-            return zeroia_core.make_decision(context)
+            return await zeroia_core.make_decision(context)
 
         async def reflexia_operation(operation_id: int) -> Any:
             return reflexia_core.check_module_health(f"module_{operation_id % 3}")

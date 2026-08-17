@@ -9,7 +9,6 @@ on:
 
 env:
   PYTHON_VERSION: "3.10"
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   DOCKER_REGISTRY: "ghcr.io"
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
@@ -151,7 +150,7 @@ jobs:
 
       - name: 🐳 Build and push ${{ matrix.image }}
         if: steps.check-dockerfile.outputs.skip_build != 'true'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./${{ matrix.dockerfile }}
@@ -354,7 +353,7 @@ jobs:
           echo "- Gestion d'erreurs renforcée" >> deployment-report.md
 
       - name: 📋 Upload deployment report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         continue-on-error: true
         timeout-minutes: 5
         with:
