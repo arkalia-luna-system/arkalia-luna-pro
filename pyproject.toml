@@ -265,5 +265,5 @@ exclude = [
 
 [tool.pyright]
 pythonVersion = "3.10"
-stubPath = "typings"
+stubPath = ""
 reportMissingTypeStubs = false
