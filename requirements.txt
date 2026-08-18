@@ -90,7 +90,7 @@ pymdown-extensions
 
 # 🧪 Testing Framework
 pytest>=7.4.0
-pytest-asyncio>=0.23.0
+pytest-asyncio>=1.4.0
 
 #########################
 # ✅ Tests & Couverture
