@@ -63,7 +63,7 @@ mkdocs-macros-plugin
 mkdocs-material>=9.4.0
 mkdocs-minify-plugin
 mkdocs-simple-hooks==0.1.5
-mypy>=1.8.0
+mypy>=2.3.1
 
 #########################
 # 🔒 Sécurité
