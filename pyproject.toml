@@ -18,7 +18,7 @@ dependencies = [
     "prometheus-client==0.19.0",
     "psutil==7.2.2",
     "docker==7.1.0",
-    "pytest==7.4.3",
+    "pytest==9.1.1",
     "pytest-cov==4.1.0",
     "black>=23.11.0",
     "ruff>=0.1.0",
