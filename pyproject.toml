@@ -33,7 +33,7 @@ dependencies = [
     "pylint==3.0.2",
     "pytest-xdist==3.3.1",
     "pytest-benchmark==4.0.0",
-    "interrogate==1.5.0",
+    "interrogate==1.7.0",
     "pydocstyle==6.3.0",
 ]
 
